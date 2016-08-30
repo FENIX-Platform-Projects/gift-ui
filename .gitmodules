@@ -55,3 +55,9 @@
 [submodule "submodules/fenix-ui-map"]
 	path = submodules/fenix-ui-map
 	url = https://github.com/FENIX-Platform/fenix-ui-map.git
+[submodule "submodules/fenix-ui-visualization-box"]
+	path = submodules/fenix-ui-visualization-box
+	url = git@github.com:FENIX-Platform/fenix-ui-visualization-box.git
+[submodule "fenix-ui-visualization-box"]
+	path = fenix-ui-visualization-box
+	url = https://github.com/FENIX-Platform/fenix-ui-visualization-box.git
