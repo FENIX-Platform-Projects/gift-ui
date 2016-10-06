@@ -24,7 +24,8 @@ define([
     var LANG = requirejs.s.contexts._.config.i18n.locale.toUpperCase(),
         s = {
             READY_CONTAINER: "#ready-container",
-            MAP_CONTAINER: "#consumption_map"
+            MAP_CONTAINER: "#consumption_map",
+            MAP_LEGEND: "#consumption_map_legend"
         },
         confidentialityCodelistUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/uid/GIFT_STATUS',
         confidentialityDataUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/find?full=true',
@@ -175,6 +176,7 @@ define([
             var self = this;
 
             this.$map = this.$el.find(s.MAP_CONTAINER);
+            this.$legend = this.$el.find(s.MAP_LEGEND);
 
 //console.log('self._dataByCountry',self._dataByCountry)
 
@@ -200,8 +202,6 @@ define([
             this.gaul0Centroids_adm0_code = _.groupBy(this.gaul0Centroids.features, function(feature) {
                 return feature.properties.adm0_code;
             });
-
-
 
             this.mapLocsByAdm0Code = {};
 
@@ -303,6 +303,8 @@ define([
             });
 
             layerGroup.addTo(this.fenixMap.map);
+
+            self._renderMapLegend();
         },
 
         _getMarker: function(items) {
@@ -359,6 +361,17 @@ define([
             }*/
         },
 
+        _renderMapLegend: function() {
+            var self = this;
+
+            _.extend(L.control({position:'topleft'}), {
+                onAdd: function(map) {
+                    var tmpDiv = L.DomUtil.create('div','leaflet-control leaflet-control-legend');
+                    self.$legend.appendTo(tmpDiv);
+                    return tmpDiv;
+                }
+            }).addTo(self.fenixMap.map);
+        },
 
 
         unbindEventListeners: function () {

@@ -8304,7 +8304,11 @@ input[type="checkbox"] + label:before {
   border: 1px solid #D2D0D0;
 }
 
-
-
+#consumption_map_legend {
+  margin-bottom: 0;
+}
+#consumption_map_legend li {
+  background-color: rgba(255,255,255,0.5);
+}
 
 
