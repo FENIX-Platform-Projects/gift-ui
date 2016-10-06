@@ -56,15 +56,39 @@ define([
             plugins: {
                 disclaimerfao: true,
                 geosearch: true,
+                legendcontrol: false,
+                scalecontrol: false,
                 mouseposition: false,
                 controlloading : true,
-                zoomcontrol: 'bottomright'
+                zoomcontrol: 'topright'
             },
             guiController: {
                 overlay: false,
                 baselayer: false,
                 wmsLoader: false
+            },
+            baselayers: {
+                cartodb: {
+                    url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                    title_en: "CartoDB light",                    
+                    subdomains: 'abcd',                    
+                    maxZoom: 19
+                },
+                esri_grayscale: {
+                    url: "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+                    title_en: "Esri WorldGrayCanvas",                    
+                    maxZoom: 16
+                }
             }
+        },
+        mapOptsLeaflet = {
+            scrollWheelZoom: false,
+            zoom: 2,
+            minZoom: 2,
+            maxZoom: 5,
+            maxBounds: [[84.67351256610522, -174.0234375], [-58.995311187950925, 223.2421875]]
         };
 
     var confidentialityCodelistStyles = {
@@ -212,8 +236,11 @@ define([
             this.initVariables();
             this._configurePage();
 
-            this.fenixMap = new FM.Map(this.$map, mapOpts);
-            this.fenixMap.createMap();
+            FM.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
+
+            this.fenixMap = new FM.Map(this.$map, mapOpts, mapOptsLeaflet);
+            this.fenixMap.createMap(18,0);
+            //this.fenixMap.map.fitWorld({padding: 4});
 
             var codesByCountry = {};
 
@@ -260,7 +287,6 @@ define([
             this.iconMarkerFunc = layerGroup._defaultIconCreateFunction;
 
             _.each(codesByCountry, function(item, countryCode) {
-
                 self._getMarker(item).addTo( layerGroup );
             });
 
@@ -311,23 +337,7 @@ define([
 
         _getLocByCode: function(code) {
 
-            var loc = this.mapLocsByAdm0Code[ code ];
-
-            return loc;
-
-            // //DEBUG
-            // function randomLatLng(bb) {
-            //     var sw = bb.getSouthWest(),
-            //         ne = bb.getNorthEast(),
-            //         lngs = ne.lng - sw.lng,
-            //         lats = ne.lat - sw.lat;
-
-            //     return new L.LatLng(
-            //             sw.lat + lats * Math.random(),
-            //             sw.lng + lngs * Math.random());
-            // }
-
-            // return randomLatLng( this.fenixMap.map.getBounds() );
+            return this.mapLocsByAdm0Code[ code ];
         },
 
         _configurePage: function () {
