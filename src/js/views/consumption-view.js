@@ -9,33 +9,17 @@ define([
     'i18n!nls/consumption',
     'config/events',
     'config/config',
-
     'leaflet_markecluster',
     'fenix-ui-map',
     'fenix-ui-map-config',
-
-    //'../globals/GaulLevels',
     'text!gaul0Centroids',
-
     'amplify'
-], function (require,$, _, Handlebars, View, template,   i18nLabels, E, C,
-
+], function (require,$, _, Handlebars, View, template, i18nLabels, E, C,
     LeafletMarkecluster,
     FenixMap,
     FenixConfig,
-
-    //GaulLevels,
     gaul0Centroids
-    ) {
-
-/*    GaulLevels.getLevel0(function(data) {
-
-        var ids = _.map(data, function(code) {
-            return code.id;
-        });
-
-        ids = _.first(_.shuffle(ids), 10);
-    });*/
+) {
 
     var LANG = requirejs.s.contexts._.config.i18n.locale.toUpperCase(),
         s = {
@@ -51,8 +35,24 @@ define([
             "meContent.resourceRepresentationType": {
                 "enumeration": ["dataset"]
             }
+        };
+
+    function defToLayer(def) {
+        return L.tileLayer(def.url, def);
+    };
+
+    var baselayers = {
+            "Cartodb": {
+                url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                title_en: "CartoDB light",                    
+                subdomains: 'abcd',                    
+                maxZoom: 19
+            }
         },
         mapOpts = {
+            baselayers: baselayers,
+            boundaries: true,
             plugins: {
                 disclaimerfao: true,
                 geosearch: true,
@@ -66,21 +66,6 @@ define([
                 overlay: false,
                 baselayer: false,
                 wmsLoader: false
-            },
-            baselayers: {
-                cartodb: {
-                    url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
-                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-                    title_en: "CartoDB light",                    
-                    subdomains: 'abcd',                    
-                    maxZoom: 19
-                },
-                esri_grayscale: {
-                    url: "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-                    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
-                    title_en: "Esri WorldGrayCanvas",                    
-                    maxZoom: 16
-                }
             }
         },
         mapOptsLeaflet = {
@@ -240,7 +225,10 @@ define([
 
             this.fenixMap = new FM.Map(this.$map, mapOpts, mapOptsLeaflet);
             this.fenixMap.createMap(18,0);
-            //this.fenixMap.map.fitWorld({padding: 4});
+
+            /*L.control.layers(baselayers, null, {
+                collapsed: false
+            }).addTo(this.fenixMap.map);*/
 
             var codesByCountry = {};
 
@@ -266,8 +254,32 @@ define([
                 }
             }
             var layerGroup = L.markerClusterGroup({
-                showCoverageOnHover: false,
-                iconCreateFunction: L.MarkerClusterGroup.prototype._defaultIconCreateFunction,
+                showCoverageOnHover: true,
+                maxClusterRadius: 30,
+                iconCreateFunction: function(cluster) {
+                    
+                    //return L.MarkerClusterGroup.prototype._defaultIconCreateFunction(cluster);
+                    var childCount = cluster.getChildCount();
+
+                    console.log(cluster, childCount)
+
+                    var c = ' marker-cluster-';
+                    if (childCount < 10) {
+                        c += 'small';
+                    } else if (childCount < 100) {
+                        c += 'medium';
+                    } else {
+                        c += 'large';
+                    }
+
+                    var r = 20*childCount;  //40
+
+                    return L.divIcon({
+                        html: '<div><span>'+( childCount + 1 )+'</span></div>',
+                        className: 'marker-cluster'+c,
+                        iconSize: new L.point(r, r)
+                    });
+                },
                 /*iconCreateFunction: function(cluster) {
 
                     return L.MarkerClusterGroup.prototype._defaultIconCreateFunction({
