@@ -55,7 +55,7 @@ define([
             baselayers: baselayers,
             boundaries: true,
             plugins: {
-                disclaimerfao: true,
+                disclaimerfao: false,
                 geosearch: true,
                 legendcontrol: false,
                 scalecontrol: false,
@@ -79,10 +79,12 @@ define([
 
     var confidentialityCodelistStyles = {
         //MAP CODES with Boostrap themes
-            'F': { className:"info",    order: 1},
-            'N': { className:"warning", order: 2},
-            'D': { className:"success", order: 3},
-            'A': { className:"primary", order: 4}
+            'F': { className:"success", order: 1},// green
+            'D': { className:"danger",  order: 2},// red
+            'P': { className:"warning", order: 3},// orange
+            'A': { className:"primary", order: 4},// blue
+            'N': { className:"default", order: 5},// gray
+            'Z': { className:"", hidden: true}
         };
 
     var ConsumptionView = View.extend({
@@ -115,12 +117,15 @@ define([
 //console.log('CONSUMPTION codes', self.confidentialityCodelist);
 
                     _.each(confidentialityCodelist, function(obj) {
-                        self.legend_items.push({
-                            code: obj.code,
-                            title: obj.title[ LANG ],
-                            className: confidentialityCodelistStyles[ obj.code ].className,
-                            order: confidentialityCodelistStyles[ obj.code ].order
-                        });
+                        //console.log(obj.code)
+                        if(!confidentialityCodelistStyles[ obj.code ].hidden) {
+                            self.legend_items.push({
+                                code: obj.code,
+                                title: obj.title[ LANG ],
+                                className: confidentialityCodelistStyles[ obj.code ].className,
+                                order: confidentialityCodelistStyles[ obj.code ].order
+                            });
+                        }
                     });
                     
                     self.legend_items = _.sortBy(self.legend_items,'order');
@@ -261,7 +266,7 @@ define([
                     //return L.MarkerClusterGroup.prototype._defaultIconCreateFunction(cluster);
                     var childCount = cluster.getChildCount();
 
-                    console.log(cluster, childCount)
+                    //console.log(cluster, childCount)
 
                     var c = ' marker-cluster-';
                     if (childCount < 10) {
@@ -334,10 +339,14 @@ define([
             _.each(items, function(item) {
                 //TODO MAKE TEMPLATE
                 popupHTML += _.map(item.confids, function(code, k) {
+                    
+                    var tit = item.title.title,
+                        url = '#';
+
                     return '<li class="list-group-item">'+
                         '<i class="label label-'+confidentialityCodelistStyles[ code ].className+'">'+code+'</i>'+
                         '&nbsp;&nbsp;'+
-                        item.title.title+
+                        '<a href="'+url+'">'+tit+'</a>'+
                     '</li>';//*/
                 }).join('');
             });
