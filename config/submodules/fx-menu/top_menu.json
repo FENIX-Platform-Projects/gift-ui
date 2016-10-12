@@ -35,7 +35,10 @@
       "target":"#consumption",
 
       "label":{
-        "EN":"Individual quantitative food consumption data worldwide"
+        "EN":"Existing data worldwide"
+      },
+      "breadcrumbLabel": {
+        "EN": "Individual quantitative food consumption data worldwide"
       }
     },
     {
