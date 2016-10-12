@@ -336,6 +336,7 @@ define([
             var popupHTML = '<label class="text-primary">'+items[0].countryName+'</label>'+
             '<ul class="list-group">';
 
+///title, uid
             _.each(items, function(item) {
                 //TODO MAKE TEMPLATE
                 popupHTML += _.map(item.confids, function(code, k) {
@@ -343,8 +344,8 @@ define([
                     var tit = item.title.title,
                         url = '#';
 
-                    return '<li class="list-group-item">'+
-                        '<i class="label label-'+confidentialityCodelistStyles[ code ].className+'">'+code+'</i>'+
+                    return '<li style="list-style:none;margin:4px">'+
+                        '<i class="label label-'+confidentialityCodelistStyles[ code ].className+'">&nbsp; &nbsp;</i>'+
                         '&nbsp;&nbsp;'+
                         '<a href="'+url+'">'+tit+'</a>'+
                     '</li>';//*/
