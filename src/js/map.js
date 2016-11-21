@@ -1,13 +1,42 @@
-define([
-    "jquery",
-    "loglevel",
-    "../../config/config"
-], function ($, log, C) {
+define(['jquery','underscore','loglevel','handlebars', 
+    '../../config/config',
+    '../../config/consumption',
+    'text!../html/consumption/map.hbs',
+    //'i18n!nls/consumption',
+    'text!../json/consuption/gaul0_centroids.json',
+    'leaflet',
+    '../lib/leaflet.markercluster-src',
+    'fenix-ui-map',
+
+], function ($, _, log, Handlebars,
+    C,
+    ConsC,
+    template,
+    //i18nLabels,
+    gaul0Centroids,
+    L,
+    LeafletMarkecluster,
+    FenixMap
+) {
     "use strict";
 
+    var LANG = requirejs.s.contexts._.config.i18n.locale.toUpperCase();
+
     var s = {
-        MAP: "#map"
-    };
+            READY_CONTAINER: "#ready-container",
+            MAP_CONTAINER: "#consumption_map",
+            MAP_LEGEND: "#consumption_map_legend"
+        },
+        confidentialityCodelistUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/uid/GIFT_STATUS',
+        confidentialityDataUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/find?full=true',
+        confidentialityDataPayload = {
+            "dsd.contextSystem": {
+                "enumeration": ["gift"]
+            },
+            "meContent.resourceRepresentationType": {
+                "enumeration": ["dataset"]
+            }
+        };
 
     function Map() {
 
@@ -47,6 +76,8 @@ define([
 
         //host override
         require('../css/gift.css');
+        require('../lib/MarkerCluster.Default.css');
+        require('../lib/MarkerCluster.css');
 
     };
 
