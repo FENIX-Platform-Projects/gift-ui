@@ -7,5 +7,6 @@ define(function () {
         environment : "production",
 
         cache : false
+
     }
 });

@@ -10,6 +10,7 @@
     "dev:map": "SECTIONS=map NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:mde": "SECTIONS=mde NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:readyToUse": "SECTIONS=readyToUse NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
+    "dev:base": "SECTIONS=readyToUse NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
 
 
     "dev:base": "SECTIONS=base NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
