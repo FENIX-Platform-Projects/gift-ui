@@ -6,8 +6,12 @@
   border: 1px solid #D2D0D0;
 
 
-  div.csc-default ul li{
+   ul li{
     left: 0;
+  }
+
+  .leaflet-popup-content  li{
+    list-style: none;
   }
 
 }
