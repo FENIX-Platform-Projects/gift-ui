@@ -2,23 +2,26 @@
 .fx-sandbox{
   padding: 0 5px;
   @import 'fx-boot/bootstrap';
+
+  @import 'base/variables';
+  @import 'utils/fx-utils';
+
+
+  @import 'base/fx-fixed-height';
+  @import 'base/fx-fonts-import';
+  @import 'base/fx-icons';
+  @import 'base/fx-radio-checkbox';
+  @import 'base/fx-typography';
+
+  //pages
+  @import 'pages/readyToUse';
+  @import 'pages/consumption';
+  @import 'pages/mde';
+
+
 }
 
-@import 'base/variables';
-@import 'utils/fx-utils';
 
-
-@import 'base/fx-fixed-height';
-@import 'base/fx-fonts-import';
-@import 'base/fx-icons';
-@import 'base/fx-radio-checkbox';
-@import 'base/fx-typography';
-
-
-
-//pages
-@import 'pages/readyToUse';
-@import 'pages/consumption';
 
 
 

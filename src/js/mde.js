@@ -6,7 +6,7 @@ define([
     "../config/mde/catalog",
     "../config/mde/metadata",
 
-], function ($, log, DataManagment, C, CataConf, MDConf) {
+], function ($, log, DataManagement, C, CataConf, MDConf) {
 
     "use strict";
 
@@ -49,9 +49,25 @@ define([
 
     MDE.prototype._importThirdPartyCss = function () {
 
-        //Bootstrap
-        require('bootstrap/dist/css/bootstrap.css');
-
+        //dropdown selector
+        require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
+        require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
+        //tree selector
+        require("../../node_modules/jstree/dist/themes/default/style.min.css");
+        //range selector
+        require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.css");
+        require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css");
+        //time selector
+        require("../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css");
+        // fenix filter
+        require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+        require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
+        require("../../node_modules/fenix-ui-metadata-editor/dist/fenix-ui-metadata-editor.min.css");
+        require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
+        require("../../node_modules/fenix-ui-DataEditor/dist/fenix-ui-DataEditor.min.css");
+        require("../../node_modules/fenix-ui-DSDEditor/dist/fenix-ui-DSDEditor.min.css");
+        require("../../node_modules/fenix-ui-data-management/dist/fenix-ui-data-management.min.css");
+        require("../../node_modules/toastr/build/toastr.min.css");
         //host override
         require('../css/gift.css');
 
