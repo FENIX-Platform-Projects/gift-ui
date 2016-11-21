@@ -1,5 +1,9 @@
 @import 'utils/fx-utils';
 
+//pages
+@import 'pages/readyToUse';
+@import 'pages/consumption';
+
 $width: 300px;
 
 body{
@@ -431,5 +435,3 @@ div.tooltip {
   font-size: 15px;
 }
 
-//pages
-@import 'pages/readyToUse';
