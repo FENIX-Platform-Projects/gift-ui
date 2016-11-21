@@ -1,13 +1,14 @@
 {
   "name": "gift-ui",
   "version": "1.0.1",
-  "description": "Repo for countrystat controller",
+  "description": "Repo for GIFT-UI controller",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "echo \"Error: please specify a valid section to develop [e.g. npm run dev:analysis]\" && exit 1",
     "dev:charts": "SECTIONS=charts NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:map": "SECTIONS=map NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
+    "w-dev:mde": "SET SECTIONS=mde&&SET NODE_ENV=develop&&webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:mde": "SECTIONS=mde NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:readyToUse": "SECTIONS=readyToUse NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:base": "SECTIONS=base NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
@@ -33,12 +34,12 @@
     "bootstrap": "^3.3.7",
     "fenix-ui-bridge": "^1.0.0-beta.9",
     "fenix-ui-catalog": "^2.0.0-beta.22",
+    "fenix-ui-data-management": "^2.0.0-beta.62",
     "fenix-ui-map": "^2.6.5",
     "jquery": "^3.1.1",
-    "loglevel": "^1.4.1",
-    "underscore": "^1.8.3",
     "leaflet.markercluster": "^1.0.0",
-    "loglevel": "^1.4.1"    
+    "loglevel": "^1.4.1",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
