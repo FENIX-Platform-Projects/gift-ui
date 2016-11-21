@@ -1,10 +1,18 @@
 define([
     "jquery",
     "loglevel",
-    "../../config/config"
-], function ($, log, C) {
+    "fenix-ui-data-managment",
+    "../../config/config",
+    "../../config/catalog",
+    "../../config/metadata",
+
+], function ($, log, DataManagment, C, CataConf, MDConf) {
 
     "use strict";
+
+    var s = {
+        DATA_MNG: "#mde"
+    };
 
     function MDE() {
 
@@ -20,7 +28,22 @@ define([
 
     MDE.prototype._renderMDE = function () {
 
-       console.log("Render Metadata editor here")
+       console.log("Render Metadata editor here");
+
+        this.dataMng = new DataManagement({
+            environment: C.environment,
+            el: s.DATA_MNG,
+            cache: C.cache,
+            lang: C.lang,
+            metadataEditor: MDConf,
+            catalog: CataConf,
+            disabledSections: ['btnDSD','btnData'],
+            config: {
+                contextSystem :"gift",
+                datasources : [""],
+                resourceRepresentationType: "dataset"
+            }
+        });
 
     };
 
