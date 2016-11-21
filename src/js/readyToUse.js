@@ -1,10 +1,16 @@
 define([
     "jquery",
     "loglevel",
-    "../../config/config"
-], function ($, log, C) {
+    "../../config/config",
+    "../html/readyToUse/template.hbs",
+    "../nls/labels"
+], function ($, log, C, template, labels) {
 
     "use strict";
+
+    var s = {
+        EL : "#readyToUse"
+    }
 
     function ReadyToUse() {
 
@@ -14,14 +20,23 @@ define([
 
         this._importThirdPartyCss();
 
-        this._renderReadyToUse();
+        this._initVariables();
+
+        this._attach();
 
     }
 
-    ReadyToUse.prototype._renderReadyToUse = function () {
+    ReadyToUse.prototype._initVariables = function () {
 
-       console.log("Render Ready to Use here")
+        this.$el = $(s.EL);
 
+        this.lang = C.lang.toLowerCase();
+
+    };
+
+    ReadyToUse.prototype._attach = function () {
+
+        this.$el.html(template(labels[this.lang]));
     };
 
     ReadyToUse.prototype._importThirdPartyCss = function () {
