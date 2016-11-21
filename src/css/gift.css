@@ -10549,6 +10549,8 @@ div.tooltip {
 
 #consumption_map {
   border: 1px solid #D2D0D0; }
+  #consumption_map div.csc-default ul li {
+    left: 0; }
 
 #consumption_map_legend {
   margin-bottom: 0; }
