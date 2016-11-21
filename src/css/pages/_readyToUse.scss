@@ -1,0 +1,10 @@
+[data-page="readyToUse"] {
+
+  [data-section] {
+    display: none;
+
+    &.active {
+      display : block
+    }
+  }
+}

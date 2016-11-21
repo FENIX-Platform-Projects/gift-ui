@@ -1,6 +1,35 @@
-<section>
-    tes
-</section>
-<section>
-    {{label}}
-</section>
+<div data-page="readyToUse">
+    <section data-section="search">
+        <div data-role="catalog">Cat</div>
+    </section>
+    <section data-section="dashboard">
+
+        <!-- back button -->
+        <button data-role="back" class="btn btn-default" type="button"> {{back}}</button>
+
+        <hr>
+
+        <!-- top three tabs links: food consumption, food safety, nutrition -->
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#foodConsumption">{{foodConsumption}}</a></li>
+            <li><a data-toggle="tab" href="#foodSafety">{{foodSafety}}</a></li>
+            <li><a data-toggle="tab" href="#nutrition">{{nutrition}}</a></li>
+        </ul>
+
+        <!-- top three tabs contents: food consumption, food safety, nutrition -->
+        <div class="tab-content">
+            <div id="foodConsumption" class="tab-pane fade in active">
+                <h3>{{foodConsumption}}</h3>
+                <p>Some content.</p>
+            </div>
+            <div id="foodSafety" class="tab-pane fade">
+                <h3>{{foodSafety}}</h3>
+                <p>Some content in menu 1.</p>
+            </div>
+            <div id="nutrition" class="tab-pane fade">
+                <h3>{{nutrition}}</h3>
+                <p>Some content in menu 2.</p>
+            </div>
+        </div>
+    </section>
+</div>

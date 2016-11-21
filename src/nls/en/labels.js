@@ -1,9 +1,16 @@
 define(function () {
 
-        'use strict';
+    'use strict';
 
-        return {
+    return {
 
-          label : "my Label"
-        }
-    });
+        back: "Back to results",
+
+        //Ready To Use section
+
+        foodConsumption : "Food Consumption",
+        foodSafety : "Food Safety",
+        nutrition : "Nutrition",
+
+    }
+});
