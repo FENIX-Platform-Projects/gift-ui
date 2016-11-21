@@ -1,7 +1,7 @@
 define([
     "jquery",
     "loglevel",
-    "../../config/config",
+    "../config/config",
     "./charts/bubble",
     "./charts/donut",
     "./charts/column"
