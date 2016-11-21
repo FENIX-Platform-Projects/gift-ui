@@ -157,10 +157,15 @@ window.THIS = self;
         
         //TODO FenixMap.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
 
-        this.fenixMap = new FenixMap.map(this.$map, 
+        this.fenixMap = new FenixMap.map(s.MAP_CONTAINER, 
             ConsC.mapOpts, 
             ConsC.mapOptsLeaflet
         );
+
+        setTimeout(function() {
+            self.fenixMap.map.invalidateSize(false);
+            self.fenixMap.map.fitWorld();
+        },100);
 
         this.fenixMap.createMap(18,0);
 
@@ -222,9 +227,9 @@ window.THIS = self;
         });
 
         layerGroup.addTo(this.fenixMap.map);
-        this.fenixMap.map.invalidateSize();
-
+        
         self._renderMapLegend();
+        
     };
 
     Map.prototype._getMarker = function(items) {
