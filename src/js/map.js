@@ -24,7 +24,7 @@ define(['jquery','underscore','loglevel','handlebars',
 
     var s = {
             READY_CONTAINER: "#ready-container",
-            MAP_CONTAINER: "#map",
+            MAP_CONTAINER: "#consumption_map",
             MAP_LEGEND: "#consumption_map_legend"
         },
         confidentialityCodelistUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/uid/GIFT_STATUS',
@@ -126,7 +126,7 @@ TODO
 
         var self = this;
 
-        this.$el = $('.fx-sandbox');
+        this.$el = $(s.READY_CONTAINER);
 
         this.$map = this.$el.find(s.MAP_CONTAINER);
         this.$legend = this.$el.find(s.MAP_LEGEND);
