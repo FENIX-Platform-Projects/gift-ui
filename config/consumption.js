@@ -3,11 +3,17 @@ define({
     codelistStyles: {
     	//MAP CODES with Boostrap themes
         'F': { className:"success", order: 1, visible: true },  // green
+        'P': { className:"warning", order: 3, visible: true },  // orange        
         'D': { className:"danger",  order: 2, visible: true },  // red
-        'P': { className:"warning", order: 3, visible: true },  // orange
         'A': { className:"primary", order: 4, visible: true },  // blue
         'N': { className:"default", order: 5, visible: true },  // gray
         'Z': { className:"",        order: 6, visible: false}
+/*
+Green: Data available for analysis in FAO/WHO GIFT
+Orange: Data soon to be inserted in FAO/WHO GIFT
+Red: Existing data potentially suitable for FAO/WHO GIFT
+Grey: Planned food consumption survey
+*/
     },
 
     mapOpts: {
