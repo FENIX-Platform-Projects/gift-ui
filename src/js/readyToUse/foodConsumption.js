@@ -14,7 +14,9 @@ define([
             CONTENTS: "[data-content]",
             BUBBLE_EL: "#bubble",
             TREEMAP: "#treemap",
-            DONUT_EL: "#donut"
+            DONUT_EL: "#donut",
+            TITLE: "[data-role='title']",
+            DESCRIPTION: "[data-role='description']"
         },
         allowedCharts = ["bubble", "treemap", "donut"];
 
@@ -121,6 +123,16 @@ define([
         this.$el.find(s.CONTENTS).filter("[data-content='" + chart + "']").show();
 
         this._highlightMenuItem(chart);
+
+        this._updateBox(chart);
+
+    };
+
+    FoodConsumption.prototype._updateBox = function (chart) {
+
+        this.$el.find(s.TITLE).html(labels[this.lang.toLowerCase()][chart + "BoxTitle"]);
+
+        this.$el.find(s.DESCRIPTION).html(labels[this.lang.toLowerCase()][chart + "BoxDescription"]);
     };
 
     FoodConsumption.prototype._disposeCharts = function () {
