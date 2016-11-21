@@ -43,7 +43,6 @@ define([
 
     var ConsumptionView = View.extend({
 
-
         initialize: function (params) {
 
             var self = this;
@@ -63,13 +62,11 @@ define([
                 success: function(res) {
                     confidentialityCodelist = res.data;
 
-
                     self.confidentialityCodelist = _.groupBy(confidentialityCodelist, function(obj) {
                         return obj.code;
-                    })
+                    });
 
                     _.each(confidentialityCodelist, function(obj) {
-                        //console.log(obj.code)
                         if(!confidentialityCodelistStyles[ obj.code ].hidden) {
                             self.legend_items.push({
                                 code: obj.code,
@@ -98,7 +95,7 @@ define([
                     });
 
                 }
-            });//*/
+            });
         },
 
         autoRender: true,
@@ -109,7 +106,7 @@ define([
             return {
                 title: i18nLabels.title,
                 legend_items: this.legend_items
-             };
+            };
         },
 
         initVariables: function () {
@@ -118,13 +115,11 @@ define([
 
             this.$map = this.$el.find(s.MAP_CONTAINER);
             this.$legend = this.$el.find(s.MAP_LEGEND);
-
+            
             this.mapCodesGroup = [];
 
             _.each(self._dataByCountry, function(meta) {
-
                 _.each(meta, function(m) {
-                    
                     if(m.meAccessibility && _.has(m.meAccessibility,'seConfidentiality')) {
                         self.mapCodesGroup.push({
                             confid: m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code,
@@ -132,8 +127,7 @@ define([
                             codes: m.meContent.seCoverage.coverageGeographic.codes
                         });
                     }
-
-                });               
+                });
             });
 
             this.gaul0Centroids = JSON.parse(gaul0Centroids);
@@ -199,22 +193,19 @@ define([
                     //return L.MarkerClusterGroup.prototype._defaultIconCreateFunction(cluster);
                     var childCount = cluster.getChildCount();
 
-                    //console.log(cluster, childCount)
-
-                    var c = ' marker-cluster-';
-                    if (childCount < 10) {
-                        c += 'small';
-                    } else if (childCount < 100) {
-                        c += 'medium';
-                    } else {
-                        c += 'large';
-                    }
+                    var size = '';
+                    if (childCount < 10)
+                        size += 'small';
+                    else if (childCount < 100)
+                        size += 'medium';
+                    else
+                        size += 'large';
 
                     var r = 20*childCount;  //40
 
                     return L.divIcon({
                         html: '<div><span>'+( childCount + 1 )+'</span></div>',
-                        className: 'marker-cluster'+c,
+                        className: 'marker-cluster marker-cluster-'+size,
                         iconSize: new L.point(r, r)
                     });
                 }
@@ -232,13 +223,10 @@ define([
         },
 
         _getMarker: function(items) {
-            
-            //items is an ARRAY!!
 
             var self = this;
 
-            var //loc = this._getLocByCode(items[0].countryCode),
-                loc = this.mapLocsByAdm0Code[ items[0].countryCode ],
+            var loc = this.mapLocsByAdm0Code[ items[0].countryCode ],
                 /*icon = this.iconMarkerFunc({
                     getChildCount: function() {
                         return items.length;
@@ -253,20 +241,18 @@ define([
 
             m.items = items;
 
-            var popupHTML = '<label class="text-primary">'+items[0].countryName+'</label>'+
-            '<ul class="list-group">';
+            var popupHTML = '<label class="text-primary">'+items[0].countryName+'</label>';
+            
+
+            popupHTML += '<ul class="list-group">';
 
             _.each(items, function(item) {
-                //TODO MAKE TEMPLATE
                 popupHTML += _.map(item.confids, function(code, k) {
                     
-                    var tit = item.title.title,
-                        url = '#';
-
                     return '<li style="list-style:none;margin-bottom:5px">'+
                         '<i class="label label-'+confidentialityCodelistStyles[ code ].className+'">&nbsp; &nbsp;</i>'+
                         '&nbsp;&nbsp;'+
-                        '<a href="'+url+'">'+tit+'</a>'+
+                        '<a href="#">'+item.title.title+'</a>'+
                     '</li>';//*/
                 }).join('');
             });
@@ -290,14 +276,7 @@ define([
             }).addTo(self.fenixMap.map);
         },
 
-
-        unbindEventListeners: function () {
-
-        },
-
         dispose: function () {
-
-            this.unbindEventListeners();
 
             View.prototype.dispose.call(this, arguments);
         }
