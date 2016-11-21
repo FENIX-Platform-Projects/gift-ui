@@ -2,12 +2,13 @@ define([
     "jquery",
     "loglevel",
     "underscore",
-    "../../config/config",
-    "../../config/readyToUse/config",
+    "../config/config",
+    "../config/readyToUse/config",
     "../html/readyToUse/template.hbs",
     "../nls/labels",
-    "fenix-ui-catalog"
-], function ($, log, _, C, RC, template, labels, Catalog) {
+    "fenix-ui-catalog",
+    "./readyToUse/foodConsumption"
+], function ($, log, _, C, RC, template, labels, Catalog, FoodConsumption) {
 
     "use strict";
 
@@ -16,7 +17,11 @@ define([
             CATALOG: "[data-role='catalog']",
             SECTIONS: "[data-section]",
             BACK_BUTTON: "[data-role='back']",
-            DASHBOARD_TITLE: "[data-role='title']"
+            DASHBOARD_TITLE: "[data-role='title']",
+            FOOD_CONSUMPTION_TAB_EL: "#foodConsumptionTab",
+            FOOD_SAFETY_TAB_EL: "#foodSafetyTab",
+            NUTRITION_TAB_EL: "#nutritionTab",
+        TABS : "#readyToUseTabs"
         },
         sections = {
             SEARCH: "search",
@@ -27,7 +32,7 @@ define([
 
         console.clear();
 
-        log.setLevel("trace");
+        log.setLevel("silent");
 
         this._importThirdPartyCss();
 
@@ -106,6 +111,19 @@ define([
 
     ReadyToUse.prototype._initDashboardSection = function () {
 
+        this.foodConsumptionTab = new FoodConsumption({
+            el : this.$el.find(s.FOOD_CONSUMPTION_TAB_EL),
+            lang : this.lang
+        });
+
+       /* this.foodSafetyTab = new FoodSafety({
+            el : this.$el.find(s.FOOD_SAFETY_TAB_EL)
+        });
+
+        this.nutritionTab = new NutritionTab({
+            el : this.$el.find(s.NUTRITION_TAB_EL)
+        });*/
+
     };
 
     ReadyToUse.prototype._showSection = function (section) {
@@ -114,11 +132,11 @@ define([
             section = sections.SEARCH;
             log.warn("Show " + section + " section abort because invalid: show 'search' section instead");
         }
-/*
-        if (section === sections.DASHBOARD && !this.model) {
-            section = sections.SEARCH;
-            log.warn("Show dashboard section abort: model not found");
-        }*/
+        /*
+         if (section === sections.DASHBOARD && !this.model) {
+         section = sections.SEARCH;
+         log.warn("Show dashboard section abort: model not found");
+         }*/
 
         this.$sections.hide();
         this.$sections.filter("[data-section='" + section + "']").show();
@@ -158,12 +176,17 @@ define([
 
         this._updateTitle(model);
 
+        //show fist tab
+        this.$el.find(s.TABS).find('a[href="#foodConsumptionTab"]').tab('show');
+
+        this.foodConsumptionTab.refresh(model);
+
+
     };
 
     ReadyToUse.prototype._updateTitle = function () {
 
         this.$dashboardTitle.html(this.model.title[this.lang.toUpperCase() || this.model.uid])
-
     };
 
     // CSS

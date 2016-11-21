@@ -1,0 +1,33 @@
+<div class="row">
+
+    <div class="col-xs-4">
+        <h2>{{foodConsumptionContentTitle}}</h2>
+        <div>
+            <h3>Indicator:</h3>
+        </div>
+        <ul class="list-group">
+            <li class="list-group-item" data-chart="bubble">{{gramsPerPerson}}</li>
+            <li class="list-group-item" data-chart="treemap">{{percentageAsGPer100g}}</li>
+            <li class="list-group-item" data-chart="donut">{{caloriesPerPerson}}</li>
+        </ul>
+    </div>
+
+    <div class="col-xs-8">
+
+        <div class="row" data-content="bubble">
+            <div class="col-xs-6">Drinking</div>
+            <div class="col-xs-6">Eating</div>
+        </div>
+
+        <div class="row" data-content="treemap">
+            <div class="col-xs-12">Tree map</div>
+        </div>
+
+        <div class="row" data-content="donut">
+            <div class="col-xs-7">Donut</div>
+            <div class="col-xs-5">Legend</div>
+        </div>
+
+    </div>
+
+</div>

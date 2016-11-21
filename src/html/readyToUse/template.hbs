@@ -13,48 +13,20 @@
         <hr>
 
         <!-- top three tabs links: food consumption, food safety, nutrition -->
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#foodConsumption">{{foodConsumption}}</a></li>
-            <li><a data-toggle="tab" href="#foodSafety">{{foodSafety}}</a></li>
-            <li><a data-toggle="tab" href="#nutrition">{{nutrition}}</a></li>
+        <ul id="readyToUseTabs" class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#foodConsumptionTab">{{foodConsumption}}</a></li>
+            <li><a data-toggle="tab" href="#foodSafetyTab">{{foodSafety}}</a></li>
+            <li><a data-toggle="tab" href="#nutritionTab">{{nutrition}}</a></li>
         </ul>
 
         <!-- top three tabs contents: food consumption, food safety, nutrition -->
         <div class="tab-content">
-            <div id="foodConsumption" class="tab-pane fade in active">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <h2>{{foodConsumptionContentTitle}}</h2>
-                        <div>
-                            <h3>Indicator:</h3>
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">First item</li>
-                            <li class="list-group-item">Second item</li>
-                            <li class="list-group-item">
-                                <ul class="list-group">
-                                    <li class="list-group-item">First item</li>
-                                    <li class="list-group-item">Second item</li>
-                                    <li class="list-group-item">Third item</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-xs-5">
-                        Chart
-                    </div>
-                    <div class="col-xs-3">
-                        Legend
-                    </div>
-                </div>
-
-                <p>Some content.</p>
-            </div>
-            <div id="foodSafety" class="tab-pane fade">
+            <div id="foodConsumptionTab" class="tab-pane fade in active"></div>
+            <div id="foodSafetyTab" class="tab-pane fade">
                 <h3>{{foodSafety}}</h3>
                 <p>Some content in menu 1.</p>
             </div>
-            <div id="nutrition" class="tab-pane fade">
+            <div id="nutritionTab" class="tab-pane fade">
                 <h3>{{nutrition}}</h3>
                 <p>Some content in menu 2.</p>
             </div>

@@ -1,10 +1,12 @@
 [data-page="readyToUse"] {
 
-  [data-section] {
+  [data-section], [data-content] {
     display: none;
 
     &.active {
       display : block
     }
   }
+
 }
+
