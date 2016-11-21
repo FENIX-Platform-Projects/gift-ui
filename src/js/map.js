@@ -20,7 +20,7 @@ define(['jquery','underscore','loglevel','handlebars',
 ) {
     "use strict";
 
-    var LANG = requirejs.s.contexts._.config.i18n.locale.toUpperCase();
+    var LANG = C.lang;//requirejs.s.contexts._.config.i18n.locale.toUpperCase();
 
     var s = {
             READY_CONTAINER: "#ready-container",
