@@ -82,7 +82,6 @@
   /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
      readers do not read off random characters that represent icons */
   /* Fenix Icons */
-  /* Fenix - Js tree */
   /* Radio Buttons */
   /* Checkbox Buttons */
   /* Disabled */
@@ -12600,39 +12599,6 @@
     background-size: 150px 30px; }
   .fx-sandbox .fx-icon-close {
     background-position: 0 -15px; }
-  .fx-sandbox .jstree-default .jstree-search {
-    color: #333;
-    font-weight: 300;
-    font-style: normal; }
-  .fx-sandbox .jstree-default .jstree-node:not(.jstree-open) {
-    position: relative; }
-    .fx-sandbox .jstree-default .jstree-node:not(.jstree-open) .jstree-wholerow {
-      height: 100%; }
-  .fx-sandbox .jstree-default .jstree-themeicon {
-    display: none;
-    /* It hides folder icon */ }
-  .fx-sandbox .jstree-default .jstree-node,
-  .fx-sandbox .jstree-default .jstree-icon {
-    background-image: url("img/treejs-32px.svg"); }
-  .fx-sandbox .jstree-default .jstree-wholerow-clicked {
-    background: none;
-    background-color: #cce4ff; }
-  .fx-sandbox .jstree-default .jstree-wholerow-hovered {
-    background: none;
-    background-color: #e6f1ff; }
-  .fx-sandbox .jstree-default .jstree-disabled.jstree-clicked {
-    background: none;
-    background-color: #cce4ff; }
-  .fx-sandbox .jstree-container-ul .jstree-anchor {
-    white-space: normal;
-    height: auto;
-    width: 90%; }
-  .fx-sandbox .jstree-container-ul [role="group"].jstree-children [role='treeitem'] {
-    position: relative; }
-  .fx-sandbox li[role="treeitem"]:nth-child(odd) {
-    background-color: #f2f2f2 !important; }
-  .fx-sandbox ul[role="group"] {
-    background-color: white; }
   .fx-sandbox input[type="radio"] {
     display: none; }
   .fx-sandbox input[type="radio"] + label {
@@ -12826,12 +12792,6 @@
   .fx-sandbox .tree-holder {
     height: 150px;
     overflow: auto; }
-  .fx-sandbox .fx-tree-search {
-    margin-bottom: 5px; }
-  .fx-sandbox .fx-tree-buttons {
-    margin-bottom: 5px; }
-  .fx-sandbox .jstree-anchor, .fx-sandbox .jstree-anchor:link, .fx-sandbox .jstree-anchor:visited, .fx-sandbox .jstree-anchor:hover, .fx-sandbox .jstree-anchor:active {
-    color: #333; }
   .fx-sandbox .irs-bar, .fx-sandbox .irs-bar-edge, .fx-sandbox .irs-line {
     height: 5px;
     top: 37px; }
@@ -16670,5 +16630,14 @@
     display: block;
     opacity: 1;
     overflow: visible; }
+  .fx-sandbox .catalog-dm {
+    position: static;
+    display: block;
+    opacity: 1;
+    overflow: visible; }
+  .fx-sandbox .fx-sandbox div.csc-default ul li {
+    margin-bottom: 6px;
+    position: relative;
+    left: 1em; }
 
 /*# sourceMappingURL=gift.css.map */

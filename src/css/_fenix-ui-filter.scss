@@ -12,7 +12,7 @@
 @import 'base/fx-buttons';
 @import 'base/fx-fonts-import';
 @import 'base/fx-icons';
-@import 'base/fx-jstree';
+//@import 'base/fx-jstree';
 
 @import 'base/fx-radio-checkbox';
 @import 'base/fx-typography';
@@ -366,18 +366,18 @@ $controller-elements-background: #bdbdbd;
   height: 150px;
   overflow: auto;
 }
-
-.fx-tree-search{
-  margin-bottom: 5px;
-}
-
-.fx-tree-buttons{
-  margin-bottom: 5px;
-}
-
-.jstree-anchor,.jstree-anchor:link,.jstree-anchor:visited,.jstree-anchor:hover,.jstree-anchor:active{
-  color: $fenix-text;
-}
+//
+//.fx-tree-search{
+//  margin-bottom: 5px;
+//}
+//
+//.fx-tree-buttons{
+//  margin-bottom: 5px;
+//}
+//
+//.jstree-anchor,.jstree-anchor:link,.jstree-anchor:visited,.jstree-anchor:hover,.jstree-anchor:active{
+//  color: $fenix-text;
+//}
 
 
 /* Range Slider */

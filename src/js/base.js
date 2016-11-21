@@ -8,9 +8,9 @@ define(function () {
 
     //style
     Base.prototype._importThirdPartyCss = function () {
-
-        //Bootstrap
-        require('bootstrap/dist/css/bootstrap.css');
+        //
+        // //Bootstrap
+        // require('bootstrap/dist/css/bootstrap.css');
 
         //host override
         require('../css/gift.css');

@@ -215,9 +215,9 @@ define([
 
 
     Charts.prototype._importThirdPartyCss = function () {
-
+/*
         //Bootstrap
-        require('bootstrap/dist/css/bootstrap.css');
+        require('bootstrap/dist/css/bootstrap.css');*/
 
         //Bootstrap
        require('highcharts/css/highcharts.css');

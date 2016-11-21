@@ -216,7 +216,7 @@ define([
         //tree selector
         require("../../node_modules/jstree/dist/themes/default/style.min.css");
         // fenix-ui-filter
-        require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+        //require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
