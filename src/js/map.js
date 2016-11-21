@@ -1,6 +1,6 @@
 define(['jquery','underscore','loglevel','handlebars', 
-    '../../config/config',
-    '../../config/consumption',
+    '../config/config',
+    '../config/consumption',
     '../html/consumption/map.hbs',
     '../nls/consumption',
     '../json/consumption/gaul0_centroids.json',
