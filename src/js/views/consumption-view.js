@@ -190,12 +190,14 @@ define([
             _.each(self._dataByCountry, function(meta) {
 
                 _.each(meta, function(m) {
-
-                    self.mapCodesGroup.push({
-                        confid: m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code,
-                        title: m.title[ LANG ],
-                        codes: m.meContent.seCoverage.coverageGeographic.codes
-                    });
+                    
+                    if(m.meAccessibility && _.has(m.meAccessibility,'seConfidentiality')) {
+                        self.mapCodesGroup.push({
+                            confid: m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code,
+                            title: m.title[ LANG ],
+                            codes: m.meContent.seCoverage.coverageGeographic.codes
+                        });
+                    }
 
                 });               
             });
@@ -344,7 +346,7 @@ define([
                     var tit = item.title.title,
                         url = '#';
 
-                    return '<li style="list-style:none;margin:4px">'+
+                    return '<li style="list-style:none;margin-bottom:5px">'+
                         '<i class="label label-'+confidentialityCodelistStyles[ code ].className+'">&nbsp; &nbsp;</i>'+
                         '&nbsp;&nbsp;'+
                         '<a href="'+url+'">'+tit+'</a>'+
