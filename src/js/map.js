@@ -2,7 +2,7 @@ define(['jquery','underscore','loglevel','handlebars',
     '../../config/config',
     '../../config/consumption',
     '../html/consumption/map.hbs',
-    //'i18n!nls/consumption',
+    '../nls/consumption',
     '../json/consuption/gaul0_centroids.json',
     'leaflet',
     '../lib/leaflet.markercluster-src',
@@ -12,7 +12,7 @@ define(['jquery','underscore','loglevel','handlebars',
     C,
     ConsC,
     template,
-    //i18nLabels,
+    labels,
     gaul0Centroids,
     L,
     LeafletMarkecluster,
@@ -23,7 +23,7 @@ define(['jquery','underscore','loglevel','handlebars',
     var LANG = C.lang;//requirejs.s.contexts._.config.i18n.locale.toUpperCase();
 
     var s = {
-            READY_CONTAINER: "#ready-container",
+            EL: "#map",
             MAP_CONTAINER: "#consumption_map",
             MAP_LEGEND: "#consumption_map_legend"
         },
@@ -51,12 +51,6 @@ define(['jquery','underscore','loglevel','handlebars',
         this._attach();
 
     }
-
-    Map.prototype._renderMap = function () {
-
-       console.log("Render map here")
-
-    };
 
 
     Map.prototype.initialize = function (params) {
@@ -113,24 +107,12 @@ define(['jquery','underscore','loglevel','handlebars',
         });
     };
 
-/*
-TODO
-    Map.prototype.getTemplateData = function () {
-        return {
-            title: i18nLabels.title,
-            legend_items: this.legend_items
-        };
-    };*/
-
     Map.prototype._initVariables = function () {
 
         var self = this;
 
-        this.$el = $(s.READY_CONTAINER);
+window.THIS = self;
 
-        this.$map = this.$el.find(s.MAP_CONTAINER);
-        this.$legend = this.$el.find(s.MAP_LEGEND);
-        
         this.mapCodesGroup = [];
 
         _.each(self._dataByCountry, function(meta) {
@@ -162,6 +144,13 @@ TODO
 
         var self = this;
 
+        $(s.EL).html(template(labels[C.lang.toLowerCase()]));
+
+        this.$el = $(s.EL);
+
+        this.$map = this.$el.find(s.MAP_CONTAINER);
+        this.$legend = this.$el.find(s.MAP_LEGEND);
+        
         //TODO FenixMap.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
 
         this.fenixMap = new FenixMap.map(this.$map, 
@@ -195,6 +184,7 @@ TODO
                 }
             }
         }
+
         var layerGroup = L.markerClusterGroup({
             showCoverageOnHover: true,
             maxClusterRadius: 30,
