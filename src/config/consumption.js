@@ -2,11 +2,12 @@ define({
 
     codelistStyles: {
     	//MAP CODES with Boostrap themes
-        'F': { className:"success", order: 1, visible: true },  // green
-        'P': { className:"warning", order: 3, visible: true },  // orange        
-        'D': { className:"danger",  order: 2, visible: true },  // red
-        'A': { className:"primary", order: 4, visible: true },  // blue
-        'N': { className:"default", order: 5, visible: true },  // gray
+        'F': { className:"success", order: 1, visible: true },
+        'A': { className:"primary", order: 2, visible: true },
+        'N': { className:"warning", order: 3, visible: true },
+        
+        'D': { className:"danger",  order: 4, visible: true },
+        'P': { className:"default", order: 5, visible: true },
         'Z': { className:"",        order: 6, visible: false}
 /*
 Green: Data available for analysis in FAO/WHO GIFT
@@ -48,6 +49,6 @@ Grey: Planned food consumption survey
         zoom: 2,
         minZoom: 2,
         maxZoom: 5,
-        //maxBounds: [[84.67351256610522, -174.0234375], [-58.995311187950925, 223.2421875]]
+        maxBounds: [[84.67351256610522, -174.0234375], [-58.995311187950925, 223.2421875]]
     }
 })

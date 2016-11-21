@@ -109,8 +109,6 @@ define(['jquery','underscore','loglevel','handlebars',
 
         var self = this;
 
-window.THIS = self;
-
         this.mapCodesGroup = [];
 
         _.each(self._dataByCountry, function(meta) {
