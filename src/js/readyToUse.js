@@ -7,8 +7,10 @@ define([
     "../html/readyToUse/template.hbs",
     "../nls/labels",
     "fenix-ui-catalog",
-    "./readyToUse/foodConsumption"
-], function ($, log, _, C, RC, template, labels, Catalog, FoodConsumption) {
+    "./readyToUse/foodConsumption",
+    "./readyToUse/foodSafety",
+    "./readyToUse/nutrition"
+], function ($, log, _, C, RC, template, labels, Catalog, FoodConsumption, FoodSafety, Nutrition) {
 
     "use strict";
 
@@ -21,7 +23,7 @@ define([
             FOOD_CONSUMPTION_TAB_EL: "#foodConsumptionTab",
             FOOD_SAFETY_TAB_EL: "#foodSafetyTab",
             NUTRITION_TAB_EL: "#nutritionTab",
-        TABS : "#readyToUseTabs"
+            TABS: "#readyToUseTabs"
         },
         sections = {
             SEARCH: "search",
@@ -112,17 +114,22 @@ define([
     ReadyToUse.prototype._initDashboardSection = function () {
 
         this.foodConsumptionTab = new FoodConsumption({
-            el : this.$el.find(s.FOOD_CONSUMPTION_TAB_EL),
-            lang : this.lang
+            el: this.$el.find(s.FOOD_CONSUMPTION_TAB_EL),
+            lang: this.lang,
+            model: this.model
         });
 
-       /* this.foodSafetyTab = new FoodSafety({
-            el : this.$el.find(s.FOOD_SAFETY_TAB_EL)
+        this.foodSafetyTab = new FoodSafety({
+            el: this.$el.find(s.FOOD_SAFETY_TAB_EL),
+            lang: this.lang,
+            model: this.model
         });
 
-        this.nutritionTab = new NutritionTab({
-            el : this.$el.find(s.NUTRITION_TAB_EL)
-        });*/
+        this.nutritionTab = new Nutrition({
+            el: this.$el.find(s.NUTRITION_TAB_EL),
+            lang: this.lang,
+            model: this.model
+        });
 
     };
 
@@ -172,21 +179,26 @@ define([
 
     // Dashboard section
 
-    ReadyToUse.prototype._renderDashboard = function (model) {
+    ReadyToUse.prototype._renderDashboard = function () {
 
-        this._updateTitle(model);
+        this._updateTitle();
 
         //show fist tab
         this.$el.find(s.TABS).find('a[href="#foodConsumptionTab"]').tab('show');
 
-        this.foodConsumptionTab.refresh(model);
+        this.foodConsumptionTab.refresh(this.model);
 
+        this.foodSafetyTab.refresh(this.model);
 
+        this.nutritionTab.refresh(this.model);
     };
 
     ReadyToUse.prototype._updateTitle = function () {
 
-        this.$dashboardTitle.html(this.model.title[this.lang.toUpperCase() || this.model.uid])
+        var model = this.model,
+            title = model.title || {};
+
+        this.$dashboardTitle.html(title[this.lang.toUpperCase() || model.uid])
     };
 
     // CSS
@@ -198,6 +210,8 @@ define([
 
         //dropdown selector
         require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
+        //tree selector
+        require("../../node_modules/jstree/dist/themes/default/style.min.css");
         // fenix-ui-filter
         require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
 
@@ -205,7 +219,6 @@ define([
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
         // fenix-ui-catalog
         require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
-
 
         //host override
         require('../css/gift.css');

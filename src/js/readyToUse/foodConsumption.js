@@ -30,7 +30,7 @@ define([
 
         this._bindEventListeners();
 
-        this._renderChart(allowedCharts[0]);
+        this._render();
     }
 
     FoodConsumption.prototype.refresh = function (model) {
@@ -38,6 +38,12 @@ define([
         this._disposeCharts();
 
         this.model = model;
+
+        this._render();
+
+    };
+
+    FoodConsumption.prototype._render = function () {
 
         this._renderChart(allowedCharts[0]);
 
@@ -48,6 +54,7 @@ define([
     FoodConsumption.prototype._initVariables = function () {
         this.lang = this.initial.lang || C.lang;
         this.$el = this.initial.el;
+        this.model = this.initial.model;
 
         this.charts = [];
     };

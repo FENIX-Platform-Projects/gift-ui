@@ -27,6 +27,22 @@ define(function() {
             },
             defaultSelectors: ["freeText", "dataDomain", "region", "referenceArea"],
             menuExcludedItems: ["accessibility"]
+        },
+
+        foodSafetyFilter : {
+
+            food : {
+                cl : {
+                   uid : "GIFT_FoodGroups"
+                },
+                selector : {
+                    id : "tree",
+                    hideFilter : true,
+                    hideButtons: true,
+                    hideSummary : true
+                }
+            }
+
         }
 
     }

@@ -17,14 +17,38 @@ define(function () {
         dashboardTitleCredits: "Collected by FAO/WHO GIFT Team, developed by FENIX",
 
         //Food consumption tab
-        indicator : "Indicator:",
-        dietaryPattern : "Dietary pattern",
+        indicator: "Indicator:",
+        dietaryPattern: "Dietary pattern",
         bubbleBoxTitle: "Average food consumption by food group",
         bubbleBoxDescription: "The average food intake in units of weight per person per day. The analysis includes consumers and non-consumers. Consumers are understood as those individual who have consumed the food of interest during the recall period, and non-consumer as those who did not",
         treemapBoxTitle: "Proportion of different food groups in the diet",
         treemapBoxDescription: "Percentage contribution of each food included in the food group, in the total daily consumption of all the foods within the group. Totla is understood as the sum of individual consumptions.",
         donutBoxTitle: "Proportion of different food groups in the diet",
         donutBoxDescription: "Percentage contribution of each food included in the food group, in the total daily consumption of all the foods within the group. Totla is understood as the sum of individual consumptions.",
+
+        //Food safety
+        dailyPortion: "Daily portion",
+        foodSafetyTitle: "Daily portion size among consumers on days of consumption",
+        foodSafetyDescription: "Average intake of the foods of interest among the consumers only. consumers are understood as those individuals, who have consumed the foods of interest during the recall period.",
+
+        //Nutrition
+        dietaryAdequacy: "Dietary adequacy",
+        sourceOfNutrientsInTheDiet: "Sources of Nutrients in the Diet",
+        macronutrients: "Macronutrients",
+
+        dietaryTitle: "Share of population at risk of nutrient inadequacy",
+        dietaryDescription: "The percentage of population covering their daily requirements for nutrients. It is measured with reference to FAO/WHO norms, or country norms when applicable.",
+        sourceTitle: "Sources of nutrients in the diet",
+        sourceDescription: "The average contribution of different foods to the overall intake of energy and nutrients.",
+        macronutrientsTitle: "Macronutrient contribution to the total energy intake",
+        macronutrientsDescription: "Macronutrients contribution to the total energy intake, with reference to FAO/WHO norms.",
+
+        vitaminA: "Vitamin A",
+        iron: "Iron",
+        calcium: "Calcium",
+        zinc: "Zinc",
+        folicAcid: "Folic Acid"
+
 
     }
 });
