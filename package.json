@@ -40,7 +40,8 @@
     "jquery": "^3.1.1",
     "leaflet.markercluster": "^1.0.0",
     "loglevel": "^1.4.1",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "highcharts": "^5.0.3"
   },
   "devDependencies": {
     "chai": "^3.5.0",
