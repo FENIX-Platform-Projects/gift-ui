@@ -30,7 +30,7 @@ define([
 
        console.log("Render Metadata editor here");
 
-        this.dataMng = new DataManagement({
+        var dataMng = new DataManagement({
             environment: C.environment,
             el: s.DATA_MNG,
             cache: C.cache,
@@ -38,6 +38,25 @@ define([
             metadataEditor: MDConf,
             catalog: CataConf,
             disabledSections: ['btnDSD','btnData'],
+            routes: {
+                '(/)': 'onLanding',
+                '(/)landing(/)': 'onLanding',
+
+                '(/)home(/)': 'onMetadata',
+                '(/)add(/)': 'onAdd',
+
+                '(/)metadata(/)': 'onMetadata',
+
+                '(/)close(/)' : 'onClose',
+                '(/)delete(/)': 'onDelete',
+                '(/)search(/)': 'onSearch',
+                '(/)not-found(/)': 'onNotFound',
+
+                '(/)denied(/)': 'onDenied',
+
+                // fallback route
+                '(/)*path': 'onDefaultRoute'
+            },
             config: {
                 contextSystem :"gift",
                 datasources : [""],
