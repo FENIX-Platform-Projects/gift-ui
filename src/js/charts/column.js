@@ -7,6 +7,8 @@ define([
 ], function (_, $, log, Bridge, Highcharts) {
 
     var s = {
+        HEIGHT : 300,
+        WIDTH : 300,
         DAY : "/day",
         first_level_process :
             [
@@ -102,13 +104,116 @@ define([
     ColumnChart.prototype._onSuccess = function (resource) {
         var data = this._processSeries(resource);
         this._setHTMLvariables(data);
+        var chartConfig = this._getChartConfig();
+        return this._renderChart(chartConfig);
     };
 
     ColumnChart.prototype._onError = function (resource) {
-
         log.info("_onError");
         log.error(resource)
         return;
+    };
+
+    ColumnChart.prototype._getChartConfig = function () {
+
+        var self = this;
+        var chartConfig =  {
+            chart: {
+                type: 'column',
+                margin: [10, 10, 10, 10],
+                spacingTop: 0,
+                spacingBottom: 0,
+                spacingLeft: 0,
+                spacingRight: 0
+            },
+
+            //hide xAxis
+            xAxis: {
+                categories: ['1','2','3'],
+                lineWidth: 0,
+                minorGridLineWidth: 0,
+                lineColor: 'transparent',
+                gridLineColor: 'transparent',
+                labels: {
+                    enabled: false
+                },
+                minorTickLength: 0,
+                tickLength: 0
+            },
+
+            //hide yAxis
+            yAxis: {
+                gridLineWidth: 0,
+                minorGridLineWidth: 0,
+                min: 0,
+                max: 100,
+                lineWidth: 0,
+                lineColor: 'transparent',
+
+                title: {
+                    enabled: false
+                },
+
+                labels: {
+                    enabled: false
+                },
+                minorTickLength: 0,
+                tickLength: 0
+            },
+
+
+            //remove title and subtitle
+            title: {
+                text: '',
+                style: {
+                    display: 'none'
+                }
+            },
+            subtitle: {
+                text: '',
+                style: {
+                    display: 'none'
+                }
+            },
+
+            //remove credits
+            credits: {
+                enabled: false
+            },
+
+            //hide legend
+            legend: {
+                enabled: false
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return '<b>' + this.y + '</b>';
+                }
+            },
+
+            series: [{
+                data: [5,90,5],
+                pointWidth: 80
+                // color: {
+                //     // pattern: '../img/columns/pattern.svg',
+                //     pattern: '../src/img/columns/pattern.svg',
+                //     width: 20,
+                //     height: 20
+                // }
+            }]
+        };
+        console.log(chartConfig)
+
+        return chartConfig;
+    };
+
+    ColumnChart.prototype._renderChart = function(chartConfig){
+        $('#' + this.elID).css({
+            height: s.HEIGHT,
+            width: s.WIDTH
+        })
+        Highcharts.chart(this.elID, chartConfig);
     };
 
     ColumnChart.prototype._processSeries = function (resource) {

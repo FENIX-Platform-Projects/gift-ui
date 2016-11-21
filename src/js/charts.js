@@ -11,7 +11,7 @@ define([
 
     var s = {
         BUBBLE: "#bubble",
-        COLUMN_CONTAINER_ID : "columnChart",
+        COLUMN_CONTAINER_ID : "column",
         BAR_ID : "#columns-progress-bar",
         PERCENTAGE_ID : "#percentage",
         AMOUNT_LOW : "#amount_low",
@@ -38,11 +38,14 @@ define([
     Charts.prototype._renderCharts = function () {
 
         //donut chart
-        //this._renderDonutChart();
+        this._renderDonutChart();
         //bubble chart
         //this._renderBubbleChart();
         //column chart
         //this._renderColumnChart();
+        //donut hole
+        //this._renderDonutHoleChart();
+
 
     };
 
@@ -215,15 +218,15 @@ define([
 
 
     Charts.prototype._importThirdPartyCss = function () {
-/*
-        //Bootstrap
-        require('bootstrap/dist/css/bootstrap.css');*/
 
         //Bootstrap
-       require('highcharts/css/highcharts.css');
+        require('bootstrap/dist/css/bootstrap.css');
+
+        //Bootstrap
+        require('highcharts/css/highcharts.css');
 
         //host override
-        // require('../css/gift.css');
+        require('../css/gift.css');
 
     };
 

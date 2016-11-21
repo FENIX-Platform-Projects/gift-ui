@@ -8,6 +8,8 @@ define([
 
 
     var s = {
+        HEIGHT : 500,
+        WIDTH : 500,
         first_level_process : [
             {
                 "name": "filter",
@@ -343,7 +345,12 @@ define([
     };
 
     DonutChart.prototype._renderChart = function(chartConfig){
-            Highcharts.chart(this.elID, chartConfig);
+
+        $('#' + this.elID).css({
+            height: s.HEIGHT,
+            width: s.WIDTH
+        })
+        Highcharts.chart(this.elID, chartConfig);
     };
 
     DonutChart.prototype.dispose = function () {
