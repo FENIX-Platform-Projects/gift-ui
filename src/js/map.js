@@ -3,7 +3,7 @@ define(['jquery','underscore','loglevel','handlebars',
     '../../config/consumption',
     '../html/consumption/map.hbs',
     '../nls/consumption',
-    '../json/consuption/gaul0_centroids.json',
+    '../json/consumption/gaul0_centroids.json',
     'leaflet',
     '../lib/leaflet.markercluster-src',
     'fenix-ui-map',
@@ -44,16 +44,14 @@ define(['jquery','underscore','loglevel','handlebars',
 
         this._importThirdPartyCss();
 
-        this.initialize();
+        this._initCodelists();
 
         this._initVariables();
 
         this._attach();
-
     }
 
-
-    Map.prototype.initialize = function (params) {
+    Map.prototype._initCodelists = function (params) {
 
         var self = this;
 
@@ -144,7 +142,13 @@ window.THIS = self;
 
         var self = this;
 
-        $(s.EL).html(template(labels[C.lang.toLowerCase()]));
+        var i18nLabels = labels[ C.lang.toLowerCase() ];
+        
+        i18nLabels.legend_items = this.legend_items;
+
+        var html = template(i18nLabels);
+
+        $(s.EL).html(html);
 
         this.$el = $(s.EL);
 
@@ -248,9 +252,8 @@ window.THIS = self;
 
         _.each(items, function(item) {
             popupHTML += _.map(item.confids, function(code, k) {
-                
                 return '<li style="list-style:none;margin-bottom:5px">'+
-                    '<i class="label label-'+ConsC.codelistStyles[ code ].className+'">&nbsp; &nbsp;</i>'+
+                    '<i class="label label-'+ConsC.codelistStyles[ code ].className+'">&nbsp;</i>'+
                     '&nbsp;&nbsp;'+
                     '<a href="#">'+item.title.title+'</a>'+
                 '</li>';//*/

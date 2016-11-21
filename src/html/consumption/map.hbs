@@ -21,8 +21,10 @@
 	<ul id="consumption_map_legend" class="list-group text-primary">
 		{{#each legend_items}}
 			<li class="list-group-item text-primary">
-			<i class="label label-{{className}} text-primary">&nbsp; {{code}} &nbsp;</i>
-				{{title}}
+				<i class="label label-{{className}} text-primary">
+					&nbsp;<span style="display:none">{{code}}</span><!-- FOR DEBUG -->
+				</i>
+				&nbsp;{{title}}
 			</li>
 		{{/each}}
 	</ul>
