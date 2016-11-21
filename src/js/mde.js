@@ -1,10 +1,10 @@
 define([
     "jquery",
     "loglevel",
-    "fenix-ui-data-managment",
-    "../../config/config",
-    "../../config/catalog",
-    "../../config/metadata",
+    "fenix-ui-data-management",
+    "../config/config",
+    "../config/mde/catalog",
+    "../config/mde/metadata",
 
 ], function ($, log, DataManagment, C, CataConf, MDConf) {
 
