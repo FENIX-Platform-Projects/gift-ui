@@ -17,9 +17,22 @@ define([
 
         this._importThirdPartyCss();
 
-        this._renderMap();
+        this._initVariables();
+
+        this._attach();
 
     }
+
+    Map.prototype._initVariables = function () {
+
+
+
+    };
+
+    Map.prototype._attach = function () {
+
+
+    };
 
     Map.prototype._renderMap = function () {
 
