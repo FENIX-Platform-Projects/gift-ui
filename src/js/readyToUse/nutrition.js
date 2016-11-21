@@ -54,6 +54,9 @@ define([
 
         this._highlightMenuItem(s.SOURCE_TAB, nutrient);
         this._refreshBarsChart(nutrient);
+
+        //show fist tab
+        this.$el.find('a[href="#dietaryAdequacy"]').tab('show');
     };
 
     Nutrition.prototype._refreshStackedChart = function(nutrient) {
@@ -101,6 +104,12 @@ define([
             return;
         }
 
+        if (this.dietaryNutrient === nutrient){
+            log.warn("Abort because nutrient is already shown");
+            return;
+        }
+        this.dietaryNutrient = nutrient;
+
         this._highlightMenuItem(s.DIETARY_TAB, nutrient);
 
         this._refreshStackedChart(nutrient);
@@ -115,6 +124,13 @@ define([
             alert("Impossible to find [data-nutrient] on menu item");
             return;
         }
+
+        if (this.sourceNutrient === nutrient){
+            log.warn("Abort because nutrient is already shown");
+            return;
+        }
+
+        this.sourceNutrient = nutrient;
 
         this._highlightMenuItem(s.SOURCE_TAB, nutrient);
 

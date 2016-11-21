@@ -1,4 +1,4 @@
-// Typo 3 Bootstrap compatibility
+/*// Typo 3 Bootstrap compatibility
 .fx-sandbox{
   padding: 0 5px;
   @import 'fx-boot/bootstrap';
@@ -17,11 +17,6 @@
   @import 'pages/readyToUse';
   @import 'pages/consumption';
   @import 'pages/mde';
-
-
-}
-
-
-
-
-
+}*/
+@import 'utils/fx-utils';
+@import 'pages/readyToUse';

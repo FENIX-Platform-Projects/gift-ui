@@ -48,8 +48,8 @@ define([
 
         this._bindEventListeners();
 
-        //this._showSection(sections.SEARCH)
-        this._showSection(sections.DASHBOARD)
+        this._showSection(sections.SEARCH);
+        //this._showSection(sections.DASHBOARD);
     }
 
     ReadyToUse.prototype._validateConfig = function () {
@@ -139,11 +139,11 @@ define([
             section = sections.SEARCH;
             log.warn("Show " + section + " section abort because invalid: show 'search' section instead");
         }
-        /*
-         if (section === sections.DASHBOARD && !this.model) {
-         section = sections.SEARCH;
-         log.warn("Show dashboard section abort: model not found");
-         }*/
+
+        if (section === sections.DASHBOARD && !this.model) {
+            section = sections.SEARCH;
+            log.warn("Show dashboard section abort: model not found");
+        }
 
         this.$sections.hide();
         this.$sections.filter("[data-section='" + section + "']").show();
@@ -198,7 +198,7 @@ define([
         var model = this.model,
             title = model.title || {};
 
-        this.$dashboardTitle.html(title[this.lang.toUpperCase() || model.uid])
+        this.$dashboardTitle.html(title[this.lang.toUpperCase()] || model.uid)
     };
 
     // CSS
