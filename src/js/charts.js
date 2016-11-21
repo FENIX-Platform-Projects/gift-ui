@@ -4,8 +4,9 @@ define([
     "../config/config",
     "./charts/bubble",
     "./charts/donut",
+    "./charts/donutHole",
     "./charts/column"
-], function ($, log, C, Bubble, Donut, Column) {
+], function ($, log, C, Bubble, Donut, DonutHole, Column) {
     "use strict";
 
     var s = {
@@ -41,7 +42,7 @@ define([
         //bubble chart
         //this._renderBubbleChart();
         //column chart
-        this._renderColumnChart();
+        //this._renderColumnChart();
 
     };
 
@@ -53,6 +54,20 @@ define([
             environment : C.environment,
             uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
             selected_items : [ "IRON" ],
+            height : s.height,
+            width : s.width,
+            language : s.language
+        });
+    };
+
+    Charts.prototype._renderDonutHoleChart = function () {
+
+        this.DonutHole = new DonutHole({
+            elID : s.DONUT_CONTAINER_ID,
+            cache: C.cache,
+            environment : C.environment,
+            uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
+            selected_items : [ "ENERGY" ],
             height : s.height,
             width : s.width,
             language : s.language
