@@ -2,18 +2,11 @@ define(
     function () {
 
         var IANA = {uid: 'IANAcharacterSet'},
-            ROLE = { uid: "ResponsiblePartyRole" },
             GAUL = {uid: 'GAUL0', version: "2014"},
             Languages = {uid: 'ISO639-2', version: "1998"},
-            PeriodOfReference = {uid: 'FAO_Period', version: "1.0"},
             TypeOfCollection = {uid: 'FAOSTAT_Collection', version: "1.0"},
-            OriginOfCollectedData = {uid: 'FAOSTAT_OriginData', version: "1.0"},
-            DataAdjustment = {uid: 'CL_ADJUSTMENT', version: "1.1"},
             StatusConfidenciality = {uid: 'CL_CONF_STATUS', version: "1.0"},
             AreaOfReference = {uid: 'GAUL_ReferenceArea', version: "1.0"},
-            DisseminationPeriodicy = {uid: 'FAO_Period', version: "1.0"},
-            PeriodicityDataCollection = {uid: 'FAO_Period', version: "1.0"},
-            UpdatePeriodicity = {uid: 'FAO_Period', version: "1.0"},
             CoverageSector = {uid: 'CRS_purpose_codes'}; // CSTAT_Core
 
 
@@ -713,7 +706,7 @@ define(
                                 },
                                 "dataAdjustment": {
                                     "selector": {
-                                        "id": "input",
+                                        "id": "textarea",
                                         "type": "text",
                                         "source": [{"value": "dataAdjustment", "label": "Any other alteration from the original data"}]
                                     },
