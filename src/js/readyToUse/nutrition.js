@@ -5,8 +5,9 @@ define([
     "../../html/readyToUse/nutrition.hbs",
     "../../nls/labels",
     "../../config/config",
-    "../../config/readyToUse/config"
-], function ($, log, _, template, labels, C, RC) {
+    "../../config/readyToUse/config",
+    "../charts/donut"
+], function ($, log, _, template, labels, C, RC, Donut) {
 
     "use strict";
 
@@ -14,10 +15,11 @@ define([
         CONTENTS: "[data-content]",
         TITLE: "[data-role='title']",
         DESCRIPTION: "[data-role='description']",
-        DIETARY_TAB : "#dietaryAdequacy",
-        SOURCE_TAB : "#sourceOfNutrientsInTheDiet",
-        MACRONUTIENTS_TAB : "#macronutrients",
-        NUTRIENTS: "[data-nutrient]"
+        DIETARY_TAB: "#dietaryAdequacy",
+        SOURCE_TAB: "#sourceOfNutrientsInTheDiet",
+        MACRONUTIENTS_TAB: "#macronutrients",
+        NUTRIENTS: "[data-nutrient]",
+        PIE_EL: "pie"
     };
 
     function Nutrition(opts) {
@@ -30,8 +32,6 @@ define([
 
         this._bindEventListeners();
 
-        this._render();
-
     }
 
     Nutrition.prototype.refresh = function (model) {
@@ -40,12 +40,14 @@ define([
 
         this.model = model;
 
+        console.log(this.model)
+
         this._render();
     };
 
     // end api
 
-    Nutrition.prototype._render = function() {
+    Nutrition.prototype._render = function () {
 
         var nutrient = this.$el.find(s.NUTRIENTS).first().data("nutrient");
 
@@ -55,13 +57,15 @@ define([
         this._highlightMenuItem(s.SOURCE_TAB, nutrient);
         this._refreshBarsChart(nutrient);
 
+        this._refreshPieChart(nutrient);
+
         //show fist tab
         this.$el.find('a[href="#dietaryAdequacy"]').tab('show');
     };
 
-    Nutrition.prototype._refreshStackedChart = function(nutrient) {
+    Nutrition.prototype._refreshStackedChart = function (nutrient) {
 
-        if (this.stackedChart && $.isFunction(this.stackedChart.dispose)){
+        if (this.stackedChart && $.isFunction(this.stackedChart.dispose)) {
             this.stackedChart.dispose();
         }
 
@@ -69,9 +73,30 @@ define([
         console.log(nutrient)
     };
 
-    Nutrition.prototype._refreshBarsChart = function(nutrient) {
+    Nutrition.prototype._refreshPieChart = function (nutrient) {
 
-        if (this.barsChart && $.isFunction(this.barsChart.dispose)){
+        console.log(nutrient)
+        console.log(this.model)
+
+
+        var config = {
+            elID: s.PIE_EL,
+            cache: C.cache,
+            environment: C.environment,
+            uid: "gift_process_total_weighted_food_consumption_000042BUR201001",
+            selected_items: ["IRON"],
+            height: 300,
+            width: 300,
+            language: s.language
+        }
+
+
+        this.pieChart = new Donut(config)
+    };
+
+    Nutrition.prototype._refreshBarsChart = function (nutrient) {
+
+        if (this.barsChart && $.isFunction(this.barsChart.dispose)) {
             this.barsChart.dispose();
         }
 
@@ -104,7 +129,7 @@ define([
             return;
         }
 
-        if (this.dietaryNutrient === nutrient){
+        if (this.dietaryNutrient === nutrient) {
             log.warn("Abort because nutrient is already shown");
             return;
         }
@@ -125,7 +150,7 @@ define([
             return;
         }
 
-        if (this.sourceNutrient === nutrient){
+        if (this.sourceNutrient === nutrient) {
             log.warn("Abort because nutrient is already shown");
             return;
         }

@@ -112,7 +112,6 @@ define([
 
     function DonutHole(params) {
 
-        console.clear();
         // Load Exporting Module after Highcharts loaded
         require('highcharts/modules/drilldown')(Highcharts);
 

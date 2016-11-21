@@ -3,6 +3,24 @@
 .fx-sandbox{
   @import 'fx-boot/bootstrap';
 
+  &.fx-overflow{
+    width: 910px !important;
+    overflow-x: hidden !important;
+  }
+
+  #readyToUseTabs{
+    margin-bottom: 15px !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+
+    border-top: 0 !important;
+    padding-top: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+  }
+
+
   &.fao-holder{
     width: 960px;
     margin: 0 auto;
@@ -28,6 +46,19 @@
 
   @import 'themes/typo3-fix';
 
+
+    #mde{
+    .modal-content{
+      width: 877px !important;
+    }
+
+
+    }
+
+
+  .fx-button-primary-color{
+    color: white !important;
+  }
 
 }
 

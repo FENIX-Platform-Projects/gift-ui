@@ -73,6 +73,7 @@ define([
         this.$el = $(s.EL);
 
         this.lang = C.lang.toLowerCase();
+        this.environment = C.environment;
 
         this.$sections = this.$el.find(s.SECTIONS);
 
@@ -116,19 +117,22 @@ define([
         this.foodConsumptionTab = new FoodConsumption({
             el: this.$el.find(s.FOOD_CONSUMPTION_TAB_EL),
             lang: this.lang,
-            model: this.model
+            model: this.model,
+            environment : this.environment
         });
 
         this.foodSafetyTab = new FoodSafety({
             el: this.$el.find(s.FOOD_SAFETY_TAB_EL),
             lang: this.lang,
-            model: this.model
+            model: this.model,
+            environment : this.environment
         });
 
         this.nutritionTab = new Nutrition({
             el: this.$el.find(s.NUTRITION_TAB_EL),
             lang: this.lang,
-            model: this.model
+            model: this.model,
+            environment : this.environment
         });
 
     };

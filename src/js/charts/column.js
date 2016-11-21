@@ -35,10 +35,6 @@ define([
 
     function ColumnChart(params) {
 
-        console.clear();
-
-        log.setLevel("trace");
-
         this._init(params);
 
         this.bridge = new Bridge({

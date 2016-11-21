@@ -4,8 +4,9 @@ define([
     "underscore",
     "../../html/readyToUse/foodConsumption.hbs",
     "../../nls/labels",
-    "../../config/config"
-], function ($, log, _, template, labels, C) {
+    "../../config/config",
+    "../charts/donutHole"
+], function ($, log, _, template, labels, C, DonutHole) {
 
     "use strict";
 
@@ -14,7 +15,7 @@ define([
             CONTENTS: "[data-content]",
             BUBBLE_EL: "#bubble",
             TREEMAP: "#treemap",
-            DONUT_EL: "#donut",
+            DONUT_EL: "donut",
             TITLE: "[data-role='title']",
             DESCRIPTION: "[data-role='description']"
         },
@@ -29,8 +30,6 @@ define([
         this._attach();
 
         this._bindEventListeners();
-
-        this._render();
     }
 
     FoodConsumption.prototype.refresh = function (model) {
@@ -55,6 +54,7 @@ define([
         this.lang = this.initial.lang || C.lang;
         this.$el = this.initial.el;
         this.model = this.initial.model;
+        this.environment = this.initial.environment;
 
         this.charts = [];
     };
@@ -98,6 +98,7 @@ define([
 
         obj.id = type;
 
+
         switch (type) {
             case "bubble" :
                 console.log("Bubble");
@@ -106,7 +107,20 @@ define([
                 console.log("treemap");
                 break;
             case "donut" :
-                console.log("donut");
+
+                var config = {
+                    elID : s.DONUT_EL,
+                    cache: this.cache,
+                    environment : this.environment,
+                    uid : "gift_process_total_weighted_food_consumption_" + this.model.uid,
+                    selected_items : [ "ENERGY" ],
+                    height : 300,
+                    width : 300,
+                    language : this.lang.toUpperCase()
+                };
+
+                obj.instance = new DonutHole(config);
+
                 break;
             default:
                 log.error("Impossible to find constructor for chart: " + type);
