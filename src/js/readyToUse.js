@@ -206,7 +206,10 @@ define([
     ReadyToUse.prototype._importThirdPartyCss = function () {
 
         //Bootstrap
-        require('bootstrap/dist/css/bootstrap.css');
+        //require('bootstrap/dist/css/bootstrap.css');
+
+        //host override
+        require('../css/gift.css');
 
         //dropdown selector
         require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
@@ -220,8 +223,7 @@ define([
         // fenix-ui-catalog
         require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
 
-        //host override
-        require('../css/gift.css');
+
 
     };
 

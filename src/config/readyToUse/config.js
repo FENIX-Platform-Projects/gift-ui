@@ -45,7 +45,14 @@ define(function() {
                     id : "tree",
                     hideFilter : true,
                     hideButtons: true,
-                    hideSummary : true
+                    hideSummary : true,
+                    config: {
+                        core : {
+                            multiple : false
+                        },
+                        plugins : null
+
+                    }
                 }
             }
 
