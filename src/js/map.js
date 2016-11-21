@@ -113,12 +113,14 @@ define(['jquery','underscore','loglevel','handlebars',
         });
     };
 
+/*
+TODO
     Map.prototype.getTemplateData = function () {
         return {
             title: i18nLabels.title,
             legend_items: this.legend_items
         };
-    };
+    };*/
 
     Map.prototype._initVariables = function () {
 
