@@ -20,7 +20,7 @@ define(['jquery','underscore','loglevel','handlebars',
 ) {
     "use strict";
 
-    var LANG = C.lang;//requirejs.s.contexts._.config.i18n.locale.toUpperCase();
+    var LANG = C.lang;
 
     var s = {
             EL: "#map",
@@ -222,6 +222,7 @@ window.THIS = self;
         });
 
         layerGroup.addTo(this.fenixMap.map);
+        this.fenixMap.map.invalidateSize();
 
         self._renderMapLegend();
     };
@@ -282,8 +283,6 @@ window.THIS = self;
 
     Map.prototype._importThirdPartyCss = function () {
 
-        //Bootstrap
-        require('bootstrap/dist/css/bootstrap.css');
         require('leaflet/dist/leaflet.css');
         require('fenix-ui-map/dist_grunt/fenix-ui-map.min.css');
         require('../lib/MarkerCluster.Default.css');
