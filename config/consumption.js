@@ -1,13 +1,13 @@
 define({
 
-    confidentialityCodelistStyles: {
+    codelistStyles: {
     	//MAP CODES with Boostrap themes
-        'F': { className:"success", order: 1},// green
-        'D': { className:"danger",  order: 2},// red
-        'P': { className:"warning", order: 3},// orange
-        'A': { className:"primary", order: 4},// blue
-        'N': { className:"default", order: 5},// gray
-        'Z': { className:"", hidden: true}
+        'F': { className:"success", order: 1, visible: true },  // green
+        'D': { className:"danger",  order: 2, visible: true },  // red
+        'P': { className:"warning", order: 3, visible: true },  // orange
+        'A': { className:"primary", order: 4, visible: true },  // blue
+        'N': { className:"default", order: 5, visible: true },  // gray
+        'Z': { className:"",        order: 6, visible: false}
     },
 
     mapOpts: {

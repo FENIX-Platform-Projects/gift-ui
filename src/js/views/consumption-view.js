@@ -15,14 +15,13 @@ define([
     'fenix-ui-map-config',
     'text!gaul0Centroids',
     'amplify'
-], function (require,$, _, Handlebars, View, template, i18nLabels, E, C, consumptionConf,
+], function (require,$, _, Handlebars, View, template, i18nLabels, E, C, ConsC,
     LeafletMarkecluster,
     FenixMap,
     FenixConfig,
     gaul0Centroids
 ) {
 
-    var confidentialityCodelistStyles = consumptionConf.confidentialityCodelistStyles;
     var LANG = requirejs.s.contexts._.config.i18n.locale.toUpperCase();
 
     var s = {
@@ -60,6 +59,7 @@ define([
                 url: confidentialityCodelistUrl,
                 contentType: "application/json; charset=utf-8",
                 success: function(res) {
+
                     confidentialityCodelist = res.data;
 
                     self.confidentialityCodelist = _.groupBy(confidentialityCodelist, function(obj) {
@@ -67,12 +67,12 @@ define([
                     });
 
                     _.each(confidentialityCodelist, function(obj) {
-                        if(!confidentialityCodelistStyles[ obj.code ].hidden) {
+                        if(ConsC.codelistStyles[ obj.code ].visible) {
                             self.legend_items.push({
                                 code: obj.code,
                                 title: obj.title[ LANG ],
-                                className: confidentialityCodelistStyles[ obj.code ].className,
-                                order: confidentialityCodelistStyles[ obj.code ].order
+                                className: ConsC.codelistStyles[ obj.code ].className,
+                                order: ConsC.codelistStyles[ obj.code ].order
                             });
                         }
                     });
@@ -156,18 +156,19 @@ define([
             FM.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
 
             this.fenixMap = new FM.Map(this.$map, 
-                consumptionConf.mapOpts, 
-                consumptionConf.mapOptsLeaflet
+                ConsC.mapOpts, 
+                ConsC.mapOptsLeaflet
             );
 
             this.fenixMap.createMap(18,0);
 
             var codesByCountry = {};
 
-            for(var i in this.mapCodesGroup) {
+            for(var i in this.mapCodesGroup)
+            {
                 var group = this.mapCodesGroup[i];
-
-                if(group.codes) {
+                if(group.codes)
+                {
                     for(var n in group.codes) {
                         var country = group.codes[n],
                             countryCode = country.code,
@@ -250,7 +251,7 @@ define([
                 popupHTML += _.map(item.confids, function(code, k) {
                     
                     return '<li style="list-style:none;margin-bottom:5px">'+
-                        '<i class="label label-'+confidentialityCodelistStyles[ code ].className+'">&nbsp; &nbsp;</i>'+
+                        '<i class="label label-'+ConsC.codelistStyles[ code ].className+'">&nbsp; &nbsp;</i>'+
                         '&nbsp;&nbsp;'+
                         '<a href="#">'+item.title.title+'</a>'+
                     '</li>';//*/
