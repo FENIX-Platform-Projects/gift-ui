@@ -208,7 +208,7 @@ window.THIS = self;
                 var r = 20*childCount;  //40
 
                 return L.divIcon({
-                    html: '<div><span>'+( childCount + 1 )+'</span></div>',
+                    html: '<div><span>'+ childCount +'</span></div>',
                     className: 'marker-cluster marker-cluster-'+size,
                     iconSize: new L.point(r, r)
                 });
