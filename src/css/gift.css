@@ -5023,11 +5023,11 @@
     .fx-sandbox .btn-floating:hover, .fx-sandbox .btn-floating:focus, .fx-sandbox .btn-floating:active, .fx-sandbox .btn-floating:active:focus {
       color: white; }
   .fx-sandbox .bootstrap-table .pagination > li > a, .fx-sandbox .bootstrap-table .pagination > li > span {
-    color: #0076ff; }
+    color: #337ab7; }
   .fx-sandbox .bootstrap-table .pagination > .active > a, .fx-sandbox .bootstrap-table .pagination > .active > a:hover, .fx-sandbox .bootstrap-table .pagination > .active > a:focus, .fx-sandbox .bootstrap-table .pagination > .active > span, .fx-sandbox .bootstrap-table .pagination > .active > span:hover, .fx-sandbox .bootstrap-table .pagination > .active > span:focus {
     color: white;
-    background-color: #0076ff;
-    border-color: #0076ff; }
+    background-color: #337ab7;
+    border-color: #337ab7; }
   .fx-sandbox input[type="button"] {
     outline: none; }
   .fx-sandbox button:focus {
@@ -8668,12 +8668,12 @@
       -moz-border-radius: 100%;
       -ms-border-radius: 100%;
       border-radius: 100%;
-      border: 0 solid #0076ff;
+      border: 0 solid #337ab7;
       position: relative;
       top: 2px;
       left: -4px; }
   .fx-sandbox input[type="radio"]:checked + label {
-    color: #0076ff; }
+    color: #337ab7; }
     .fx-sandbox input[type="radio"]:checked + label:before {
       border-width: 5px; }
   .fx-sandbox input[type="radio"] + label:before,
@@ -8695,12 +8695,12 @@
       height: 15px;
       width: 15px;
       background-color: #bdbdbd;
-      border: 0 solid #0076ff;
+      border: 0 solid #337ab7;
       position: relative;
       top: 2px;
       left: -4px; }
   .fx-sandbox input[type="checkbox"]:checked + label {
-    color: #0076ff; }
+    color: #337ab7; }
     .fx-sandbox input[type="checkbox"]:checked + label:before {
       border-width: 5px; }
   .fx-sandbox input[type="checkbox"] + label:before,
@@ -8813,21 +8813,21 @@
     .fx-sandbox .col-lg-bottom {
       vertical-align: bottom; } }
   .fx-sandbox .fx-text-primary-color {
-    color: #0076ff; }
+    color: #337ab7; }
   .fx-sandbox .fx-background-color-primary-color {
-    background-color: #0076ff; }
+    background-color: #337ab7; }
   .fx-sandbox .fx-button-primary-color {
     color: white;
-    border-color: #005ecc;
-    background-color: #0076ff; }
+    border-color: #285f8f;
+    background-color: #337ab7; }
     .fx-sandbox .fx-button-primary-color:hover {
       color: white;
-      border-color: #005ecc;
-      background-color: #006ae6; }
+      border-color: #285f8f;
+      background-color: #2d6da3; }
     .fx-sandbox .fx-button-primary-color:focus {
       color: white;
-      border-color: #004799;
-      background-color: #0053b3; }
+      border-color: #1d4567;
+      background-color: #22527b; }
   .fx-sandbox .fx-catalog .btn-fx-catalog-filters {
     margin-left: 0;
     margin-bottom: 0; }
@@ -9005,7 +9005,7 @@
         border: 0;
         border-color: transparent;
         background-color: #e0e0e0;
-        color: #0076ff; }
+        color: #337ab7; }
     .fx-sandbox .cat-toolbar .cat-title {
       margin-top: 5px;
       margin-bottom: 5px;
@@ -12617,12 +12617,12 @@
       -moz-border-radius: 100%;
       -ms-border-radius: 100%;
       border-radius: 100%;
-      border: 0 solid #0076ff;
+      border: 0 solid #337ab7;
       position: relative;
       top: 2px;
       left: -4px; }
   .fx-sandbox input[type="radio"]:checked + label {
-    color: #0076ff; }
+    color: #337ab7; }
     .fx-sandbox input[type="radio"]:checked + label:before {
       border-width: 5px; }
   .fx-sandbox input[type="radio"] + label:before,
@@ -12644,12 +12644,12 @@
       height: 15px;
       width: 15px;
       background-color: #bdbdbd;
-      border: 0 solid #0076ff;
+      border: 0 solid #337ab7;
       position: relative;
       top: 2px;
       left: -4px; }
   .fx-sandbox input[type="checkbox"]:checked + label {
-    color: #0076ff; }
+    color: #337ab7; }
     .fx-sandbox input[type="checkbox"]:checked + label:before {
       border-width: 5px; }
   .fx-sandbox input[type="checkbox"] + label:before,
@@ -12672,21 +12672,21 @@
     overflow: hidden;
     text-overflow: ellipsis; }
   .fx-sandbox .fx-text-primary-color {
-    color: #0076ff; }
+    color: #337ab7; }
   .fx-sandbox .fx-background-color-primary-color {
-    background-color: #0076ff; }
+    background-color: #337ab7; }
   .fx-sandbox .fx-button-primary-color {
     color: white;
-    border-color: #005ecc;
-    background-color: #0076ff; }
+    border-color: #285f8f;
+    background-color: #337ab7; }
     .fx-sandbox .fx-button-primary-color:hover {
       color: white;
-      border-color: #005ecc;
-      background-color: #006ae6; }
+      border-color: #285f8f;
+      background-color: #2d6da3; }
     .fx-sandbox .fx-button-primary-color:focus {
       color: white;
-      border-color: #004799;
-      background-color: #0053b3; }
+      border-color: #1d4567;
+      background-color: #22527b; }
   .fx-sandbox .fx-selector.hideSwitch .fx-selector-title {
     margin-right: 30px;
     /* Small devices (tablets, 768px and up) */
@@ -12798,12 +12798,12 @@
     height: 5px;
     top: 37px; }
   .fx-sandbox .irs-bar {
-    border-top: 1px solid #0076ff;
-    border-bottom: 1px solid #0076ff; }
+    border-top: 1px solid #337ab7;
+    border-bottom: 1px solid #337ab7; }
   .fx-sandbox .irs-bar-edge {
-    border: 1px solid #0076ff; }
+    border: 1px solid #337ab7; }
   .fx-sandbox .irs-bar, .fx-sandbox .irs-bar-edge {
-    background: #0076ff; }
+    background: #337ab7; }
   .fx-sandbox .irs-line {
     background: #bdbdbd;
     border-color: transparent; }
@@ -12814,26 +12814,26 @@
     box-shadow: none; }
   .fx-sandbox .irs-from, .fx-sandbox .irs-to, .fx-sandbox .irs-single {
     background: transparent;
-    color: #0076ff; }
+    color: #337ab7; }
   .fx-sandbox .time-selector-icon {
     font-size: 20px; }
   .fx-sandbox [data-selector-time] .day.active {
-    background-color: #0076ff; }
+    background-color: #337ab7; }
     .fx-sandbox [data-selector-time] .day.active:hover {
-      background-color: #407bbf; }
+      background-color: #6e767d; }
   .fx-sandbox [data-selector-time] .day.today:before {
-    border-bottom-color: #0076ff; }
+    border-bottom-color: #337ab7; }
   .fx-sandbox [data-selector-time] .month.active {
-    background-color: #0076ff; }
+    background-color: #337ab7; }
   .fx-sandbox [data-selector-time] .year.active {
-    background-color: #0076ff; }
+    background-color: #337ab7; }
   .fx-sandbox [data-selector-time] .fx-time-addon {
     font-size: 24px;
     padding: 2px 8px;
-    color: #0076ff; }
+    color: #337ab7; }
   .fx-sandbox [data-selector-time] [data-action="incrementHours"], .fx-sandbox [data-selector-time] [data-action="decrementHours"], .fx-sandbox [data-selector-time] [data-action="incrementMinutes"], .fx-sandbox [data-selector-time] [data-action="decrementMinutes"] {
     font-size: 24px;
-    color: #0076ff; }
+    color: #337ab7; }
   .fx-sandbox [data-selector-time] [data-action="previous"] span:before, .fx-sandbox [data-selector-time] [data-action="next"] span:before {
     content: none; }
   .fx-sandbox [data-selector-time] [data-action="next"] span {
@@ -12844,7 +12844,7 @@
     padding: 0; }
     .fx-sandbox [data-selector-time] [data-action="togglePicker"] span {
       font-size: 24px;
-      color: #0076ff;
+      color: #337ab7;
       line-height: 35px !important;
       height: auto !important; }
   .fx-sandbox .filter-sortable-list .list-selector {
@@ -16689,6 +16689,25 @@
     position: absolute;
     right: 0;
     top: 0; }
+  .fx-sandbox .db-updates-list {
+    list-style: none;
+    padding-left: 0;
+    padding-right: 15px; }
+    .fx-sandbox .db-updates-list li {
+      position: relative;
+      padding: 15px 0 15px 15px;
+      border-bottom: 1px solid #bbbbbb; }
+      .fx-sandbox .db-updates-list li:last-child {
+        border-bottom-color: transparent; }
+      .fx-sandbox .db-updates-list li h3 {
+        margin: 0;
+        font-weight: 400; }
+      .fx-sandbox .db-updates-list li .db-update-ico {
+        position: absolute;
+        left: 0;
+        width: 60px;
+        text-align: center;
+        font-size: 45px; }
   .fx-sandbox .fx-sandbox #content h2 {
     font-size: 1.614em;
     font-weight: normal;
