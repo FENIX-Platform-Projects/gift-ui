@@ -9,20 +9,23 @@ define([
     'i18n!nls/consumption',
     'config/events',
     'config/config',
+    'config/consumption',
     'leaflet_markecluster',
     'fenix-ui-map',
     'fenix-ui-map-config',
     'text!gaul0Centroids',
     'amplify'
-], function (require,$, _, Handlebars, View, template, i18nLabels, E, C,
+], function (require,$, _, Handlebars, View, template, i18nLabels, E, C, consumptionConf,
     LeafletMarkecluster,
     FenixMap,
     FenixConfig,
     gaul0Centroids
 ) {
 
-    var LANG = requirejs.s.contexts._.config.i18n.locale.toUpperCase(),
-        s = {
+    var confidentialityCodelistStyles = consumptionConf.confidentialityCodelistStyles;
+    var LANG = requirejs.s.contexts._.config.i18n.locale.toUpperCase();
+
+    var s = {
             READY_CONTAINER: "#ready-container",
             MAP_CONTAINER: "#consumption_map",
             MAP_LEGEND: "#consumption_map_legend"
@@ -36,55 +39,6 @@ define([
             "meContent.resourceRepresentationType": {
                 "enumeration": ["dataset"]
             }
-        };
-
-    function defToLayer(def) {
-        return L.tileLayer(def.url, def);
-    };
-
-    var baselayers = {
-            "Cartodb": {
-                url: 'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png',
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-                title_en: "CartoDB light",                    
-                subdomains: 'abcd',                    
-                maxZoom: 19
-            }
-        },
-        mapOpts = {
-            baselayers: baselayers,
-            boundaries: true,
-            plugins: {
-                disclaimerfao: false,
-                geosearch: true,
-                legendcontrol: false,
-                scalecontrol: false,
-                mouseposition: false,
-                controlloading : true,
-                zoomcontrol: 'topright'
-            },
-            guiController: {
-                overlay: false,
-                baselayer: false,
-                wmsLoader: false
-            }
-        },
-        mapOptsLeaflet = {
-            scrollWheelZoom: false,
-            zoom: 2,
-            minZoom: 2,
-            maxZoom: 5,
-            maxBounds: [[84.67351256610522, -174.0234375], [-58.995311187950925, 223.2421875]]
-        };
-
-    var confidentialityCodelistStyles = {
-        //MAP CODES with Boostrap themes
-            'F': { className:"success", order: 1},// green
-            'D': { className:"danger",  order: 2},// red
-            'P': { className:"warning", order: 3},// orange
-            'A': { className:"primary", order: 4},// blue
-            'N': { className:"default", order: 5},// gray
-            'Z': { className:"", hidden: true}
         };
 
     var ConsumptionView = View.extend({
@@ -114,8 +68,6 @@ define([
                         return obj.code;
                     })
 
-//console.log('CONSUMPTION codes', self.confidentialityCodelist);
-
                     _.each(confidentialityCodelist, function(obj) {
                         //console.log(obj.code)
                         if(!confidentialityCodelistStyles[ obj.code ].hidden) {
@@ -132,8 +84,6 @@ define([
                 }
             });
 
-            //console.log('confidentialityCodelist', confidentialityCodelist)
-
             $.ajax({
                 async: false,                
                 dataType: 'json',
@@ -143,30 +93,16 @@ define([
                 data: JSON.stringify(C.CONSUMPTION.body),
                 success: function(res) {
 
-//console.log('CONSUMPTION AJAX',res);
-                    //var res = _.filter(res, function(d) {
-                    //    return _.has(d,'meAccessibility');
-                    //});
-
                     self._dataByCountry = _.groupBy(res, function(d) {
                         return d.meContent.seCoverage.coverageGeographic.codes[0].code;
                     });
 
-//console.log('CONSUMPTION self._dataByCountry', self._dataByCountry);
-
                 }
             });//*/
-
         },
 
-        // Automatically render after initialize
         autoRender: true,
-
         className: 'consumption',
-
-        // Save the template string in a prototype property.
-        // This is overwritten with the compiled template function.
-        // In the end you might want to used precompiled templates.
         template: template,
 
         getTemplateData: function () {
@@ -182,8 +118,6 @@ define([
 
             this.$map = this.$el.find(s.MAP_CONTAINER);
             this.$legend = this.$el.find(s.MAP_LEGEND);
-
-//console.log('self._dataByCountry',self._dataByCountry)
 
             this.mapCodesGroup = [];
 
@@ -201,8 +135,6 @@ define([
 
                 });               
             });
-
-//            console.log('this.mapCodesGroup',this.mapCodesGroup);
 
             this.gaul0Centroids = JSON.parse(gaul0Centroids);
 
@@ -226,16 +158,15 @@ define([
             //update State
             amplify.publish(E.STATE_CHANGE, {menu: 'consumption'});
             this.initVariables();
-            this._configurePage();
 
             FM.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
 
-            this.fenixMap = new FM.Map(this.$map, mapOpts, mapOptsLeaflet);
-            this.fenixMap.createMap(18,0);
+            this.fenixMap = new FM.Map(this.$map, 
+                consumptionConf.mapOpts, 
+                consumptionConf.mapOptsLeaflet
+            );
 
-            /*L.control.layers(baselayers, null, {
-                collapsed: false
-            }).addTo(this.fenixMap.map);*/
+            this.fenixMap.createMap(18,0);
 
             var codesByCountry = {};
 
@@ -286,21 +217,7 @@ define([
                         className: 'marker-cluster'+c,
                         iconSize: new L.point(r, r)
                     });
-                },
-                /*iconCreateFunction: function(cluster) {
-
-                    return L.MarkerClusterGroup.prototype._defaultIconCreateFunction({
-                        getChildCount: function() {
-
-                            var count = 0;
-                            _.each(cluster._markers, function(m) {
-                                count += m.items.length;
-                            });
-
-                            return cluster.getChildCount() + count;
-                        }
-                    });
-                }*/
+                }
             });
 
             this.iconMarkerFunc = layerGroup._defaultIconCreateFunction;
@@ -320,7 +237,8 @@ define([
 
             var self = this;
 
-            var loc = this._getLocByCode(items[0].countryCode),
+            var //loc = this._getLocByCode(items[0].countryCode),
+                loc = this.mapLocsByAdm0Code[ items[0].countryCode ],
                 /*icon = this.iconMarkerFunc({
                     getChildCount: function() {
                         return items.length;
@@ -338,7 +256,6 @@ define([
             var popupHTML = '<label class="text-primary">'+items[0].countryName+'</label>'+
             '<ul class="list-group">';
 
-///title, uid
             _.each(items, function(item) {
                 //TODO MAKE TEMPLATE
                 popupHTML += _.map(item.confids, function(code, k) {
@@ -359,18 +276,6 @@ define([
             m.bindPopup(popupHTML, { closeButton:false });
 
             return m;
-        },
-
-        _getLocByCode: function(code) {
-
-            return this.mapLocsByAdm0Code[ code ];
-        },
-
-        _configurePage: function () {
-
-          /*  if (this.id !== undefined) {
-                this._onStartingSelected(this.id);
-            }*/
         },
 
         _renderMapLegend: function() {
