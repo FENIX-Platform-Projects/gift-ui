@@ -145,10 +145,10 @@ require([
 
                     'fx-ds/start': './plugins/dashboard/dashboard_start',
 
-                    //'fenix-ui-map': '{FENIX_CDN}/fenix/fenix-ui-map/0.2.0/dist/fenix-ui-map.src',
-                    //'fenix-ui-map-config': '{FENIX_CDN}/fenix/fenix-ui-map/0.2.0/dist/fenix-ui-map-config'
-                    'fenix-ui-map': '../../submodules/fenix-ui-map/dist/fenix-ui-map.src',
-                    'fenix-ui-map-config': '../../submodules/fenix-ui-map/dist/fenix-ui-map-config'                    
+                    'fenix-ui-map': '{FENIX_CDN}/fenix/fenix-ui-map/0.2.0/dist/fenix-ui-map.src',
+                    'fenix-ui-map-config': '{FENIX_CDN}/fenix/fenix-ui-map/0.2.0/dist/fenix-ui-map-config'
+                    //'fenix-ui-map': '../../submodules/fenix-ui-map/dist/fenix-ui-map.src',
+                    //'fenix-ui-map-config': '../../submodules/fenix-ui-map/dist/fenix-ui-map-config'                    
                 },
 
                 // Underscore and Backbone are not AMD-capable per default,
