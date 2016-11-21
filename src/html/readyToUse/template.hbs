@@ -4,6 +4,9 @@
     </section>
     <section data-section="dashboard">
 
+        <h1 data-role="title"></h1>
+        <span>{{dashboardTitleCredits}}</span>
+
         <!-- back button -->
         <button data-role="back" class="btn btn-default" type="button"> {{back}}</button>
 
@@ -19,7 +22,32 @@
         <!-- top three tabs contents: food consumption, food safety, nutrition -->
         <div class="tab-content">
             <div id="foodConsumption" class="tab-pane fade in active">
-                <h3>{{foodConsumption}}</h3>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <h2>{{foodConsumptionContentTitle}}</h2>
+                        <div>
+                            <h3>Indicator:</h3>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">First item</li>
+                            <li class="list-group-item">Second item</li>
+                            <li class="list-group-item">
+                                <ul class="list-group">
+                                    <li class="list-group-item">First item</li>
+                                    <li class="list-group-item">Second item</li>
+                                    <li class="list-group-item">Third item</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-5">
+                        Chart
+                    </div>
+                    <div class="col-xs-3">
+                        Legend
+                    </div>
+                </div>
+
                 <p>Some content.</p>
             </div>
             <div id="foodSafety" class="tab-pane fade">

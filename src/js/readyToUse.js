@@ -15,7 +15,8 @@ define([
             EL: "#readyToUse",
             CATALOG: "[data-role='catalog']",
             SECTIONS: "[data-section]",
-            BACK_BUTTON: "[data-role='back']"
+            BACK_BUTTON: "[data-role='back']",
+            DASHBOARD_TITLE: "[data-role='title']"
         },
         sections = {
             SEARCH: "search",
@@ -26,7 +27,7 @@ define([
 
         console.clear();
 
-        log.setLevel("silent");
+        log.setLevel("trace");
 
         this._importThirdPartyCss();
 
@@ -75,6 +76,8 @@ define([
 
         this.$backButton = this.$el.find(s.BACK_BUTTON);
 
+        this.$dashboardTitle = this.$el.find(s.DASHBOARD_TITLE);
+
     };
 
     ReadyToUse.prototype._attach = function () {
@@ -108,9 +111,14 @@ define([
     ReadyToUse.prototype._showSection = function (section) {
 
         if (!_.contains(this.allowedSections, section)) {
-            alert("Impossible to show section: " + section);
-            return;
+            section = sections.SEARCH;
+            log.warn("Show " + section + " section abort because invalid: show 'search' section instead");
         }
+/*
+        if (section === sections.DASHBOARD && !this.model) {
+            section = sections.SEARCH;
+            log.warn("Show dashboard section abort: model not found");
+        }*/
 
         this.$sections.hide();
         this.$sections.filter("[data-section='" + section + "']").show();
@@ -128,14 +136,15 @@ define([
 
     ReadyToUse.prototype._onCatalogSelect = function (payload) {
 
-        this._showSection(sections.DASHBOARD);
-
         if (!payload.model) {
-            alert("Impossible to find dataset");
+            alert("Invalid dataset");
             return;
         }
+        this.model = payload.model;
 
-        this._renderDashboard(payload.model)
+        this._showSection(sections.DASHBOARD);
+
+        this._renderDashboard()
     };
 
     ReadyToUse.prototype._onBackButtonClick = function () {
@@ -145,8 +154,16 @@ define([
 
     // Dashboard section
 
-    ReadyToUse.prototype._renderDashboard = function( model ) {
-        console.log(model)
+    ReadyToUse.prototype._renderDashboard = function (model) {
+
+        this._updateTitle(model);
+
+    };
+
+    ReadyToUse.prototype._updateTitle = function () {
+
+        this.$dashboardTitle.html(this.model.title[this.lang.toUpperCase() || this.model.uid])
+
     };
 
     // CSS

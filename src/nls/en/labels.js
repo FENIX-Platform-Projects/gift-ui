@@ -12,5 +12,7 @@ define(function () {
         foodSafety : "Food Safety",
         nutrition : "Nutrition",
 
+        dashboardTitleCredits : "Collected by FAO/WHO GIFT Team, developed by FENIX"
+
     }
 });
