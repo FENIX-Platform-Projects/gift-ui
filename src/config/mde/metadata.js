@@ -4,10 +4,11 @@ define(
         var IANA = {uid: 'IANAcharacterSet'},
             GAUL = {uid: 'GAUL0', version: "2014"},
             Languages = {uid: 'ISO639-2', version: "1998"},
-            TypeOfCollection = {uid: 'FAOSTAT_Collection', version: "1.0"},
-            StatusConfidenciality = {uid: 'CL_CONF_STATUS', version: "1.0"},
-            AreaOfReference = {uid: 'GAUL_ReferenceArea', version: "1.0"},
-            CoverageSector = {uid: 'CRS_purpose_codes'}; // CSTAT_Core
+            TypeOfCollection = {uid: 'GIFT_TypeOfCollection' },
+            StatusConfidenciality = {uid: 'GIFT_ConfidentialityStatus' },
+            AreaOfReference = {uid: 'GIFT_ReferenceArea' },
+            GIFT_StatisticalPopulation = {uid: 'GIFT_StatisticalPopulation'},
+            CoverageSector = {uid: 'GIFT_CoverageSector'};
 
 
         return {
@@ -420,15 +421,9 @@ define(
                             "title": "Reference Population",
                             "selectors": {
                                 "statisticalPopulation": {
+                                    cl: GIFT_StatisticalPopulation,
                                     "selector": {
-                                        "id": "input",
-                                        "type": "text",
-                                        "source": [
-                                            {
-                                                "value": "statisticalPopulation",
-                                                "label": "Study population"
-                                            }
-                                        ]
+                                        "id": "dropdown"
                                     },
                                     "template": {
                                         "title": "Study population",
@@ -436,7 +431,7 @@ define(
 
                                     },
                                     "format": {
-                                        "output": "label"
+                                        "output": "codes"
                                     }
                                 },
                                 "referenceArea": {
