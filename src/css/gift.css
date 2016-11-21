@@ -113,7 +113,9 @@
   /* makes the font 33% larger relative to the icon container */
   /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
      readers do not read off random characters that represent icons */
-  /* Fenix Icons */ }
+  /* Fenix Icons */
+  /* Homepage */
+  /* Fast Links */ }
   .fx-sandbox html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
@@ -16630,14 +16632,72 @@
     display: block;
     opacity: 1;
     overflow: visible; }
-  .fx-sandbox .catalog-dm {
-    position: static;
-    display: block;
-    opacity: 1;
-    overflow: visible; }
+  .fx-sandbox .fast-link-container .fast-link-header {
+    height: 25px;
+    border-bottom: 1px solid #bbbbbb;
+    margin-bottom: 15px; }
+    .fx-sandbox .fast-link-container .fast-link-header h3 {
+      margin-top: 0; }
+  .fx-sandbox .home-tiles {
+    height: 140px; }
+    .fx-sandbox .home-tiles h2 {
+      color: white;
+      margin: 0; }
+      .fx-sandbox .home-tiles h2 span {
+        font-size: 40px; }
+    .fx-sandbox .home-tiles a {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 25px; }
+    .fx-sandbox .home-tiles a:link,
+    .fx-sandbox .home-tiles a:visited,
+    .fx-sandbox .home-tiles a:hover,
+    .fx-sandbox .home-tiles a:focus,
+    .fx-sandbox .home-tiles a:active {
+      text-decoration: none; }
+    .fx-sandbox .home-tiles.food-cons {
+      padding: 0 15px 15px 15px; }
+      .fx-sandbox .home-tiles.food-cons a {
+        background-color: #2f879a; }
+    .fx-sandbox .home-tiles.food-safe {
+      padding: 0 15px 15px 15px; }
+      .fx-sandbox .home-tiles.food-safe a {
+        background-color: #2f9a8f; }
+        .fx-sandbox .home-tiles.food-safe a span {
+          position: relative;
+          left: -6px; }
+    .fx-sandbox .home-tiles.food-nutr {
+      padding: 15px 15px 0 15px; }
+      .fx-sandbox .home-tiles.food-nutr a {
+        background-color: #2f699a; }
+    .fx-sandbox .home-tiles.food-envi {
+      padding: 15px 15px 0 15px; }
+      .fx-sandbox .home-tiles.food-envi a {
+        background-color: #e2e3e3; }
+        .fx-sandbox .home-tiles.food-envi a span {
+          position: relative;
+          left: -6px; }
+  .fx-sandbox .coming:before {
+    content: 'COMING SOON';
+    display: inline-block;
+    background-color: #8e9292;
+    color: white;
+    font-size: 10px;
+    padding: 5px 9px;
+    position: absolute;
+    right: 0;
+    top: 0; }
+  .fx-sandbox .fx-sandbox #content h2 {
+    font-size: 1.614em;
+    font-weight: normal;
+    border-top: 0;
+    padding-top: 0;
+    margin-bottom: 0;
+    margin-top: 0; }
   .fx-sandbox .fx-sandbox div.csc-default ul li {
-    margin-bottom: 6px;
-    position: relative;
-    left: 1em; }
+    margin-bottom: 0;
+    left: 0; }
 
 /*# sourceMappingURL=gift.css.map */
