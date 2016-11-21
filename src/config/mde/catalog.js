@@ -4,33 +4,35 @@ define(function(){
 
     return {
 
-        defaultSelectors: ['freeText', 'resourceType', 'contextSystem'],
-        hideCloseButton: true,
         pluginRegistry: {
             contextSystem: {
                 selector: {
-                    id: "dropdown",
                     source: [
                         {value: "gift", label: "GIFT"}
                     ],
-                    default: ["gift"],
-                    hideSummary: true,
-                    config: {
-                        plugins: ['remove_button'],
-                        mode: 'multi'
-                    }
-                },
-
-                template: {
-                    hideRemoveButton: false
-                },
-
-                format: {
-                    output: "enumeration",
-                    metadataAttribute: "dsd.contextSystem"
+                    default: ["gift"]
                 }
+            },
+            dataDomain: {
+                cl: {
+                    uid: "GIFT_CoverageSector",
+                    level: 1,
+                    levels: 1
+                }
+            },
+            statusOfConfidentiality: {
+                uid: "GIFT_ConfidentialityStatus"
+            },
+            referenceArea: {
+                uid: "GIFT_ReferenceArea"
             }
-        }
+        },
+        baseFilter: {
+            "dsd.contextSystem": {"enumeration": ["gift"]},
+            "meContent.resourceRepresentationType": {"enumeration": ["dataset"]}
+        },
+        defaultSelectors: ["freeText", "dataDomain", "region", "referenceArea"],
+        menuExcludedItems: ["accessibility"]
 
     }
 });

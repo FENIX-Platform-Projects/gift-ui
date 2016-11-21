@@ -15,10 +15,16 @@ define(function() {
                 },
                 dataDomain: {
                     cl: {
-                        uid: "CSTAT_Core",
+                        uid: "GIFT_CoverageSector",
                         level: 1,
                         levels: 1
                     }
+                },
+                statusOfConfidentiality: {
+                    uid: "GIFT_ConfidentialityStatus"
+                },
+                referenceArea: {
+                    uid: "GIFT_ReferenceArea"
                 }
             },
             baseFilter: {
