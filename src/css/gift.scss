@@ -12,13 +12,7 @@
     margin-bottom: 15px !important;
   }
 
-  h1, h2, h3, h4, h5, h6 {
 
-    border-top: 0 !important;
-    padding-top: 0;
-    margin-bottom: 0;
-    margin-top: 0;
-  }
 
 
   &.fao-holder{
@@ -62,6 +56,24 @@
 
 }
 
+// Modal in bootstrap FIX
 
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity .15s linear;
+  transition: opacity .15s linear;
+}
 
+.fade.in {
+  opacity: 1;
+}
 
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000;
+}

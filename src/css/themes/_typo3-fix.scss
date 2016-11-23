@@ -1,23 +1,15 @@
-.fx-sandbox{
+#content {
+  h1, h2, h3, h4, h5, h6 {
 
-  #content{
-    h1, h2, h3, h4, h5, h6 {
-
-      border-top: 0 !important;
-      padding-top: 0;
-      margin-bottom: 0;
-      margin-top: 0;
-    }
+    border-top: 0;
 
   }
-
-
-
-
-  div.csc-default ul li {
-    margin-bottom: 0;
-    left: 0;
-  }
-
 
 }
+
+div.csc-default ul li {
+  margin-bottom: 0;
+  left: 0;
+}
+
+

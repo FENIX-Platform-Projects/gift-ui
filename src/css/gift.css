@@ -4987,11 +4987,6 @@
     overflow-x: hidden !important; }
   .fx-sandbox #readyToUseTabs {
     margin-bottom: 15px !important; }
-  .fx-sandbox h1, .fx-sandbox h2, .fx-sandbox h3, .fx-sandbox h4, .fx-sandbox h5, .fx-sandbox h6 {
-    border-top: 0 !important;
-    padding-top: 0;
-    margin-bottom: 0;
-    margin-top: 0; }
   .fx-sandbox.fao-holder {
     width: 960px;
     margin: 0 auto; }
@@ -16718,17 +16713,31 @@
         width: 60px;
         text-align: center;
         font-size: 45px; }
-  .fx-sandbox .fx-sandbox #content h1, .fx-sandbox .fx-sandbox #content h2, .fx-sandbox .fx-sandbox #content h3, .fx-sandbox .fx-sandbox #content h4, .fx-sandbox .fx-sandbox #content h5, .fx-sandbox .fx-sandbox #content h6 {
-    border-top: 0 !important;
-    padding-top: 0;
-    margin-bottom: 0;
-    margin-top: 0; }
-  .fx-sandbox .fx-sandbox div.csc-default ul li {
+  .fx-sandbox #content h1, .fx-sandbox #content h2, .fx-sandbox #content h3, .fx-sandbox #content h4, .fx-sandbox #content h5, .fx-sandbox #content h6 {
+    border-top: 0; }
+  .fx-sandbox div.csc-default ul li {
     margin-bottom: 0;
     left: 0; }
   .fx-sandbox #mde .modal-content {
     width: 877px !important; }
   .fx-sandbox .fx-button-primary-color {
     color: white !important; }
+
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity .15s linear;
+  transition: opacity .15s linear; }
+
+.fade.in {
+  opacity: 1; }
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000; }
 
 /*# sourceMappingURL=gift.css.map */
