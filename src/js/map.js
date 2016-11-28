@@ -22,8 +22,6 @@ define(['jquery','underscore','loglevel','handlebars',
 ) {
     "use strict";
 
-console.log('LeafletPanel', LeafletPanel);
-
     var LANG = C.lang;
 
     var s = {
@@ -277,21 +275,33 @@ console.log('LeafletPanel', LeafletPanel);
 
     Map.prototype._renderMapLegend = function() {
         var self = this;
-
+/*
         _.extend(L.control({position:'topleft'}), {
             onAdd: function(map) {
                 var tmpDiv = L.DomUtil.create('div','leaflet-control leaflet-control-legend');
                 self.$legend.appendTo(tmpDiv);
                 return tmpDiv;
             }
-        }).addTo(self.fenixMap.map);
+        }).addTo(self.fenixMap.map);*/
+        var legendLayers = [
+            {
+                name: 'Layer1',
+                layer: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+            }
+        ];
+        this.legendPanel = new LeafletPanel(null, legendLayers, {
+            compact: true,
+            position: 'topleft'
+        });
+
+        this.legendPanel.addTo(this.fenixMap.map);
     };
 
 
     Map.prototype._importThirdPartyCss = function () {
 
         require('leaflet/dist/leaflet.css');
-        require('leaflet-panel-layers/src/leaflet-panel-layers.css');
+        require('leaflet-panel-layers/dist/leaflet-panel-layers.min.css');
         require('fenix-ui-map/dist_grunt/fenix-ui-map.min.css');
         require('../lib/MarkerCluster.Default.css');
         require('../lib/MarkerCluster.css');
