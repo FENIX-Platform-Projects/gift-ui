@@ -5,9 +5,8 @@ define([
     "../../html/readyToUse/nutrition.hbs",
     "../../nls/labels",
     "../../config/config",
-    "../../config/readyToUse/config",
-    "../charts/donut"
-], function ($, log, _, template, labels, C, RC, Donut) {
+    "../../config/readyToUse/config"
+], function ($, log, _, template, labels, C, RC) {
 
     "use strict";
 
@@ -17,7 +16,7 @@ define([
         DESCRIPTION: "[data-role='description']",
         DIETARY_TAB: "#dietaryAdequacy",
         SOURCE_TAB: "#sourceOfNutrientsInTheDiet",
-        MACRONUTIENTS_TAB: "#macronutrients",
+        MACRONUTRIENTS_TAB: "#macronutrients",
         NUTRIENTS: "[data-nutrient]",
         PIE_EL: "pie"
     };
@@ -32,6 +31,8 @@ define([
 
         this._bindEventListeners();
 
+        this._render();
+
     }
 
     Nutrition.prototype.refresh = function (model) {
@@ -39,8 +40,6 @@ define([
         this._disposeCharts();
 
         this.model = model;
-
-        console.log(this.model)
 
         this._render();
     };
@@ -69,15 +68,9 @@ define([
             this.stackedChart.dispose();
         }
 
-        //render stacked chart here
-        console.log(nutrient)
     };
 
     Nutrition.prototype._refreshPieChart = function (nutrient) {
-
-        console.log(nutrient)
-        console.log(this.model)
-
 
         var config = {
             elID: s.PIE_EL,
@@ -88,10 +81,8 @@ define([
             height: 300,
             width: 300,
             language: s.language
-        }
+        };
 
-
-        this.pieChart = new Donut(config)
     };
 
     Nutrition.prototype._refreshBarsChart = function (nutrient) {
@@ -100,8 +91,6 @@ define([
             this.barsChart.dispose();
         }
 
-        //render bars chart here
-        console.log(nutrient)
     };
 
     Nutrition.prototype._initVariables = function () {

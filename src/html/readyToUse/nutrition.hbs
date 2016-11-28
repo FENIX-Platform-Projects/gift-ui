@@ -11,73 +11,83 @@
 
         <div class="tab-content">
             <div id="dietaryAdequacy" class="tab-pane fade in active">
-                <div class="col-xs-4">
+                <div class="row">
+                    <div class="col-xs-4">
 
-                    <div>
-                        <h3>
-                            <span>{{indicator}}</span>
-                            <span> {{foodSafetyTitle}}</span>
-                        </h3>
-                        <span>{{foodSafetyDescription}}</span>
+                        <div>
+                            <h3>
+                                <span>{{indicator}}</span>
+                                <span> {{foodSafetyTitle}}</span>
+                            </h3>
+                            <span>{{foodSafetyDescription}}</span>
+                        </div>
+
+                        <ul class="list-group">
+                            <li class="list-group-item" data-nutrient="vitaminA">{{vitaminA}}</li>
+                            <li class="list-group-item" data-nutrient="iron">{{iron}}</li>
+                            <li class="list-group-item" data-nutrient="calcium">{{calcium}}</li>
+                            <li class="list-group-item" data-nutrient="zinc">{{zinc}}</li>
+                            <li class="list-group-item" data-nutrient="folicAcid">{{folicAcid}}</li>
+                        </ul>
                     </div>
 
-                    <ul class="list-group">
-                        <li class="list-group-item" data-nutrient="vitaminA">{{vitaminA}}</li>
-                        <li class="list-group-item" data-nutrient="iron">{{iron}}</li>
-                        <li class="list-group-item" data-nutrient="calcium">{{calcium}}</li>
-                        <li class="list-group-item" data-nutrient="zinc">{{zinc}}</li>
-                        <li class="list-group-item" data-nutrient="folicAcid">{{folicAcid}}</li>
-                    </ul>
+                    <div class="col-xs-8">
+
+                        <div id="columns">BARS</div>
+
+                    </div>
                 </div>
 
-                <div class="col-xs-8">
-
-                    <div id="columns">BARS</div>
-
-                </div>
             </div>
 
             <div id="sourceOfNutrientsInTheDiet" class="tab-pane fade">
-                <div class="col-xs-4">
 
-                    <div>
-                        <h3>
-                            <span>{{indicator}}</span>
-                            <span> {{sourceTitle}}</span>
-                        </h3>
-                        <span>{{sourceDescription}}</span>
+                <div class="row">
+                    <div class="col-xs-4">
+
+                        <div>
+                            <h3>
+                                <span>{{indicator}}</span>
+                                <span> {{sourceTitle}}</span>
+                            </h3>
+                            <span>{{sourceDescription}}</span>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item" data-nutrient="vitaminA">{{vitaminA}}</li>
+                            <li class="list-group-item" data-nutrient="iron">{{iron}}</li>
+                            <li class="list-group-item" data-nutrient="calcium">{{calcium}}</li>
+                            <li class="list-group-item" data-nutrient="zinc">{{zinc}}</li>
+                            <li class="list-group-item" data-nutrient="folicAcid">{{folicAcid}}</li>
+                        </ul>
                     </div>
-                    <ul class="list-group">
-                        <li class="list-group-item" data-nutrient="vitaminA">{{vitaminA}}</li>
-                        <li class="list-group-item" data-nutrient="iron">{{iron}}</li>
-                        <li class="list-group-item" data-nutrient="calcium">{{calcium}}</li>
-                        <li class="list-group-item" data-nutrient="zinc">{{zinc}}</li>
-                        <li class="list-group-item" data-nutrient="folicAcid">{{folicAcid}}</li>
-                    </ul>
+
+                    <div class="col-xs-8">
+
+                        <div id="stacked">STACKED</div>
+
+                    </div>
                 </div>
 
-                <div class="col-xs-8">
-
-                    <div id="stacked">STACKED</div>
-
-                </div>
             </div>
 
             <div id="macronutrients" class="tab-pane fade">
-                <div class="col-xs-4">
 
-                    <div>
-                        <h3>
-                            <span>{{indicator}}</span>
-                            <span> {{macronutrientsTitle}}</span>
-                        </h3>
-                        <span>{{macronutrientsDescription}}</span>
+                <div class="row">
+                    <div class="col-xs-4">
+
+                        <div>
+                            <h3>
+                                <span>{{indicator}}</span>
+                                <span> {{macronutrientsTitle}}</span>
+                            </h3>
+                            <span>{{macronutrientsDescription}}</span>
+                        </div>
+
                     </div>
 
-                </div>
-
-                <div class="col-xs-8">
-                    <div id="pie"></div>
+                    <div class="col-xs-8">
+                        <div id="pie">pie</div>
+                    </div>
                 </div>
 
             </div>

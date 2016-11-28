@@ -1,22 +1,23 @@
 <div data-page="readyToUse">
     <section data-section="search">
-        <div data-role="catalog">Cat</div>
+        <div data-role="catalog"></div>
     </section>
     <section data-section="dashboard">
 
         <h1 data-role="title"></h1>
+        <button data-role="meta" class="btn btn-default" type="button">META</button>
         <span>{{dashboardTitleCredits}}</span>
 
         <!-- back button -->
-        <button data-role="back" class="btn btn-default pull-right" type="button"> {{back}}</button>
+        <button class="btn btn-default pull-right" type="button" data-role="back"> {{back}}</button>
 
         <hr>
 
         <!-- top three tabs links: food consumption, food safety, nutrition -->
         <ul id="readyToUseTabs" class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#foodConsumptionTab">{{foodConsumption}}</a></li>
-            <li><a data-toggle="tab" href="#foodSafetyTab">{{foodSafety}}</a></li>
-            <li><a data-toggle="tab" href="#nutritionTab">{{nutrition}}</a></li>
+            <li class="active"><a data-toggle="tab" href="#foodConsumptionTab" data-tab="foodConsumption">{{foodConsumption}}</a></li>
+            <li><a data-toggle="tab" href="#foodSafetyTab" data-tab="foodSafety">{{foodSafety}}</a></li>
+            <li><a data-toggle="tab" href="#nutritionTab"  data-tab="nutrition">{{nutrition}}</a></li>
         </ul>
 
         <!-- top three tabs contents: food consumption, food safety, nutrition -->
@@ -32,4 +33,19 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="meta-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">FENIX metadata</h4>
+                </div>
+                <div class="modal-body">
+                   <div id="metadata-viewer-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

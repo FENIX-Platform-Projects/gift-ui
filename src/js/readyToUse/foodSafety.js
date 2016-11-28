@@ -16,7 +16,6 @@ define([
         CONTENTS: "[data-content]",
         COLUMNS_EL: "column",
         FILTER: "[data-role='filter']",
-
         BUBBLE: "#bubble",
         COLUMN_CONTAINER_ID : "column",
         BAR_ID : "#columns-progress-bar",
@@ -78,14 +77,19 @@ define([
 
     FoodSafety.prototype._bindEventListeners = function () {
 
-        //this.filter.on("ready", _.bind(this._renderChart, this));
+        this.filter.on("click", _.bind(this._onFilterClick, this));
+    };
 
-        this.filter.on("click", _.bind(this._renderChart, this));
+    FoodSafety.prototype._onFilterClick = function () {
+
+        this._renderChart();
     };
 
     FoodSafety.prototype._renderChart = function () {
 
         console.log("click")
+
+        return;
 
         var amount_id = {
             low : s.AMOUNT_LOW,

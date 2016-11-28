@@ -25,11 +25,13 @@ define(function () {
         treemapBoxDescription: "Percentage contribution of each food included in the food group, in the total daily consumption of all the foods within the group. Totla is understood as the sum of individual consumptions.",
         donutBoxTitle: "Proportion of different food groups in the diet",
         donutBoxDescription: "Percentage contribution of each food included in the food group, in the total daily consumption of all the foods within the group. Totla is understood as the sum of individual consumptions.",
+        dailyPortionTitle : "Daily portion size among consumers on days of consumption",
+        dailyPortionDescription : "Average intake of the foods of the interest among the consumers only. Consumers are understood as those as those individuals, who have consumed the foods of interest during the recall period.",
 
         //Food safety
         dailyPortion: "Daily portion",
         foodSafetyTitle: "Daily portion size among consumers on days of consumption",
-        foodSafetyDescription: "Average intake of the foods of interest among the consumers only. consumers are understood as those individuals, who have consumed the foods of interest during the recall period.",
+        foodSafetyDescription: "Average intake of the foods of interest among the consumers only. Consumers are understood as those individuals, who have consumed the foods of interest during the recall period.",
 
         //Nutrition
         dietaryAdequacy: "Dietary adequacy",

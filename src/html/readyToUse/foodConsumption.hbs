@@ -1,39 +1,77 @@
 <div class="row">
 
-    <div class="col-xs-4">
-        <div>
-            <h2>
-                <span>{{dietaryPattern}}</span>
-            </h2>
-            <h3>
-                <span>{{indicator}}</span>
-                <span data-role="title"></span>
-            </h3>
-            <span data-role="description"></span>
-        </div>
-        <ul class="list-group">
-            <li class="list-group-item" data-chart="bubble">{{gramsPerPerson}}</li>
-            <li class="list-group-item" data-chart="treemap">{{percentageAsGPer100g}}</li>
-            <li class="list-group-item" data-chart="donut">{{caloriesPerPerson}}</li>
+    <div class="col-xs-12">
+
+        <ul class="nav nav-tabs">
+
+            <li class="active"><a data-toggle="tab" href="#dietaryPattern">{{dietaryPattern}}</a></li>
+            <li><a data-toggle="tab" href="#dailyPortion">{{dailyPortion}}</a></li>
+
         </ul>
-    </div>
 
-    <div class="col-xs-8">
+        <div class="tab-content">
+            <div id="dietaryPattern" class="tab-pane fade in active">
 
-        <div class="row" data-content="bubble">
-            <div class="col-xs-6">Drinking</div>
-            <div class="col-xs-6">Eating</div>
-        </div>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <div>
+                            <h3>
+                                <span>{{indicator}}</span>
+                                <span data-role="title"></span>
+                            </h3>
+                            <span data-role="description"></span>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item" data-chart="bubble">{{gramsPerPerson}}</li>
+                            <li class="list-group-item" data-chart="treemap">{{percentageAsGPer100g}}</li>
+                            <li class="list-group-item" data-chart="donut">{{caloriesPerPerson}}</li>
+                        </ul>
+                    </div>
 
-        <div class="row" data-content="treemap">
-            <div class="col-xs-12">Tree map</div>
-        </div>
+                    <div class="col-xs-8">
 
-        <div class="row" data-content="donut">
-            <div class="col-xs-7">
-                <div id="donut"></div>
+                        <div class="row" data-content="bubble">
+                            <div class="col-xs-6">Drinking</div>
+                            <div class="col-xs-6">Eating</div>
+                        </div>
+
+                        <div class="row" data-content="treemap">
+                            <div class="col-xs-12">Tree map</div>
+                        </div>
+
+                        <div class="row" data-content="donut">
+                            <div class="col-xs-7">
+                                <div id="donut"></div>
+                            </div>
+                            <div class="col-xs-5">Legend</div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
-            <div class="col-xs-5">Legend</div>
+
+            <div id="dailyPortion" class="tab-pane fade">
+
+                <div class="row">
+                    <div class="col-xs-4">
+
+                        <h3>
+                            <span>{{indicator}}</span>
+                            <span>{{dailyPortionTitle}}</span>
+                        </h3>
+                        <span>{{dailyPortionDescription}}</span>
+                        <div data-role="filter"></div>
+
+                    </div>
+
+                    <div class="col-xs-8">
+                        Columns
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
     </div>

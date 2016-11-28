@@ -5,8 +5,10 @@ define([
     "../../html/readyToUse/foodConsumption.hbs",
     "../../nls/labels",
     "../../config/config",
-    "../charts/donutHole"
-], function ($, log, _, template, labels, C, DonutHole) {
+    "../../config/readyToUse/config",
+    "../charts/donutHole",
+    "fenix-ui-filter"
+], function ($, log, _, template, labels, C, RC, DonutHole, Filter) {
 
     "use strict";
 
@@ -17,7 +19,8 @@ define([
             TREEMAP: "#treemap",
             DONUT_EL: "donut",
             TITLE: "[data-role='title']",
-            DESCRIPTION: "[data-role='description']"
+            DESCRIPTION: "[data-role='description']",
+            FILTER: "[data-role='filter']"
         },
         allowedCharts = ["bubble", "treemap", "donut"];
 
@@ -29,7 +32,11 @@ define([
 
         this._attach();
 
+        this._initComponents();
+
         this._bindEventListeners();
+
+        this._render();
     }
 
     FoodConsumption.prototype.refresh = function (model) {
@@ -38,13 +45,35 @@ define([
 
         this.model = model;
 
+        this.filter.printDefaultSelection();
+
         this._render();
 
     };
 
+    FoodConsumption.prototype._initComponents = function () {
+
+        this.filter = new Filter({
+            el: this.$el.find(s.FILTER),
+            selectors: RC.foodSafetyFilter
+        })
+    };
+
+
     FoodConsumption.prototype._render = function () {
 
+        this._renderDietaryPattern();
+
+        this._renderDailyPortion();
+
+    };
+
+    FoodConsumption.prototype._renderDietaryPattern = function () {
+
         this._renderChart(allowedCharts[0]);
+    };
+
+    FoodConsumption.prototype._renderDailyPortion = function () {
 
     };
 
@@ -65,6 +94,14 @@ define([
 
     FoodConsumption.prototype._bindEventListeners = function () {
         this.$el.find(s.MENU_ITEMS).on("click", _.bind(this._onMenuItemClick, this));
+
+        this.filter.on("click", _.bind(this._onFilterClick, this));
+
+    };
+
+    FoodConsumption.prototype._onFilterClick = function (evt) {
+
+      console.log("click")
     };
 
     FoodConsumption.prototype._onMenuItemClick = function (evt) {
@@ -108,7 +145,7 @@ define([
                 break;
             case "donut" :
 
-                var config = {
+             /*   var config = {
                     elID : s.DONUT_EL,
                     cache: this.cache,
                     environment : this.environment,
@@ -119,7 +156,7 @@ define([
                     language : this.lang.toUpperCase()
                 };
 
-                obj.instance = new DonutHole(config);
+                obj.instance = new DonutHole(config);*/
 
                 break;
             default:
