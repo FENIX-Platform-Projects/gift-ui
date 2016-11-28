@@ -8,8 +8,16 @@ define(
             StatusConfidenciality = {uid: 'GIFT_ConfidentialityStatus' },
             AreaOfReference = {uid: 'GIFT_ReferenceArea' },
             GIFT_StatisticalPopulation = {uid: 'GIFT_StatisticalPopulation'},
-            CoverageSector = {uid: 'GIFT_CoverageSector'};
-
+            GIFT_DataCollection = {uid: 'GIFT_DataCollection'},
+            CoverageSector = {uid: 'GIFT_CoverageSector'},
+            GIFT_Items = {uid: 'GIFT_Items' },
+            //TODO
+            GIFT_TypeOfResource = {uid: 'GIFT_ResourceType' },
+            GIFT_AssessmentMethod = {uid: 'GIFT_DietaryMethod' },
+            GIFT_QuantityReporting = {uid: 'GIFT_QuantityReporting'},
+            GIFT_Macronutrients = {uid: 'GIFT_Macronutrients'},
+            GIFT_Micronutrients = {uid: 'GIFT_Micronutrients'},
+            YESNO = { uid: "YesNo" }
 
         return {
 
@@ -382,7 +390,7 @@ define(
                         "keywords": {
                             "selector": {
                                 "id": "input",
-                                type: "text"
+                                "type": "text"
                             },
                             "template": {
                                 "title": "Keywords",
@@ -412,7 +420,8 @@ define(
                             },
                             "format": {
                                 "output": "label"
-                            }
+                            },
+                            "constraints": {"presence": true}
 
                         },
                     },
@@ -445,7 +454,8 @@ define(
                                     },
                                     "format": {
                                         "output": "codes"
-                                    }
+                                    },
+                                    "constraints": {"presence": true}
                                 }
                             },
                             "validator": {
@@ -466,7 +476,8 @@ define(
                                     },
                                     "format": {
                                         "output": "codes"
-                                    }
+                                    },
+                                    "constraints": {"presence": true}
                                 },
                                 "coverageSectorsDetails": {
                                     "selector": {
@@ -498,39 +509,54 @@ define(
                                     },
                                     "format": {
                                         "output": "codes"
-                                    }
+                                    },
+                                    "constraints": {"presence": true}
                                 },
                                 "coverageTime": {
-                                    "selector": {
-                                        "id": "range",
-                                        "format": "DD/MM/YYYY",
-                                        "config": {
-                                            type: "double"
-                                        }
-                                    },
                                     "template": {
                                         "title": "Data collection period",
-                                        "description": " Select the date on which data collection started and ended for this survey",
-
+                                        "description": "Select the date on which data collection started and ended for this survey",
                                     },
-                                    "format": {
-                                        "output": "period"
+                                    "incremental": true,
+                                    "selectors": {
+                                        "from" : {
+                                            "selector": {
+                                                "id": "time"
+                                            },
+                                            "template": {
+                                                "title": "From"
+                                            },
+                                            "format": {
+                                                "output": "date"
+                                            },
+                                            "constraints": {"presence": true}
+                                        },
+                                        "to": {
+                                            "selector": {
+                                                "id": "time"
+                                            },
+                                            "template": {
+                                                "title": "To"
+                                            },
+                                            "format": {
+                                                "output": "date"
+                                            },
+                                            "constraints": {"presence": true}
+                                        }
                                     }
                                 }
-                            },
-                            "validator": {
-                                "valCoverage": true
                             }
                         }
                     }
                 },
+
                 "meInstitutionalMandate": {
                     "title": "Institutional data sharing policy",
                     "selectors": {
                         "legalActsAgreements": {
                             "selector": {
                                 "id": "input",
-                                "type": "text",
+                                "type": "textarea",
                                 "source": [
                                     {
                                         "value": "legalActsAgreements",
@@ -550,7 +576,7 @@ define(
                         "institutionalMandateDataSharing": {
                             "selector": {
                                 "id": "input",
-                                "type": "text",
+                                "type": "textarea",
                                 "source": [
                                     {
                                         "value": "institutionalMandateDataSharing",
@@ -590,7 +616,8 @@ define(
                                             },
                                             "format": {
                                                 "output": "codes"
-                                            }
+                                            },
+                                            "constraints": {"presence": true}
                                         },
                                         "samplingProcedure": {
                                             "selector": {
@@ -613,15 +640,10 @@ define(
                                             }
                                         },
                                         "dataCollection": {
+                                            "cl": GIFT_DataCollection,
                                             "selector": {
-                                                "id": "input",
-                                                "type": "text",
-                                                "source": [
-                                                    {
-                                                        "value": "dataCollection",
-                                                        "label": "Survey administration method"
-                                                    }
-                                                ]
+                                                "id": "dropdown",
+                                                "default": ["1"]
                                             },
                                             "template": {
                                                 "title": "Survey administration method",
@@ -629,13 +651,13 @@ define(
 
                                             },
                                             "format": {
-                                                "output": "label"
+                                                "output": "codes"
                                             }
                                         },
                                         "organization": {
                                             "selector": {
                                                 "id": "input",
-                                                "type": "text",
+                                                "type": "textarea",
                                                 "source": [
                                                     {
                                                         "value": "organization",
@@ -649,8 +671,9 @@ define(
 
                                             },
                                             "format": {
-                                                "output": "string"
-                                            }
+                                                "output": "label"
+                                            },
+                                            "constraints": {"presence": true}
                                         },
                                     }
                                 }
@@ -662,7 +685,7 @@ define(
                                 "missingData": {
                                     "selector": {
                                         "id": "input",
-                                        "type": "text",
+                                        "type": "textarea",
                                         "source": [
                                             {
                                                 "value": "missingData",
@@ -682,7 +705,7 @@ define(
                                 "weights": {
                                     "selector": {
                                         "id": "input",
-                                        "type": "text",
+                                        "type": "textarea",
                                         "source": [
                                             {
                                                 "value": "weights",
@@ -719,7 +742,7 @@ define(
                     }
                 },
                 "meAccessibility": {
-                    "title": "Accessibility",
+                    "title": "Confidentiality",
                     "sections": {
                         "seConfidentiality": {
                             "title": "Confidentiality",
@@ -728,7 +751,8 @@ define(
                                 "confidentialityStatus": {
                                     "cl": StatusConfidenciality,
                                     "selector": {
-                                        "id": "dropdown"
+                                        "id": "dropdown",
+                                        "default": ["1"]
                                     },
                                     "template": {
                                         "title": "Availability of the dataset",
@@ -768,8 +792,1067 @@ define(
                             }
                         }
                     }
+                },
+
+                "additions": {
+                    "template": {
+                        "title": "Free extension area",
+                    },
+                    "sections": {
+                        "GeneralInformation" : {
+                            "template": {
+                                "title": "General Information",
+                            },
+                            "selectors": {
+                                "ResourceType" : {
+                                    "cl": GIFT_TypeOfResource,
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "template": {
+                                        "title": "Type of resource",
+                                        "description": "List datasets, reports, publications and other types of documents which provide information and/or were derived from the survey and the data",
+
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    }
+                                },
+                                "ResourceDetails" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "ResourceDetails",
+                                                "label": "Type of resource - details"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "ResourceType" : [{id : "readOnlyIfNotValue", event: "select", args : {value : "other"}}]
+                                    },
+                                    "template": {
+                                        "title": "Type of resource - details",
+                                        "description": "Provide detailed information on the resources listed above",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "ResourceCite" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "ResourceCite",
+                                                "label": "Preferred way to cite the resource"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Preferred way to cite the resource",
+                                        "description": "Specify the preferred way to cite the resource listed above",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "ResourceLink" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "ResourceLink",
+                                                "label": "Access link to the online resource"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Access link to the online resource",
+                                        "description": "Provide links under which the resource listed above can be accessed, or information on how else it can be accessed",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                }
+                            }
+                        },
+                        "SurveyInformation" : {
+                            "template": {
+                                "title": "Survey information",
+                            },
+                            "selectors": {
+                                "SeasonsCoverage" : {
+                                    "selector": {
+                                        "id": "textarea",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "SeasonsCoverage",
+                                                "label": "Seasons coverage"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Seasons coverage",
+                                        "description": "List the seasons covered by the survey (e.g. spring, rainy season, lean season, etc.)",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "AssessmentMethod" : {
+                                    "cl": GIFT_AssessmentMethod,
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "template": {
+                                        "title": "Dietary assessment method",
+                                        "description": "Specify the main dietary assessment method used for data collection",
+
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    }
+                                },
+                                "AssessmentMethodDetails" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "AssessmentMethodDetails",
+                                                "label": "Dietary assessment method - details"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "AssessmentMethod" : [{id : "readOnlyIfNotValue", event: "select", args : {value : "other"}}]
+                                    },
+                                    "template": {
+                                        "title": "Dietary assessment method - details",
+                                        "description": "Provide detailed information on the main dietary assessment and, if relevant, complementary dietary assessment methods used for data collection",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "RepeatedDietary" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source": YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "template": {
+                                        "title": "Repeated dietary recall/record",
+                                        "description": "Provide information whether or not the dietary recall/record was repeated on the same individuals during the study",
+
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    },
+                                    "constraints": { "presence": true }
+                                },
+                                "SizeOfSample": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "SizeOfSample",
+                                                "label": "Size of the sample on which the recall/record was repeated"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "RepeatedDietary" : [{id : "readOnlyIfNotValue", event: "select", args : {value : true}}]
+                                    },
+                                    "template": {
+                                        "title": "Size of the sample on which the recall/record was repeated",
+                                        "description": "Specify on how many respondents the dietary recall/record was repeated. This could be presented as a number of respondents or a percentage of the total number of respondents.",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "NumberOfRepeated" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "NumberOfRepeated",
+                                                "label": "Number of repeated recalls/records per subject"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "RepeatedDietary" : [{id : "readOnlyIfNotValue", event: "select", args : {value : true}}]
+                                    },
+                                    "template": {
+                                        "title": "Number of repeated recalls/records per subject",
+                                        "description": "Specify how many times was the dietary recall/record repeated on each subject",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "AverageTime" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "AverageTime",
+                                                "label": "Average time interval between subsequent recalls/records"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "RepeatedDietary" : [{id : "readOnlyIfNotValue", event: "select", args : {value : true}}]
+                                    },
+                                    "template": {
+                                        "title": "Average time interval between subsequent recalls/records",
+                                        "description": "Specify what was the average time interval between the following the dietary recalls/records",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                }
+                            }
+                        },
+                        "SampledPopulationInformation" : {
+                            "template": {
+                                "title": "Sampled population information",
+                            },
+                            "selectors": {
+                                "SampleSize": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "SampleSize",
+                                                "label": "Sample size"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Sample size",
+                                        "description": "Total number of subjects for which at least one dietary recall/record was collected",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    },
+                                    "constraints": {"presence": true }
+                                },
+                                "PopulationGroups": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "PopulationGroups",
+                                                "label": "Specific population groups surveyed"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "statisticalPopulation" : [{id : "readOnlyIfNotValue", event: "select", args : {value : 2}}]
+                                    },
+                                    "template": {
+                                        "title": "Specific population groups surveyed",
+                                        "description": "List the specific population groups that have been covered by the study (e.g. women in reproductive age, children under 5 years, elderly, etc.)",
+
+                                    },
+                                    "format": {
+                                        "output": "array"
+                                    }
+                                },
+                                "SampleSizeGroups": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "numeric",
+                                        "source": [ {
+                                                "value": "SampleSizeGroups",
+                                                "label": "Sample size of the specific population group surveyed"
+                                        } ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "template": {
+                                        "title": "Sample size of the specific population group surveyed",
+                                        "description": "Provide the sample size of the specific population group added above",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    },
+                                    "dependencies": {
+                                        "RepeatedDietary" : [{id : "readOnlyIfNotValue", event: "select", args : {value : true}}]
+                                    }
+                                },
+                                "PurposedlyGroups": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "title",
+                                                "label": "Purposedly over-sampled population groups"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Purposedly over-sampled population groups",
+                                        "description": "List population groups (if any) that have been purposely oversampled in order to limit the sample size, or improve the representativeness of the study for this populations (e.g. pregnant women, lactating women, children under 5 years)",
+
+                                    },
+                                    "format": {
+                                        "output": "array"
+                                    }
+                                },
+                                "PurposedlyGroupsDetails": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "title",
+                                                "label": "Purposedly over-sampled population groups - details"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "PurposedlyGroups" : [{id : "readOnlyIfNotValue", event: "select", args : {value : ''}}]
+                                    },
+                                    "template": {
+                                        "title": "Purposedly over-sampled population groups - details",
+                                        "description": "Provide details on the purposely oversampled groups and the reasons for oversampling",
+
+                                    },
+                                    "format": {
+                                        "output": "array"
+                                    }
+                                },
+                                "MinumumAge": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "MinumumAge",
+                                                "label": "Minimum age in the dataset (in years)"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Minimum age in the dataset (in years)",
+                                        "description": "Provide the age of the youngest individual whose food consumption data is included in the dataset",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "MaximumAge": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "MaximumAge",
+                                                "label": "Maximum age in the dataset (in years)"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Maximum age in the dataset (in years)",
+                                        "description": "Provide the age of the oldest individual whose food consumption data is included in the dataset",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                }
+                            }
+                        },
+                        "DataAnalysisInformation" : {
+                            "template": {
+                                "title": "Data analysis information",
+                            },
+                            "selectors": {
+                                "ExclusionRecruitment": {
+                                    "selector": {
+                                        "id": "textarea",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "ExclusionRecruitment",
+                                                "label": "Exclusion criteria during recruitment"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Exclusion criteria during recruitment",
+                                        "description": "Describe the exclusion criteria (if any) which were applied during sample selection in order to exclude respondents whose data could potentially bias results of the study",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "ExclusionDataCleaning": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "ExclusionDataCleaning",
+                                                "label": "Exclusion criteria during data cleaning"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Exclusion criteria during data cleaning",
+                                        "description": "Describe the exclusion criteria (if any) which were applied during data cleaning in order to exclude recalls/records which could potentially bias results of the study",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "MethodReporting": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "MethodReporting",
+                                                "label": "Method used to assess over-/under-reporting"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Method used to assess over-/under-reporting",
+                                        "description": "Describe methods (if any) that were used to assess unreliably low or high food intake data from the collected recalls/records",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "PercentageUnderReporting": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "PercentageUnderReporting",
+                                                "label": "Percentage of under-reporting at individual level"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Percentage of under-reporting at individual level",
+                                        "description": "Report the percentage of individuals in the sample, whose data was identified as under-reported according to the applied methods of assessing under and over-reporting",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "PercentageOverReporting": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "PercentageOverReporting",
+                                                "label": "Percentage of over-reporting at individual level"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Percentage of over-reporting at individual level",
+                                        "description": "Report the percentage of individuals in the sample, whose data was identified as over-reported according to the applied methods of assessing under and over-reporting",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "DataAlreadyCorrected": {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source": YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "template": {
+                                        "title": "Data already corrected to assess usual intake",
+                                        "description": "Provide information whether or not the data has been processed/manipulated in order to show usual intake",
+
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    }
+                                },
+                                "AssessmentIntake": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "AssessmentIntake",
+                                                "label": "Assessment of usual intake"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "DataAlreadyCorrected" : [{id : "readOnlyIfNotValue", event: "select", args : {value : true}}]
+                                    },
+                                    "template": {
+                                        "title": "Assessment of usual intake",
+                                        "description": "Describe the procedures (if any) applied to the dataset in order to obtain information on usual intake",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                }
+                            }
+                        },
+                        "FoodConsumptionInformation" : {
+                            "template": {
+                                "title": "Food consumption information",
+                            },
+                            "selectors": {
+                                "FoodCoverageTotal" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source": YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "template": {
+                                        "title": "Total food coverage",
+                                        "description": "Provide information whether or not the survey covered whole diet, or it excluded some foods or food groups",
+
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "constraints": {"presence": true }
+                                },
+                                "FoodCoverageDetails" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "FoodCoverageDetails",
+                                                "label": "Food coverage - details"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "FoodCoverageTotal" : [{id : "readOnlyIfNotValue", event: "select", args : {value : false}}]
+                                    },
+                                    "template": {
+                                        "title": "Food coverage - details",
+                                        "description": "Specify which foods or food groups (if any) were not covered by the study",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "DrinkingWater" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source": YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "template": {
+                                        "title": "Quantification of drinking water",
+                                        "description": "Provide information whether or not water drunk by the respondents has been quantified in the study",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    },
+                                    "constraints": {"presence": true }
+                                },
+                                "SupplementInformation" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source": YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "template": {
+                                        "title": "Information on supplement intakes",
+                                        "description": "Provide information whether or not the information on the use/consumption of dietary supplements has been collected",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    },
+                                    "constraints": {"presence": true }
+                                },
+                                "SupplementInformationDetails" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "SupplementInformationDetails",
+                                                "label": "Information on supplement intakes - details"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "SupplementInformation" : [{id : "readOnlyIfNotValue", event: "select", args : {value : true}}]
+                                    },
+                                    "template": {
+                                        "title": "Information on supplement intakes - details",
+                                        "description": "Provide information whether or not the information on the use/consumption of dietary supplements has been collected",
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "NumberOfFood" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "NumberOfFood",
+                                                "label": "Number of different food items in the food list"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Number of different food items in the food list",
+                                        "description": "Provide the number of unique different food items that have been reported as consumed in the dataset",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    },
+                                    "constraints": {"presence": true }
+                                },
+                                "PortionSizes" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "PortionSizes",
+                                                "label": "Method used to estimate portion sizes"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Method used to estimate portion sizes",
+                                        "description": "Describe methods (if any) which were used to prompt and facilitate estimating the portion size of the recalled foods by the respondents",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "RecipesManagement" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "RecipesManagement",
+                                                "label": "Management of recipes and mixed dishes"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Management of recipes and mixed dishes",
+                                        "description": "Describe the way composite dishes and recipes were handled, e.g. individual or standard recipes, break-down into ingredients or reported as mixed dishes, estimation of quantities, use of yield factors, etc.",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "QuantitiesReported" : {
+                                    "cl": GIFT_QuantityReporting,
+                                    "selector": {
+                                        "id": "dropdown"
+                                    },
+                                    "template": {
+                                        "title": "Quantities reported as",
+                                        "description": "Provide information on the form in which the food item, ingredient and recipe quantities are reported in the dataset, e.g. raw or processed (cooked) and whole or only edible parts",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    },
+                                    "constraints": {"presence": true }
+                                },
+                                "QuantitiesReportedDetails" : {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "QuantitiesReportedDetails",
+                                                "label": "Quantities reported as - details"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "QuantitiesReported" : [{id : "readOnlyIfNotValue", event: "select", args : {value : true}}]
+                                    },
+                                    "template": {
+                                        "title": "Quantities reported as - details",
+                                        "description": "",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                }
+                            }
+                        },
+                        "FoodCompositionInformation" : {
+                            "template": {
+                                "title": "Food composition information",
+                            },
+                            "selectors": {
+                                "rolex": {
+                                    enumeration: YESNO,
+                                    "selector": {
+                                        "id": "dropdown",
+                                        config: {
+                                            maxItems: 1
+                                        }
+                                    },
+
+                                    "format": {
+                                        "output": "label"
+                                    }
+
+                                },
+
+                                "specify": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [{"value": "specify", "label": "Specify"}],
+                                        config: {
+                                            readonly: true
+                                        }
+
+                                    },
+
+                                    "format": {
+                                        "output": "label"
+                                    },
+                                    dependencies: {
+                                        rolex: [{id: "readOnlyIfNotValue", event: "select", args: {value: "Yes"}}]
+                                    },
+
+                                },
+                                "FoodComsumption": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "textarea",
+                                        "source": [
+                                            {
+                                                "value": "FoodComsumption",
+                                                "label": "Food composition table used"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Food composition table used",
+                                        "description": "Provide reference to the food composition data which has been used to derive nutrient intake information from food consumption data. If several food composition tables were, please reference them all.",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "NumberOfFood": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "number",
+                                        "source": [
+                                            {
+                                                "value": "NumberOfFood",
+                                                "label": "Number of food items reported in the composition table"
+                                            }
+                                        ]
+                                    },
+                                    "template": {
+                                        "title": "Number of food items reported in the composition table",
+                                        "description": "Provide the final number of food for which food composition data was compiled in order to derive nutrient intake information from food consumption data",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+                                },
+                                "MacroDietaryComponents": {
+                                    "cl": GIFT_Macronutrients,
+                                    "selector": {
+                                        "id": "dropdown"
+                                    },
+                                    "template": {
+                                        "title": "Macronutrients and dietary components available in the dataset",
+                                        "description": "List macronutrients and dietary components for which dietary intake has been calculated in the dataset",
+
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    }
+                                },
+                                "MacroDietaryComponentsDetails": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "MacroDietaryComponentsDetails",
+                                                "label": "Macronutrients and dietary components available in the dataset - details"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    dependencies: {
+                                        MacroDietaryComponents: [{id: "readOnlyIfNotValue", event: "select", args: {value: "other"}}]
+                                    },
+                                    "template": {
+                                        "title": "Macronutrients and dietary components available in the dataset - details",
+                                        "description": "List additional macronutrients and dietary components reported here above as 'other'",
+
+                                    },
+                                    "format": {
+                                        "output": "array"
+                                    }
+                                },
+                                "MicroDietaryComponents": {
+                                    "cl": GIFT_Micronutrients,
+                                    "selector": {
+                                        "id": "dropdown",
+                                    },
+                                    "template": {
+                                        "title": "Micronutrients available in the dataset",
+                                        "description": "List micronutrients for which dietary intake has been calculated in the dataset",
+
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    }
+                                },
+                                "MicroDietaryComponentsDetails": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [
+                                            {
+                                                "value": "MicroDietaryComponentsDetails",
+                                                "label": "Micronutrients and minerals available in the dataset - details"
+                                            }
+                                        ],
+                                        "config": { "readonly": true }
+                                    },
+                                    "dependencies": {
+                                        "MicroDietaryComponents" : [{id : "readOnlyIfNotValue", event: "select", args : {value : 13}}]
+                                    },
+                                    "template": {
+                                        "title": "Micronutrients and minerals available in the dataset - details",
+                                        "description": "List additional micronutrients reported here above as 'other'",
+
+                                    },
+                                    "format": {
+                                        "output": "array"
+                                    }
+                                }
+                            }
+                        },
+
+                        "AdditionalInformation" : {
+                            "template": {
+                                "title": "Additional information",
+                            },
+                            "selectors": {
+                                "Age" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "constraints": {"presence": true },
+                                    "template": {
+                                        "title": "Age"
+                                    }
+                                },
+                                "Sex" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "constraints": {"presence": true },
+                                    "template": {
+                                        "title": "Sex"
+                                    }
+                                },
+                                "BodyWeight" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "constraints": {"presence": true },
+                                    "template": {
+                                        "title": "BodyWeight"
+                                    }
+                                },
+                                "BodyHeight" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "constraints": {"presence": true },
+                                    "template": {
+                                        "title": "BodyHeight"
+                                    }
+                                },
+                                "PhysicalActivityLevel" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "constraints": {"presence": true },
+                                    "template": {
+                                        "title": "PhysicalActivityLevel"
+                                    }
+                                },
+                                "InterviewDate" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "constraints": {"presence": true },
+                                    "template": {
+                                        "title": "InterviewDate"
+                                    }
+                                },
+                                "GeographicalLocalization" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "constraints": {"presence": true },
+                                    "template": {
+                                        "title": "GeographicalLocalization"
+                                    }
+                                },
+                                "SocioDemographic" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "template": {
+                                        "title": "SocioDemographic"
+                                    }
+                                },
+                                "EducationLiteracy" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "template": {
+                                        "title": "EducationLiteracy"
+                                    }
+                                },
+                                "Ethnicity" : {
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "source" : YESNO,
+                                        "config" : { "maxItems" : 1 }
+                                    },
+                                    "format": {
+                                        "output": "boolean"
+                                    },
+                                    "template": {
+                                        "title": "Ethnicity"
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
                 }
             }
         }
 
     });
+
