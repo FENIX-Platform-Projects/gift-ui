@@ -4,7 +4,7 @@ define(['jquery','underscore','loglevel','handlebars',
     '../html/consumption/map.hbs',
     '../nls/consumption',
     '../json/consumption/gaul0_centroids.json',
-    'leaflet',
+    'leaflet','leaflet-panel-layers',
     '../lib/leaflet.markercluster-src',
     'fenix-ui-map',
 
@@ -15,10 +15,13 @@ define(['jquery','underscore','loglevel','handlebars',
     labels,
     gaul0Centroids,
     L,
+    LeafletPanel,
     LeafletMarkecluster,
     FenixMap
 ) {
     "use strict";
+
+console.log('LeafletPanel', LeafletPanel);
 
     var LANG = C.lang;
 
@@ -287,6 +290,7 @@ define(['jquery','underscore','loglevel','handlebars',
     Map.prototype._importThirdPartyCss = function () {
 
         require('leaflet/dist/leaflet.css');
+        require('leaflet-panel-layers/src/leaflet-panel-layers.css');
         require('fenix-ui-map/dist_grunt/fenix-ui-map.min.css');
         require('../lib/MarkerCluster.Default.css');
         require('../lib/MarkerCluster.css');
