@@ -2,6 +2,7 @@ define(['jquery','underscore','loglevel','handlebars',
     '../config/config',
     '../config/consumption',
     '../html/consumption/map.hbs',
+    '../html/consumption/popup.hbs',
     '../nls/consumption',
     '../json/consumption/gaul0_centroids.json',
     'leaflet',
@@ -13,6 +14,7 @@ define(['jquery','underscore','loglevel','handlebars',
     C,
     ConsC,
     template,
+    tmplPopup,
     labels,
     gaul0Centroids,
     L,
@@ -197,30 +199,8 @@ define(['jquery','underscore','loglevel','handlebars',
         var layerGroup = L.markerClusterGroup({
             showCoverageOnHover: true,
             maxClusterRadius: 30,
-            iconCreateFunction: function(cluster) {
-                
-                //return L.MarkerClusterGroup.prototype._defaultIconCreateFunction(cluster);
-                var childCount = cluster.getChildCount();
-
-                var size = '';
-                if (childCount < 10)
-                    size += 'small';
-                else if (childCount < 100)
-                    size += 'medium';
-                else
-                    size += 'large';
-
-                var r = 20*childCount;  //40
-
-                return L.divIcon({
-                    html: '<div><span>'+ childCount +'</span></div>',
-                    className: 'marker-cluster marker-cluster-'+size,
-                    iconSize: new L.point(r, r)
-                });
-            }
+            iconCreateFunction: this._iconCreateFunction
         });
-
-        this.iconMarkerFunc = layerGroup._defaultIconCreateFunction;
 
         _.each(codesByCountry, function(item, countryCode) {
             self._getMarker(item).addTo( layerGroup );
@@ -232,69 +212,117 @@ define(['jquery','underscore','loglevel','handlebars',
         
     };
 
+
+    Map.prototype._iconCreateFunction = function(cluster) {
+
+        var childCount = cluster.getChildCount();
+
+        var size = '';
+        if (childCount < 10)
+            size += 'small';
+        else if (childCount < 100)
+            size += 'medium';
+        else
+            size += 'large';
+
+        var r = 20*childCount;  //40
+
+        return L.divIcon({
+            html: '<div><span>'+ childCount +'</span></div>',
+            className: 'marker-cluster marker-cluster-'+size,
+            iconSize: new L.point(r, r)
+        });
+    };
+
     Map.prototype._getMarker = function(items) {
 
         var self = this;
 
         var loc = this.mapLocsByAdm0Code[ items[0].countryCode ],
-            /*icon = this.iconMarkerFunc({
-                getChildCount: function() {
-                    return items.length;
-                }
-            }),*/
             icon = L.MarkerClusterGroup.prototype._defaultIconCreateFunction({
+            //icon = this._iconCreateFunction({
                 getChildCount: function() {
                     return items.length;
                 }
-            }),
-            m = L.marker(loc, { icon: icon });
+            });
 
-        m.items = items;
+        var mark = L.marker(loc, { icon: icon });
+        mark.items = items;
 
-        var popupHTML = '<label class="text-primary">'+items[0].countryName+'</label>';
-        
-
-        popupHTML += '<ul class="list-group">';
-
+        var itemsValue = [];
         _.each(items, function(item) {
-            popupHTML += _.map(item.confids, function(code, k) {
-                return '<li style="list-style:none;margin-bottom:5px">'+
-                    '<i class="label label-'+ConsC.codelistStyles[ code ].className+'">&nbsp;</i>'+
-                    '&nbsp;&nbsp;'+
-                    '<a href="#">'+item.title.title+'</a>'+
-                '</li>';//*/
-            }).join('');
+            _.each(item.confids, function(code) {
+                itemsValue.push({
+                    className: ConsC.codelistStyles[ code ].className,
+                    title: item.title.title
+                });
+            })
         });
-        
-        popupHTML +='</ul>';
 
-        m.bindPopup(popupHTML, { closeButton:false });
+        var popupHTML = tmplPopup({
+            countryName: items[0].countryName,
+            items: itemsValue
+        });
 
-        return m;
+        mark.bindPopup(popupHTML, {closeButton: false });
+
+        return mark;
     };
 
     Map.prototype._renderMapLegend = function() {
         var self = this;
-/*
-        _.extend(L.control({position:'topleft'}), {
-            onAdd: function(map) {
-                var tmpDiv = L.DomUtil.create('div','leaflet-control leaflet-control-legend');
-                self.$legend.appendTo(tmpDiv);
-                return tmpDiv;
-            }
-        }).addTo(self.fenixMap.map);*/
+
         var legendLayers = [
             {
                 name: 'Layer1',
                 layer: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+            },
+            {
+                //active: true,
+                name: "CartoDB Light",
+                layer: {
+                    type: "tileLayer",
+                    args: [
+                        "http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png", {
+                            attribution: '&copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                            subdomains: 'abcd',
+                            maxZoom: 19
+                        }
+                    ]
+                }
+            },
+            {
+                name: "CartoDB Dark",
+                layer: {
+                    type: "tileLayer",
+                    args: [
+                        "http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png", {
+                            attribution: '&copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                            subdomains: 'abcd',
+                            maxZoom: 19,
+                        }
+                    ]
+                }
             }
         ];
-        this.legendPanel = new LeafletPanel(null, legendLayers, {
+        /*this.legendPanel = new LeafletPanel(null, legendLayers, {
             compact: true,
             position: 'topleft'
         });
 
         this.legendPanel.addTo(this.fenixMap.map);
+
+        window.panel = this.legendPanel;*/
+
+
+        _.extend(L.control({position:'topleft'}), {
+            onAdd: function(map) {
+                var tmpDiv = L.DomUtil.create('div','leaflet-control leaflet-control-legend');
+                self.$legend.appendTo(tmpDiv);
+                //tmpDiv.innerHTML ='<big>CONTROL</big>'
+                return tmpDiv;
+            }
+        }).addTo(self.fenixMap.map);        
     };
 
 
