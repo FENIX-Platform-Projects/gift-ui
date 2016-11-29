@@ -5,6 +5,8 @@ define(['jquery','underscore','loglevel','handlebars',
     '../html/consumption/popup.hbs',
     '../nls/consumption',
     '../json/consumption/gaul0_centroids.json',
+    '../json/consumption/world_countries.json',
+    '../json/consumption/countries_targeted',
     'leaflet',
     'leaflet-panel-layers',
     '../lib/leaflet.markercluster-src',
@@ -17,19 +19,20 @@ define(['jquery','underscore','loglevel','handlebars',
     tmplPopup,
     labels,
     gaul0Centroids,
+    gaul0Countries,
+    countriesTargeted,
     L,
     LeafletPanel,
     LeafletMarkecluster,
     FenixMap
 ) {
     "use strict";
-
     var LANG = C.lang;
 
     var s = {
             EL: "#map",
             MAP_CONTAINER: "#consumption_map",
-            MAP_LEGEND: "#consumption_map_legend"
+            //MAP_LEGEND: "#consumption_map_legend"
         },
         confidentialityCodelistUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/uid/GIFT_STATUS',
         confidentialityDataUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/find?full=true',
@@ -63,6 +66,8 @@ define(['jquery','underscore','loglevel','handlebars',
 
         self.confidentialityCodelist = {};
         self.legend_items = [];
+
+        self.titleByCodes = {};
         
         $.ajax({
             async: false,                
@@ -70,8 +75,6 @@ define(['jquery','underscore','loglevel','handlebars',
             url: confidentialityCodelistUrl,
             contentType: "application/json; charset=utf-8",
             success: function(res) {
-
-                //confidentialityCodelist = res.data;
 
                 self.confidentialityCodelist = _.groupBy(res.data, function(obj) {
                     return obj.code;
@@ -86,6 +89,8 @@ define(['jquery','underscore','loglevel','handlebars',
                             order: ConsC.codelistStyles[ obj.code ].order
                         });
                     }
+                    
+                    self.titleByCodes[ obj.code ]= obj.title[ LANG ];
                 });
                 
                 self.legend_items = _.sortBy(self.legend_items,'order');
@@ -95,16 +100,16 @@ define(['jquery','underscore','loglevel','handlebars',
         $.ajax({
             async: false,                
             dataType: 'json',
-            url: confidentialityDataUrl,
             method: 'POST',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(C.CONSUMPTION.body),
+            contentType: "application/json; charset=utf-8",            
+            url: confidentialityDataUrl,
+            data: JSON.stringify(C.CONSUMPTION.body),      
             success: function(res) {
 
                 self._dataByCountry = _.groupBy(res, function(d) {
-                    return d.meContent.seCoverage.coverageGeographic.codes[0].code;
+                    var countryCode = d.meContent.seCoverage.coverageGeographic.codes[0].code;
+                    return countryCode;
                 });
-
             }
         });
     };
@@ -118,8 +123,11 @@ define(['jquery','underscore','loglevel','handlebars',
         _.each(self._dataByCountry, function(meta) {
             _.each(meta, function(m) {
                 if(m.meAccessibility && _.has(m.meAccessibility,'seConfidentiality')) {
+                    
+                    var confid = m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code;
+
                     self.mapCodesGroup.push({
-                        confid: m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code,
+                        confid: confid,
                         title: m.title[ LANG ],
                         codes: m.meContent.seCoverage.coverageGeographic.codes
                     });
@@ -127,17 +135,23 @@ define(['jquery','underscore','loglevel','handlebars',
             });
         });
 
-        this.gaul0Centroids = gaul0Centroids;
-
-        this.gaul0Centroids_adm0_code = _.groupBy(this.gaul0Centroids.features, function(feature) {
+        this.gaul0Centroids_adm0_code = _.groupBy(gaul0Centroids.features, function(feature) {
             return feature.properties.adm0_code;
         });
-
         this.mapLocsByAdm0Code = {};
-
         _.each(this.gaul0Centroids_adm0_code, function(feature, code) {
             self.mapLocsByAdm0Code[ code ] = feature[0].geometry.coordinates.reverse();
         });
+
+        this.gaul0Countries_adm0_code = _.groupBy(gaul0Countries.features, function(feature) {
+            return feature.id;
+        });
+        this.countryByAdm0Code = {};
+        _.each(this.gaul0Countries_adm0_code, function(feature, code) {
+            self.countryByAdm0Code[ ''+code ] = feature[0];
+        });
+
+        //console.log(this.countryByAdm0Code)
     };
 
     Map.prototype._attach = function () {
@@ -155,7 +169,7 @@ define(['jquery','underscore','loglevel','handlebars',
         this.$el = $(s.EL);
 
         this.$map = this.$el.find(s.MAP_CONTAINER);
-        this.$legend = this.$el.find(s.MAP_LEGEND);
+        //this.$legend = this.$el.find(s.MAP_LEGEND);
         
         //TODO FenixMap.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
 
@@ -163,30 +177,32 @@ define(['jquery','underscore','loglevel','handlebars',
             ConsC.mapOpts, 
             ConsC.mapOptsLeaflet
         );
+        
+        window.M = this.fenixMap.map;
 
         setTimeout(function() {
             self.fenixMap.map.invalidateSize(false);
             self.fenixMap.map.fitWorld();
         },100);
 
-        this.fenixMap.createMap(18,0);
+        this.fenixMap.createMap();
 
-        var codesByCountry = {};
+        self.codesByCountry = {};
 
-        for(var i in this.mapCodesGroup)
-        {
+        for(var i in this.mapCodesGroup) {
             var group = this.mapCodesGroup[i];
-            if(group.codes)
-            {
+
+            if(group.codes) {
                 for(var n in group.codes) {
+
                     var country = group.codes[n],
                         countryCode = country.code,
                         countryName = country.label.EN;
 
-                    if(!codesByCountry[countryCode])
-                        codesByCountry[countryCode] = [];
+                    if(!self.codesByCountry[countryCode])
+                        self.codesByCountry[countryCode] = [];
 
-                    codesByCountry[countryCode].push({
+                    self.codesByCountry[countryCode].push({
                         countryCode: countryCode,
                         countryName: countryName,
                         confids: [ group.confid ],
@@ -196,20 +212,88 @@ define(['jquery','underscore','loglevel','handlebars',
             }
         }
 
-        var layerGroup = L.markerClusterGroup({
+        self.layerCluster = L.markerClusterGroup({
             showCoverageOnHover: true,
             maxClusterRadius: 30,
             iconCreateFunction: this._iconCreateFunction
+        }).addTo(this.fenixMap.map);
+
+        console.log('countryByAdm0Code',self.countryByAdm0Code)
+
+        var hiddens = _.compact( _.map(countriesTargeted, function(id) {
+            return self.countryByAdm0Code[ id ];
+        }) );
+
+        self.layerHiddens = L.geoJson(hiddens, {
+            style: function(f) {
+                return ConsC.countryHiddensStyle;
+            },
+            onEachFeature: function(f, layer) {
+                console.log(f.properties)
+                if(f.properties && f.properties.name)
+                    layer.bindPopup(f.properties.name, { });
+            }
         });
 
-        _.each(codesByCountry, function(item, countryCode) {
-            self._getMarker(item).addTo( layerGroup );
+        self.layerHiddens.addTo(self.fenixMap.map);
+
+        self.layersByCodes = {};
+
+        _.each(self.codesByCountry, function(items, countryCode) {
+            var code = items[0].confids[0],
+                className = ConsC.codelistStyles[ code ].className,
+                order = ConsC.codelistStyles[ code ].order,
+                mark = self._getMarker(items),
+                markCluster = self._getMarker(items);
+
+            if(!self.layersByCodes[ code ]) {
+                self.layersByCodes[ code ] = {
+                    active: false,
+                    order: order,
+                    name: self.titleByCodes[ code ],
+                    icon: '<i class="label label-'+className+' text-primary">&nbsp;</i>',
+                    layer: L.layerGroup([])
+                };
+            }
+
+            self.layersByCodes[ code ].layer.addLayer(mark);
+            self.layerCluster.addLayer(markCluster);
         });
 
-        layerGroup.addTo(this.fenixMap.map);
+        self.layersByCodes['All']= {
+            active: true,
+            order: 10,
+            name: 'All Data by Country',
+            icon: '<i class="label label-'+ConsC.codelistStyles['All'].className+' text-primary">&nbsp;</i>',
+            layer: self.layerCluster
+        };
         
-        self._renderMapLegend();
+        self.layersByCodesHidden = [{
+            active: true,
+            order: 1,
+            name: self.titleByCodes['Z'],
+            icon: '<i class="label label-'+ConsC.codelistStyles['Z'].className+' text-primary">&nbsp;</i>',
+            layer: self.layerHiddens
+        }];
+
+        self.panelLayers = _.values(self.layersByCodes);
+
+        self.panelLayers = _.sortBy(self.panelLayers,'order');
+
+        self.legendPanel = new LeafletPanel(self.panelLayers, null, {
+            compact: true,
+            position: 'topleft'
+        }).on('panel:selected', function(e) {
+            self.fenixMap.map.fitWorld();
+        })
+        .addTo(self.fenixMap.map);
         
+        self.hiddenPanel = new LeafletPanel(self.layersByCodesHidden, null, {
+            compact: true,
+            className: 'panel-hiddens',
+            position: 'topleft'
+        })
+        .addTo(self.fenixMap.map);        
     };
 
 
@@ -246,7 +330,8 @@ define(['jquery','underscore','loglevel','handlebars',
                 }
             });
 
-        var mark = L.marker(loc, { icon: icon });
+        var mark = new L.Marker(loc, { icon: icon });
+
         mark.items = items;
 
         var itemsValue = [];
@@ -269,63 +354,6 @@ define(['jquery','underscore','loglevel','handlebars',
         return mark;
     };
 
-    Map.prototype._renderMapLegend = function() {
-        var self = this;
-
-        var legendLayers = [
-            {
-                name: 'Layer1',
-                layer: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-            },
-            {
-                //active: true,
-                name: "CartoDB Light",
-                layer: {
-                    type: "tileLayer",
-                    args: [
-                        "http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png", {
-                            attribution: '&copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-                            subdomains: 'abcd',
-                            maxZoom: 19
-                        }
-                    ]
-                }
-            },
-            {
-                name: "CartoDB Dark",
-                layer: {
-                    type: "tileLayer",
-                    args: [
-                        "http://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}.png", {
-                            attribution: '&copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-                            subdomains: 'abcd',
-                            maxZoom: 19,
-                        }
-                    ]
-                }
-            }
-        ];
-        /*this.legendPanel = new LeafletPanel(null, legendLayers, {
-            compact: true,
-            position: 'topleft'
-        });
-
-        this.legendPanel.addTo(this.fenixMap.map);
-
-        window.panel = this.legendPanel;*/
-
-
-        _.extend(L.control({position:'topleft'}), {
-            onAdd: function(map) {
-                var tmpDiv = L.DomUtil.create('div','leaflet-control leaflet-control-legend');
-                self.$legend.appendTo(tmpDiv);
-                //tmpDiv.innerHTML ='<big>CONTROL</big>'
-                return tmpDiv;
-            }
-        }).addTo(self.fenixMap.map);        
-    };
-
-
     Map.prototype._importThirdPartyCss = function () {
 
         require('leaflet/dist/leaflet.css');
@@ -336,6 +364,8 @@ define(['jquery','underscore','loglevel','handlebars',
 
         //host override
         require('../css/gift.css');
+
+        require('../css/map.css');
 
 
     };

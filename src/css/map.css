@@ -1,0 +1,29 @@
+
+.leaflet-panel-layers-item input[type="radio"] {
+	display: inline-block;
+	margin: 0 5px;
+}
+.leaflet-panel-layers.panel-hiddens  input[type="radio"]  {
+	display: none;
+}
+
+label.leaflet-panel-layers-title {
+	font-weight: normal;
+}
+.leaflet-panel-layers-icon {
+	margin-right: 5px;
+}
+.leaflet-panel-layers-icon .label-gray {
+	background: #ccc;
+}
+
+.marker-cluster-small {
+	background-color: rgba(10, 140, 226, 0.4);
+}
+.marker-cluster-small div {
+	color: rgba(255,255,255,0.9);
+	font-weight: bold;
+	font-size: 12px;
+	background-color: rgba(10, 140, 226, 0.4);
+}
+

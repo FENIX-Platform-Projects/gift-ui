@@ -27,8 +27,8 @@ module.exports = sections.map(function (section) {
             root: Path.resolve(__dirname),
             alias: {
                 'bootstrap-table': Path.join(__dirname, 'node_modules/bootstrap-table/dist/bootstrap-table.min.js'),
-                handlebars: Path.join(__dirname, 'node_modules/handlebars/dist/handlebars.js'),
-                jquery: Path.join(__dirname, 'node_modules/jquery/dist/jquery')
+                'handlebars': Path.join(__dirname, 'node_modules/handlebars/dist/handlebars.js'),
+                'jquery': Path.join(__dirname, 'node_modules/jquery/dist/jquery')
             }
         },
 
