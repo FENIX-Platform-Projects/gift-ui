@@ -8,10 +8,11 @@ define([
     "../nls/labels",
     "fenix-ui-catalog",
     "fenix-ui-metadata-viewer",
+    "fenix-ui-filter",
     "./readyToUse/foodConsumption",
     "./readyToUse/foodSafety",
     "./readyToUse/nutrition"
-], function ($, log, _, C, RC, template, labels, Catalog, MetadataViewer, FoodConsumption, FoodSafety, Nutrition) {
+], function ($, log, _, C, RC, template, labels, Catalog, MetadataViewer, Filter, FoodConsumption, FoodSafety, Nutrition) {
 
     "use strict";
 
@@ -28,7 +29,8 @@ define([
             TABS_A: "#readyToUseTabs > li > a",
             META: "[data-role='meta']",
             META_MODAL: "#meta-modal",
-            METADATA_VIEWER: "#metadata-viewer-container"
+            METADATA_VIEWER: "#metadata-viewer-container",
+            FILTER: "#population-filter"
         },
         sections = {
             SEARCH: "search",
@@ -39,7 +41,7 @@ define([
 
         console.clear();
 
-        log.setLevel("silent");
+        log.setLevel("trace");
 
         this._importThirdPartyCss();
 
@@ -149,6 +151,10 @@ define([
             model: this.model,
             environment: this.environment
         });
+
+        this.filter = new Filter($.extend(true, {
+            el: s.FILTER
+        }, C.populationFilter))
 
     };
 
@@ -276,8 +282,13 @@ define([
         require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
         //tree selector
         require("../../node_modules/jstree/dist/themes/default/style.min.css");
+        //range selector
+        require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.css");
+        require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css");
+        //time selector
+        require("../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css");
         // fenix-ui-filter
-        //require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+        require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");

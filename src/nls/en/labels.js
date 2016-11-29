@@ -5,6 +5,7 @@ define(function () {
     return {
 
         back: "Back to results",
+        search: "Search",
 
         //Ready To Use section
 

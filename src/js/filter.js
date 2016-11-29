@@ -3,15 +3,15 @@ define([
     "loglevel",
     "underscore",
     "../config/config",
-    "../config/readyToUse/config",
     "../html/readyToUse/filter.hbs",
     "fenix-ui-filter"
-], function ($, log, _, C, RC, template, Filter) {
+], function ($, log, _, C, template, Filter) {
 
     "use strict";
 
     var s = {
-        FILTER: "#filter"
+        FILTER: "#filter",
+        VALUES_BTN: "[data-role='values']"
     };
 
     function FilterSection() {
@@ -24,9 +24,16 @@ define([
 
         $(s.FILTER).append(template());
 
-        new Filter($.extend(true, {
+        var filter = new Filter($.extend(true, {
             el: s.FILTER
-        }, RC.filter));
+        }, C.populationFilter, C.othersFilter))
+            .on("click", function () {
+                filter.validate();
+            });
+
+        $(s.VALUES_BTN).on("click", function () {
+            console.log(filter.getValues("fenix"));
+        });
 
     }
 

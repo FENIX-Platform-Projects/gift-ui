@@ -13,25 +13,57 @@
 
         <hr>
 
-        <!-- top three tabs links: food consumption, food safety, nutrition -->
-        <ul id="readyToUseTabs" class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#foodConsumptionTab" data-tab="foodConsumption">{{foodConsumption}}</a></li>
-            <li><a data-toggle="tab" href="#foodSafetyTab" data-tab="foodSafety">{{foodSafety}}</a></li>
-            <li><a data-toggle="tab" href="#nutritionTab"  data-tab="nutrition">{{nutrition}}</a></li>
-        </ul>
+        <div class="row" id="population-filter">
+            <div class="col-md-6">
 
-        <!-- top three tabs contents: food consumption, food safety, nutrition -->
-        <div class="tab-content">
-            <div id="foodConsumptionTab" class="tab-pane fade in active"></div>
-            <div id="foodSafetyTab" class="tab-pane fade">
-                <h3>{{foodSafety}}</h3>
-                <p>Some content in menu 1.</p>
+                <div data-selector="gender"></div>
+                <div data-selector="special_condition"></div>
+
             </div>
-            <div id="nutritionTab" class="tab-pane fade">
-                <h3>{{nutrition}}</h3>
-                <p>Some content in menu 2.</p>
+            <div class="col-md-6">
+                <div data-selector="ageGranularity"></div>
+                <div data-selector="age"></div>
             </div>
         </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- back button -->
+                <button class="btn btn-default pull-right" type="button" data-role="back"> {{search}}</button>
+
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- top three tabs links: food consumption, food safety, nutrition -->
+                <ul id="readyToUseTabs" class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#foodConsumptionTab" data-tab="foodConsumption">{{foodConsumption}}</a></li>
+                    <li><a data-toggle="tab" href="#foodSafetyTab" data-tab="foodSafety">{{foodSafety}}</a></li>
+                    <li><a data-toggle="tab" href="#nutritionTab"  data-tab="nutrition">{{nutrition}}</a></li>
+                </ul>
+
+                <!-- top three tabs contents: food consumption, food safety, nutrition -->
+                <div class="tab-content">
+                    <div id="foodConsumptionTab" class="tab-pane fade in active"></div>
+                    <div id="foodSafetyTab" class="tab-pane fade">
+                        <h3>{{foodSafety}}</h3>
+                        <p>Some content in menu 1.</p>
+                    </div>
+                    <div id="nutritionTab" class="tab-pane fade">
+                        <h3>{{nutrition}}</h3>
+                        <p>Some content in menu 2.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </section>
 
     <!-- Modal -->
