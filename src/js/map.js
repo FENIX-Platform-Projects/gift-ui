@@ -189,7 +189,7 @@ define(['jquery','underscore','loglevel','handlebars',
             self.fenixMap.map.invalidateSize(false);
             self.fenixMap.map.fitWorld();
             self.fenixMap.map.fire('moveend')
-        },100);
+        },500);
 
         this.fenixMap.createMap();
 
