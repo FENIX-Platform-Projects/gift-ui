@@ -35,7 +35,8 @@ define(['jquery','underscore','loglevel','handlebars',
             EL: "#map",
             MAP_CONTAINER: "#consumption_map",
             MAP_LEGEND: "#consumption_map_legend",
-            MAP_META: "#consumption_map_meta"
+            MAP_META: "#consumption_map_meta",
+            MAP_METAMODAL: "#consumption_map_modal",       
         },
         confidentialityCodelistUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/uid/GIFT_STATUS',
         confidentialityDataUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/find?full=true',
@@ -69,8 +70,9 @@ define(['jquery','underscore','loglevel','handlebars',
 
         self.confidentialityCodelist = {};
         self.legend_items = [];
-
         self.titleByCodes = {};
+        self.metadataByCountry = {};
+        self.metadataByUid = {};
         
         $.ajax({
             async: false,                
@@ -109,9 +111,13 @@ define(['jquery','underscore','loglevel','handlebars',
             data: JSON.stringify(C.CONSUMPTION.body),      
             success: function(res) {
 
-                self._dataByCountry = _.groupBy(res, function(d) {
+                self.metadataByCountry = _.groupBy(res, function(d) {
                     var countryCode = d.meContent.seCoverage.coverageGeographic.codes[0].code;
                     return countryCode;
+                });
+
+                self.metadataByUid = _.groupBy(res, function(d) {
+                    return d.uid;
                 });
             }
         });
@@ -123,7 +129,7 @@ define(['jquery','underscore','loglevel','handlebars',
 
         this.mapCodesGroup = [];
 
-        _.each(self._dataByCountry, function(meta) {
+        _.each(self.metadataByCountry, function(meta) {
             _.each(meta, function(m) {
                 if(m.meAccessibility && _.has(m.meAccessibility,'seConfidentiality')) {
                     
@@ -153,8 +159,6 @@ define(['jquery','underscore','loglevel','handlebars',
         _.each(this.gaul0Countries_adm0_code, function(feature, code) {
             self.countryByAdm0Code[ ''+code ] = feature[0];
         });
-
-        //console.log(this.countryByAdm0Code)
     };
 
     Map.prototype._attach = function () {
@@ -171,6 +175,7 @@ define(['jquery','underscore','loglevel','handlebars',
         this.$map = this.$el.find(s.MAP_CONTAINER);
         this.$legend = this.$el.find(s.MAP_LEGEND);
         this.$meta = this.$el.find(s.MAP_META);
+        this.$metamodal = this.$el.find(s.MAP_METAMODAL);
 
         //PATH FOR OLD MAP
         FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
@@ -345,30 +350,39 @@ define(['jquery','underscore','loglevel','handlebars',
             })
         });
 
-        var popupHTML = tmplPopup({
+        var $popup = $(tmplPopup({
             countryName: items[0].countryName,
             items: itemsValue
+        }));
+
+        $popup.find('a').on('click', function(e) {
+            var uid = $(e.target).data('uid'),
+                meta = self.metadataByUid[ uid ][0];
+            
+            console.log('METADATA MODEL:', meta);
+            self._renderMeta(meta);
         });
 
-        mark.bindPopup(popupHTML, {closeButton: false });
+        mark.bindPopup($popup[0], {closeButton: false });
 
         return mark;
     };
 
-/*    Map.prototype._renderMeta = function() {
+    Map.prototype._renderMeta = function(model) {
 
-        self.metadataViewer = new MetadataViewer({
-            el: s.MAP_META,
-            //model: valid_model,
-            lang: lang,
-            environment: environment,
+        this.$metamodal.modal('show');
+        this.metadataViewer = new MetadataViewer({
+            model: model,
+            el: this.$meta,
+            lang: C.lang,
+            environment: C.environment,
             hideExportButton: false,
             expandAttributesRecursively: ['meContent'],
             popover: {
                 placement: 'left'
             }
         });
-    };*/
+    };
 
     Map.prototype._importThirdPartyCss = function () {
 
