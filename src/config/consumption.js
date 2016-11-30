@@ -54,7 +54,7 @@ Grey: Planned food consumption survey
     },
     
     mapOptsLeaflet: {
-        attributionControl: true,
+        attributionControl: false,
         scrollWheelZoom: false,
         zoom: 2,
         minZoom: 2,

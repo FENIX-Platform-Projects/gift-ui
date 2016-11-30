@@ -9,8 +9,7 @@
 }
 .leaflet-panel-layers-item.active {
 	padding: 4px;
-	background: #eee;
-	border: 1px solid #ccc;	
+	border: 1px solid #bbb;	
 }
 .leaflet-panel-layers-item input[type="radio"],
 .leaflet-panel-layers-item input[type="checkbox"] {
@@ -43,8 +42,23 @@ label.leaflet-panel-layers-title {
 	background-color: rgba(10, 140, 226, 0.4);
 }
 
-.leaflet-control-disclaimer .tooltip {
-	background: rgba(255,255,255,0.9);
+.fx-sandbox .leaflet-control-disclaimer div.tooltip {
+	background-color: transparent;
 	width: 400px;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
 }
 
+.leaflet-control-disclaimer .tooltip-inner {
+	max-width: none;
+	background-color: white;
+	color: inherit;
+	margin-bottom: 40px;
+	padding: 6px;
+}
+
+.fx-sandbox .leaflet-control-disclaimer .tooltip .tooltip-arrow {
+	border-left-color: white;
+
+}

@@ -11,6 +11,7 @@ define(['jquery','underscore','loglevel','handlebars',
     'leaflet-panel-layers',
     '../lib/leaflet.markercluster-src',
     'fenix-ui-map',
+    'fenix-ui-metadata-viewer'
 
 ], function ($, _, log, Handlebars,
     C,
@@ -24,7 +25,8 @@ define(['jquery','underscore','loglevel','handlebars',
     L,
     LeafletPanel,
     LeafletMarkecluster,
-    FenixMap
+    FenixMap,
+    FenixMetaViewer
 ) {
     "use strict";
     var LANG = C.lang;
@@ -361,7 +363,7 @@ console.log(FenixMap.guiMap)
 
         require('leaflet/dist/leaflet.css');
         require('leaflet-panel-layers/src/leaflet-panel-layers.css');
-        require('fenix-ui-map/dist_grunt/fenix-ui-map.min.css');
+        require('fenix-ui-map/dist/fenix-ui-map.min.css');
         require('../lib/MarkerCluster.Default.css');
         require('../lib/MarkerCluster.css');
 
