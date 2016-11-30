@@ -8,6 +8,7 @@
 	border: 1px solid transparent;
 }
 .leaflet-panel-layers-item.active {
+	padding: 4px;
 	background: #eee;
 	border: 1px solid #ccc;	
 }
@@ -19,7 +20,6 @@
 }
 .leaflet-panel-layers.panel-hiddens input[type="radio"],
 .leaflet-panel-layers.panel-hiddens input[type="checkbox"]  {
-	
 	float: left;
 }
 
