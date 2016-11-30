@@ -212,7 +212,7 @@ define(['jquery','underscore','loglevel','handlebars',
         self.layerCluster = L.markerClusterGroup({
             showCoverageOnHover: true,
             maxClusterRadius: 30,
-            iconCreateFunction: this._iconCreateFunction
+            //iconCreateFunction: this._iconCreateFunction
         }).addTo(this.fenixMap.map);
 
         var hiddens = _.compact( _.map(countriesTargeted, function(id) {
@@ -282,7 +282,7 @@ define(['jquery','underscore','loglevel','handlebars',
         })
         .addTo(self.fenixMap.map);
         
-        self.hiddenPanel = new LeafletPanel(self.layersByCodesHidden, null, {
+        self.hiddenPanel = new LeafletPanel(null, self.layersByCodesHidden, {
             compact: true,
             className: 'panel-hiddens',
             position: 'topleft'
@@ -293,7 +293,7 @@ define(['jquery','underscore','loglevel','handlebars',
     };
 
 
-    Map.prototype._iconCreateFunction = function(cluster) {
+/*    Map.prototype._iconCreateFunction = function(cluster) {
 
         var childCount = cluster.getChildCount();
 
@@ -312,7 +312,7 @@ define(['jquery','underscore','loglevel','handlebars',
             className: 'marker-cluster marker-cluster-'+size,
             iconSize: new L.point(r, r)
         });
-    };
+    };*/
 
     Map.prototype._getMarker = function(items) {
 

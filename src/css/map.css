@@ -2,13 +2,25 @@
 #consumption_map_legend .leaflet-panel-layers {
 	box-shadow: none;
 }
-.leaflet-panel-layers-item input[type="radio"] {
+.leaflet-panel-layers-item {
+	padding: 4px;
+	background: none;
+	border: 1px solid transparent;
+}
+.leaflet-panel-layers-item.active {
+	background: #eee;
+	border: 1px solid #ccc;	
+}
+.leaflet-panel-layers-item input[type="radio"],
+.leaflet-panel-layers-item input[type="checkbox"] {
 	display: inline-block;
 	margin: 0 5px;
 	float: left;
 }
-.leaflet-panel-layers.panel-hiddens  input[type="radio"]  {
-	display: none;
+.leaflet-panel-layers.panel-hiddens input[type="radio"],
+.leaflet-panel-layers.panel-hiddens input[type="checkbox"]  {
+	
+	float: left;
 }
 
 label.leaflet-panel-layers-title {
@@ -21,14 +33,13 @@ label.leaflet-panel-layers-title {
 	background: #ccc;
 }
 
-.marker-cluster-small {
+.marker-cluster {
 	background-color: rgba(10, 140, 226, 0.4);
 }
 
-.marker-cluster-small div {
+.marker-cluster div {
 	color: rgba(255,255,255,0.9);
 	font-weight: bold;
-	font-size: 12px;
 	background-color: rgba(10, 140, 226, 0.4);
 }
 

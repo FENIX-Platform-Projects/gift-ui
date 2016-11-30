@@ -2,14 +2,14 @@ define({
 
     codelistStyles: {
     	//MAP CODES with Boostrap themes
-        'F': { className:"success", order: 1, visible: true },
+        'F': { className:"success", order: 1, visible: true,  color: '#5cb85c' },
         'A': { className:"primary", order: 2, visible: true },
-        'N': { className:"warning", order: 3, visible: true },
+        'N': { className:"warning", order: 3, visible: true,  color: '#f0ad4e' },
         
-        'D': { className:"danger",  order: 4, visible: true },
-        'P': { className:"default", order: 5, visible: true },
-        'Z': { className:"gray",    order: 10,visible: false},
-      'All': { className:"info",    order: 20,visible: true }
+        'D': { className:"danger",  order: 4, visible: true,  color: '#d9534f' },
+        'P': { className:"default", order: 5, visible: true,  color: '#bbbbbb'},
+        'Z': { className:"gray",    order: 10,visible: false, color: '#cccccc'},
+      'All': { className:"info",    order: 20,visible: true,  color: '#5bc0de'}
 /*
 Green: Data available for analysis in FAO/WHO GIFT
 Orange: Data soon to be inserted in FAO/WHO GIFT
