@@ -21,7 +21,8 @@ Grey: Planned food consumption survey
     countryHiddensStyle: {
         stroke: true,
         weight: 1,
-        color:'#000',
+        opacity:1,
+        color:'#888',
         fillColor:'#ccc',
         fillOpacity: 0.9
     },

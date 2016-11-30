@@ -125,8 +125,8 @@ define(['jquery','underscore','loglevel','handlebars',
                 if(m.meAccessibility && _.has(m.meAccessibility,'seConfidentiality')) {
                     
                     var confid = m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code;
-
                     self.mapCodesGroup.push({
+                        uid: m.uid,
                         confid: confid,
                         title: m.title[ LANG ],
                         codes: m.meContent.seCoverage.coverageGeographic.codes
@@ -206,6 +206,7 @@ define(['jquery','underscore','loglevel','handlebars',
                         countryCode: countryCode,
                         countryName: countryName,
                         confids: [ group.confid ],
+                        uid: group.uid,
                         title: this.mapCodesGroup[i]
                     });
                 }
@@ -218,8 +219,6 @@ define(['jquery','underscore','loglevel','handlebars',
             iconCreateFunction: this._iconCreateFunction
         }).addTo(this.fenixMap.map);
 
-        console.log('countryByAdm0Code',self.countryByAdm0Code)
-
         var hiddens = _.compact( _.map(countriesTargeted, function(id) {
             return self.countryByAdm0Code[ id ];
         }) );
@@ -229,7 +228,6 @@ define(['jquery','underscore','loglevel','handlebars',
                 return ConsC.countryHiddensStyle;
             },
             onEachFeature: function(f, layer) {
-                console.log(f.properties)
                 if(f.properties && f.properties.name)
                     layer.bindPopup(f.properties.name, { });
             }
@@ -281,6 +279,7 @@ define(['jquery','underscore','loglevel','handlebars',
         self.panelLayers = _.sortBy(self.panelLayers,'order');
 
         self.legendPanel = new LeafletPanel(self.panelLayers, null, {
+            //container: 'consumption_map_legend',
             compact: true,
             position: 'topleft'
         }).on('panel:selected', function(e) {
@@ -289,6 +288,7 @@ define(['jquery','underscore','loglevel','handlebars',
         .addTo(self.fenixMap.map);
         
         self.hiddenPanel = new LeafletPanel(self.layersByCodesHidden, null, {
+            //container: 'consumption_map_legend',
             compact: true,
             className: 'panel-hiddens',
             position: 'topleft'
@@ -339,7 +339,8 @@ define(['jquery','underscore','loglevel','handlebars',
             _.each(item.confids, function(code) {
                 itemsValue.push({
                     className: ConsC.codelistStyles[ code ].className,
-                    title: item.title.title
+                    title: item.title.title,
+                    uid: item.uid
                 });
             })
         });
@@ -357,7 +358,7 @@ define(['jquery','underscore','loglevel','handlebars',
     Map.prototype._importThirdPartyCss = function () {
 
         require('leaflet/dist/leaflet.css');
-        require('leaflet-panel-layers/dist/leaflet-panel-layers.min.css');
+        require('leaflet-panel-layers/src/leaflet-panel-layers.css');
         require('fenix-ui-map/dist_grunt/fenix-ui-map.min.css');
         require('../lib/MarkerCluster.Default.css');
         require('../lib/MarkerCluster.css');

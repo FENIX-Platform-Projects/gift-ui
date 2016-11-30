@@ -2,6 +2,7 @@
 .leaflet-panel-layers-item input[type="radio"] {
 	display: inline-block;
 	margin: 0 5px;
+	float: left;
 }
 .leaflet-panel-layers.panel-hiddens  input[type="radio"]  {
 	display: none;
@@ -20,6 +21,7 @@ label.leaflet-panel-layers-title {
 .marker-cluster-small {
 	background-color: rgba(10, 140, 226, 0.4);
 }
+
 .marker-cluster-small div {
 	color: rgba(255,255,255,0.9);
 	font-weight: bold;
