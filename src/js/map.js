@@ -180,15 +180,16 @@ define(['jquery','underscore','loglevel','handlebars',
         //PATH FOR OLD MAP
         FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
 
-        this.fenixMap = new FenixMap.map(s.MAP_CONTAINER, 
+        this.fenixMap = new FenixMap.map(this.$map, 
             ConsC.mapOpts, 
             ConsC.mapOptsLeaflet
         );
 
+window.MM= this.fenixMap.map;
+
         setTimeout(function() {
             self.fenixMap.map.invalidateSize(false);
             self.fenixMap.map.fitWorld();
-            self.fenixMap.map.fire('moveend')
         },500);
 
         this.fenixMap.createMap();
@@ -356,10 +357,9 @@ define(['jquery','underscore','loglevel','handlebars',
         }));
 
         $popup.find('a').on('click', function(e) {
+            e.preventDefault();
             var uid = $(e.target).data('uid'),
                 meta = self.metadataByUid[ uid ][0];
-            
-            console.log('METADATA MODEL:', meta);
             self._renderMeta(meta);
         });
 
