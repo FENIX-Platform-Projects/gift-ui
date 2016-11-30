@@ -32,7 +32,7 @@ define(['jquery','underscore','loglevel','handlebars',
     var s = {
             EL: "#map",
             MAP_CONTAINER: "#consumption_map",
-            //MAP_LEGEND: "#consumption_map_legend"
+            MAP_LEGEND: "#consumption_map_legend"
         },
         confidentialityCodelistUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/uid/GIFT_STATUS',
         confidentialityDataUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/find?full=true',
@@ -159,8 +159,6 @@ define(['jquery','underscore','loglevel','handlebars',
         var self = this;
 
         var i18nLabels = labels[ C.lang.toLowerCase() ];
-        
-        i18nLabels.legend_items = this.legend_items;
 
         var html = template(i18nLabels);
 
@@ -169,7 +167,7 @@ define(['jquery','underscore','loglevel','handlebars',
         this.$el = $(s.EL);
 
         this.$map = this.$el.find(s.MAP_CONTAINER);
-        //this.$legend = this.$el.find(s.MAP_LEGEND);
+        this.$legend = this.$el.find(s.MAP_LEGEND);
         
         //TODO FenixMap.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
 
@@ -177,8 +175,6 @@ define(['jquery','underscore','loglevel','handlebars',
             ConsC.mapOpts, 
             ConsC.mapOptsLeaflet
         );
-        
-        window.M = this.fenixMap.map;
 
         setTimeout(function() {
             self.fenixMap.map.invalidateSize(false);
@@ -279,7 +275,6 @@ define(['jquery','underscore','loglevel','handlebars',
         self.panelLayers = _.sortBy(self.panelLayers,'order');
 
         self.legendPanel = new LeafletPanel(self.panelLayers, null, {
-            //container: 'consumption_map_legend',
             compact: true,
             position: 'topleft'
         }).on('panel:selected', function(e) {
@@ -288,12 +283,13 @@ define(['jquery','underscore','loglevel','handlebars',
         .addTo(self.fenixMap.map);
         
         self.hiddenPanel = new LeafletPanel(self.layersByCodesHidden, null, {
-            //container: 'consumption_map_legend',
             compact: true,
             className: 'panel-hiddens',
             position: 'topleft'
         })
-        .addTo(self.fenixMap.map);        
+        .addTo(self.fenixMap.map);
+
+        self.$legend.append(self.legendPanel._container, self.hiddenPanel._container);
     };
 
 

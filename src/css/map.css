@@ -1,4 +1,7 @@
 
+#consumption_map_legend .leaflet-panel-layers {
+	box-shadow: none;
+}
 .leaflet-panel-layers-item input[type="radio"] {
 	display: inline-block;
 	margin: 0 5px;
