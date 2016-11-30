@@ -26,7 +26,7 @@ define(['jquery','underscore','loglevel','handlebars',
     LeafletPanel,
     LeafletMarkecluster,
     FenixMap,
-    FenixMetaViewer
+    MetadataViewer
 ) {
     "use strict";
     var LANG = C.lang;
@@ -34,7 +34,8 @@ define(['jquery','underscore','loglevel','handlebars',
     var s = {
             EL: "#map",
             MAP_CONTAINER: "#consumption_map",
-            MAP_LEGEND: "#consumption_map_legend"
+            MAP_LEGEND: "#consumption_map_legend",
+            MAP_META: "#consumption_map_meta"
         },
         confidentialityCodelistUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/uid/GIFT_STATUS',
         confidentialityDataUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/find?full=true',
@@ -160,24 +161,19 @@ define(['jquery','underscore','loglevel','handlebars',
 
         var self = this;
 
-        var LANG = C.lang.toLowerCase();
-
-        var i18nLabels = labels[ LANG ];
+        var i18nLabels = labels[ LANG.toLowerCase() ];
 
         var html = template(i18nLabels);
 
         $(s.EL).html(html);
 
         this.$el = $(s.EL);
-
         this.$map = this.$el.find(s.MAP_CONTAINER);
         this.$legend = this.$el.find(s.MAP_LEGEND);
-        
-        //TODO FenixMap.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
+        this.$meta = this.$el.find(s.MAP_META);
 
-        FenixMap.guiMap['disclaimerfao_'+LANG] = i18nLabels.disclaimer;
-        //'<div class="fm-disclaimerfao">'+
-console.log(FenixMap.guiMap)
+        //PATH FOR OLD MAP
+        FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
 
         this.fenixMap = new FenixMap.map(s.MAP_CONTAINER, 
             ConsC.mapOpts, 
@@ -187,6 +183,7 @@ console.log(FenixMap.guiMap)
         setTimeout(function() {
             self.fenixMap.map.invalidateSize(false);
             self.fenixMap.map.fitWorld();
+            self.fenixMap.map.fire('moveend')
         },100);
 
         this.fenixMap.createMap();
@@ -300,7 +297,6 @@ console.log(FenixMap.guiMap)
         self.$legend.append(self.legendPanel._container, self.hiddenPanel._container);
     };
 
-
 /*    Map.prototype._iconCreateFunction = function(cluster) {
 
         var childCount = cluster.getChildCount();
@@ -359,20 +355,37 @@ console.log(FenixMap.guiMap)
         return mark;
     };
 
+/*    Map.prototype._renderMeta = function() {
+
+        self.metadataViewer = new MetadataViewer({
+            el: s.MAP_META,
+            //model: valid_model,
+            lang: lang,
+            environment: environment,
+            hideExportButton: false,
+            expandAttributesRecursively: ['meContent'],
+            popover: {
+                placement: 'left'
+            }
+        });
+    };*/
+
     Map.prototype._importThirdPartyCss = function () {
 
+        //map requirements
         require('leaflet/dist/leaflet.css');
         require('leaflet-panel-layers/src/leaflet-panel-layers.css');
         require('fenix-ui-map/dist/fenix-ui-map.min.css');
         require('../lib/MarkerCluster.Default.css');
         require('../lib/MarkerCluster.css');
 
+        //meta viewer requirements
+        require("jquery-treegrid-webpack/css/jquery.treegrid.css");
+
         //host override
         require('../css/gift.css');
 
         require('../css/map.css');
-
-
     };
 
     return new Map();
