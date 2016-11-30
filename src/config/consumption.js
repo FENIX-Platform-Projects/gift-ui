@@ -34,19 +34,7 @@ Grey: Planned food consumption survey
                 maxZoom: 19,
                 opacity: 0.6,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">osm.org</a>'
-            },
-            /*"osm_gray": {
-                url: 'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png',
-                maxZoom: 18,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">osm.org</a>'
-            }*/
-            /*"Cartodb": {
-                url: 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
-                title_en: "CartoDB light",
-                subdomains: 'abcd',
-                maxZoom: 19
-            }*/
+            }
         },
         boundaries: true,
         plugins: {

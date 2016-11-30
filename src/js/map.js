@@ -158,7 +158,9 @@ define(['jquery','underscore','loglevel','handlebars',
 
         var self = this;
 
-        var i18nLabels = labels[ C.lang.toLowerCase() ];
+        var LANG = C.lang.toLowerCase();
+
+        var i18nLabels = labels[ LANG ];
 
         var html = template(i18nLabels);
 
@@ -170,6 +172,10 @@ define(['jquery','underscore','loglevel','handlebars',
         this.$legend = this.$el.find(s.MAP_LEGEND);
         
         //TODO FenixMap.guiMap.disclaimerfao_en = i18nLabels.disclaimer;
+
+        FenixMap.guiMap['disclaimerfao_'+LANG] = i18nLabels.disclaimer;
+        //'<div class="fm-disclaimerfao">'+
+console.log(FenixMap.guiMap)
 
         this.fenixMap = new FenixMap.map(s.MAP_CONTAINER, 
             ConsC.mapOpts, 
