@@ -16746,7 +16746,7 @@
   .fx-sandbox .growing-ico {
     height: 50px;
     width: 45px;
-    background-image: url(../../src/images/nutrition-ico.svg);
+    background-image: url(./img/nutrition-ico.svg);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: contain;
