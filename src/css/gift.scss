@@ -74,4 +74,9 @@
   left: 0;
   z-index: 1040;
   background-color: #000;
+  
+}
+
+.modal-backdrop.in {
+  opacity: .5;
 }
