@@ -1,20 +1,34 @@
 define({
 
     codelistStyles: {
-    	//MAP CODES with Boostrap themes
-        'F': { className:"success", order: 1, visible: true,  color: '#5cb85c' },
-        'A': { className:"primary", order: 2, visible: true },
-        'N': { className:"warning", order: 3, visible: true,  color: '#f0ad4e' },
-        
-        'D': { className:"danger",  order: 4, visible: true,  color: '#d9534f' },
-        'P': { className:"default", order: 5, visible: true,  color: '#bbbbbb'},
-        'Z': { className:"gray",    order: 10,visible: false, color: '#cccccc'},
-      'All': { className:"info",    order: 20,visible: true,  color: '#5bc0de'}
+
+//className: is Boostrap themes
+//visible: visibility in map legend        
+        develop: {
+            Off: 'Z',            
+            All: { className:"info",    order:0,  visible: true },
+            'F': { className:"success", order: 1, visible: true },
+            'A': { className:"primary", order: 2, visible: true },
+            'N': { className:"warning", order: 3, visible: true },
+            'D': { className:"danger",  order: 4, visible: true },
+            'P': { className:"default", order: 5, visible: true },
+            'Z': { className:"gray",    order: 10,visible: false}
+        },
+        production: {
+            Off: '1',
+            All: { className:"info",    order:0, visible:true },
+            '1': { className:"gray",    order:1, visible:true },
+            '2': { className:"default", order:2, visible:true },
+            '3': { className:"danger",  order:3, visible:true },
+            '4': { className:"warning", order:4, visible:true },
+            '5': { className:"success", order:5, visible:true },
+        }
 /*
-Green: Data available for analysis in FAO/WHO GIFT
-Orange: Data soon to be inserted in FAO/WHO GIFT
-Red: Existing data potentially suitable for FAO/WHO GIFT
-Grey: Planned food consumption survey
+@1@Off
+@2@Planned food consumption surveys
+@3@Existing data potentially suitable to be inserted in FAO/WHO GIFT
+@4@Data soon to be inserted in FAO/WHO GIFT
+@5@Data available in FAO/WHO GIFT
 */
     },
 

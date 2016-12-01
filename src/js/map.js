@@ -30,9 +30,11 @@ define(['jquery','underscore','loglevel','handlebars',
 ) {
     "use strict";
     var LANG = C.lang;
+
+    ConsC.codelistStyles = ConsC.codelistStyles[C.environment];
     
-    var confidentialityDataUrl = C.consumption.serviceUrl+'/msd/resources/find?full=true',
-        confidentialityCodelistUrl = C.consumption.serviceUrl+'/msd/resources/uid/GIFT_STATUS',
+    var confidentialityDataUrl = C.consumption.service[C.environment]+'/msd/resources/find?full=true',
+        confidentialityCodelistUrl = C.consumption.service[C.environment]+'/msd/resources/uid/GIFT_STATUS',
         confidentialityDataPayload = {
             "dsd.contextSystem": {
                 "enumeration": ["gift"]
@@ -88,7 +90,7 @@ define(['jquery','underscore','loglevel','handlebars',
 
                 _.each(res.data, function(obj) {
 
-                    if(ConsC.codelistStyles[ obj.code ].visible) {
+                    if(ConsC.codelistStyles[ obj.code ] && ConsC.codelistStyles[ obj.code ].visible) {
                         self.legend_items.push({
                             code: obj.code,
                             title: obj.title[ LANG ],
@@ -270,7 +272,7 @@ window.MM= this.fenixMap.map;
                     active: false,
                     order: order,
                     name: self.titleByCodes[ code ],
-                    icon: '<i class="label label-'+className+' text-primary">&nbsp;</i>',
+                    icon: '<i class="label label-'+className+' text-primary">'+code+'&nbsp;</i>',
                     layer: L.layerGroup([])
                 };
             }
@@ -290,14 +292,12 @@ window.MM= this.fenixMap.map;
         self.layersByCodesHidden = [{
             active: true,
             order: 1,
-            name: self.titleByCodes['Z'],
-            icon: '<i class="label label-'+ConsC.codelistStyles['Z'].className+' text-primary">&nbsp;</i>',
+            name: self.titleByCodes[ ConsC.codelistStyles.Off ],
+            icon: '<i class="label label-'+ConsC.codelistStyles[ ConsC.codelistStyles.Off ].className+' text-primary">&nbsp;</i>',
             layer: self.layerHiddens
         }];
 
-        self.panelLayers = _.values(self.layersByCodes);
-
-        self.panelLayers = _.sortBy(self.panelLayers,'order');
+        self.panelLayers = _.sortBy(_.values(self.layersByCodes),'order');
 
         self.legendPanel = new LeafletPanel(self.panelLayers, null, {
             compact: true,
@@ -314,7 +314,8 @@ window.MM= this.fenixMap.map;
         })
         .addTo(self.fenixMap.map);
 
-        self.$legend.append(self.legendPanel._container, self.hiddenPanel._container);
+        //move panel outside map
+        //self.$legend.append(self.legendPanel._container, self.hiddenPanel._container);
     };
 
 /*    Map.prototype._iconCreateFunction = function(cluster) {
@@ -358,6 +359,7 @@ window.MM= this.fenixMap.map;
         _.each(items, function(item) {
             _.each(item.confids, function(code) {
                 itemsValue.push({
+                    code: code,
                     className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
                     title: item.title.title,
                     uid: item.uid
@@ -390,11 +392,13 @@ window.MM= this.fenixMap.map;
             el: this.$meta,
             lang: C.lang,
             environment: C.environment,
-            hideExportButton: false,
+            hideExportButton: true,
             expandAttributesRecursively: ['meContent'],
             popover: {
                 placement: 'left'
             }
+        }).on('export', function(e) {
+            console.log('EXPORT MODEL',e)
         });
     };
 

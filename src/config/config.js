@@ -4,15 +4,18 @@ define(["underscore"],function (_) {
 
     return {
 
-        environment : "production",
+        //environment : "production",
+        environment : "develop",
 
         cache : false,
 
         lang : "EN",
 
         consumption: {
-            serviceUrl: "http://fenixservices.fao.org/d3s",
-            serviceUrlDemo: "http://fenix.fao.org/d3s",
+            service: {
+                production: "http://fenixservices.fao.org/d3s",
+                develop: "http://fenix.fao.org/d3s"
+            },
             requestBody: {
                 "dsd.contextSystem": {
                     "enumeration": ["gift"]
