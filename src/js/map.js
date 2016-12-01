@@ -326,7 +326,7 @@ window.MM= this.fenixMap.map;
         .addTo(self.fenixMap.map);
 
         //move panel outside map
-        //self.$legend.append(self.legendPanel._container, self.hiddenPanel._container);
+        self.$legend.append(self.legendPanel._container, self.hiddenPanel._container);
     };
 
     Map.prototype._getMarker = function(items) {
