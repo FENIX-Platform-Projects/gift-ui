@@ -202,7 +202,7 @@ define(
                     classNames: "well",
 
                     template: {
-                        title: "Contacts",
+                        title: "Contact(s)",
                         description: "Information on the person(s) to be contacted for further queries regarding the dataset and dataset analysis"
                     },
 
@@ -497,21 +497,6 @@ define(
                                         "output": "label"
                                     }
                                 },
-                                "coverageGeographic": {
-                                    "cl": GAUL,
-                                    "selector": {
-                                        "id": "dropdown"
-                                    },
-                                    "template": {
-                                        "title": "Study areas",
-                                        "description": "Specify the geographical/administrative area(s) covered by the study",
-
-                                    },
-                                    "format": {
-                                        "output": "codes"
-                                    },
-                                    "constraints": {"presence": true}
-                                },
                                 "coverageTime": {
                                     "template": {
                                         "title": "Data collection period",
@@ -544,7 +529,23 @@ define(
                                             "constraints": {"presence": true}
                                         }
                                     }
+                                },
+                                "coverageGeographic": {
+                                    "cl": GAUL,
+                                    "selector": {
+                                        "id": "dropdown"
+                                    },
+                                    "template": {
+                                        "title": "Study areas",
+                                        "description": "Specify the geographical/administrative area(s) covered by the study",
+
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    },
+                                    "constraints": {"presence": true}
                                 }
+
                             }
                         }
                     }
@@ -804,6 +805,46 @@ define(
                                 "title": "General Information",
                             },
                             "selectors": {
+
+                                "role": {
+                                    enumeration: YESNO,
+                                    "selector": {
+                                        "id": "dropdown",
+                                        config: {
+                                            maxItems: 1
+                                        }
+                                    },
+                                    "template": {
+                                        "title": "YESNO",
+                                        "description": "YESNO",
+
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    }
+
+                                },
+
+                                "specify": {
+                                    "selector": {
+                                        "id": "input",
+                                        "type": "text",
+                                        "source": [{"value": "specify", "label": "Specify"}]
+                                    },
+                                    "template": {
+                                        "title": "YESNO",
+                                        "description": "YESNO",
+                                    },
+                                    "format": {
+                                        "output": "label"
+                                    },
+                                    dependencies: {
+                                        "role": [{event: 'change', id: 'disable'}]
+                                    }
+
+                                },
+
+
                                 "ResourceType" : {
                                     "cl": GIFT_TypeOfResource,
                                     "selector": {
@@ -832,7 +873,7 @@ define(
                                         "config": { "readonly": true }
                                     },
                                     "dependencies": {
-                                        "ResourceType" : [{id : "readOnlyIfNotValue", event: "select", args : {value : "other"}}]
+                                        "ResourceType" : [{id : "disable", event: "change", args : {value : "other"}}]
                                     },
                                     "template": {
                                         "title": "Type of resource - details",
@@ -950,9 +991,9 @@ define(
                                     }
                                 },
                                 "RepeatedDietary" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source": YESNO,
                                         "config" : { "maxItems" : 1 }
                                     },
                                     "template": {
@@ -1303,9 +1344,9 @@ define(
                                     }
                                 },
                                 "DataAlreadyCorrected": {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source": YESNO,
                                         "config" : { "maxItems" : 1 }
                                     },
                                     "template": {
@@ -1349,9 +1390,9 @@ define(
                             },
                             "selectors": {
                                 "FoodCoverageTotal" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source": YESNO,
                                         "config" : { "maxItems" : 1 }
                                     },
                                     "template": {
@@ -1389,9 +1430,9 @@ define(
                                     }
                                 },
                                 "DrinkingWater" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source": YESNO,
                                         "config" : { "maxItems" : 1 }
                                     },
                                     "template": {
@@ -1405,9 +1446,9 @@ define(
                                     "constraints": {"presence": true }
                                 },
                                 "SupplementInformation" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source": YESNO,
                                         "config" : { "maxItems" : 1 }
                                     },
                                     "template": {
@@ -1550,40 +1591,6 @@ define(
                                 "title": "Food composition information",
                             },
                             "selectors": {
-                                "rolex": {
-                                    enumeration: YESNO,
-                                    "selector": {
-                                        "id": "dropdown",
-                                        config: {
-                                            maxItems: 1
-                                        }
-                                    },
-
-                                    "format": {
-                                        "output": "label"
-                                    }
-
-                                },
-
-                                "specify": {
-                                    "selector": {
-                                        "id": "input",
-                                        "type": "text",
-                                        "source": [{"value": "specify", "label": "Specify"}],
-                                        config: {
-                                            readonly: true
-                                        }
-
-                                    },
-
-                                    "format": {
-                                        "output": "label"
-                                    },
-                                    dependencies: {
-                                        rolex: [{id: "readOnlyIfNotValue", event: "select", args: {value: "Yes"}}]
-                                    },
-
-                                },
                                 "FoodComsumption": {
                                     "selector": {
                                         "id": "input",
@@ -1689,7 +1696,7 @@ define(
                                         "config": { "readonly": true }
                                     },
                                     "dependencies": {
-                                        "MicroDietaryComponents" : [{id : "readOnlyIfNotValue", event: "select", args : {value : 13}}]
+                                        "MicroDietaryComponents" : [{id : "readOnlyIfNotValue", event: "change", args : {value : 13}}]
                                     },
                                     "template": {
                                         "title": "Micronutrients and minerals available in the dataset - details",
@@ -1709,13 +1716,10 @@ define(
                             },
                             "selectors": {
                                 "Age" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "constraints": {"presence": true },
                                     "template": {
@@ -1723,13 +1727,10 @@ define(
                                     }
                                 },
                                 "Sex" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "constraints": {"presence": true },
                                     "template": {
@@ -1737,13 +1738,10 @@ define(
                                     }
                                 },
                                 "BodyWeight" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "constraints": {"presence": true },
                                     "template": {
@@ -1751,13 +1749,10 @@ define(
                                     }
                                 },
                                 "BodyHeight" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "constraints": {"presence": true },
                                     "template": {
@@ -1765,13 +1760,10 @@ define(
                                     }
                                 },
                                 "PhysicalActivityLevel" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "constraints": {"presence": true },
                                     "template": {
@@ -1779,13 +1771,10 @@ define(
                                     }
                                 },
                                 "InterviewDate" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "constraints": {"presence": true },
                                     "template": {
@@ -1793,13 +1782,10 @@ define(
                                     }
                                 },
                                 "GeographicalLocalization" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "constraints": {"presence": true },
                                     "template": {
@@ -1807,39 +1793,30 @@ define(
                                     }
                                 },
                                 "SocioDemographic" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "template": {
                                         "title": "SocioDemographic"
                                     }
                                 },
                                 "EducationLiteracy" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "template": {
                                         "title": "EducationLiteracy"
                                     }
                                 },
                                 "Ethnicity" : {
+                                    "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "source" : YESNO,
                                         "config" : { "maxItems" : 1 }
-                                    },
-                                    "format": {
-                                        "output": "boolean"
                                     },
                                     "template": {
                                         "title": "Ethnicity"

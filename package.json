@@ -19,7 +19,7 @@
     "build:base": "SECTIONS=base NODE_ENV=production webpack --display-error-details ",
     "build:map": "SECTIONS=map NODE_ENV=production webpack --display-error-details ",
     "build:stats": "SECTIONS=base,analysis,data_management NODE_ENV=production webpack --display-error-details --profile --json  > stats.json",
-    "w-build": "SECTIONS=readyToUse,map,base,mde,statistics&&NODE_ENV=production&&webpack --display-error-details",
+    "w-build": "SET SECTIONS=readyToUse,map,base,mde,statistics&&SET NODE_ENV=production&&webpack --display-error-details ",
     "w-build:stats": "SET SECTIONS=base,analysis,data_management&&SET NODE_ENV=production&&webpack --display-error-details --profile --json  > stats.json"
   },
   "repository": {
