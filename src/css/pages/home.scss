@@ -1,0 +1,176 @@
+/* Homepage */
+$fenix-light-hr: #bbbbbb;
+$superlight-gray: #f2f2f2;
+
+
+/* Fast Links */
+
+.fast-link-container {
+
+  .fast-link-header {
+    height: 25px;
+    border-bottom: 1px solid $fenix-light-hr;
+    margin-bottom: 15px;
+
+    h3 {
+      margin-top: 0;
+    }
+
+  }
+
+}
+
+.home-tiles {
+  height: 140px;
+  h2{
+    color: white;
+    margin: 0;
+
+    span{
+      font-size: 40px;
+    }
+  }
+
+  a{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 25px;
+
+
+  }
+
+  a:link,
+  a:visited,
+  a:hover,
+  a:focus,
+  a:active{
+    text-decoration: none;
+  }
+
+  &.food-cons{
+    padding: 0 15px 15px 15px;
+    a{background-color: #2f879a;}
+
+  }
+
+  &.food-safe{
+    padding: 0 15px 15px 15px;
+    a{background-color: #2f9a8f; span{position: relative; left: -6px;}}
+  }
+
+  &.food-nutr{
+    padding: 15px 15px 0 15px;
+    a{background-color: #2f699a;}
+  }
+
+  &.food-envi{
+    padding: 15px 15px 0 15px;
+    a{background-color: #e2e3e3; span{position: relative; left: -6px;}}
+  }
+
+
+}
+
+.coming{
+
+  &:before{
+    content: 'COMING SOON';
+    display: inline-block;
+    background-color: #8e9292;
+    color: white;
+    font-size: 10px;
+    padding: 5px 9px;
+    position: absolute;
+    right: 0;
+    top: 0;
+
+  }
+
+}
+
+.gift-containers-home{
+  height: 330px;
+}
+
+.home-gallery-item{
+  height: 320px;
+  background-size: cover;
+  background-position: 50% 50%;
+  overflow: hidden;
+
+}
+
+//.item{
+//  opacity: 0;
+//}
+
+
+.growing-ico{
+  height: 50px;
+  width: 45px;
+  background-image: url(../../src/images/nutrition-ico.svg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+  display: block;
+}
+
+.db-updates-list {
+  list-style: none;
+  padding-left: 0;
+  padding-right: 15px;
+
+  li {
+    position: relative;
+    padding: 15px 0 15px 15px;
+    border-bottom: 1px solid $fenix-light-hr;
+
+    &:last-child {
+      border-bottom-color: transparent;
+    }
+
+    h3 {
+      margin: 0;
+
+      font-weight: 400;
+    }
+
+    .db-update-ico {
+      position: absolute;
+      left: 0;
+      width: 60px;
+      text-align: center;
+      font-size: 45px;
+    }
+
+    .db-update-country {
+
+    }
+
+    .db-update-date {
+
+    }
+
+    .db-update-link {
+
+    }
+
+  }
+
+}
+
+
+.home-event{
+  h2{
+    font-weight: 500;
+    color: $fx-cool-blue-alt;
+    text-transform: none;
+
+  }
+
+  p{
+    padding: 0 10px;
+  }
+}
