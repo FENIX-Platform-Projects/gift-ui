@@ -240,7 +240,7 @@ window.MM= this.fenixMap.map;
             return self.countryByAdm0Code[ id ];
         }) );
 
-        self.layerHiddens = L.geoJson(hiddens, {
+        self.layerGray = L.geoJson(hiddens, {
             style: function(f) {
                 return ConsC.countryHiddensStyle;
             },
@@ -250,13 +250,16 @@ window.MM= this.fenixMap.map;
             }
         });
 
-        self.layerHiddens.addTo(self.fenixMap.map);
+        self.layerGray.addTo(self.fenixMap.map);
 
         self.layersByCodes = {};
 
         _.each(self.codesByCountry, function(items, countryCode) {
 
-            var code = items[0].confids[0],
+console.log('CODES',items);
+
+            var item = items[0],
+                code = item.confids[0],
                 order = ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].order : 0,
                 mark = self._getMarker(items),
                 markCluster = self._getMarker(items),
@@ -265,7 +268,7 @@ window.MM= this.fenixMap.map;
             if(ConsC.codelistStyles[ code ])
                 className = ConsC.codelistStyles[ code ].className;
             else
-                console.log('code not defined', items[0].confids[0])
+                console.log('Value of confidentialityStatus not found', item.confids[0])
 
             if(!self.layersByCodes[ code ]) {
                 self.layersByCodes[ code ] = {
@@ -281,6 +284,7 @@ window.MM= this.fenixMap.map;
             self.layerCluster.addLayer(markCluster);
         });
 
+    //fixed LEGEND field
         self.layersByCodes['All']= {
             active: true,
             order: 10,
@@ -288,14 +292,6 @@ window.MM= this.fenixMap.map;
             icon: '<i class="label label-'+ConsC.codelistStyles['All'].className+' text-primary">&nbsp;</i>',
             layer: self.layerCluster
         };
-        
-        self.layersByCodesHidden = [{
-            active: true,
-            order: 1,
-            name: self.titleByCodes[ ConsC.codelistStyles.Off ],
-            icon: '<i class="label label-'+ConsC.codelistStyles[ ConsC.codelistStyles.Off ].className+' text-primary">&nbsp;</i>',
-            layer: self.layerHiddens
-        }];
 
         self.panelLayers = _.sortBy(_.values(self.layersByCodes),'order');
 
@@ -306,8 +302,18 @@ window.MM= this.fenixMap.map;
             self.fenixMap.map.fitWorld();
         })
         .addTo(self.fenixMap.map);
-        
-        self.hiddenPanel = new LeafletPanel(null, self.layersByCodesHidden, {
+
+        var layerPanelGray = [
+            {
+                active: true,
+                order: 1,
+                name: self.titleByCodes[ ConsC.codelistStyles.Off ],
+                icon: '<i class="label label-'+ConsC.codelistStyles[ ConsC.codelistStyles.Off ].className+' text-primary">&nbsp;</i>',
+                layer: self.layerGray
+            }
+        ];
+                
+        self.hiddenPanel = new LeafletPanel(null, layerPanelGray, {
             compact: true,
             className: 'panel-hiddens',
             position: 'topleft'
