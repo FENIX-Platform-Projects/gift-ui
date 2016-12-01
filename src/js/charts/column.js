@@ -113,8 +113,6 @@ define([
 
     ColumnChart.prototype._updateProcessConfig = function (process) {
 
-        console.log("BEFORE")
-        console.log(JSON.stringify(process))
         process[0].sid[0].uid = this.uid;
 
         if(this.selected_items){
@@ -124,8 +122,6 @@ define([
         if(this.selected_group){
             process[1].parameters.rows.group_code = this.selected_group;
         }
-        console.log("AFTER")
-        console.log(JSON.stringify(process))
         return process;
     }
 
