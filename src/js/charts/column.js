@@ -10,27 +10,71 @@ define([
         HEIGHT : 300,
         WIDTH : 300,
         DAY : "/day",
-        first_level_process :
-            [
-                {
-                    "name": "gift_average_percentile",
-
-                    "sid" : [{"uid":"gift_process_total_food_consumption_000042BUR201001"}],
-
-                    "parameters": {
-
-                        "percentileSize" : 5,
-
-                        "item" : "FOOD_AMOUNT_PROC",
-
-                        "group" : "01",
-
-                        "subgroup" : null,
-
-                        "food" : null
+        process : [
+            {
+                "name": "gift_population_filter",
+                "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
+                "parameters": {
+                    "item": "FOOD_AMOUNT_PROC",
+                    "gender": "2",
+                    "special_condition": ["1"],
+                    "age_year": {
+                        "from": 10.5,
+                        "to": 67
                     }
                 }
-            ]
+            },
+            {
+                "name": "filter",
+                "parameters": {
+                    "columns": [
+                        "subject",
+                        "item",
+                        "value",
+                        "um"
+                    ],
+                    "rows": {
+                        "group_code": {
+                            "codes": [
+                                {
+                                    "uid": "GIFT_FoodGroups",
+                                    "codes": [ "01" ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "name": "group",
+                "parameters": {
+                    "by": [
+                        "subject",
+                        "item"
+                    ],
+                    "aggregations": [
+                        {
+                            "columns": [ "value" ],
+                            "rule": "SUM"
+                        },
+                        {
+                            "columns": [ "um" ],
+                            "rule": "max"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "asTable"
+            },
+            {
+                "name": "gift_average_percentile",
+                "parameters": {
+                    "percentileSize" : 5
+                }
+            }
+        ]
+
     };
 
     function ColumnChart(params) {
@@ -42,7 +86,7 @@ define([
             cache :  this.cache
         });
 
-        this._getProcessedResourceForChart(s.first_level_process).then(
+        this._getProcessedResourceForChart(s.process).then(
             _.bind(this._onSuccess, this),
             _.bind(this._onError, this)
         );
@@ -56,9 +100,7 @@ define([
         this.uid = opts.uid;
         this.selected_items = opts.selected_items;
         this.selected_group = opts.selected_group;
-        this.selected_subgroup = opts.selected_subgroup;
-        this.selected_food = opts.selected_food;
-        this.first_level_process = s.first_level_process;
+        this.process = s.process;
 
         this.elID = opts.elID;
         this.amountID = opts.amountID;
@@ -66,28 +108,24 @@ define([
         this.percentageID = opts.percentageID;
 
         this.language = opts.language;
+        this.filter = opts.filter;
     };
 
-
     ColumnChart.prototype._updateProcessConfig = function (process) {
+
+        console.log("BEFORE")
+        console.log(JSON.stringify(process))
         process[0].sid[0].uid = this.uid;
 
         if(this.selected_items){
-            process[0].parameters.item = this.selected_items;
+            process[0].parameters = this.selected_items;
         }
 
         if(this.selected_group){
-            process[0].parameters.group = this.selected_group;
+            process[1].parameters.rows.group_code = this.selected_group;
         }
-
-        if(this.selected_subgroup){
-            process[0].parameters.subgroup = this.selected_subgroup;
-        }
-
-        if(this.selected_food){
-            process[0].parameters.food = this.selected_food;
-        }
-
+        console.log("AFTER")
+        console.log(JSON.stringify(process))
         return process;
     }
 

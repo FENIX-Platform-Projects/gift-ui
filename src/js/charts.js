@@ -38,11 +38,11 @@ define([
     Charts.prototype._renderCharts = function () {
 
         //donut chart
-        this._renderDonutChart();
+        //this._renderDonutChart();
         //bubble chart
         //this._renderBubbleChart();
         //column chart
-        //this._renderColumnChart();
+        this._renderColumnChart();
         //donut hole
         //this._renderDonutHoleChart();
 
@@ -99,6 +99,26 @@ define([
             high : s.AMOUNT_HIGH
         }
 
+        var param = {
+            selected_items :{
+                "item": "FOOD_AMOUNT_PROC",
+                "gender": "2",
+                "special_condition": ["1"],
+                "age_year": {
+                    "from": 10.5,
+                    "to": 67
+                }
+            },
+            selected_group :{
+                "codes": [
+                    {
+                        "uid": "GIFT_FoodGroups",
+                        "codes": ["01"]
+                    }
+                ]
+            }
+        }
+
         this.Column = new Column({
             elID : s.COLUMN_CONTAINER_ID,
             amountID : amount_id,
@@ -107,11 +127,10 @@ define([
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_food_consumption_000042BUR201001",
-            selected_items : "FOOD_AMOUNT_PROC",
-            selected_group : "01",
+            selected_items : param.selected_items,
+            selected_group : param.selected_group,
             language : s.language
         });
-
         //this.renderColumns();
     };
 
