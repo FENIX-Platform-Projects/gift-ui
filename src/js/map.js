@@ -30,16 +30,9 @@ define(['jquery','underscore','loglevel','handlebars',
 ) {
     "use strict";
     var LANG = C.lang;
-
-    var s = {
-            EL: "#map",
-            MAP_CONTAINER: "#consumption_map",
-            MAP_LEGEND: "#consumption_map_legend",
-            MAP_META: "#consumption_map_meta",
-            MAP_METAMODAL: "#consumption_map_modal",       
-        },
-        confidentialityCodelistUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/uid/GIFT_STATUS',
-        confidentialityDataUrl = C.SERVICE_BASE_ADDRESS+'/msd/resources/find?full=true',
+    
+    var confidentialityDataUrl = C.consumption.serviceUrl+'/msd/resources/find?full=true',
+        confidentialityCodelistUrl = C.consumption.serviceUrl+'/msd/resources/uid/GIFT_STATUS',
         confidentialityDataPayload = {
             "dsd.contextSystem": {
                 "enumeration": ["gift"]
@@ -47,6 +40,14 @@ define(['jquery','underscore','loglevel','handlebars',
             "meContent.resourceRepresentationType": {
                 "enumeration": ["dataset"]
             }
+        };
+
+    var s = {
+            EL: "#map",
+            MAP_CONTAINER: "#consumption_map",
+            MAP_LEGEND: "#consumption_map_legend",
+            MAP_META: "#consumption_map_meta",
+            MAP_METAMODAL: "#consumption_map_modal",       
         };
 
     function Map() {
@@ -86,6 +87,7 @@ define(['jquery','underscore','loglevel','handlebars',
                 });
 
                 _.each(res.data, function(obj) {
+
                     if(ConsC.codelistStyles[ obj.code ].visible) {
                         self.legend_items.push({
                             code: obj.code,
@@ -108,11 +110,17 @@ define(['jquery','underscore','loglevel','handlebars',
             method: 'POST',
             contentType: "application/json; charset=utf-8",            
             url: confidentialityDataUrl,
-            data: JSON.stringify(C.CONSUMPTION.body),      
+            data: JSON.stringify(C.consumption.requestBody),      
             success: function(res) {
 
+                res = _.filter(res, function(d) {
+                    if(!d.meContent.seCoverage)
+                        console.log('converage field not found',d);
+                    return d.meContent && d.meContent.seCoverage && d.meContent.seCoverage.coverageGeographic;
+                });
+
                 self.metadataByCountry = _.groupBy(res, function(d) {
-                    var countryCode = d.meContent.seCoverage.coverageGeographic.codes[0].code;
+                    var countryCode =  d.meContent.seCoverage.coverageGeographic.codes[0].code;
                     return countryCode;
                 });
 
@@ -245,11 +253,17 @@ window.MM= this.fenixMap.map;
         self.layersByCodes = {};
 
         _.each(self.codesByCountry, function(items, countryCode) {
+
             var code = items[0].confids[0],
-                className = ConsC.codelistStyles[ code ].className,
-                order = ConsC.codelistStyles[ code ].order,
+                order = ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].order : 0,
                 mark = self._getMarker(items),
-                markCluster = self._getMarker(items);
+                markCluster = self._getMarker(items),
+                className;
+            
+            if(ConsC.codelistStyles[ code ])
+                className = ConsC.codelistStyles[ code ].className;
+            else
+                console.log('code not defined', items[0].confids[0])
 
             if(!self.layersByCodes[ code ]) {
                 self.layersByCodes[ code ] = {
@@ -344,7 +358,7 @@ window.MM= this.fenixMap.map;
         _.each(items, function(item) {
             _.each(item.confids, function(code) {
                 itemsValue.push({
-                    className: ConsC.codelistStyles[ code ].className,
+                    className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
                     title: item.title.title,
                     uid: item.uid
                 });
@@ -398,8 +412,6 @@ window.MM= this.fenixMap.map;
 
         //host override
         require('../css/gift.css');
-
-        require('../css/map.css');
     };
 
     return new Map();

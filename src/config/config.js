@@ -10,6 +10,19 @@ define(["underscore"],function (_) {
 
         lang : "EN",
 
+        consumption: {
+            serviceUrl: "http://fenixservices.fao.org/d3s",
+            serviceUrlDemo: "http://fenix.fao.org/d3s",
+            requestBody: {
+                "dsd.contextSystem": {
+                    "enumeration": ["gift"]
+                },
+                "meContent.resourceRepresentationType": {
+                    "enumeration": ["dataset"]
+                }
+            }
+        },
+
         populationFilter: {
 
             selectors: {
@@ -302,19 +315,6 @@ define(["underscore"],function (_) {
                     template: {
                         title: "Food"
                     }
-                }
-            }
-        },
-
-        //from old consuption
-		SERVICE_BASE_ADDRESS: "http://fenix.fao.org/d3s",
-		CONSUMPTION: {
-            body: {
-                "dsd.contextSystem": {
-                    "enumeration": ["gift"]
-                },
-                "meContent.resourceRepresentationType": {
-                    "enumeration": ["dataset"]
                 }
             }
         }

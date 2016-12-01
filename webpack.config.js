@@ -58,8 +58,8 @@ module.exports = sections.map(function (section) {
             new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery"}),
             isProduction(new CleanWebpackPlugin([distFolderPath]), undefined),
             isProduction(new webpack.optimize.UglifyJsPlugin({
-                compress: {warnings: false},
-                output: {comments: false}
+               compress: {warnings: false},
+               output: {comments: false}
             })),
             isProduction(new ExtractTextPlugin(section + "/" + packageJson.name + "." + section + '.min.css')),
             isDevelop(new HtmlWebpackPlugin({
