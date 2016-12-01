@@ -90,6 +90,33 @@ $superlight-gray: #f2f2f2;
 
 }
 
+.gift-containers-home{
+  height: 330px;
+}
+
+.home-gallery-item{
+  height: 320px;
+  background-size: cover;
+  background-position: 50% 50%;
+  overflow: hidden;
+
+}
+
+//.item{
+//  opacity: 0;
+//}
+
+
+.growing-ico{
+  height: 50px;
+  width: 45px;
+  background-image: url(../../src/images/nutrition-ico.svg);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: contain;
+  display: block;
+}
+
 .db-updates-list {
   list-style: none;
   padding-left: 0;
@@ -132,4 +159,18 @@ $superlight-gray: #f2f2f2;
 
   }
 
+}
+
+
+.home-event{
+  h2{
+    font-weight: 500;
+    color: $fx-cool-blue-alt;
+    text-transform: none;
+
+  }
+
+  p{
+    padding: 0 10px;
+  }
 }
