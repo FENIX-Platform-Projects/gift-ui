@@ -15,7 +15,9 @@ define([
     var s = {
         EL: "#statistics",
         CATALOG_HOLDER: "#catalog",
-        METADATA_VIEWER_HOLDER: "#viewer"
+        METADATA_VIEWER_HOLDER: "#viewer",
+        METADATA_CONTENT: "#statistics_metadata_content",
+        METADATA_MODAL: "#statistics_metadata_modal"
     };
 
     function Statistics() {
@@ -80,12 +82,17 @@ define([
         //time selector
         require("../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css");
 
+
+        //meta viewer requirements
+        require("jquery-treegrid-webpack/css/jquery.treegrid.css");
+
     };
 
 
     Statistics.prototype._initVariables = function () {
 
         this.$el = $(s.EL);
+
 
         this.lang = C.lang.toLowerCase();
         this.environment = C.environment;
@@ -95,6 +102,9 @@ define([
 
     Statistics.prototype._attach = function () {
         this.$el.html(template(labels[C.lang.toLowerCase()]));
+        this.$meta = this.$el.find(s.METADATA_CONTENT);
+        this.$metamodal = this.$el.find(s.METADATA_MODAL);
+
     };
 
     Statistics.prototype._renderCatalog = function () {
@@ -150,9 +160,26 @@ define([
             return;
         }
 
+        // Use the bridge to get the metadata
+        this.$metamodal.modal('show');
+        this.metadataViewer = new MetadataViewer({
+            model: payload.model,
+            el: this.$meta,
+            lang: this.lang,
+            environment: this.environment,
+            hideExportButton: true,
+            expandAttributesRecursively: ['meContent'],
+            popover: {
+                placement: 'left'
+            }
+        }).on('export', function(e) {
+            console.log('EXPORT MODEL',e)
+        });
 
 
-        var link = document.createElement('a');
+
+
+       /* var link = document.createElement('a');
         link.href = "#";
         link.id = "myButton";
         link.class = "btn btn-primary"
@@ -184,17 +211,17 @@ define([
                     })
                 });
 
-            /*var metadataViewer = new MetadataViewer({
+            /!*var metadataViewer = new MetadataViewer({
                 model: payload.model,
                 lang: this.lang,
                 el: content,
                 environment: this.environment
-            });*/
+            });*!/
 
           // $('#myModal').modal();
         };
         link.click();
-        link.remove();
+        link.remove();*/
 
 
 
