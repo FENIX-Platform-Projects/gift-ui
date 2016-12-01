@@ -89,17 +89,19 @@ define(['jquery','underscore','loglevel','handlebars',
                 });
 
                 _.each(res.data, function(obj) {
+                    
+                    var code = obj.code;
 
-                    if(ConsC.codelistStyles[ obj.code ] && ConsC.codelistStyles[ obj.code ].visible) {
+                    if(ConsC.codelistStyles[ code ] && ConsC.codelistStyles[ code ].visible) {
                         self.legend_items.push({
-                            code: obj.code,
+                            code: code,
                             title: obj.title[ LANG ],
-                            className: ConsC.codelistStyles[ obj.code ].className,
-                            order: ConsC.codelistStyles[ obj.code ].order
+                            className: ConsC.codelistStyles[ code ].className,
+                            order: ConsC.codelistStyles[ code ].order
                         });
                     }
-                    
-                    self.titleByCodes[ obj.code ]= obj.title[ LANG ];
+                    console.log(code, obj.title)
+                    self.titleByCodes[ code ]= obj.title[ LANG ];
                 });
                 
                 self.legend_items = _.sortBy(self.legend_items,'order');
@@ -230,7 +232,7 @@ window.MM= this.fenixMap.map;
             }
         }
 
-        self.layerCluster = L.markerClusterGroup({
+        self.layerAll = L.markerClusterGroup({
             showCoverageOnHover: true,
             maxClusterRadius: 30,
             //iconCreateFunction: this._iconCreateFunction
@@ -255,33 +257,37 @@ window.MM= this.fenixMap.map;
         self.layersByCodes = {};
 
         _.each(self.codesByCountry, function(items, countryCode) {
-
-console.log('CODES',items);
-
-            var item = items[0],
-                code = item.confids[0],
-                order = ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].order : 0,
-                mark = self._getMarker(items),
-                markCluster = self._getMarker(items),
-                className;
             
-            if(ConsC.codelistStyles[ code ])
-                className = ConsC.codelistStyles[ code ].className;
-            else
-                console.log('Value of confidentialityStatus not found', item.confids[0])
+            var markCluster = self._getMarker(items);
 
-            if(!self.layersByCodes[ code ]) {
-                self.layersByCodes[ code ] = {
-                    active: false,
-                    order: order,
-                    name: self.titleByCodes[ code ],
-                    icon: '<i class="label label-'+className+' text-primary">'+code+'&nbsp;</i>',
-                    layer: L.layerGroup([])
-                };
-            }
+            _.each(items, function(item) {
 
-            self.layersByCodes[ code ].layer.addLayer(mark);
-            self.layerCluster.addLayer(markCluster);
+                var //item = items[0],
+                    className,
+                    code = item.confids[0],
+                    order = ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].order : 0;
+
+                var mark = self._getMarker(items);
+
+                if(ConsC.codelistStyles[ code ])
+                    className = ConsC.codelistStyles[ code ].className;
+                else
+                    console.log('Value of confidentialityStatus not found', item.confids[0])
+
+                if(!self.layersByCodes[ code ]) {
+                    self.layersByCodes[ code ] = {
+                        active: false,
+                        order: order,
+                        name: self.titleByCodes[ code ],
+                        icon: '<i class="label label-'+className+' text-primary">'+code+'&nbsp;</i>',
+                        layer: L.layerGroup([])
+                    };
+                }
+
+                self.layersByCodes[ code ].layer.addLayer(mark);
+            });
+                
+            self.layerAll.addLayer(markCluster);
         });
 
     //fixed LEGEND field
@@ -290,7 +296,7 @@ console.log('CODES',items);
             order: 10,
             name: 'All Data by Country',
             icon: '<i class="label label-'+ConsC.codelistStyles['All'].className+' text-primary">&nbsp;</i>',
-            layer: self.layerCluster
+            layer: self.layerAll
         };
 
         self.panelLayers = _.sortBy(_.values(self.layersByCodes),'order');
