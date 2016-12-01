@@ -10,15 +10,16 @@
     "w-dev:charts": "SET SECTIONS=charts&&SET NODE_ENV=develop&&webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:map": "SECTIONS=map NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "w-dev:mde": "SET SECTIONS=mde&&SET NODE_ENV=develop&&webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
-    "dev:filter": "SECTIONS=filter NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
+    "dev:filter": "cross-env SECTIONS=filter NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:mde": "SECTIONS=mde NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:readyToUse": "SECTIONS=readyToUse NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
+    "dev:statistics": "cross-env SECTIONS=statistics NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:base": "SECTIONS=base NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
-    "build": "SECTIONS=readyToUse,map,base,mde NODE_ENV=production webpack --display-error-details ",
+    "build": "SECTIONS=readyToUse,map,base,mde,statistics NODE_ENV=production webpack --display-error-details ",
     "build:base": "SECTIONS=base NODE_ENV=production webpack --display-error-details ",
     "build:map": "SECTIONS=map NODE_ENV=production webpack --display-error-details ",
     "build:stats": "SECTIONS=base,analysis,data_management NODE_ENV=production webpack --display-error-details --profile --json  > stats.json",
-    "w-build": "SECTIONS=readyToUse,map,base,mde&&NODE_ENV=production&&webpack --display-error-details",
+    "w-build": "SECTIONS=readyToUse,map,base,mde,statistics&&NODE_ENV=production&&webpack --display-error-details",
     "w-build:stats": "SET SECTIONS=base,analysis,data_management&&SET NODE_ENV=production&&webpack --display-error-details --profile --json  > stats.json"
   },
   "repository": {
@@ -32,6 +33,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "cross-env": "^3.1.3",
     "fenix-ui-bridge": "^1.0.0-beta.9",
     "fenix-ui-catalog": "^2.0.0-beta.22",
     "fenix-ui-data-management": "^2.0.0-beta.65",
