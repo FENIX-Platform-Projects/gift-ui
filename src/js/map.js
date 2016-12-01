@@ -34,7 +34,9 @@ define(['jquery','underscore','loglevel','handlebars',
     ConsC.codelistStyles = ConsC.codelistStyles[C.environment];
     
     var confidentialityDataUrl = C.consumption.service[C.environment]+'/msd/resources/find?full=true',
-        confidentialityCodelistUrl = C.consumption.service[C.environment]+'/msd/resources/uid/GIFT_STATUS',
+        confidentialityCodelistUrl = C.consumption.service[C.environment]+
+            //'/msd/resources/uid/GIFT_STATUS',
+            '/msd/resources/uid/GIFT_ConfidentialityStatus',
         confidentialityDataPayload = {
             "dsd.contextSystem": {
                 "enumeration": ["gift"]
@@ -92,7 +94,9 @@ define(['jquery','underscore','loglevel','handlebars',
                     
                     var code = obj.code;
 
-                    if(ConsC.codelistStyles[ code ] && ConsC.codelistStyles[ code ].visible) {
+                    if( ConsC.codelistStyles[ code ] && 
+                        ConsC.codelistStyles[ code ].visible)
+                    {
                         self.legend_items.push({
                             code: code,
                             title: obj.title[ LANG ],
@@ -100,7 +104,7 @@ define(['jquery','underscore','loglevel','handlebars',
                             order: ConsC.codelistStyles[ code ].order
                         });
                     }
-                    console.log(code, obj.title)
+                    
                     self.titleByCodes[ code ]= obj.title[ LANG ];
                 });
                 
@@ -258,16 +262,11 @@ window.MM= this.fenixMap.map;
 
         _.each(self.codesByCountry, function(items, countryCode) {
             
-            var markCluster = self._getMarker(items);
-
             _.each(items, function(item) {
 
-                var //item = items[0],
-                    className,
+                var className,
                     code = item.confids[0],
                     order = ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].order : 0;
-
-                var mark = self._getMarker(items);
 
                 if(ConsC.codelistStyles[ code ])
                     className = ConsC.codelistStyles[ code ].className;
@@ -283,11 +282,10 @@ window.MM= this.fenixMap.map;
                         layer: L.layerGroup([])
                     };
                 }
-
-                self.layersByCodes[ code ].layer.addLayer(mark);
+                self.layersByCodes[ code ].layer.addLayer( self._getMarker(items) );
             });
                 
-            self.layerAll.addLayer(markCluster);
+            self.layerAll.addLayer( self._getMarker(items) );
         });
 
     //fixed LEGEND field
@@ -298,6 +296,8 @@ window.MM= this.fenixMap.map;
             icon: '<i class="label label-'+ConsC.codelistStyles['All'].className+' text-primary">&nbsp;</i>',
             layer: self.layerAll
         };
+
+        delete self.layersByCodes[ConsC.codelistStyles.Off]
 
         self.panelLayers = _.sortBy(_.values(self.layersByCodes),'order');
 
@@ -313,12 +313,11 @@ window.MM= this.fenixMap.map;
             {
                 active: true,
                 order: 1,
-                name: self.titleByCodes[ ConsC.codelistStyles.Off ],
+                name: "Targeted countries",
                 icon: '<i class="label label-'+ConsC.codelistStyles[ ConsC.codelistStyles.Off ].className+' text-primary">&nbsp;</i>',
                 layer: self.layerGray
             }
         ];
-                
         self.hiddenPanel = new LeafletPanel(null, layerPanelGray, {
             compact: true,
             className: 'panel-hiddens',
@@ -330,34 +329,12 @@ window.MM= this.fenixMap.map;
         //self.$legend.append(self.legendPanel._container, self.hiddenPanel._container);
     };
 
-/*    Map.prototype._iconCreateFunction = function(cluster) {
-
-        var childCount = cluster.getChildCount();
-
-        var size = '';
-        if (childCount < 10)
-            size += 'small';
-        else if (childCount < 100)
-            size += 'medium';
-        else
-            size += 'large';
-
-        var r = 20*childCount;  //40
-
-        return L.divIcon({
-            html: '<div><span>'+ childCount +'</span></div>',
-            className: 'marker-cluster marker-cluster-'+size,
-            iconSize: new L.point(r, r)
-        });
-    };*/
-
     Map.prototype._getMarker = function(items) {
 
         var self = this;
 
         var loc = this.mapLocsByAdm0Code[ items[0].countryCode ],
             icon = L.MarkerClusterGroup.prototype._defaultIconCreateFunction({
-            //icon = this._iconCreateFunction({
                 getChildCount: function() {
                     return items.length;
                 }

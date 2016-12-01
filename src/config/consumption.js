@@ -17,7 +17,7 @@ define({
         production: {
             Off: '1',
             All: { className:"info",    order:0, visible:true },
-            '1': { className:"gray",    order:1, visible:true },
+            '1': { className:"gray",    order:1, visible:false },
             '2': { className:"default", order:2, visible:true },
             '3': { className:"danger",  order:3, visible:true },
             '4': { className:"warning", order:4, visible:true },
