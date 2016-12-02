@@ -15,7 +15,9 @@ define([
 
     var s = {
             BUBBLE_FOOD: "#bubble-food",
+            BUBBLE_FOOD_HOLDER: "#bubble-food-holder",
             BUBBLE_BEVERAGES: "#bubble-beverages",
+            BUBBLE_BEVERAGES_HOLDER: "#bubble-beverages-holder",
             MENU_ITEMS: "[data-chart]",
             CONTENTS: "[data-content]",
             BUBBLE_EL: "#bubble",
@@ -153,6 +155,7 @@ define([
 
                 obj.instances.push(new Bubble({
                     el: s.BUBBLE_FOOD,
+                    holderEl: s.BUBBLE_FOOD_HOLDER,
                     cache: C.cache,
                     type: "foods",
                     environment: C.environment,
@@ -162,6 +165,7 @@ define([
 
                 obj.instances.push(new Bubble({
                     el: s.BUBBLE_BEVERAGES,
+                    holderEl: s.BUBBLE_BEVERAGES_HOLDER,
                     cache: C.cache,
                     environment: C.environment,
                     type: "beverages",

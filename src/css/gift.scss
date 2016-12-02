@@ -1,6 +1,7 @@
 // Typo 3 Bootstrap compatibility
+@import 'base/fx-fonts-import';
 
-.fx-sandbox.fao-holder{
+.fx-sandbox.fao-holder {
   @import 'fx-boot/bootstrap';
 
   @import "fenix-ui-catalog";
@@ -9,7 +10,6 @@
   @import 'base/variables';
   @import 'utils/fx-utils';
 
-  @import 'base/fx-fonts-import';
   @import 'base/fx-icons';
 
   //pages
@@ -21,16 +21,12 @@
 
   @import 'themes/typo3-fix';
 
-
-    #mde{
-    .modal-content{
+  #mde {
+    .modal-content {
       width: 877px !important;
     }
 
-
-    }
-
-
+  }
 
 }
 
@@ -54,7 +50,7 @@
   left: 0;
   z-index: 1040;
   background-color: #000;
-  
+
 }
 
 .modal-backdrop.in {
@@ -62,11 +58,12 @@
 }
 
 .panel-heading a:after {
-  font-family:'Glyphicons Halflings';
-  content:"\e114";
+  font-family: 'Glyphicons Halflings';
+  content: "\e114";
   float: right;
   color: grey;
 }
+
 .panel-heading a.collapsed:after {
   content: "\e080";
 }

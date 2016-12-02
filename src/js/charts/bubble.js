@@ -17,6 +17,7 @@ define([
 
         this.type = opts.type.toLowerCase();
         this.el = opts.el;
+        this.holderEl = $(opts.holderEl);
         this.lang = opts.lang || "EN";
 
         this.process = opts.process;
@@ -421,6 +422,13 @@ define([
     };
 
     Bubble.prototype._render = function (data) {
+
+        this.holderEl.removeClass("no-data");
+
+        if (data.children.length === 0) {
+            this.holderEl.addClass("no-data");
+            return
+        }
 
         var self = this,
             svg = d3.select(this.el),
