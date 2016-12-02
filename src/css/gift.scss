@@ -1,25 +1,7 @@
 // Typo 3 Bootstrap compatibility
 
-.fx-sandbox{
+.fx-sandbox.fao-holder{
   @import 'fx-boot/bootstrap';
-
-  &.fx-overflow{
-    width: 910px !important;
-    overflow-x: hidden !important;
-  }
-
-  #readyToUseTabs{
-    margin-bottom: 15px !important;
-  }
-
-
-  &.fao-holder{
-    width: 960px;
-    margin: 0 auto;
-  }
-
-  padding: 0 5px;
-
 
   @import "fenix-ui-catalog";
   @import "fenix-ui-filter";

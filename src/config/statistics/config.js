@@ -48,7 +48,7 @@ define(["jquery", "underscore"],function ($, _) {
                     path : "title",
                     type: "i18n",
                     title : "Title",
-                    width: "60%"
+                    width: "50%"
                 },
                 sampleSize : {
                     path : "sampleSize",

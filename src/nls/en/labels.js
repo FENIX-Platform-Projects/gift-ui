@@ -31,8 +31,8 @@ define(function () {
 
         //Statistics
         statistics_intro: "Introductory text",
-        search_criteria: "Search criteria",
-        click_expand_collapse: "Click to expand or collapse the search criteria box",
+        search_criteria: "Search Criteria",
+        click_expand_collapse: "Click to expand or collapse the Search Criteria box",
 
 
         //Ready To Use section
