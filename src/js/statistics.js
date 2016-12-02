@@ -202,7 +202,7 @@ define([
         }
 
         if(payload.model.uid){
-            var url = "http://fenixrepo.fao.org/data/gift/survey/GIFT_Survey_"+payload.model.uid+".zip";
+            var url = SC.download.serviceProvider+payload.model.uid+".zip";
             var link = document.createElement('a');
             link.href = url;
             link.click();
@@ -229,7 +229,6 @@ define([
             alert("No Metadata");
             return;
         }
-
 
         this.$metamodal.modal('show');
         this.metadataViewer = new MetadataViewer({

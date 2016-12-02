@@ -3,6 +3,9 @@ define(["jquery", "underscore"],function ($, _) {
     "use strict";
 
     return {
+        download: {
+            serviceProvider: "http://fenixrepo.fao.org/data/gift/survey/GIFT_Survey_"
+        },
         catalog : {
             defaultSelectors: ['country', 'time', 'referenceArea', 'coverageSector', 'foodex2_code', 'gender',
                 'special_condition', 'ageGranularity', 'age'
