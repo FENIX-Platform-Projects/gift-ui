@@ -25,14 +25,17 @@ define(function () {
 
         //Catalog
         catalog_error: "Error encountered, please re-try",
-        catalog_empty: "Empty",
-        catalog_too_many_results: "Too many results",
-        catalog_please_add_more_criteria: "Please add more filter criteria.",
+        catalog_empty: "No results found matching the search criteria, please re-try",
+        catalog_too_many_results: "Too many results found",
+        catalog_please_refine_criteria: "Please refine the search criteria.",
+        catalog_results: "Results",
 
         //Statistics
+        instruction: "After each selection made, the results section below is refreshed",
         statistics_intro: "Introductory text",
         search_criteria: "Search Criteria",
         click_expand_collapse: "Click to expand or collapse the Search Criteria box",
+        fenix_metadata: "FENIX metadata",
 
 
         //Ready To Use section
