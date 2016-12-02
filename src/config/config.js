@@ -45,7 +45,9 @@ define(["underscore"],function (_) {
                         default: ["none"]
                     },
                     template: {
-                        title: "Gender"
+                        title: "Gender",
+                        hideSwitch: true,
+                        hideRemoveButton: true
                     },
 
                     format: {
@@ -66,7 +68,9 @@ define(["underscore"],function (_) {
                     },
 
                     template: {
-                        title: "Special Condition"
+                        title: "Special Condition",
+                        hideSwitch: true,
+                        hideRemoveButton: true
                     },
 
                     dependencies: {
@@ -94,7 +98,6 @@ define(["underscore"],function (_) {
                 },
 
                 ageGranularity: {
-
                     selector: {
                         id: "input",
                         type: "radio",
@@ -106,7 +109,13 @@ define(["underscore"],function (_) {
                     },
 
                     template: {
-                        title: "Age Granularity"
+                        title: "Age Granularity",
+                        hideSwitch: true,
+                        hideRemoveButton: true
+                    },
+
+                    format: {
+                        output: "text"
                     }
                 },
 
@@ -130,7 +139,9 @@ define(["underscore"],function (_) {
                     },
 
                     template: {
-                        title: "Age"
+                        title: "Age",
+                        hideSwitch: true,
+                        hideRemoveButton: true
                     },
 
                     dependencies: {
@@ -228,11 +239,14 @@ define(["underscore"],function (_) {
                     },
 
                     template: {
-                        title: "Country"
+                        title: "Country",
+                        hideSwitch: true,
+                        hideRemoveButton: true
                     },
+
                     format: {
-                        dimension: "meContent.seCoverage.coverageGeographic",
-                        output: "code"
+                        metadataAttribute: "meContent.seCoverage.coverageGeographic",
+                        output: "codes"
                     }
                 },
 
@@ -252,7 +266,9 @@ define(["underscore"],function (_) {
                         }
                     },
                     template: {
-                        title: "Time"
+                        title: "Time",
+                        hideSwitch: true,
+                        hideRemoveButton: true
                     },
 
                     dependencies: {
@@ -260,7 +276,7 @@ define(["underscore"],function (_) {
                     },
 
                     format: {
-                        dimension: "meContent.seCoverage.coverageTime",
+                        metadataAttribute: "meContent.seCoverage.coverageTime",
                         output: "time"
                     }
                 },
@@ -280,7 +296,14 @@ define(["underscore"],function (_) {
                         default: ["none"]
                     },
                     template: {
-                        title: "Reference Area"
+                        title: "Reference Area",
+                        hideSwitch: true,
+                        hideRemoveButton: true
+                    },
+
+                    format: {
+                        metadataAttribute: "meContent.seReferencePopulation.referenceArea",
+                        output : "codes"
                     }
                 },
 
@@ -300,7 +323,14 @@ define(["underscore"],function (_) {
 
                     },
                     template: {
-                        title: "Coverage Sector"
+                        title: "Coverage Sector",
+                        hideSwitch: true,
+                        hideRemoveButton: true
+                    },
+
+                    format: {
+                        metadataAttribute: "meContent.seCoverage.coverageSectors",
+                        output: "codes"
                     }
                 },
 
@@ -316,7 +346,9 @@ define(["underscore"],function (_) {
                         hideSummary: true
                     },
                     template: {
-                        title: "Food"
+                        title: "Food",
+                        hideSwitch: true,
+                        hideRemoveButton: true
                     }
                 }
             }

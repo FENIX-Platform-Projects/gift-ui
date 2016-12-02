@@ -7,6 +7,31 @@ define(function () {
         back: "Back to results",
         search: "Search",
 
+        //Filter
+        geographic: "Geographic",
+        survey: "Survey",
+        population: "Population",
+        food: "Food",
+        selector_country: "Country",
+        selector_time: "Time",
+        selector_referenceArea: "Reference Area",
+        selector_coverageSector: "Coverage Sector",
+        selector_foodex2_code: "Food",
+        selector_gender: "Gender",
+        selector_special_condition: "Special Condition",
+        selector_ageGranularity:"Age Granularity",
+        selector_age:"Age",
+        selector_special_condition_message: "Please select at least one value.",
+
+        //Catalog
+        catalog_error: "Error encountered, please re-try",
+        catalog_empty: "Empty",
+        catalog_too_many_results: "Too many results",
+        catalog_please_add_more_criteria: "Please add more filter criteria.",
+
+        //Statistics
+        statistics_intro: "Introductory text",
+
         //Ready To Use section
 
         foodConsumption: "Food Consumption",

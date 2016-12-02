@@ -4,11 +4,14 @@ define([
     "underscore",
     "../config/config",
     "../config/statistics/config",
+    "../config/nodemodules/fenix-ui-catalog/template.hbs",
     "../html/statistics/template.hbs",
     "../nls/labels",
     "fenix-ui-catalog",
-    "fenix-ui-metadata-viewer"
-], function ($, log, _, C, SC, template, labels, Catalog, MetadataViewer) {
+    "fenix-ui-bridge",
+    "fenix-ui-metadata-viewer",
+    "handlebars"
+], function ($, log, _, C, SC, CatalogTemplate, template, labels, Catalog, Bridge, MetadataViewer, Handlebars) {
 
     "use strict";
 
@@ -26,13 +29,15 @@ define([
 
         log.setLevel("silent");
 
+        this._dispose();
+
         this._importThirdPartyCss();
 
         this._validateConfig();
 
-        this._initVariables();
-
         this._attach();
+
+        this._initVariables();
 
         this._unbindEventListeners();
 
@@ -49,7 +54,11 @@ define([
         }
 
         if (!SC.catalog) {
-            alert("Please specify a valid CATALOG configuration in config/readyToUse/config.js");
+            alert("Please specify a valid CATALOG configuration in config/statistics/config.js");
+        }
+
+        if (!C.populationFilter && !C.othersFilter) {
+            alert("Please specify a valid FILTER configuration in config/config.js");
         }
 
         if ($(s.EL).length === 0) {
@@ -89,33 +98,48 @@ define([
     };
 
 
+    Statistics.prototype._dispose = function () {
+        if (this.catalog && $.isFunction(this.catalog.dispose)) {
+            this.catalog.dispose();
+        }
+
+        if (this.bridge && $.isFunction(this.bridge.dispose)) {
+            this.bridge.dispose();
+        }
+    };
+
     Statistics.prototype._initVariables = function () {
-
         this.$el = $(s.EL);
+        this.$meta = this.$el.find(s.METADATA_CONTENT);
+        this.$metamodal = this.$el.find(s.METADATA_MODAL);
 
+        this.catalogTemplate = CatalogTemplate(labels[C.lang.toLowerCase()]);
 
         this.lang = C.lang.toLowerCase();
         this.environment = C.environment;
         this.cache = C.cache;
 
+        this.bridge = new Bridge({
+            environment: this.environment,
+            cache: this.cache
+        });
+
     };
 
     Statistics.prototype._attach = function () {
-        this.$el.html(template(labels[C.lang.toLowerCase()]));
-        this.$meta = this.$el.find(s.METADATA_CONTENT);
-        this.$metamodal = this.$el.find(s.METADATA_MODAL);
+        $(s.EL).html(template(labels[C.lang.toLowerCase()]));
 
     };
 
     Statistics.prototype._renderCatalog = function () {
 
-        // extend the filter
-        var pluginRegistry = $.extend(true, SC.populationFilter, SC.othersFilter);
-        SC.catalog.pluginRegistry = pluginRegistry.selectors;
-        SC.catalog.selectorsDependencies = pluginRegistry.dependencies;
+        // Filter
+        var filter = $.extend(true, C.populationFilter, C.othersFilter);
+        var selectors = this._populateSelectorLabels(filter.selectors);
 
-        console.log(" ====================== _renderCatalog ================");
-        console.log(SC.catalog.pluginRegistry);
+        SC.catalog.pluginRegistry = selectors;
+        SC.catalog.selectorsDependencies = filter.dependencies;
+        SC.catalog.template = Handlebars.compile(this.catalogTemplate);
 
         this.catalog = new Catalog($.extend(true, SC.catalog, {
             el: this.$el.find(s.CATALOG_HOLDER),
@@ -125,16 +149,42 @@ define([
         }));
     };
 
+
+    Statistics.prototype._populateSelectorLabels = function (selectors) {
+        _.each(selectors, _.bind(function (obj, key) {
+
+            if (!obj.template) {
+                obj.template = {};
+            }
+            //Add title labels
+            obj.template.title = labels[this.lang][ "selector_" + key];
+
+            console.log(key, obj.template.title);
+
+            // Add message labels
+            if(obj.constraints && obj.constraints.presence){
+                obj.constraints.presence.message = labels[this.lang][ "selector_" + key+"_message"];
+                console.log(key, obj.constraints.presence.message);
+            }
+
+        }, this));
+
+        return selectors;
+
+    };
+
+
     Statistics.prototype._unbindEventListeners = function () {
-        if (this.catalog && $.isFunction(this.catalog.dispose)) {
-            this.catalog.dispose();
+        if(this.catalog){
+            this.catalog.off("download", _.bind(this._onCatalogDownload, this));
+            this.catalog.off("metadata", _.bind(this._onCatalogMetadata, this));
         }
     };
 
 
     Statistics.prototype._bindEventListeners = function () {
         this.catalog.on("download", _.bind(this._onCatalogDownload, this));
-        this.catalog.on("metadata", _.bind(this._onCatalogView, this));
+        this.catalog.on("metadata", _.bind(this._onCatalogMetadata, this));
     };
 
     Statistics.prototype._onCatalogDownload = function (payload) {
@@ -153,17 +203,30 @@ define([
         }
     };
 
-    Statistics.prototype._onCatalogView = function (payload) {
+    Statistics.prototype._onCatalogMetadata = function (payload) {
+
+        var self = this;
 
         if (!payload.model) {
             alert("Invalid dataset");
             return;
         }
 
-        // Use the bridge to get the metadata
+        this.bridge.getMetadata({uid: payload.model.uid, params: {"full":true}}).then(_.bind(this._openMetadataViewer, this));
+
+    };
+
+    Statistics.prototype._openMetadataViewer = function (data) {
+
+        if (!data) {
+            alert("No Metadata");
+            return;
+        }
+
+
         this.$metamodal.modal('show');
         this.metadataViewer = new MetadataViewer({
-            model: payload.model,
+            model: data,
             el: this.$meta,
             lang: this.lang,
             environment: this.environment,
@@ -175,75 +238,6 @@ define([
         }).on('export', function(e) {
             console.log('EXPORT MODEL',e)
         });
-
-
-
-
-       /* var link = document.createElement('a');
-        link.href = "#";
-        link.id = "myButton";
-        link.class = "btn btn-primary"
-        link.onclick = function(e) {
-            e.preventDefault();
-
-            var content = "#modal-body";
-            //var content = "#test";
-
-            var metadataViewer = new MetadataViewer({
-                model:payload.model,
-                lang: this.lang,
-                environment: this.environment,
-                el: content,
-                hideExportButton: false,
-                expandAttributesRecursively: ['meContent'],
-                popover: {
-                    placement: 'left'
-                }
-            })
-                .on("ready", function (model) {
-                    log.warn("listening 'ready' event");
-                    log.warn(model);
-
-                    $('#myModal').modal();
-
-                    $(s.DISPOSE_BTN).on("click", function () {
-                        metadataViewer.dispose();
-                    })
-                });
-
-            /!*var metadataViewer = new MetadataViewer({
-                model: payload.model,
-                lang: this.lang,
-                el: content,
-                environment: this.environment
-            });*!/
-
-          // $('#myModal').modal();
-        };
-        link.click();
-        link.remove();*/
-
-
-
-       /* var link = document.createElement('button');
-        link.type = "button"
-        link['data-target'] = "#myModal";
-        link[' data-toggle'] = "modal";
-        link.class = "btn btn-primary btn-lg";
-        link.click();
-        link.remove();*/
-
-        /*var metadataViewer = new MetadataViewer({
-            model: payload.model,
-            lang: this.lang,
-            el: s.METADATA_VIEWER_HOLDER,
-            environment: this.environment
-        });
-
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-            Launch demo modal
-        </button>*/
-
     };
 
     return new Statistics();
