@@ -114,7 +114,8 @@
      readers do not read off random characters that represent icons */
   /* Fenix Icons */
   /* Homepage */
-  /* Fast Links */ }
+  /* Fast Links */
+  /* Statistics */ }
   .fx-sandbox.fao-holder html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
@@ -16415,17 +16416,20 @@
   .fx-sandbox.fao-holder .label,
   .fx-sandbox.fao-holder .node--root {
     pointer-events: none; }
-  .fx-sandbox.fao-holder div.tooltip {
-    position: absolute;
-    text-align: center;
-    padding: 5px;
-    font: 12px sans-serif;
-    background: white;
-    border: 0px;
-    pointer-events: none;
-    -webkit-box-shadow: 0px 4px 3px 0px rgba(50, 50, 50, 0.27);
-    -moz-box-shadow: 0px 4px 3px 0px rgba(50, 50, 50, 0.27);
-    box-shadow: 0px 4px 3px 0px rgba(50, 50, 50, 0.27); }
+  .fx-sandbox.fao-holder div.tooltip-bubble-chart {
+    position: fixed;
+    top: 0;
+    left: 0;
+    /*  position: absolute;
+      text-align: center;
+      padding: 5px;
+      font: 12px sans-serif;
+      background: white;
+      border: 0px;
+      pointer-events: none;
+      -webkit-box-shadow: 0px 4px 3px 0px rgba(50, 50, 50, 0.27);
+      -moz-box-shadow:    0px 4px 3px 0px rgba(50, 50, 50, 0.27);
+      box-shadow:         0px 4px 3px 0px rgba(50, 50, 50, 0.27);*/ }
   .fx-sandbox.fao-holder .bar-holder {
     width: 300px;
     position: relative; }
@@ -16549,15 +16553,18 @@
     background-color: #b8e434; }
   .fx-sandbox.fao-holder #stacked-legend .marker.cereals {
     background-color: #fec82b; }
-  .fx-sandbox.fao-holder .pie-holder {
+  .fx-sandbox.fao-holder .macronutrients-pie-holder {
     position: relative;
-    width: 300px; }
-    .fx-sandbox.fao-holder .pie-holder .highcharts-label {
+    width: 300px;
+    background-image: url(./img/charts/pie/background-alpha.svg);
+    background-size: contain;
+    background-repeat: no-repeat; }
+    .fx-sandbox.fao-holder .macronutrients-pie-holder .highcharts-label {
       position: relative;
       z-index: 2; }
-    .fx-sandbox.fao-holder .pie-holder:hover .actual-label, .fx-sandbox.fao-holder .pie-holder:hover .recommended-label {
+    .fx-sandbox.fao-holder .macronutrients-pie-holder:hover .actual-label, .fx-sandbox.fao-holder .macronutrients-pie-holder:hover .recommended-label {
       opacity: 1; }
-    .fx-sandbox.fao-holder .pie-holder .actual-label, .fx-sandbox.fao-holder .pie-holder .recommended-label {
+    .fx-sandbox.fao-holder .macronutrients-pie-holder .actual-label, .fx-sandbox.fao-holder .macronutrients-pie-holder .recommended-label {
       width: 100%;
       position: absolute;
       z-index: 1;
@@ -16567,16 +16574,16 @@
       -ms-transition: all 0.3s ease 0s;
       -o-transition: all 0.3s ease 0s;
       transition: all 0.3s ease 0s; }
-    .fx-sandbox.fao-holder .pie-holder .actual-label {
+    .fx-sandbox.fao-holder .macronutrients-pie-holder .actual-label {
       top: 170px; }
-    .fx-sandbox.fao-holder .pie-holder .recommended-label {
+    .fx-sandbox.fao-holder .macronutrients-pie-holder .recommended-label {
       top: 265px; }
-  .fx-sandbox.fao-holder #pie-legend .marker.carbohydrates {
+  .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.carbohydrates {
     background-color: #fcc00d; }
-    .fx-sandbox.fao-holder #pie-legend .marker.carbohydrates.alpha {
+    .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.carbohydrates.alpha {
       position: relative;
       opacity: 0.5; }
-      .fx-sandbox.fao-holder #pie-legend .marker.carbohydrates.alpha:before {
+      .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.carbohydrates.alpha:before {
         content: '';
         height: 100%;
         width: 50%;
@@ -16584,12 +16591,12 @@
         top: 0;
         left: 50%;
         background-color: #fcc00d; }
-  .fx-sandbox.fao-holder #pie-legend .marker.protein {
+  .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.protein {
     background-color: #bf1818; }
-    .fx-sandbox.fao-holder #pie-legend .marker.protein.alpha {
+    .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.protein.alpha {
       position: relative;
       opacity: 0.5; }
-      .fx-sandbox.fao-holder #pie-legend .marker.protein.alpha:before {
+      .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.protein.alpha:before {
         content: '';
         height: 100%;
         width: 50%;
@@ -16597,12 +16604,12 @@
         top: 0;
         left: 50%;
         background-color: #fcc00d; }
-  .fx-sandbox.fao-holder #pie-legend .marker.fats {
+  .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.fats {
     background-color: #2e76b7; }
-    .fx-sandbox.fao-holder #pie-legend .marker.fats.alpha {
+    .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.fats.alpha {
       position: relative;
       opacity: 0.5; }
-      .fx-sandbox.fao-holder #pie-legend .marker.fats.alpha:before {
+      .fx-sandbox.fao-holder #macronutrients-pie-legend .marker.fats.alpha:before {
         content: '';
         height: 100%;
         width: 50%;
@@ -16768,6 +16775,8 @@
     text-transform: none; }
   .fx-sandbox.fao-holder .home-event p {
     padding: 0 10px; }
+  .fx-sandbox.fao-holder #statistics h5.fx-selector-title {
+    overflow-y: visible; }
   .fx-sandbox.fao-holder h1, .fx-sandbox.fao-holder h2, .fx-sandbox.fao-holder h3, .fx-sandbox.fao-holder h4, .fx-sandbox.fao-holder h5, .fx-sandbox.fao-holder h6 {
     border-top: 0 !important;
     padding-top: 0  !important;
