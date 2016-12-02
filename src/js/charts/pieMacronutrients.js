@@ -8,8 +8,8 @@ define([
 
 
     var s = {
-        HEIGHT : 500,
-        WIDTH : 500,
+        HEIGHT : 300,
+        WIDTH : 300,
         process : [
             {
                 "name": "filter",
@@ -158,7 +158,7 @@ define([
         var series = this._processSeries(resource);
         var chartConfig = this._getChartConfig(series);
 
-        console.log(chartConfig)
+        // console.log(chartConfig)
 
        return this._renderChart(chartConfig);
     };
@@ -194,8 +194,6 @@ define([
                 code_column_id = columns[i].id;
             }
         }
-        console.log(code_column_id, um_column_id)
-
 
         var umLabelIdx =  _.findIndex(columns, function (col ){
             return col.id== um_column_id +'_'+self.language;
@@ -234,6 +232,7 @@ define([
 
     PieMacronutrientsChart.prototype._getChartConfig = function (series) {
 
+
         var self = this;
 
         var chartConfig =  {
@@ -244,6 +243,7 @@ define([
                 spacingBottom: 0,
                 spacingLeft: 0,
                 spacingRight: 0,
+                backgroundColor:'rgba(255, 255, 255, 0)',
                 events: {
                     load: function () {
                         //this.renderer.image('src/img/pie/background-alpha.svg', 0, 0, s.HEIGHT, s.WIDTH).add();
@@ -270,6 +270,7 @@ define([
                     borderColor: '#000000',
                    // colors: ['#000000', '#fcc00d', '#bf1818'],
                     allowPointSelect: true,
+                    center: ["50%", "50%"],
                     //set radius
                     size: '75%',
                     //labels inside the pie
@@ -323,65 +324,6 @@ define([
 
     };
 
-    // PieMacronutrientsChart.prototype._getChartConfig = function (series) {
-    //
-    //     var self = this;
-    //    var chartConfig =  {
-    //         chart: {
-    //             type: 'pie'
-    //         },
-    //         title: {
-    //             text: null
-    //         },
-    //         xAxis: {
-    //             type: 'category'
-    //         },
-    //
-    //         legend: {
-    //             enabled: false
-    //         },
-    //
-    //         plotOptions: {
-    //             pie: {
-    //                 dataLabels: {
-    //                     style: {
-    //                         width: '200px'
-    //                     }
-    //                 }
-    //             },
-    //             series: {
-    //                 borderWidth: 0,
-    //                     dataLabels: {
-    //                     enabled: true
-    //                 }
-    //             }
-    //         },
-    //
-    //         tooltip: {
-    //             formatter: function () {
-    //               return this.key + ': <b>  '+  Highcharts.numberFormat(this.y, 2) + ' '+ this.point.unit+ '</b>';
-    //            }
-    //        },
-    //
-    //        //remove credits
-    //        credits: {
-    //            enabled: false
-    //        },
-    //
-    //         series: [{
-    //             name: 'Items',
-    //             colorByPoint: true,
-    //             data: series
-    //         }],
-    //
-    //             drilldown: {
-    //         series: []
-    //     }
-    //     };
-    //
-    //     return chartConfig;
-    // };
-
     PieMacronutrientsChart.prototype._renderChart = function(chartConfig){
 
         // Make monochrome colors and set them as default for all pies
@@ -397,7 +339,6 @@ define([
         //     }
         //     return colors;
         // }());
-
         $('#' + this.elID).css({
             height: s.HEIGHT,
             width: s.WIDTH

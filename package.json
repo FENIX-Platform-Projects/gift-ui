@@ -42,7 +42,7 @@
     "fenix-ui-filter": "^3.0.0-beta.58",
     "fenix-ui-map": "^2.7.0",
     "fenix-ui-metadata-viewer": "^3.0.0-beta.9",
-    "highcharts": "^5.0.3",
+    "highcharts": "^5.0.5",
     "jquery": "^3.1.1",
     "leaflet": "^0.7.7",
     "leaflet-panel-layers": "^0.9.0",

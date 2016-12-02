@@ -294,11 +294,12 @@ div.tooltip {
 
 // Pie
 
-.pie-holder{
+.macronutrients-pie-holder{
   position: relative;
   width: $width;
-
-
+  background-image: url(./img/charts/pie/background-alpha.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
 
   .highcharts-label{
     position: relative;
@@ -337,7 +338,7 @@ div.tooltip {
 
 }
 
-#pie-legend{
+#macronutrients-pie-legend{
 
   .marker{
 

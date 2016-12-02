@@ -157,6 +157,16 @@ define([
         return process;
     }
 
+    // DonutHole.prototype._updateProcessConfig = function (process, group_code) {
+    //     first_level_process[0].sid[0].uid = this.uid;
+    //     first_level_process[0].paramme
+    //     if(group_code){
+    //         process[0].parameters.rows.group_code.codes[0].codes = group_code;
+    //     }
+    //
+    //     return process;
+    // }
+
 
 
     DonutHole.prototype._getProcessedResourceForChart = function (processConfig, group_code) {

@@ -13,7 +13,7 @@ define([
         process : [
             {
                 "name": "gift_population_filter",
-                "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
+                "sid": [ { "uid": "gift_process_food_consumption_000042BUR201001" } ],
                 "parameters": {
                     "item": "FOOD_AMOUNT_PROC",
                     "gender": "2",
@@ -24,56 +24,86 @@ define([
                     }
                 }
             },
+
             {
-                "name": "filter",
-                "parameters": {
-                    "columns": [
-                        "subject",
-                        "item",
-                        "value",
-                        "um"
-                    ],
-                    "rows": {
-                        "group_code": {
-                            "codes": [
-                                {
-                                    "uid": "GIFT_FoodGroups",
-                                    "codes": [ "01" ]
-                                }
-                            ]
-                        }
-                    }
-                }
+                "name" : "asTable"
             },
+
             {
-                "name": "group",
+                "name": "gift_std_percentile",
                 "parameters": {
-                    "by": [
-                        "subject",
-                        "item"
-                    ],
-                    "aggregations": [
-                        {
-                            "columns": [ "value" ],
-                            "rule": "SUM"
-                        },
-                        {
-                            "columns": [ "um" ],
-                            "rule": "max"
-                        }
-                    ]
-                }
-            },
-            {
-                "name": "asTable"
-            },
-            {
-                "name": "gift_average_percentile",
-                "parameters": {
-                    "percentileSize" : 5
+                    "percentileSize" : 5,
+                    "group" : "02",
+                    "subgroup" : "0201",
+                    "food" : null
                 }
             }
-        ]
+
+        ],
+        // process : [
+        //     {
+        //         "name": "gift_population_filter",
+        //         "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
+        //         "parameters": {
+        //             "item": "FOOD_AMOUNT_PROC",
+        //             "gender": "2",
+        //             "special_condition": ["1"],
+        //             "age_year": {
+        //                 "from": 10.5,
+        //                 "to": 67
+        //             }
+        //         }
+        //     },
+        //     {
+        //         "name": "filter",
+        //         "parameters": {
+        //             "columns": [
+        //                 "subject",
+        //                 "item",
+        //                 "value",
+        //                 "um"
+        //             ],
+        //             "rows": {
+        //                 "group_code": {
+        //                     "codes": [
+        //                         {
+        //                             "uid": "GIFT_FoodGroups",
+        //                             "codes": [ "01" ]
+        //                         }
+        //                     ]
+        //                 }
+        //             }
+        //         }
+        //     },
+        //     {
+        //         "name": "group",
+        //         "parameters": {
+        //             "by": [
+        //                 "subject",
+        //                 "item"
+        //             ],
+        //             "aggregations": [
+        //                 {
+        //                     "columns": [ "value" ],
+        //                     "rule": "SUM"
+        //                 },
+        //                 {
+        //                     "columns": [ "um" ],
+        //                     "rule": "max"
+        //                 }
+        //             ]
+        //         }
+        //     },
+        //     {
+        //         "name": "asTable"
+        //     },
+        //     {
+        //         "name": "gift_average_percentile",
+        //         "parameters": {
+        //             "percentileSize" : 5
+        //         }
+        //     }
+        // ]
 
     };
 
@@ -94,19 +124,22 @@ define([
 
     ColumnChart.prototype._init = function (opts) {
 
+
         this.environment = opts.environment;
         this.cache = opts.cache;
 
         this.uid = opts.uid;
         this.selected_items = opts.selected_items;
         this.selected_group = opts.selected_group;
+        this.process_name = opts.process_name;
         this.process = s.process;
 
         this.elID = opts.elID;
-        this.amountID = opts.amountID;
-        this.barID = opts.barID;
-        this.percentageID = opts.percentageID;
-
+        this.columnAmountID = opts.columnAmountID;
+        this.columnBarID = opts.columnBarID;
+        this.columnPercentageID = opts.columnPercentageID;
+        this.columnPercentageItemID = opts.columnPercentageItemID;
+        this.columnPercentageItemLabel = opts.columnPercentageItemLabel;
         this.language = opts.language;
         this.filter = opts.filter;
     };
@@ -120,8 +153,13 @@ define([
         }
 
         if(this.selected_group){
-            process[1].parameters.rows.group_code = this.selected_group;
+            process[2].parameters = this.selected_group;
         }
+
+        if(this.process_name){
+            process[2].name = this.process_name;
+        }
+
         return process;
     }
 
@@ -191,7 +229,6 @@ define([
                 tickLength: 0
             },
 
-
             //remove title and subtitle
             title: {
                 text: '',
@@ -223,17 +260,10 @@ define([
             },
 
             series: [{
-                data: [5,90,5],
+                data: [5,50,5],
                 pointWidth: 80
-                // color: {
-                //     // pattern: '../img/columns/pattern.svg',
-                //     pattern: '../src/img/columns/pattern.svg',
-                //     width: 20,
-                //     height: 20
-                // }
             }]
         };
-        console.log(chartConfig)
 
         return chartConfig;
     };
@@ -292,13 +322,15 @@ define([
 
     ColumnChart.prototype._setHTMLvariables = function (dataToChart) {
         //Progress bar
-        $(this.barID).css({
+        console.log(dataToChart)
+        $(this.columnBarID).css({
             width: dataToChart[0].value+ dataToChart[0].unit
         });
-        $(this.percentageID).html(dataToChart[0].value + dataToChart[0].unit);
-        $(this.amountID.low).html(dataToChart[1].valueFormat + " "+ dataToChart[1].unit+ s.DAY);
-        $(this.amountID.middle).html(dataToChart[2].valueFormat + " "+ dataToChart[2].unit+ s.DAY);
-        $(this.amountID.high).html(dataToChart[3].valueFormat + " "+ dataToChart[3].unit+ s.DAY);
+        $(this.columnPercentageID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
+        $(this.columnPercentageItemID).html(this.columnPercentageItemLabel);
+        $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " "+ dataToChart[1].unit+ s.DAY);
+        $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " "+ dataToChart[2].unit+ s.DAY);
+        $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " "+ dataToChart[3].unit+ s.DAY);
     }
 
     ColumnChart.prototype.dispose = function (opts) {
