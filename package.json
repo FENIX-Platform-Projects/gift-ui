@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "d3": "^4.4.0",
     "fenix-ui-bridge": "^1.0.0-beta.12",
     "fenix-ui-catalog": "^2.0.0-beta.24",
     "fenix-ui-data-management": "^2.0.0-beta.82",

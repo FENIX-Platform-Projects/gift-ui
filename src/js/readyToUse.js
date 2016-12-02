@@ -30,7 +30,8 @@ define([
             META: "[data-role='meta']",
             META_MODAL: "#meta-modal",
             METADATA_VIEWER: "#metadata-viewer-container",
-            FILTER: "#population-filter"
+            FILTER: "#population-filter",
+            SEARCH_BUTTON: "[data-role='search']"
         },
         sections = {
             SEARCH: "search",
@@ -41,7 +42,7 @@ define([
 
         console.clear();
 
-        log.setLevel("trace");
+        log.setLevel("silent");
 
         this._importThirdPartyCss();
 
@@ -95,6 +96,7 @@ define([
         }
 
         this.$backButton = this.$el.find(s.BACK_BUTTON);
+        this.$searchButton = this.$el.find(s.SEARCH_BUTTON);
 
         this.$dashboardTitle = this.$el.find(s.DASHBOARD_TITLE);
 
@@ -184,6 +186,8 @@ define([
 
         this.$metaButton.on("click", _.bind(this._onMetaButtonClick, this));
 
+        this.$searchButton.on("click", _.bind(this._onSearchButtonClick, this));
+
         this.$tabs.on("click", _.bind(this._onTabClick, this))
     };
 
@@ -204,6 +208,75 @@ define([
                 this.nutritionTab.refresh(this.model);
                 break;
         }
+    };
+
+    ReadyToUse.prototype._updateModelAndProcess = function () {
+
+        var values = this.filter.getValues();
+
+        if (!this.model) {
+            console.log("Select a dataset");
+            return
+        }
+
+        var parameters= {
+                item: "FOOD_AMOUNT_PROC"
+            },
+            process = {
+                name: "gift_population_filter"
+            };
+
+        addGender(values, parameters);
+
+        addSpecialCondition(values, parameters);
+
+        addAge(values, parameters);
+
+        process.parameters = parameters;
+
+        this.process = process;
+
+        function addGender(v, parameters) {
+
+            var values = v.values || {},
+                gender = values.gender || [];
+
+            parameters.gender = cleanValues(gender)[0]
+        }
+
+        function addSpecialCondition(v, parameters) {
+
+            var values = v.values || {},
+                special_condition = values.special_condition || [];
+            parameters.special_condition = cleanValues(special_condition)
+        }
+
+        function addAge(v, parameters) {
+
+            var values = v.values || {},
+                age = values.age || [],
+                ageGranularity = values.ageGranularity || [];
+
+            parameters["age_" + ageGranularity[0]] = {
+                from : _.findWhere(age, {parent : "from"}).value,
+                to : _.findWhere(age, {parent : "to"}).value
+            }
+        }
+
+        function cleanValues( array) {
+            return _.without(array, "none");
+        }
+
+    };
+
+    ReadyToUse.prototype._onSearchButtonClick = function () {
+
+        this._updateModelAndProcess();
+
+        this._disposeDashboard();
+
+        this._renderDashboard();
+
     };
 
     ReadyToUse.prototype._onMetaButtonClick = function () {
@@ -231,9 +304,14 @@ define([
             alert("Invalid dataset");
             return;
         }
+
         this.model = payload.model;
 
+        this._updateModelAndProcess();
+
         this._showSection(sections.DASHBOARD);
+
+        this._disposeDashboard();
 
         this._renderDashboard()
     };
@@ -249,12 +327,25 @@ define([
 
         this._updateTitle();
 
+        this._updateModelAndProcess();
+
         //show fist tab
         this.$el.find(s.TABS).find('a[href="#foodConsumptionTab"]').tab('show');
 
-        this.foodConsumptionTab.refresh(this.model);
-        this.foodSafetyTab.refresh(this.model);
-        this.nutritionTab.refresh(this.model);
+        this.foodConsumptionTab.refresh({
+            model : this.model,
+            process : this.process
+        });
+
+        this.foodSafetyTab.refresh({
+            model : this.model,
+            process : this.process
+        });
+
+        this.nutritionTab.refresh({
+            model : this.model,
+            process : this.process
+        });
 
     };
 
@@ -264,6 +355,10 @@ define([
             title = model.title || {};
 
         this.$dashboardTitle.html(title[this.lang.toUpperCase()] || model.uid);
+
+    };
+
+    ReadyToUse.prototype._disposeDashboard = function () {
 
     };
 

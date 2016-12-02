@@ -19,19 +19,7 @@ define([
         this.el = opts.el;
         this.lang = opts.lang || "EN";
 
-        this.filter = opts.filter || {
-            "name": "gift_population_filter",
-            "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
-            "parameters": {
-                "item": "FOOD_AMOUNT_PROC",
-                "gender": null,
-                "special_condition": ["2"],
-                "age_year": {
-                    "from": 10.5,
-                    "to": 67
-                }
-            }
-        };
+        this.process = opts.process;
 
         //get processed resource
         // keep track of which params are passed
@@ -42,7 +30,7 @@ define([
             }
         }).then(
             _.bind(this._onGetProcessedResourceSuccess, this),
-            function(error){
+            function (error) {
                 alert("impossible to load data");
                 console.log(error)
             }
@@ -223,7 +211,7 @@ define([
                 break
         }
 
-        body.unshift(this.filter);
+        body.unshift(this.process);
 
         return body;
     };
@@ -250,7 +238,7 @@ define([
 
     Bubble.prototype._buildFoodsModel = function (raw) {
 
-        var colors = RC["bubbleChartColors_" + this.type] || [],
+        var colors = RC["bubbleChartColors_" + this.type].slice(0) || [],
             lang = this.lang.toUpperCase(),
             data = raw || {},
             resourceGroups = data.food_group || {},
@@ -657,7 +645,9 @@ define([
         }
     };
 
-    Bubble.prototype.dispose = function () { };
+    Bubble.prototype.dispose = function () {
+        d3.selectAll("svg > *").remove();
+    };
 
     return Bubble;
 

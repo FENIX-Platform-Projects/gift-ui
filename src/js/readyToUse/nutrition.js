@@ -35,11 +35,13 @@ define([
 
     }
 
-    Nutrition.prototype.refresh = function (model) {
+    Nutrition.prototype.refresh = function (obj) {
 
         this._disposeCharts();
 
-        this.model = model;
+        this.model = obj.model;
+
+        this.process = obj.process;
 
         this._render();
     };

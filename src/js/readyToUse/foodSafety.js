@@ -43,11 +43,12 @@ define([
 
     }
 
-    FoodSafety.prototype.refresh = function (model) {
+    FoodSafety.prototype.refresh = function (obj) {
 
         this._disposeChart();
 
-        this.model = model;
+        this.model = obj.model;
+        this.process = obj.process;
 
         this.filter.printDefaultSelection();
 
@@ -86,8 +87,6 @@ define([
     };
 
     FoodSafety.prototype._renderChart = function () {
-
-        console.log("click")
 
         return;
 

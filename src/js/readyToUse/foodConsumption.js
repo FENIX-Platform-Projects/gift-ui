@@ -39,14 +39,15 @@ define([
 
         this._bindEventListeners();
 
-        this._render();
     }
 
-    FoodConsumption.prototype.refresh = function (model) {
+    FoodConsumption.prototype.refresh = function (obj) {
 
         this._disposeCharts();
 
-        this.model = model;
+        this.model = obj.model;
+
+        this.process = obj.process;
 
         this.filter.printDefaultSelection();
 
@@ -87,8 +88,9 @@ define([
         this.$el = this.initial.el;
         this.model = this.initial.model;
         this.environment = this.initial.environment;
+        this.process = this.initial.process;
 
-        this.charts = [];
+        this.charts = {};
     };
 
     FoodConsumption.prototype._attach = function () {
@@ -96,6 +98,7 @@ define([
     };
 
     FoodConsumption.prototype._bindEventListeners = function () {
+
         this.$el.find(s.MENU_ITEMS).on("click", _.bind(this._onMenuItemClick, this));
 
         this.filter.on("click", _.bind(this._onFilterClick, this));
@@ -104,7 +107,8 @@ define([
 
     FoodConsumption.prototype._onFilterClick = function (evt) {
 
-      console.log("click")
+        var values = this.filter.getValues();
+        console.log(values)
     };
 
     FoodConsumption.prototype._onMenuItemClick = function (evt) {
@@ -138,40 +142,51 @@ define([
 
         obj.id = type;
 
+        obj.instances = [];
 
         switch (type) {
-            case "bubble" :;
-                this.foodBubble = new Bubble({
-                    el : s.BUBBLE_FOOD,
-                    cache: C.cache,
-                    type : "foods",
-                    environment : C.environment
-                });
+            case "bubble" :
 
-                this.beveragesBubble = new Bubble({
-                    el : s.BUBBLE_BEVERAGES,
+                this.process.sid = [
+                    {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
+                ];
+
+                obj.instances.push(new Bubble({
+                    el: s.BUBBLE_FOOD,
                     cache: C.cache,
-                    environment : C.environment,
-                    type : "beverages"
-                });
+                    type: "foods",
+                    environment: C.environment,
+                    process: this.process,
+                    model: this.model
+                }));
+
+                obj.instances.push(new Bubble({
+                    el: s.BUBBLE_BEVERAGES,
+                    cache: C.cache,
+                    environment: C.environment,
+                    type: "beverages",
+                    process: this.process,
+                    model: this.model
+                }));
+
                 break;
             case "treemap" :
                 console.log("treemap");
                 break;
             case "donut" :
 
-             /*   var config = {
-                    elID : s.DONUT_EL,
-                    cache: this.cache,
-                    environment : this.environment,
-                    uid : "gift_process_total_weighted_food_consumption_" + this.model.uid,
-                    selected_items : [ "ENERGY" ],
-                    height : 300,
-                    width : 300,
-                    language : this.lang.toUpperCase()
-                };
+                /*   var config = {
+                 elID : s.DONUT_EL,
+                 cache: this.cache,
+                 environment : this.environment,
+                 uid : "gift_process_total_weighted_food_consumption_" + this.model.uid,
+                 selected_items : [ "ENERGY" ],
+                 height : 300,
+                 width : 300,
+                 language : this.lang.toUpperCase()
+                 };
 
-                obj.instance = new DonutHole(config);*/
+                 obj.instance = new DonutHole(config);*/
 
                 break;
             default:
@@ -182,6 +197,7 @@ define([
         obj.initialized = true;
 
         this.charts[obj.id] = obj;
+
     };
 
     FoodConsumption.prototype._highlightMenuItem = function (chart) {
@@ -211,14 +227,17 @@ define([
     FoodConsumption.prototype._disposeCharts = function () {
 
         _.each(this.charts, function (chart, id) {
-            if ($.isFunction(chart.instance.dispose)) {
-                chart.instance.dispose()
-            } else {
-                console.log(id + " has not the disposition method");
-            }
+
+            _.each(chart.instances, function (c) {
+                if ($.isFunction(c.dispose)) {
+                    c.dispose();
+                } else {
+                    console.log(id + " has not the disposition method");
+                }
+            });
         });
 
-        this.charts = [];
+        this.charts = {};
     };
 
     return FoodConsumption;
