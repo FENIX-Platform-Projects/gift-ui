@@ -147,25 +147,27 @@ define([
         //console.log(data)
         var dataToChart = [];
         var categoriesToChart = [];
-        for(var i=1; i< data.length;i++) {
-           // var obj = {};
+        if(data) {
+            for (var i = 1; i < data.length; i++) {
+                // var obj = {};
 
-            var it = data[i];
-            console.log(it)
+                var it = data[i];
+                console.log(it)
 
-            // obj.y =it[value_index];
-            // obj.unit = it[umLabelIdx];
-            // obj.name = it[codeLabelIdx];
-            // obj.code = it[code_index];
-            // obj.drilldown = true;
+                // obj.y =it[value_index];
+                // obj.unit = it[umLabelIdx];
+                // obj.name = it[codeLabelIdx];
+                // obj.code = it[code_index];
+                // obj.drilldown = true;
 
-            //dataToChart.push(it[value_index]);
-            //categoriesToChart.push(it[codeLabelIdx]);
+                //dataToChart.push(it[value_index]);
+                //categoriesToChart.push(it[codeLabelIdx]);
 
-            dataToChart.push(it[value_index]);
-            console.log(value_index)
-            console.log(code_index)
-            categoriesToChart.push(it[code_index]);
+                dataToChart.push(it[value_index]);
+                console.log(value_index)
+                console.log(code_index)
+                categoriesToChart.push(it[code_index]);
+            }
         }
         console.log({series: dataToChart, categories: categoriesToChart})
 

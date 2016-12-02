@@ -6,114 +6,126 @@ define([
     "highcharts"
 ], function (_, $, log, Bridge, Highcharts) {
 
-
     var s = {
-        first_level_process : [
-            {
-                "name": "filter",
-                "sid" : [{"uid":"gift_process_total_weighted_food_consumption_000042BUR201001"}],
-                "parameters": {
-                    "columns": [
-                        "group_code",
-                        "value",
-                        "um"
-                    ],
-                    "rows": {
-                        "item": {
-                            "codes": [
-                                {
-                                    "uid": "GIFT_Items",
-                                    "codes": [ "ENERGY" ]
-                                }
-                            ]
-                        },
-                        "!group_code": {
-                            "codes": [
-                                {
-                                    "uid": "GIFT_FoodGroups",
-                                    "codes": [ "14" ]
-                                }
-                            ]
+        HEIGHT : 500,
+        WIDTH : 500,
+        process : {
+            first_level_process : [
+                {
+                    "name": "gift_population_filter",
+                    "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
+                    "parameters": {
+                        "item": "ENERGY",
+                        "gender": "2",
+                        "special_condition": ["2"],
+                        "age_year": {
+                            "from": 10.5,
+                            "to": 67
                         }
+                        // "age_month": {
+                        //     "from": 10.5,
+                        //     "to": 67
+                        // }
+                    }
+                },
+                {
+                    "name": "group",
+                    "parameters": {
+                        "by": [
+                            "group_code"
+                        ],
+                        "aggregations": [
+                            {
+                                "columns": [ "value" ],
+                                "rule": "SUM"
+                            },
+                            {
+                                "columns": [ "um" ],
+                                "rule": "max"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "order",
+                    "parameters": {
+                        "value": "DESC"
                     }
                 }
-            },
-
-            {
-                "name": "group",
-                "parameters": {
-                    "by": [
-                        "group_code"
-                    ],
-                    "aggregations": [
-                        {
-                            "columns": [ "value" ],
-                            "rule": "SUM"
-                        },
-                        {
-                            "columns": [ "um" ],
-                            "rule": "max"
+            ],
+            second_level_process : [
+                {
+                    "name": "gift_population_filter",
+                    "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
+                    "parameters": {
+                        "item": "ENERGY",
+                        "gender": "2",
+                        "special_condition": ["2"],
+                        "age_year": {
+                            "from": 10.5,
+                            "to": 67
                         }
-                    ]
-                }
-            }
-        ],
-        second_level_process : [
-            {
-                "name": "filter",
-                "sid" : [{"uid":"gift_process_total_weighted_food_consumption_000042BUR201001"}],
-                "parameters": {
-                    "columns": [
-                        "subgroup_code",
-                        "value",
-                        "um"
-                    ],
-                    "rows": {
-                        "item": {
-                            "codes": [
-                                {
-                                    "uid": "GIFT_Items",
-                                    "codes": [ "ENERGY" ]
-                                }
-                            ]
-                        },
-                        "group_code": {
-                            "codes": [
-                                {
-                                    "uid": "GIFT_FoodGroups",
-                                    "codes": [ "01" ]
-                                }
-                            ]
+                        // "age_month": {
+                        //     "from": 10.5,
+                        //     "to": 67
+                        // }
+                    }
+                },
+
+                {
+                    "name": "filter",
+                    "parameters": {
+                        "columns": [
+                            "subgroup_code",
+                            "value",
+                            "um"
+                        ],
+                        "rows": {
+                            "group_code": {
+                                "codes": [
+                                    {
+                                        "uid": "GIFT_FoodGroups",
+                                        "codes": [ "01" ]
+                                    }
+                                ]
+                            }
                         }
                     }
-                }
-            },
+                },
 
-            {
-                "name": "group",
-                "parameters": {
-                    "by": [
-                        "subgroup_code"
-                    ],
-                    "aggregations": [
-                        {
-                            "columns": [ "value" ],
-                            "rule": "SUM"
-                        },
-                        {
-                            "columns": [ "um" ],
-                            "rule": "max"
-                        }
-                    ]
+                {
+                    "name": "group",
+                    "parameters": {
+                        "by": [
+                            "subgroup_code"
+                        ],
+                        "aggregations": [
+                            {
+                                "columns": [ "value" ],
+                                "rule": "SUM"
+                            },
+                            {
+                                "columns": [ "um" ],
+                                "rule": "max"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "order",
+                    "parameters": {
+                        "value": "DESC"
+                    }
                 }
-            }
-        ]
+            ]
+        }
     };
 
     function DonutHole(params) {
 
         // Load Exporting Module after Highcharts loaded
         require('highcharts/modules/drilldown')(Highcharts);
+        require('highcharts-no-data-to-display')(Highcharts);
 
         log.setLevel("trace");
 
@@ -124,7 +136,7 @@ define([
             cache :  this.cache
         });
 
-        this._getProcessedResourceForChart(s.first_level_process).then(
+        this._getProcessedResourceForChart(s.process.first_level_process).then(
             _.bind(this._onSuccess, this),
             _.bind(this._onError, this)
         );
@@ -136,6 +148,7 @@ define([
 
         this.uid = opts.uid;
         this.selected_items = opts.selected_items;
+
         this.first_level_process = s.first_level_process;
         this.elID = opts.elID;
 
@@ -144,34 +157,24 @@ define([
         this.language = opts.language;
     };
 
-
     DonutHole.prototype._updateProcessConfig = function (process, group_code) {
+        //process=s.process.first_level_process
         process[0].sid[0].uid = this.uid;
-        // "codes": [ "IRON" ]
-        process[0].parameters.rows.item.codes[0].codes = this.selected_items;
+        process[0].parameters = this.selected_items;
 
         if(group_code){
-            process[0].parameters.rows.group_code.codes[0].codes = group_code;
+            process[1].parameters.rows.group_code.codes[0].codes = group_code;
         }
 
         return process;
     }
 
-    // DonutHole.prototype._updateProcessConfig = function (process, group_code) {
-    //     first_level_process[0].sid[0].uid = this.uid;
-    //     first_level_process[0].paramme
-    //     if(group_code){
-    //         process[0].parameters.rows.group_code.codes[0].codes = group_code;
-    //     }
-    //
-    //     return process;
-    // }
-
 
 
     DonutHole.prototype._getProcessedResourceForChart = function (processConfig, group_code) {
         var process = this._updateProcessConfig(processConfig, group_code);
-
+        //process=s.process.first_level_process
+        console.log(process)
         return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
     };
 
@@ -189,6 +192,7 @@ define([
     };
 
     DonutHole.prototype._processSeries = function (resource) {
+        console.log(resource)
 
         var self = this;
         var metadata = resource.metadata;
@@ -224,18 +228,20 @@ define([
         });
 
         var dataToChart = [];
-        for(var i=0; i< data.length;i++) {
-            var obj = {};
 
-            var it = data[i];
+        if(data){
+            for(var i=0; i< data.length;i++) {
+                var obj = {};
+                var it = data[i];
 
-            obj.y =it[value_index];
-            obj.unit = it[umLabelIdx];
-            obj.name = it[codeLabelIdx];
-            obj.code = it[code_index];
-            obj.drilldown = true;
+                obj.y =it[value_index];
+                obj.unit = it[umLabelIdx];
+                obj.name = it[codeLabelIdx];
+                obj.code = it[code_index];
+                obj.drilldown = true;
 
-            dataToChart.push(obj);
+                dataToChart.push(obj);
+            }
         }
 
         return dataToChart;
@@ -246,7 +252,7 @@ define([
         var group_code = [];
         group_code.push(point.code);
 
-        this._getProcessedResourceForChart(s.second_level_process, group_code).then(function (result) {
+        this._getProcessedResourceForChart(s.process.second_level_process, group_code).then(function (result) {
             if (result) {
                 self._secondLevelOnSuccess(chart, point, result);
             } else {
@@ -257,6 +263,7 @@ define([
 
     DonutHole.prototype._secondLevelOnSuccess = function (chart, point, resource) {
 
+        console.log(resource)
         var ser = this._processSeries(resource);
 
         var chart = chart,
@@ -338,18 +345,23 @@ define([
                 name: 'Items',
                 colorByPoint: true,
                 data: series
-            }],
+            }]
 
-                drilldown: {
-            series: []
-        }
+        //     drilldown: {
+        //     series: []
+        // }
         };
 
         return chartConfig;
     };
 
     DonutHole.prototype._renderChart = function(chartConfig){
-            Highcharts.chart(this.elID, chartConfig);
+
+        $('#' + this.elID).css({
+            height: s.HEIGHT,
+            width: s.WIDTH
+        })
+        Highcharts.chart(this.elID, chartConfig);
     };
 
     DonutHole.prototype.dispose = function () {

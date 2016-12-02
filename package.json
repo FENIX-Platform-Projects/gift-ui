@@ -42,6 +42,7 @@
     "fenix-ui-map": "^2.7.0",
     "fenix-ui-metadata-viewer": "^3.0.0-beta.9",
     "highcharts": "^5.0.5",
+    "highcharts-no-data-to-display": "^0.1.2",
     "jquery": "^3.1.1",
     "json-loader": "^0.5.4",
     "leaflet": "^0.7.7",

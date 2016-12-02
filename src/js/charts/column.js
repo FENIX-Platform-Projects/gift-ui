@@ -306,15 +306,17 @@ define([
         });
 
         var htmlData = [];
-        for(var i=0; i< data.length;i++) {
-            var obj = {};
+        if(data) {
+            for (var i = 0; i < data.length; i++) {
+                var obj = {};
 
-            var it = data[i];
-             obj.valueFormat = it[value_index].toFixed(2);
-             obj.value = it[value_index];
-             obj.unit = it[umLabelIdx];
+                var it = data[i];
+                obj.valueFormat = it[value_index].toFixed(2);
+                obj.value = it[value_index];
+                obj.unit = it[umLabelIdx];
 
-            htmlData.push(obj);
+                htmlData.push(obj);
+            }
         }
 
         return htmlData;

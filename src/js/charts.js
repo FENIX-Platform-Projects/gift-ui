@@ -118,12 +118,44 @@ define([
 
     Charts.prototype._renderDonutHoleChart = function () {
 
+        //age_year OR age_month
+        // var param = {
+        //     selected_items : {
+        //         "item": "ENERGY",
+        //         "gender": "2",
+        //         "special_condition": ["2"],
+        //         "age_year": {
+        //             "from": 10.5,
+        //             "to": 67
+        //         }
+        //         // "age_month": {
+        //         //     "from": 10.5,
+        //         //     "to": 67
+        //         // }
+        //     }
+        // }
+        var param = {
+            selected_items : {
+                "item": "ENERGY",
+                "gender": "2",
+                "special_condition": ["2"],
+                // "age_year": {
+                //     "from": 10.5,
+                //     "to": 67
+                // }
+                "age_month": {
+                    "from": 10.5,
+                    "to": 67
+                }
+            }
+        }
+
         this.DonutHole = new DonutHole({
             elID : s.donutHole_chart.DONUT_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
-            selected_items : [ "ENERGY" ],
+            selected_items : param.selected_items,
             height : s.height,
             width : s.width,
             language : s.language

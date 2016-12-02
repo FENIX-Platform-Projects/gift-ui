@@ -221,18 +221,20 @@ define([
         });
 
         var dataToChart = [];
-        for(var i=0; i< data.length;i++) {
-            var obj = {};
+        if(data){
+            for(var i=0; i< data.length;i++) {
+                var obj = {};
 
-            var it = data[i];
+                var it = data[i];
 
-            obj.y =it[value_index];
-            obj.unit = it[umLabelIdx];
-            obj.name = it[codeLabelIdx];
-            obj.code = it[code_index];
-            obj.drilldown = true;
+                obj.y =it[value_index];
+                obj.unit = it[umLabelIdx];
+                obj.name = it[codeLabelIdx];
+                obj.code = it[code_index];
+                obj.drilldown = true;
 
-            dataToChart.push(obj);
+                dataToChart.push(obj);
+            }
         }
 
         return dataToChart;
