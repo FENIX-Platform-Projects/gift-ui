@@ -12,7 +12,8 @@ define([
     "use strict";
 
     var s = {
-        BUBBLE: "#bubble",
+         BUBBLE_FOOD: "#bubble-food",
+        BUBBLE_BEVERAGES: "#bubble-beverages",
         donutHole_chart : {
             DONUT_CONTAINER_ID : "hole_donut"
         },
@@ -64,13 +65,10 @@ define([
         //donut chart
         //this._renderDonutChart();
         //bubble chart
-        //this._renderBubbleChart();
+        this._renderBubbleChart();
         //column chart
-        //this._renderAverageColumnChart();
-        //standard chart
-        //this._renderStandardColumnChart();
         //donut hole
-        this._renderDonutHoleChart();
+        //this._renderDonutHoleChart();
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
@@ -134,11 +132,18 @@ define([
 
     Charts.prototype._renderBubbleChart = function () {
 
-        this.bubble = new Bubble({
-            el : s.BUBBLE,
+        this.foodBubble = new Bubble({
+            el : s.BUBBLE_FOOD,
             cache: C.cache,
+            type : "foods",
             environment : C.environment
-            // pass other params here (e.g. filtering params)
+        });
+
+        this.beveragesBubble = new Bubble({
+            el : s.BUBBLE_BEVERAGES,
+            cache: C.cache,
+            environment : C.environment,
+            type : "beverages"
         });
     };
 
@@ -256,12 +261,6 @@ define([
     };
 
     Charts.prototype._importThirdPartyCss = function () {
-
-        //Bootstrap
-        require('bootstrap/dist/css/bootstrap.css');
-
-        //Highcharts
-        //require('highcharts/css/highcharts.css');
 
         //host override
         require('../css/gift.css');

@@ -78,7 +78,7 @@ define(function () {
         iron: "Iron",
         calcium: "Calcium",
         zinc: "Zinc",
-        folicAcid: "Folic Acid"
+        fola: "Fola"
 
 
     }

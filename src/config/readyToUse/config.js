@@ -28,6 +28,9 @@ define(["underscore"], function (_) {
 
     return {
 
+        bubbleChartColors_foods : ["#204f74", "#bf9100", "#c1000b", "#558138", "#bc8476", "#6c5980", "#853a12", "#853a12", "#60d581", "#58a1c5", "#c45a1a", "#fffa32", "#56a2c9", "#7b7f77"],
+        bubbleChartColors_beverages : ["blue","blue","blue","blue","blue","blue","blue"],
+
         catalog: {
             pluginRegistry: {
                 contextSystem: {
