@@ -18,6 +18,7 @@
     "build": "SECTIONS=readyToUse,map,base,mde,statistics NODE_ENV=production webpack --display-error-details ",
     "build:base": "SECTIONS=base NODE_ENV=production webpack --display-error-details ",
     "build:map": "SECTIONS=map NODE_ENV=production webpack --display-error-details ",
+    "build:map_deploy": "rsync -avP dist/map/ fenixrepo.fao.org:www/gift/map/",
     "build:stats": "SECTIONS=base,analysis,data_management NODE_ENV=production webpack --display-error-details --profile --json  > stats.json",
     "w-build": "SET SECTIONS=readyToUse,map,base,mde,statistics&&SET NODE_ENV=production&&webpack --display-error-details ",
     "w-build:stats": "SET SECTIONS=base,analysis,data_management&&SET NODE_ENV=production&&webpack --display-error-details --profile --json  > stats.json"

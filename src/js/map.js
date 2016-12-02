@@ -201,7 +201,7 @@ define(['jquery','underscore','loglevel','handlebars',
             ConsC.mapOptsLeaflet
         );
 
-window.MM= this.fenixMap.map;
+        window.MM = this.fenixMap.map;
 
         setTimeout(function() {
             self.fenixMap.map.invalidateSize(false);
@@ -239,7 +239,6 @@ window.MM= this.fenixMap.map;
         self.layerAll = L.markerClusterGroup({
             showCoverageOnHover: true,
             maxClusterRadius: 30,
-            //iconCreateFunction: this._iconCreateFunction
         }).addTo(this.fenixMap.map);
 
         var hiddens = _.compact( _.map(countriesTargeted, function(id) {
@@ -278,7 +277,7 @@ window.MM= this.fenixMap.map;
                         active: false,
                         order: order,
                         name: self.titleByCodes[ code ],
-                        icon: '<i class="label label-'+className+' text-primary">'+code+'&nbsp;</i>',
+                        icon: '<i class="label label-'+className+' text-primary">&nbsp;</i>',
                         layer: L.layerGroup([])
                     };
                 }
