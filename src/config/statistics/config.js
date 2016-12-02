@@ -26,6 +26,20 @@ define(["jquery", "underscore"],function ($, _) {
 
                 var final = $.extend(true, {}, metavalues, fenixvalues);
 
+                // remove 'none' codes
+                _.each(final, function(item, key) {
+                  if(item.codes){
+                      var codes = item.codes[0].codes;
+
+                      if( $.inArray('none', codes) == 0)
+                        codes.splice( $.inArray('none', codes), 1 );
+
+                      if(codes.length == 0)
+                          delete final[key];
+
+                  }
+                });
+
                 return final;
 
             },

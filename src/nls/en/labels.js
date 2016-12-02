@@ -16,7 +16,7 @@ define(function () {
         selector_time: "Time",
         selector_referenceArea: "Reference Area",
         selector_coverageSector: "Coverage Sector",
-        selector_foodex2_code: "Food",
+        selector_foodex2_code: "Food Items",
         selector_gender: "Gender",
         selector_special_condition: "Special Condition",
         selector_ageGranularity:"Age Granularity",
@@ -31,8 +31,8 @@ define(function () {
 
         //Statistics
         statistics_intro: "Introductory text",
-        selection_criteria: "Selection criteria",
-        click_expand_collapse: "Click to expand or collapse this section",
+        search_criteria: "Search criteria",
+        click_expand_collapse: "Click to expand or collapse the search criteria box",
 
 
         //Ready To Use section

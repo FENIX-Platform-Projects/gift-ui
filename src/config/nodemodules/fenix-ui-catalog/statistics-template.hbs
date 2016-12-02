@@ -9,14 +9,15 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" title="{{click_expand_collapse}}">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" title="{{click_expand_collapse}}" href="#catalog-filter-panel">{{selection_criteria}}</a>
+                                <a data-toggle="collapse" title="{{click_expand_collapse}}" href="#catalog-filter-panel">{{search_criteria}}</a>
                             </h4>
                         </div>
-                        <div id="catalog-filter-panel" class="panel-collapse">
+
+                        <div id="catalog-filter-panel" class="panel-collapse collapse in" aria-expanded="true">
                             <div class="panel-body">
                                 <div data-role="menu" class="dropdown collapse" title="{{tooltip_btn_add_selector}}">
                                     <button class="btn btn-floating fx-background-color-primary-color btn-fx-catalog-filters" type="button" data-toggle="dropdown"
-                                            aria-expanded="false">
+                                            aria-expanded="true">
                                         <span class="icojam_add"></span>
                                     </button>
                                 </div>

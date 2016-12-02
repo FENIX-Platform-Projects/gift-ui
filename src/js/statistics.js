@@ -4,7 +4,7 @@ define([
     "underscore",
     "../config/config",
     "../config/statistics/config",
-    "../config/nodemodules/fenix-ui-catalog/template.hbs",
+    "../config/nodemodules/fenix-ui-catalog/statistics-template.hbs",
     "../html/statistics/template.hbs",
     "../nls/labels",
     "fenix-ui-catalog",
@@ -72,13 +72,14 @@ define([
         //Bootstrap
         require('bootstrap/dist/css/bootstrap.css');
 
+        //GIFT CSS
+        require("../css/gift.css");
+
         //dropdown selector
         require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
+
         // fenix-ui-filter
         require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
-
-        // fenix-ui-dropdown
-        require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
@@ -91,16 +92,12 @@ define([
         //time selector
         require("../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css");
 
-
         //meta viewer requirements
         require("jquery-treegrid-webpack/css/jquery.treegrid.css");
-
 
         //Catalog
         require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
 
-        //GIFT CSS
-        require("../css/gift.css");
 
     };
 
@@ -166,12 +163,9 @@ define([
             //Add title labels
             obj.template.title = labels[this.lang][ "selector_" + key];
 
-            console.log(key, obj.template.title);
-
             // Add message labels
             if(obj.constraints && obj.constraints.presence){
                 obj.constraints.presence.message = labels[this.lang][ "selector_" + key+"_message"];
-                console.log(key, obj.constraints.presence.message);
             }
 
         }, this));
@@ -231,7 +225,7 @@ define([
         }
 
         this.$metamodal.modal('show');
-        this.metadataViewer = new MetadataViewer({
+        var metadataViewer = new MetadataViewer({
             model: data,
             el: this.$meta,
             lang: this.lang,
@@ -242,7 +236,7 @@ define([
                 placement: 'left'
             }
         }).on('export', function(e) {
-            console.log('EXPORT MODEL',e)
+           // console.log('EXPORT MODEL',e)
         });
     };
 
