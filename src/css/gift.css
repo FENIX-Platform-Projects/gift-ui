@@ -16776,7 +16776,7 @@
   .fx-sandbox.fao-holder .home-event p {
     padding: 0 10px; }
   .fx-sandbox.fao-holder #statistics h5.fx-selector-title {
-    overflow-y: visible; }
+    overflow: visible; }
   .fx-sandbox.fao-holder h1, .fx-sandbox.fao-holder h2, .fx-sandbox.fao-holder h3, .fx-sandbox.fao-holder h4, .fx-sandbox.fao-holder h5, .fx-sandbox.fao-holder h6 {
     border-top: 0 !important;
     padding-top: 0  !important;
