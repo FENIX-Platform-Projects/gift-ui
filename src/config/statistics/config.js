@@ -63,6 +63,7 @@ define(["jquery", "underscore"],function ($, _) {
             },
 
             actions: ["download", 'metadata'],
+            overridePluginRegistry: true,
             pluginRegistry: {}
         }
     }
