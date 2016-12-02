@@ -5,11 +5,11 @@
         <div class="row ">
 
             <div class="row-height">
-                <div class="panel-group">
+
                     <div class="panel panel-default">
                         <div class="panel-heading" title="{{click_expand_collapse}}">
                             <h4 class="panel-title">
-                                <a data-toggle="collapse" title="{{click_expand_collapse}}" href="#catalog-filter-panel">{{search_criteria}}</a>
+                                <a data-toggle="collapse" title="{{click_expand_collapse}}" href="#catalog-filter-panel">{{search_criteria}}</a>: {{instruction}}
                             </h4>
                         </div>
 
@@ -27,15 +27,20 @@
                                 </div>
                             </div>
                         </div>
+
+                </div>
+
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                          {{catalog_results}}
+                        </h4>
                     </div>
-                </div>
 
-                </div>
-
-                <div class="col-sm-12 col-top cat-results">
-
+                <div class="panel-body cat-results">
                     <!-- Bottom -->
-
                     <div data-role="bottom" data-status="intro" class="cat-statuses-holder">
 
                         <div data-content="error" class="text-center">
@@ -62,11 +67,12 @@
                         </div>
 
                         <div data-content="huge" class="text-center">
-                            <h2>{{catalog_too_many_results}}. <br> {{catalog_please_add_more_criteria}}.</h2>
+                            <h2>{{catalog_too_many_results}}. <br> {{catalog_please_refine_criteria}}.</h2>
                         </div>
 
                     </div>
 
+                </div>
                 </div>
 
             </div>
