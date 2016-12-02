@@ -49,11 +49,10 @@ Grey(2): Planned food consumption survey
 
     mapOpts: {
         baselayers: {
-            "osm": {
-                url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                maxZoom: 19,
-                opacity: 0.6,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">osm.org</a>'
+            "carto": {
+                url: "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+                subdomains: 'abcd',
+                maxZoom: 19
             }
         },
         boundaries: true,
@@ -78,7 +77,6 @@ Grey(2): Planned food consumption survey
         scrollWheelZoom: false,
         zoom: 2,
         minZoom: 2,
-        maxZoom: 5,
-        maxBounds: [[84.67351256610522, -174.0234375], [-58.995311187950925, 223.2421875]]
+        maxZoom: 5
     }
 })

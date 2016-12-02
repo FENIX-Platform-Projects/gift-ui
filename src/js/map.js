@@ -6,7 +6,8 @@ define(['jquery','underscore','loglevel','handlebars',
     '../nls/consumption',
     '../json/consumption/gaul0_centroids.json',
     '../json/consumption/world_countries.json',
-    '../json/consumption/countries_targeted',
+    //'../json/consumption/countries_targeted',
+    '../json/consumption/countries_excluded',
     'leaflet',
     'leaflet-panel-layers',
     '../lib/leaflet.markercluster-src',
@@ -21,7 +22,7 @@ define(['jquery','underscore','loglevel','handlebars',
     labels,
     gaul0Centroids,
     gaul0Countries,
-    countriesTargeted,
+    countriesExluded,
     L,
     LeafletPanel,
     LeafletMarkecluster,
@@ -36,8 +37,9 @@ define(['jquery','underscore','loglevel','handlebars',
     var confidentialityDataUrl = C.consumption.service[C.environment]+'/msd/resources/find?full=true',
         confidentialityCodelistUrl = C.consumption.service[C.environment]+
             //'/msd/resources/uid/GIFT_STATUS',
-            '/msd/resources/uid/GIFT_ConfidentialityStatus',
-        confidentialityDataPayload = {
+            '/msd/resources/uid/GIFT_ConfidentialityStatus';
+    
+    var confidentialityDataPayload = {
             "dsd.contextSystem": {
                 "enumeration": ["gift"]
             },
@@ -150,6 +152,7 @@ define(['jquery','underscore','loglevel','handlebars',
                 if(m.meAccessibility && _.has(m.meAccessibility,'seConfidentiality')) {
                     
                     var confid = m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code;
+
                     self.mapCodesGroup.push({
                         uid: m.uid,
                         confid: confid,
@@ -200,15 +203,17 @@ define(['jquery','underscore','loglevel','handlebars',
             ConsC.mapOpts, 
             ConsC.mapOptsLeaflet
         );
+        this.map = this.fenixMap.map;
+        //this.map = L.map(this.$map[0]);//this.map;
 
-        window.MM = this.fenixMap.map;
+        window.MM = this.map;
 
         setTimeout(function() {
-            self.fenixMap.map.invalidateSize(false);
-            self.fenixMap.map.fitWorld();
-        },500);
+            self.map.invalidateSize(false);
+            //self.map.fitWorld();
+        },0);
 
-        this.fenixMap.createMap();
+        this.fenixMap.createMap(10,0,2);
 
         self.codesByCountry = {};
 
@@ -239,23 +244,24 @@ define(['jquery','underscore','loglevel','handlebars',
         self.layerAll = L.markerClusterGroup({
             showCoverageOnHover: true,
             maxClusterRadius: 30,
-        }).addTo(this.fenixMap.map);
+        }).addTo(this.map);
+        //self.layerAll = L.layerGroup([]).addTo(this.map);
 
-        var hiddens = _.compact( _.map(countriesTargeted, function(id) {
+        var excluded = _.compact( _.map(countriesExluded, function(id) {
             return self.countryByAdm0Code[ id ];
         }) );
 
-        self.layerGray = L.geoJson(hiddens, {
+        self.layerGray = L.geoJson(excluded, {
             style: function(f) {
                 return ConsC.countryHiddensStyle;
             },
             onEachFeature: function(f, layer) {
                 if(f.properties && f.properties.name)
-                    layer.bindPopup(f.properties.name, { });
+                    layer.bindPopup(f.properties.name);
             }
         });
 
-        self.layerGray.addTo(self.fenixMap.map);
+        self.layerGray.addTo(self.map);
 
         self.layersByCodes = {};
 
@@ -304,10 +310,12 @@ define(['jquery','underscore','loglevel','handlebars',
             compact: true,
             position: 'topleft'
         }).on('panel:selected', function(e) {
-            self.fenixMap.map.fitWorld();
+            self.map.fitWorld();
         })
-        .addTo(self.fenixMap.map);
+        .addTo(self.map);
 
+        /*
+        //PANEL GRAY
         var layerPanelGray = [
             {
                 active: true,
@@ -322,10 +330,13 @@ define(['jquery','underscore','loglevel','handlebars',
             className: 'panel-hiddens',
             position: 'topleft'
         })
-        .addTo(self.fenixMap.map);
+        .addTo(self.map);
+        self.$legend.append(self.hiddenPanel._container);
+        */
 
         //move panel outside map
-        self.$legend.append(self.legendPanel._container, self.hiddenPanel._container);
+        self.$legend.append(self.legendPanel._container);
+        
     };
 
     Map.prototype._getMarker = function(items) {

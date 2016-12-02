@@ -142,6 +142,6 @@ return [
 2648, //Serbia
 40765, //Egypt
 147295, //China
-147296, //Taiwan
+147296 //Taiwan
 ];
 });
