@@ -22,7 +22,7 @@ define(['jquery','underscore','loglevel','handlebars',
     labels,
     gaul0Centroids,
     gaul0Countries,
-    countriesExluded,
+    countriesExcluded,
     L,
     LeafletPanel,
     LeafletMarkecluster,
@@ -93,7 +93,7 @@ define(['jquery','underscore','loglevel','handlebars',
                 });
 
                 _.each(res.data, function(obj) {
-                    
+
                     var code = obj.code;
 
                     if( ConsC.codelistStyles[ code ] && 
@@ -124,6 +124,7 @@ define(['jquery','underscore','loglevel','handlebars',
             success: function(res) {
 
                 res = _.filter(res, function(d) {
+
                     if(!d.meContent.seCoverage)
                         console.log('converage field not found',d);
                     return d.meContent && d.meContent.seCoverage && d.meContent.seCoverage.coverageGeographic;
@@ -150,7 +151,7 @@ define(['jquery','underscore','loglevel','handlebars',
         _.each(self.metadataByCountry, function(meta) {
             _.each(meta, function(m) {
                 if(m.meAccessibility && _.has(m.meAccessibility,'seConfidentiality')) {
-                    
+
                     var confid = m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code;
 
                     self.mapCodesGroup.push({
@@ -197,23 +198,27 @@ define(['jquery','underscore','loglevel','handlebars',
         this.$metamodal = this.$el.find(s.MAP_METAMODAL);
 
         //PATH FOR OLD MAP
-        FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
+        //FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
 
-        this.fenixMap = new FenixMap.map(this.$map, 
+        /*this.fenixMap = new FenixMap.map(this.$map, 
             ConsC.mapOpts, 
             ConsC.mapOptsLeaflet
-        );
-        this.map = this.fenixMap.map;
-        //this.map = L.map(this.$map[0]);//this.map;
+        );*/
+        //this.map = this.fenixMap.map;
+        this.map = L.map(this.$map[0], ConsC.mapOptsLeaflet);
+
+        L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {subdomains: 'abcd', maxZoom: 19 }).addTo(self.map);
 
         window.MM = this.map;
 
         setTimeout(function() {
             self.map.invalidateSize(false);
-            //self.map.fitWorld();
+            self.map.fitWorld();
         },0);
 
-        this.fenixMap.createMap(10,0,2);
+        //this.fenixMap.createMap(10,0,2);
+        L.control.zoom({position:'topright'}).addTo(self.map);
+        self._renderDisclaimer(this.map, i18nLabels.disclaimer);
 
         self.codesByCountry = {};
 
@@ -241,30 +246,25 @@ define(['jquery','underscore','loglevel','handlebars',
             }
         }
 
+        //LAYER GRAY
+        var grayCountries = _.compact(_.map(countriesExcluded, function(id) {
+            return self.countryByAdm0Code[ id ];
+        }));
+        L.geoJson(grayCountries, {
+            style: function(f) {
+                return ConsC.countryHiddensStyle;
+            }
+        }).addTo(self.map);
+
+        /* TODO enable for too markers
         self.layerAll = L.markerClusterGroup({
             showCoverageOnHover: true,
             maxClusterRadius: 30,
-        }).addTo(this.map);
-        //self.layerAll = L.layerGroup([]).addTo(this.map);
+        }).addTo(this.map);*/
 
-        var excluded = _.compact( _.map(countriesExluded, function(id) {
-            return self.countryByAdm0Code[ id ];
-        }) );
-
-        self.layerGray = L.geoJson(excluded, {
-            style: function(f) {
-                return ConsC.countryHiddensStyle;
-            },
-            onEachFeature: function(f, layer) {
-                if(f.properties && f.properties.name)
-                    layer.bindPopup(f.properties.name);
-            }
-        });
-
-        self.layerGray.addTo(self.map);
+        self.layerAll = L.layerGroup([]).addTo(this.map);
 
         self.layersByCodes = {};
-
         _.each(self.codesByCountry, function(items, countryCode) {
             
             _.each(items, function(item) {
@@ -287,9 +287,12 @@ define(['jquery','underscore','loglevel','handlebars',
                         layer: L.layerGroup([])
                     };
                 }
-                self.layersByCodes[ code ].layer.addLayer( self._getMarker(items) );
-            });
                 
+                self.layersByCodes[ code ].layer.addLayer( self._getMarker(items, code) );
+
+            });
+
+            if(ConsC.codelistStyles[ items[0].confids[0] ].visible)
             self.layerAll.addLayer( self._getMarker(items) );
         });
 
@@ -302,83 +305,120 @@ define(['jquery','underscore','loglevel','handlebars',
             layer: self.layerAll
         };
 
-        delete self.layersByCodes[ConsC.codelistStyles.Off]
+        delete self.layersByCodes[ConsC.codelistStyles.Off];
 
         self.panelLayers = _.sortBy(_.values(self.layersByCodes),'order');
 
         self.legendPanel = new LeafletPanel(self.panelLayers, null, {
             compact: true,
             position: 'topleft'
-        }).on('panel:selected', function(e) {
+        })
+        .on('panel:selected', function(e) {
             self.map.fitWorld();
         })
         .addTo(self.map);
-
-        /*
-        //PANEL GRAY
-        var layerPanelGray = [
-            {
-                active: true,
-                order: 1,
-                name: "Targeted countries",
-                icon: '<i class="label label-'+ConsC.codelistStyles[ ConsC.codelistStyles.Off ].className+' text-primary">&nbsp;</i>',
-                layer: self.layerGray
-            }
-        ];
-        self.hiddenPanel = new LeafletPanel(null, layerPanelGray, {
-            compact: true,
-            className: 'panel-hiddens',
-            position: 'topleft'
-        })
-        .addTo(self.map);
-        self.$legend.append(self.hiddenPanel._container);
-        */
-
-        //move panel outside map
-        self.$legend.append(self.legendPanel._container);
         
+        //move panel outside map
+        self.$legend.append(self.legendPanel._container);      
+    };        
+
+    Map.prototype._renderDisclaimer = function(map, text) {
+    
+        var control = new L.Control({position: 'bottomright'});
+    
+        control.onAdd = function(map) {
+                var div = L.DomUtil.create('div','leaflet-control-disclaimer fm-icon-box-background'),
+                    a = L.DomUtil.create('a','fm-icon-sprite fm-icon-info', div);
+                
+                a.title = text;
+                
+                $(a).tooltip({placement:'left'});
+
+                return div;
+            };
+        control.addTo(map);
     };
 
-    Map.prototype._getMarker = function(items) {
+    Map.prototype._getMarker = function(items, filterCode) {
 
         var self = this;
 
-        var loc = this.mapLocsByAdm0Code[ items[0].countryCode ],
-            icon = L.MarkerClusterGroup.prototype._defaultIconCreateFunction({
+        var loc = this.mapLocsByAdm0Code[ items[0].countryCode ];
+            /*icon = L.MarkerClusterGroup.prototype._defaultIconCreateFunction({
                 getChildCount: function() {
-                    return items.length;
+                    var count = items.length;
+                    if(filterCode) {
+                        count = _.filter(items, function(i) {
+                            return (''+filterCode) === i.confids[0];
+                        }).length;
+                    }
+                    return count;
                 }
-            });
+            });*/
+
+        var childCount = items.length;
+        if(filterCode) {
+            childCount = _.filter(items, function(i) {
+                return (''+filterCode) === i.confids[0];
+            }).length;
+        }
+
+        var icon = new L.DivIcon({
+            html: '<div><span>' + childCount + '</span></div>',
+            className: 'marker-cluster marker-cluster-small',
+            iconSize: new L.Point(40, 40)
+        });
 
         var mark = new L.Marker(loc, { icon: icon });
 
+        mark.countryName = items[0].countryName;
         mark.items = items;
+        mark.code = filterCode;
+        mark.itemsValue = [];
 
-        var itemsValue = [];
-        _.each(items, function(item) {
+        _.each(mark.items, function(item) {
             _.each(item.confids, function(code) {
-                itemsValue.push({
-                    code: code,
-                    className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
-                    title: item.title.title,
-                    uid: item.uid
-                });
+
+                if( ConsC.codelistStyles[ code ].visible) {
+
+                    if(mark.code) {
+                        if(mark.code == code) {
+                            mark.itemsValue.push({
+                                code: code,
+                                className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
+                                title: item.title.title,
+                                uid: item.uid
+                            });
+                        }
+                    }
+                    else {
+                        mark.itemsValue.push({
+                            code: code,
+                            className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
+                            title: item.title.title,
+                            uid: item.uid
+                        });
+                    }
+                }
+
             })
         });
 
         var $popup = $(tmplPopup({
-            countryName: items[0].countryName,
-            items: itemsValue
+            countryName: mark.countryName,
+            items: mark.itemsValue
         }));
 
         $popup.find('a').on('click', function(e) {
             e.preventDefault();
+
             var uid = $(e.target).data('uid'),
                 meta = self.metadataByUid[ uid ][0];
+
             self._renderMeta(meta);
         });
 
-        mark.bindPopup($popup[0], {closeButton: false });
+        mark.bindPopup($popup[0]);
 
         return mark;
     };

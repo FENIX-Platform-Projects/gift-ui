@@ -44,7 +44,16 @@ Grey(2): Planned food consumption survey
         opacity:1,
         color:'#888',
         fillColor:'#ccc',
-        fillOpacity: 0.9
+        fillOpacity: 0.6
+    },
+    
+    mapOptsLeaflet: {
+        zoomControl: false,
+        attributionControl: false,
+        scrollWheelZoom: false,
+        zoom: 2,
+        minZoom: 2,
+        maxZoom: 4
     },
 
     mapOpts: {
@@ -70,13 +79,5 @@ Grey(2): Planned food consumption survey
             baselayer: false,
             wmsLoader: false
         }
-    },
-    
-    mapOptsLeaflet: {
-        attributionControl: false,
-        scrollWheelZoom: false,
-        zoom: 2,
-        minZoom: 2,
-        maxZoom: 5
     }
 })
