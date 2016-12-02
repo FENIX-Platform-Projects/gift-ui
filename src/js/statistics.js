@@ -95,6 +95,13 @@ define([
         //meta viewer requirements
         require("jquery-treegrid-webpack/css/jquery.treegrid.css");
 
+
+        //Catalog
+        require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
+
+        //GIFT CSS
+        require("../css/gift.css");
+
     };
 
 

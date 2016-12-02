@@ -31,6 +31,9 @@ define(function () {
 
         //Statistics
         statistics_intro: "Introductory text",
+        selection_criteria: "Selection criteria",
+        click_expand_collapse: "Click to expand or collapse this section",
+
 
         //Ready To Use section
 

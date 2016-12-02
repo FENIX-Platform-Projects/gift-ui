@@ -1,32 +1,34 @@
 <div data-role="catalog" class="fx-catalog">
 
-    <div class="modal-header clearfix cat-toolbar">
-
-        <div class="cat-btn-left">
-        </div>
-        <h6 class="cat-title fx-text-primary-color truncate"></h6>
-
-    </div>
-
     <div class="modal-body">
         <!-- Filter -->
         <div class="row ">
 
             <div class="row-height">
-
-                <div class="col-sm-12 col-top cat-sidebar">
-
-                    <div data-role="menu" class="dropdown collapse" title="{{ tooltip_btn_add_selector }}">
-                        <button class="btn btn-floating fx-background-color-primary-color btn-fx-catalog-filters" type="button" data-toggle="dropdown"
-                                aria-expanded="false">
-                            <span class="icojam_add"></span>
-                        </button>
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" title="{{click_expand_collapse}}">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" title="{{click_expand_collapse}}" href="#catalog-filter-panel">{{selection_criteria}}</a>
+                            </h4>
+                        </div>
+                        <div id="catalog-filter-panel" class="panel-collapse">
+                            <div class="panel-body">
+                                <div data-role="menu" class="dropdown collapse" title="{{tooltip_btn_add_selector}}">
+                                    <button class="btn btn-floating fx-background-color-primary-color btn-fx-catalog-filters" type="button" data-toggle="dropdown"
+                                            aria-expanded="false">
+                                        <span class="icojam_add"></span>
+                                    </button>
+                                </div>
+                                <!-- Filter -->
+                                <div data-role="filter" class="cat-filter-container">
+                                    {{> ../../../html/common/filter.hbs}}
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Filter -->
-                    <div data-role="filter" class="cat-filter-container">
-                        {{> ../../../html/common/filter.hbs}}
-                    </div>
                 </div>
 
                 <div class="col-sm-12 col-top cat-results">
@@ -36,9 +38,7 @@
                     <div data-role="bottom" data-status="intro" class="cat-statuses-holder">
 
                         <div data-content="error" class="text-center">
-
                             <h2>{{catalog_error}}</h2>
-
                         </div>
 
                         <div data-content="ready">
