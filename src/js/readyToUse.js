@@ -57,7 +57,6 @@ define([
 
         if (RC.forceShowDashboardSection === true) {
             this._showSection(sections.DASHBOARD);
-
         } else {
             this._showSection(sections.SEARCH);
         }
@@ -289,6 +288,9 @@ define([
         require("../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css");
         // fenix-ui-filter
         require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+
+        // fenix-ui-dropdown
+        require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");

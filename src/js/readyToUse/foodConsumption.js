@@ -6,13 +6,16 @@ define([
     "../../nls/labels",
     "../../config/config",
     "../../config/readyToUse/config",
+    "../charts/bubble",
     "../charts/donutHole",
     "fenix-ui-filter"
-], function ($, log, _, template, labels, C, RC, DonutHole, Filter) {
+], function ($, log, _, template, labels, C, RC, Bubble, DonutHole, Filter) {
 
     "use strict";
 
     var s = {
+            BUBBLE_FOOD: "#bubble-food",
+            BUBBLE_BEVERAGES: "#bubble-beverages",
             MENU_ITEMS: "[data-chart]",
             CONTENTS: "[data-content]",
             BUBBLE_EL: "#bubble",
@@ -137,8 +140,20 @@ define([
 
 
         switch (type) {
-            case "bubble" :
-                console.log("Bubble");
+            case "bubble" :;
+                this.foodBubble = new Bubble({
+                    el : s.BUBBLE_FOOD,
+                    cache: C.cache,
+                    type : "foods",
+                    environment : C.environment
+                });
+
+                this.beveragesBubble = new Bubble({
+                    el : s.BUBBLE_BEVERAGES,
+                    cache: C.cache,
+                    environment : C.environment,
+                    type : "beverages"
+                });
                 break;
             case "treemap" :
                 console.log("treemap");
