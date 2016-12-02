@@ -70,22 +70,22 @@ define([
     Statistics.prototype._importThirdPartyCss = function () {
 
         //Bootstrap
-        require('bootstrap/dist/css/bootstrap.css');
-
-        //GIFT CSS
-        require("../css/gift.css");
+        //require('bootstrap/dist/css/bootstrap.css');
 
         //dropdown selector
         require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
 
-        // fenix-ui-filter
-        require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
 
         //tree selector
         require("../../node_modules/jstree/dist/themes/default/style.min.css");
+
+        // fenix-ui-filter
+        require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+
         //range selector
         require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.css");
         require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css");
@@ -98,6 +98,8 @@ define([
         //Catalog
         require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
 
+        //GIFT CSS
+        require("../css/gift.css");
 
     };
 
