@@ -37,7 +37,8 @@ define([
 
         this._attach();
 
-        this._initComponents();
+        // TODO uncomment
+        //this._initComponents();
 
         this._bindEventListeners();
 
@@ -51,7 +52,8 @@ define([
 
         this.process = obj.process;
 
-        this.filter.printDefaultSelection();
+        // TODO uncomment
+        //this.filter.printDefaultSelection();
 
         this._render();
 
@@ -103,7 +105,8 @@ define([
 
         this.$el.find(s.MENU_ITEMS).on("click", _.bind(this._onMenuItemClick, this));
 
-        this.filter.on("click", _.bind(this._onFilterClick, this));
+        // TODO uncomment
+        // this.filter.on("click", _.bind(this._onFilterClick, this));
 
     };
 
