@@ -10,224 +10,234 @@ define([
         HEIGHT : 500,
         WIDTH : 500,
         level_number: 1,
-        process : {
-            first_level_process :
-                [
-                    {
-                        "name": "gift_population_filter",
-                        "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
-                        "parameters": {
-                            "gender": "2",
-                            "special_condition": ["2"],
-                            "age_year": {
-                                "from": 10.5,
-                                "to": 67
-                            }
-                            // "age_month": {
-                            //     "from": 10.5,
-                            //     "to": 67
-                            // }
-                        }
-                    },
-                    {
-                        "name": "filter",
-                        "parameters": {
-                            "columns": [
-                                "group_code",
-                                "value",
-                                "um"
-                            ],
-                            "rows": {
-                                "item": {
-                                    "codes": [
-                                        {
-                                            "uid": "GIFT_Items",
-                                            "codes": [
-                                                "IRON"
-                                            ]
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    },
+        process: [
+            {
+                "name": "gift_population_filter",
+                "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
+                "parameters": {
+                    "item": "FOOD_AMOUNT_PROC",
+                    "gender": null,
+                    "special_condition": ["2"],
+                    "age_year": {
+                        "from": 10.5,
+                        "to": 67
+                    }
+                }
+            },
 
-                    {
-                        "name": "group",
-                        "parameters": {
-                            "by": [
-                                "group_code"
-                            ],
-                            "aggregations": [
+            {
+                "name": "filter",
+                "parameters": {
+                    "columns": [
+                        "group_code",
+                        "subgroup_code",
+                        "foodex2_code",
+                        "value"
+                    ],
+                    "rows": {
+                        "!group_code": {
+                            "codes": [
                                 {
-                                    "columns": [ "value" ],
-                                    "rule": "SUM"
-                                },
+                                    "uid": "GIFT_FoodGroups",
+                                    "codes": [ "14" ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+
+            {
+                "name": "group",
+                "rid": { "uid": "food_level_group" },
+                "parameters": {
+                    "by": [
+                        "group_code",
+                        "subgroup_code",
+                        "foodex2_code"
+                    ],
+                    "aggregations": [
+                        {
+                            "columns": [ "value" ],
+                            "rule": "SUM"
+                        }
+                    ]
+                }
+            },
+
+            {
+                "name": "group",
+                "rid": { "uid": "subgroup_level_group" },
+                "parameters": {
+                    "by": [
+                        "group_code",
+                        "subgroup_code"
+                    ],
+                    "aggregations": [
+                        {
+                            "columns": [ "value" ],
+                            "rule": "SUM"
+                        }
+                    ]
+                }
+            },
+
+            {
+                "name": "group",
+                "rid": { "uid": "group_level_group" },
+                "parameters": {
+                    "by": [
+                        "group_code"
+                    ],
+                    "aggregations": [
+                        {
+                            "columns": [ "value" ],
+                            "rule": "SUM"
+                        }
+                    ]
+                }
+            },
+
+            {
+                "name": "asTable"
+            },
+
+            {
+                "name": "percentage"
+            },
+
+            {
+                "name": "addcolumn",
+                "rid": { "uid": "group_data" },
+                "parameters": {
+                    "column": {
+                        "dataType": "code",
+                        "id": "um",
+                        "subject" : "um",
+                        "title": {
+                            "EN": "Unit of measure"
+                        },
+                        "domain": {
+                            "codes": [
                                 {
-                                    "columns": [ "um" ],
-                                    "rule": "max"
+                                    "idCodeList": "GIFT_UM"
                                 }
                             ]
                         }
                     },
-                    {
-                        "name": "order",
-                        "parameters": {
-                            "value": "DESC"
-                        }
-                    }
+                    "value": "perc"
+                }
+            },
+
+
+
+
+            {
+                "name": "join",
+                "sid": [
+                    { "uid": "group_level_group" },
+                    { "uid": "subgroup_level_group" }
                 ],
-            second_level_process : [
-                {
-                    "name": "gift_population_filter",
-                    "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
-                    "parameters": {
-                        "gender": "2",
-                        "special_condition": ["2"],
-                        "age_year": {
-                            "from": 10.5,
-                            "to": 67
-                        }
-                        // "age_month": {
-                        //     "from": 10.5,
-                        //     "to": 67
-                        // }
-                    }
-                },
+                "parameters": {
+                    "joins": [
+                        [ { "type": "id", "value": "group_code" } ],
+                        [ { "type": "id", "value": "group_code" } ]
+                    ],
+                    "values": []
+                }
+            },
 
-                {
-                    "name": "filter",
-                    "parameters": {
-                        "columns": [
-                            "subgroup_code",
-                            "value",
-                            "um"
-                        ],
-                        "rows": {
-                            "item": {
-                                "codes": [
-                                    {
-                                        "uid": "GIFT_Items",
-                                        "codes": [ "IRON" ]
-                                    }
-                                ]
-                            },
-                            "group_code": {
-                                "codes": [
-                                    {
-                                        "uid": "GIFT_FoodGroups",
-                                        "codes": [ "04" ]
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                },
-
-                {
-                    "name": "group",
-                    "parameters": {
-                        "by": [
-                            "subgroup_code"
-                        ],
-                        "aggregations": [
-                            {
-                                "columns": [ "value" ],
-                                "rule": "SUM"
-                            },
-                            {
-                                "columns": [ "um" ],
-                                "rule": "max"
-                            }
-                        ]
-                    }
-                },
-                {
-                    "name": "order",
-                    "parameters": {
-                        "value": "DESC"
+            {
+                "name" : "select",
+                "parameters" : {
+                    "values" : {
+                        "group_code" : null,
+                        "subgroup_level_group_subgroup_code" : null,
+                        "subgroup_level_group_value" : "(subgroup_level_group_value*100.0)/group_level_group_value"
                     }
                 }
-            ],
-            third_level_process : [
-                {
-                    "name": "gift_population_filter",
-                    "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
-                    "parameters": {
-                        "gender": "2",
-                        "special_condition": ["2"],
-                        "age_year": {
-                            "from": 10.5,
-                            "to": 67
-                        }
-                        // "age_month": {
-                        //     "from": 10.5,
-                        //     "to": 67
-                        // }
-                    }
-                },
+            },
 
-                {
-                    "name": "filter",
-                    "parameters": {
-                        "columns": [
-                            "foodex2_code",
-                            "value",
-                            "um"
-                        ],
-                        "rows": {
-                            "item": {
-                                "codes": [
-                                    {
-                                        "uid": "GIFT_Items",
-                                        "codes": [ "IRON" ]
-                                    }
-                                ]
-                            },
-                            "subgroup_code": {
-                                "codes": [
-                                    {
-                                        "uid": "GIFT_FoodGroups",
-                                        "codes": [ "0104" ]
-                                    }
-                                ]
-                            }
+            {
+                "name": "addcolumn",
+                "rid": { "uid": "subgroup_data" },
+                "parameters": {
+                    "column": {
+                        "dataType": "code",
+                        "id": "um",
+                        "subject" : "um",
+                        "title": {
+                            "EN": "Unit of measure"
+                        },
+                        "domain": {
+                            "codes": [
+                                {
+                                    "idCodeList": "GIFT_UM"
+                                }
+                            ]
                         }
-                    }
-                },
+                    },
+                    "value": "perc"
+                }
+            },
 
-                {
-                    "name": "group",
-                    "parameters": {
-                        "by": [
-                            "foodex2_code"
-                        ],
-                        "aggregations": [
-                            {
-                                "columns": [ "value" ],
-                                "rule": "SUM"
-                            },
-                            {
-                                "columns": [ "um" ],
-                                "rule": "max"
-                            }
-                        ]
-                    }
-                },
-                {
-                    "name": "order",
-                    "parameters": {
-                        "value": "DESC"
+
+
+            {
+                "name": "join",
+                "sid": [
+                    { "uid": "subgroup_level_group" },
+                    { "uid": "food_level_group" }
+                ],
+                "parameters": {
+                    "joins": [
+                        [ { "type": "id", "value": "subgroup_code" } ],
+                        [ { "type": "id", "value": "subgroup_code" } ]
+                    ],
+                    "values": []
+                }
+            },
+
+            {
+                "name" : "select",
+                "parameters" : {
+                    "values" : {
+                        "subgroup_code" : null,
+                        "food_level_group_foodex2_code" : null,
+                        "food_level_group_value" : "(food_level_group_value*100.0)/subgroup_level_group_value"
                     }
                 }
-            ]
-        }
+            },
+
+            {
+                "name": "addcolumn",
+                "rid": { "uid": "food_data" },
+                "parameters": {
+                    "column": {
+                        "dataType": "code",
+                        "id": "um",
+                        "subject" : "um",
+                        "title": {
+                            "EN": "Unit of measure"
+                        },
+                        "domain": {
+                            "codes": [
+                                {
+                                    "idCodeList": "GIFT_UM"
+                                }
+                            ]
+                        }
+                    },
+                    "value": "perc"
+                }
+            }
+
+        ]
     };
 
     function LargeTreeMap(params) {
 
         // Load Exporting Module after Highcharts loaded
-        require('highcharts/modules/drilldown')(Highcharts);
         require('highcharts-no-data-to-display')(Highcharts);
         require('highcharts/modules/treemap')(Highcharts);
         require('highcharts/modules/heatmap')(Highcharts);
@@ -239,7 +249,7 @@ define([
             cache :  this.cache
         });
 
-        this._getProcessedResourceForChart(s.process.first_level_process).then(
+        this._getProcessedResourceForChart(s.process).then(
             _.bind(this._onSuccess, this),
             _.bind(this._onError, this)
         );
@@ -251,7 +261,6 @@ define([
 
         this.uid = opts.uid;
         this.selected_items = opts.selected_items;
-        this.selected_config = opts.selected_config;
         this.elID = opts.elID;
 
         this.language = opts.language;
@@ -260,27 +269,25 @@ define([
     LargeTreeMap.prototype._updateProcessConfig = function (process, group_code, subgroup_code) {
         //process=s.process.first_level_process
         process[0].sid[0].uid = this.uid;
-        process[0].parameters = this.selected_config;
-        process[1].parameters.rows.item.codes[0].codes = this.selected_items;
-
-        if(group_code){
-            process[1].parameters.rows.group_code.codes[0].codes = group_code;
-        }
-        if(subgroup_code){
-            process[1].parameters.rows.subgroup_code.codes[0].codes = subgroup_code;
-        }
+        process[0].parameters = this.selected_items;
 
         return process;
     }
 
-    LargeTreeMap.prototype._getProcessedResourceForChart = function (processConfig, group_code, subgroup_code) {
-        var process = this._updateProcessConfig(processConfig, group_code, subgroup_code);
-        //process=s.process.first_level_process
-        return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
+    LargeTreeMap.prototype._getProcessedResourceForChart = function (processConfig) {
+        var process = this._updateProcessConfig(processConfig);
+        return this.bridge.getProcessedResource({body: processConfig, params: {language : this.language}});
     };
 
     LargeTreeMap.prototype._onSuccess = function (resource) {
-        var series = this._processSeries(resource);
+        //Preparing series
+        //Group Data
+        var series = this._processSeries_firstLevel(resource);
+        //Subgroup Data
+        series = this._processSeries_secondLevel(resource, series);
+        //Food Data
+        series = this._processSeries_thirdLevel(resource, series);
+
         var chartConfig = this._getChartConfig(series);
         return this._renderChart(chartConfig);
     };
@@ -292,38 +299,29 @@ define([
         return;
     };
 
-    LargeTreeMap.prototype._processSeries = function (resource) {
+    LargeTreeMap.prototype._processSeries_firstLevel = function (resourceObj) {
 
-        var self = this;
+        var resource = resourceObj.group_data;
+
         var metadata = resource.metadata;
         var data = resource.data;
-
         var columns = metadata.dsd.columns;
-        var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
 
+        var group_code_id_index = '', value_index = '', group_label_index = '', um_label_index = '';
         for(var i=0; i< columns.length;i++){
-            if(columns[i].subject == 'um')
-            {
-                um_index = i;
-                um_column_id = columns[i].id;
+            if(columns[i].id == "group_code"){
+                group_code_id_index = i;
             }
-            else if(columns[i].subject == 'value')
-            {
+            else if(columns[i].subject == "value"){
                 value_index = i;
             }
-            else if(columns[i].dataType == 'code'){
-                code_index = i;
-                code_column_id = columns[i].id;
+            else if(columns[i].id == "group_code_"+this.language.toUpperCase()){
+                group_label_index = i;
+            }
+            else if(columns[i].id == "um_"+this.language.toUpperCase()){
+                um_label_index = i;
             }
         }
-
-        var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language;
-        });
-
-        var codeLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== code_column_id +'_'+self.language;
-        });
 
         var dataToChart = [];
 
@@ -332,11 +330,55 @@ define([
                 var obj = {};
                 var it = data[i];
 
-                obj.y =it[value_index];
-                obj.unit = it[umLabelIdx];
-                obj.name = it[codeLabelIdx];
-                obj.code = it[code_index];
-                obj.drilldown = true;
+                obj.name = it[group_label_index];
+                obj.id = it[group_code_id_index];
+                obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10)//it[um_label_index];
+                obj.unit = it[um_label_index];
+                dataToChart.push(obj);
+            }
+        }
+
+        return dataToChart;
+    };
+
+    LargeTreeMap.prototype._processSeries_secondLevel = function (resourceObj, dataToChart) {
+
+        var resource = resourceObj.subgroup_data;
+
+        var metadata = resource.metadata;
+        var data = resource.data;
+
+        var columns = metadata.dsd.columns;
+
+        var parent_group_code_id_index = '', subgroup_code_index = '', value_index = '', subgroup_label_index = '', um_label_index = '';
+        for(var i=0; i< columns.length;i++){
+            if(columns[i].id == "group_code"){
+                parent_group_code_id_index = i;
+            }
+            if(columns[i].id == "subgroup_level_group_subgroup_code"){
+                subgroup_code_index = i;
+            }
+            else if(columns[i].id == "subgroup_level_group_value"){
+                value_index = i;
+            }
+            else if(columns[i].id == "subgroup_level_group_subgroup_code_"+this.language.toUpperCase()){
+                subgroup_label_index = i;
+            }
+            else if(columns[i].id == "um_"+this.language.toUpperCase()){
+                um_label_index = i;
+            }
+        }
+
+        if(data){
+            for(var i=0; i< data.length;i++) {
+                var obj = {};
+                var it = data[i];
+
+                obj.parent = it[parent_group_code_id_index];
+                obj.name = it[subgroup_label_index];
+                obj.id = it[subgroup_code_index];
+                obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10);
+                obj.unit = it[um_label_index];
 
                 dataToChart.push(obj);
             }
@@ -345,181 +387,113 @@ define([
         return dataToChart;
     };
 
-    LargeTreeMap.prototype._getProccessForOtherLevels = function(point, chart){
-        var self = this;
-        var group_code = '';
-        var subgroup_code = '';
-        var process ='';
-        if(s.level_number==2){
-            //Second level
-            group_code = [];
-            group_code.push(point.code);
-            process = s.process.second_level_process;
-        }
-        else if(s.level_number==3){
-            //Second level
-            subgroup_code = [];
-            subgroup_code.push(point.code);
-            process = s.process.third_level_process;
-        }
+    LargeTreeMap.prototype._processSeries_thirdLevel = function (resourceObj, dataToChart) {
 
-        self.level = s.level_number;
-        this._getProcessedResourceForChart(process, group_code, subgroup_code).then(function (result) {
-            if (result) {
-                self._otherLevelOnSuccess(chart, point, result);
-            } else {
-                this._onError();
+        var resource = resourceObj.food_data;
+
+        var metadata = resource.metadata;
+        var data = resource.data;
+        var columns = metadata.dsd.columns;
+
+        var parent_subgroup_code_id_index = '', food_code_index = '', value_index = '', food_label_index = '', um_label_index = '';
+
+        for(var i=0; i< columns.length;i++){
+            if(columns[i].id == "subgroup_code"){
+                parent_subgroup_code_id_index = i;
             }
-        });
-    }
+            if(columns[i].id == "food_level_group_foodex2_code"){
+                food_code_index = i;
+            }
+            else if(columns[i].id == "food_level_group_value"){
+                value_index = i;
+            }
+            else if(columns[i].id == "food_level_group_foodex2_code_"+this.language.toUpperCase()){
+                food_label_index = i;
+            }
+            else if(columns[i].id == "um_"+this.language.toUpperCase()){
+                um_label_index = i;
+            }
+        }
 
-    LargeTreeMap.prototype._otherLevelOnSuccess = function (chart, point, resource) {
+        if(data){
+            for(var i=0; i< data.length;i++) {
+                var obj = {};
+                var it = data[i];
 
-        var ser = this._processSeries(resource);
+                obj.parent = it[parent_subgroup_code_id_index];
+                obj.name = it[food_label_index];
+                obj.id = it[food_code_index];
+                obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10);
+                obj.unit = it[um_label_index];
+                dataToChart.push(obj);
+            }
+        }
 
-        var chart = chart,
-            drilldowns = {};
-            drilldowns[point.code] = {};
-            drilldowns[point.code].name = point.name;
-            drilldowns[point.code].data = ser;
-
-        var series = drilldowns[point.code];
-
-        // Show the loading label
-        chart.showLoading('Loading ...');
-
-        setTimeout(function () {
-            chart.hideLoading();
-            chart.addSeriesAsDrilldown(point, series);
-        }, 1000);
-
+        return dataToChart;
     };
-
 
     LargeTreeMap.prototype._getChartConfig = function (series) {
 
-        console.log(series)
         var self = this;
-       var chartConfig =  {
-           chart: {
-               // xAxis: {
-               //     events: {
-               //         setExtremes: function (e) {
-               //             console.log(this, "xxxx")
-               //             alert('X drill: min(' + e.min + '), max(' + e.max + ')');
-               //         },
-               //     }
-               // },
-               // yAxis: {
-               //     events: {
-               //         setExtremes: function (e) {
-               //             console.log(this, "yyyyy")
-               //             alert('Y drill: min(' + e.min + '), max(' + e.max + ')');
-               //         },
-               //     }
-               // },
-               events: {
-                   redraw: function (e) {
-                       console.log(e)
+        var chartConfig =  {
+            series: [{
+                type: 'treemap',
+                layoutAlgorithm: 'squarified',
+                allowDrillToNode: true,
+                animationLimit: 1000,
+                dataLabels: {
+                    enabled: false
+                },
+                levelIsConstant: false,
+                levels: [{
+                    level: 1,
+                    dataLabels: {
+                        enabled: true
+                    },
+                    borderWidth: 3
+                }],
 
-                       var rootNode = this.series[0].rootNode;
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.unit + '</b>';
+                    }
+                },
 
-                       console.log(this)
-                       console.log(rootNode, rootNode.split('-').length)
-                       if (rootNode === '') {
-                           alert(' NO DRILLED - LEVEL 0 ')
-                       } else {
-                           if (rootNode.split('-').length == 2) {
+                data : series
 
-                               alert(' DRILLED - LEVEL 1');
-                               var data2= [{
-                                   name: 'I am a child 5',
-                                   parent: 'id-1',
-                                   value: 5
-                               }, {
-                                   name: 'I am a child 6',
-                                   parent: 'id-1',
-                                   value: 6
-                               }]
-                               // this.series[0].data = data2;
-                               // this.options.chart.addSeries({
-                               //     data: this.series[0].data
-                               // });
-
-                               var series = this.series[0],
-                                   elProto = this.renderer.Element.prototype,
-                                   animate;
-                               // Add child data to category A
-                               series.addPoint({
-                                   id: "A_AA1",
-                                   name: "A_AA1",
-                                   parent: 'id-1',
-                                   // parent: "A"
-                               }, false);
-                               series.addPoint({
-                                   id: "A_AA1_AAA1",
-                                   name: "A_AA1_AAA1",
-                                   parent: 'id-1',
-                                   // parent: "A_AA1",
-                                   value: 30
-                               });
-
-                               animate = elProto.animate;
-                               elProto.animate = elProto.attr; // Temporarily disable animation
-                               series.drillToNode(series.rootNode); // It sets the axis extremes to the new values, then a redraw.
-                               elProto.animate = animate;
-
-                           } else if (rootNode.split('-').length >= 2) {
-                               alert(' DRILLED - LEVEL 2');
-                           }
-                       }
-                   }
-               }
-           },
-           series: [{
-               type: 'treemap',
-               layoutAlgorithm: 'squarified',
-               allowDrillToNode: true,
-               animationLimit: 1000,
-               dataLabels: {
-                   enabled: false
-               },
-               levelIsConstant: false,
-               levels: [{
-                   level: 1,
-                   dataLabels: {
-                       enabled: true
-                   },
-                   borderWidth: 3
-               }],
-
-               // data: [{
-               //     name: 'I have children',
-               //     id: 'id-1'
-               // },
-               //     {
-               //         name: 'I dklnfgld children',
-               //         parent: 'id-1',
-               //         id: 'id-2'
-               //     }]
-
-               data: [{
-            name: 'I have children',
-            id: 'id-1',
-            value : 4
-        }, {
-            name: 'I am a child',
-            parent: 'id-1',
-            value: 2
-        }]
-           }],
-           subtitle: {
-               text: 'Click points to drill down. Source: <a href="http://apps.who.int/gho/data/node.main.12?lang=en">WHO</a>.'
-           },
-           title: {
-               text: 'Global Mortality Rate 2012, per 100 000 population'
-           }
-       };
+                // data: [{
+                //     name: 'I have children2',
+                //     id: 'id-2',
+                //     value : 4
+                // },{
+                //  name: 'I have children',
+                //  id: 'id-1',
+                //  value : 4
+                //  }, {
+                //      name: 'I am a child',
+                //      parent: 'id-1',
+                //      value: 2
+                //  },
+                // {
+                //     name: 'I am a child',
+                //     parent: 'id-1',
+                //     value: 3
+                // },
+                //      {
+                //         name: 'I am a child2',
+                //         parent: 'id-2',
+                //         value: 2
+                //     },
+                //     {
+                //         name: 'I am a child2',
+                //         parent: 'id-2',
+                //         value: 3
+                //     }]
+            }],
+            title: {
+                text: ''
+            }
+        };
 
         return chartConfig;
     };
@@ -553,30 +527,6 @@ define([
     LargeTreeMap.prototype.dispose = function () {
         this.chart.destroy();
     };
-
-    // function addNewData() {
-    //     var series = chart.series[0],
-    //         elProto = chart.renderer.Element.prototype,
-    //         animate;
-    //     // Add child data to category A
-    //     series.addPoint({
-    //         id: "A_AA1",
-    //         name: "A_AA1",
-    //         parent: "A"
-    //     }, false);
-    //     series.addPoint({
-    //         id: "A_AA1_AAA1",
-    //         name: "A_AA1_AAA1",
-    //         parent: "A_AA1",
-    //         value: 30
-    //     });
-    //
-    //     animate = elProto.animate;
-    //     elProto.animate = elProto.attr; // Temporarily disable animation
-    //     series.drillToNode(series.rootNode); // It sets the axis extremes to the new values, then a redraw.
-    //     elProto.animate = animate;
-    //
-    // }
 
     return LargeTreeMap;
 });
