@@ -85,7 +85,7 @@ define([
         //pie three levels drilldown
         //this._renderThreeLevDrilldownChart();
         //large tree map
-        this._renderLargeTreeChart();
+        this._renderLargeTreeMapChart();
     };
 
     Charts.prototype._renderDonutChart = function () {
@@ -162,7 +162,7 @@ define([
         });
     };
 
-    Charts.prototype._renderLargeTreeChart = function () {
+    Charts.prototype._renderLargeTreeMapChart = function () {
 
         //age_year OR age_month
         var param = {
@@ -185,6 +185,7 @@ define([
             selected_items : param.selected_items,
             height : s.height,
             width : s.width,
+            levels_number: 2,
             language : s.language
         });
     };

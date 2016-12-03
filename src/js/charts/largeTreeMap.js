@@ -10,7 +10,8 @@ define([
         HEIGHT : 500,
         WIDTH : 500,
         level_number: 1,
-        process: [
+        //Food
+        three_levels_process: [
             {
                 "name": "gift_population_filter",
                 "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
@@ -232,6 +233,160 @@ define([
                 }
             }
 
+        ],
+        //Beverages
+        two_levels_process:[
+            {
+                "name": "gift_population_filter",
+                "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
+                "parameters": {
+                    "item": "FOOD_AMOUNT_PROC",
+                    "gender": null,
+                    "special_condition": ["2"],
+                    "age_year": {
+                        "from": 10.5,
+                        "to": 67
+                    }
+                }
+            },
+
+            {
+                "name": "filter",
+                "parameters": {
+                    "columns": [
+                        "subgroup_code",
+                        "foodex2_code",
+                        "value"
+                    ],
+                    "rows": {
+                        "group_code": {
+                            "codes": [
+                                {
+                                    "uid": "GIFT_FoodGroups",
+                                    "codes": [ "14" ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+
+            {
+                "name": "group",
+                "rid": { "uid": "food_level_group" },
+                "parameters": {
+                    "by": [
+                        "subgroup_code",
+                        "foodex2_code"
+                    ],
+                    "aggregations": [
+                        {
+                            "columns": [ "value" ],
+                            "rule": "SUM"
+                        }
+                    ]
+                }
+            },
+
+            {
+                "name": "group",
+                "rid": { "uid": "subgroup_level_group" },
+                "parameters": {
+                    "by": [
+                        "subgroup_code"
+                    ],
+                    "aggregations": [
+                        {
+                            "columns": [ "value" ],
+                            "rule": "SUM"
+                        }
+                    ]
+                }
+            },
+
+            {
+                "name": "asTable"
+            },
+
+            {
+                "name": "percentage"
+            },
+
+            {
+                "name": "addcolumn",
+                "rid": { "uid": "subgroup_data" },
+                "parameters": {
+                    "column": {
+                        "dataType": "code",
+                        "id": "um",
+                        "subject" : "um",
+                        "title": {
+                            "EN": "Unit of measure"
+                        },
+                        "domain": {
+                            "codes": [
+                                {
+                                    "idCodeList": "GIFT_UM"
+                                }
+                            ]
+                        }
+                    },
+                    "value": "perc"
+                }
+            },
+
+
+
+
+            {
+                "name": "join",
+                "sid": [
+                    { "uid": "subgroup_level_group" },
+                    { "uid": "food_level_group" }
+                ],
+                "parameters": {
+                    "joins": [
+                        [ { "type": "id", "value": "subgroup_code" } ],
+                        [ { "type": "id", "value": "subgroup_code" } ]
+                    ],
+                    "values": []
+                }
+            },
+
+            {
+                "name" : "select",
+                "parameters" : {
+                    "values" : {
+                        "subgroup_code" : null,
+                        "food_level_group_foodex2_code" : null,
+                        "food_level_group_value" : "(food_level_group_value*100.0)/subgroup_level_group_value"
+                    }
+                }
+            },
+
+            {
+                "name": "addcolumn",
+                "rid": { "uid": "food_data" },
+                "parameters": {
+                    "column": {
+                        "dataType": "code",
+                        "id": "um",
+                        "subject" : "um",
+                        "title": {
+                            "EN": "Unit of measure"
+                        },
+                        "domain": {
+                            "codes": [
+                                {
+                                    "idCodeList": "GIFT_UM"
+                                }
+                            ]
+                        }
+                    },
+                    "value": "perc"
+                }
+            }
+
         ]
     };
 
@@ -249,7 +404,15 @@ define([
             cache :  this.cache
         });
 
-        this._getProcessedResourceForChart(s.process).then(
+        var process ='';
+        if(this.levels_number==2){
+            process = s.two_levels_process;
+        }
+        else if(this.levels_number==3){
+            process = s.three_levels_process;
+        }
+
+        this._getProcessedResourceForChart(process).then(
             _.bind(this._onSuccess, this),
             _.bind(this._onError, this)
         );
@@ -262,6 +425,7 @@ define([
         this.uid = opts.uid;
         this.selected_items = opts.selected_items;
         this.elID = opts.elID;
+        this.levels_number = opts.levels_number;
 
         this.language = opts.language;
     };
@@ -281,12 +445,21 @@ define([
 
     LargeTreeMap.prototype._onSuccess = function (resource) {
         //Preparing series
-        //Group Data
-        var series = this._processSeries_firstLevel(resource);
-        //Subgroup Data
-        series = this._processSeries_secondLevel(resource, series);
-        //Food Data
-        series = this._processSeries_thirdLevel(resource, series);
+        var series = '';
+        if(this.levels_number==2){
+            //Subgroup Data
+            series = this._processSeries_firstLevel(resource);
+            //Food Data
+            series = this._processSeries_thirdLevel(resource, series);
+        }
+        else if(this.levels_number==3){
+            //Group Data
+            series = this._processSeries_firstLevel(resource);
+            //Subgroup Data
+            series = this._processSeries_secondLevel(resource, series);
+            //Food Data
+            series = this._processSeries_thirdLevel(resource, series);
+        }
 
         var chartConfig = this._getChartConfig(series);
         return this._renderChart(chartConfig);
@@ -301,42 +474,82 @@ define([
 
     LargeTreeMap.prototype._processSeries_firstLevel = function (resourceObj) {
 
-        var resource = resourceObj.group_data;
+        var resorce = '';
+        if(this.levels_number==2){
+            resource = resourceObj.subgroup_data;
+        }
+        else if(this.levels_number==3){
+            resource = resourceObj.group_data;
+        }
 
         var metadata = resource.metadata;
         var data = resource.data;
         var columns = metadata.dsd.columns;
 
-        var group_code_id_index = '', value_index = '', group_label_index = '', um_label_index = '';
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].id == "group_code"){
-                group_code_id_index = i;
-            }
-            else if(columns[i].subject == "value"){
-                value_index = i;
-            }
-            else if(columns[i].id == "group_code_"+this.language.toUpperCase()){
-                group_label_index = i;
-            }
-            else if(columns[i].id == "um_"+this.language.toUpperCase()){
-                um_label_index = i;
-            }
-        }
-
         var dataToChart = [];
+        if(this.levels_number==2){
+            var subgroup_code_id_index = '', value_index = '', subgroup_label_index = '', um_label_index = '';
+            for(var i=0; i< columns.length;i++){
+                if(columns[i].id == "subgroup_code"){
+                    subgroup_code_id_index = i;
+                }
+                else if(columns[i].subject == "value"){
+                    value_index = i;
+                }
+                else if(columns[i].id == "subgroup_code"+this.language.toUpperCase()){
+                    subgroup_label_index = i;
+                }
+                else if(columns[i].id == "um_"+this.language.toUpperCase()){
+                    um_label_index = i;
+                }
+            }
 
-        if(data){
-            for(var i=0; i< data.length;i++) {
-                var obj = {};
-                var it = data[i];
+            var dataToChart = [];
 
-                obj.name = it[group_label_index];
-                obj.id = it[group_code_id_index];
-                obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10)//it[um_label_index];
-                obj.unit = it[um_label_index];
-                dataToChart.push(obj);
+            if(data){
+                for(var i=0; i< data.length;i++) {
+                    var obj = {};
+                    var it = data[i];
+
+                    obj.name = it[subgroup_label_index];
+                    obj.id = it[subgroup_code_id_index];
+                    obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10);
+                    obj.unit = it[um_label_index];
+                    dataToChart.push(obj);
+                }
             }
         }
+        else if(this.levels_number==3){
+            var group_code_id_index = '', value_index = '', group_label_index = '', um_label_index = '';
+            for(var i=0; i< columns.length;i++){
+                if(columns[i].id == "group_code"){
+                    group_code_id_index = i;
+                }
+                else if(columns[i].subject == "value"){
+                    value_index = i;
+                }
+                else if(columns[i].id == "group_code_"+this.language.toUpperCase()){
+                    group_label_index = i;
+                }
+                else if(columns[i].id == "um_"+this.language.toUpperCase()){
+                    um_label_index = i;
+                }
+            }
+
+            if(data){
+                for(var i=0; i< data.length;i++) {
+                    var obj = {};
+                    var it = data[i];
+
+                    obj.name = it[group_label_index];
+                    obj.id = it[group_code_id_index];
+                    obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10);
+                    obj.unit = it[um_label_index];
+                    dataToChart.push(obj);
+                }
+            }
+        }
+
 
         return dataToChart;
     };
@@ -492,7 +705,6 @@ define([
             }
         });
 
-        console.log("Before render chart")
         this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
