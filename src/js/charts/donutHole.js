@@ -357,7 +357,23 @@ define([
             height: s.HEIGHT,
             width: s.WIDTH
         })
+
+        Highcharts.setOptions({
+            lang: {
+                drillUpText: '<< Back to {series.name}'
+            }
+        });
+
         this.chart = Highcharts.chart(this.elID, chartConfig);
+    };
+
+    DonutHole.prototype.redraw = function (animation) {
+        if(animation) {
+            this.chart.redraw(animation);
+        }
+        else{
+            this.chart.redraw();
+        }
     };
 
     DonutHole.prototype.dispose = function () {

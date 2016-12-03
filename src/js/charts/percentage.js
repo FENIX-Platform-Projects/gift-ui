@@ -451,6 +451,15 @@ define([
         $(this.barID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
     }
 
+    PercentageChart.prototype.redraw = function (animation) {
+        if(animation) {
+            this.chart.redraw(animation);
+        }
+        else{
+            this.chart.redraw();
+        }
+    };
+
     PercentageChart.prototype.dispose = function (opts) {
         this.chart.destroy();
     };

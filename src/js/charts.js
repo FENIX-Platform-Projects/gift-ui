@@ -8,8 +8,9 @@ define([
     "./charts/column",
     "./charts/percentage",
     "./charts/pieMacronutrients",
-    "./charts/pieThreeLevDrilldown"
-], function ($, log, C, Bubble, Donut, DonutHole, Column, Percentage, PieMacronutrients, PieThreeLevDrilldown) {
+    "./charts/pieThreeLevDrilldown",
+    "./charts/largeTreeMap"
+], function ($, log, C, Bubble, Donut, DonutHole, Column, Percentage, PieMacronutrients, PieThreeLevDrilldown, LargeTreeMap) {
     "use strict";
 
     var s = {
@@ -46,6 +47,9 @@ define([
         pieThreeLevDrilldown_chart: {
             PIE_CONTAINER_ID : "pieThreeLevDrilldown"
         },
+        largeTreeMap_chart: {
+            LARGE_TREE_MAP_CONTAINER_ID : "largeTree"
+        },
 
         height : 300,
         width: 300,
@@ -77,10 +81,11 @@ define([
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
-        this._renderMacronutrientsChart();
+        //this._renderMacronutrientsChart();
         //pie three levels drilldown
         //this._renderThreeLevDrilldownChart();
-
+        //large tree map
+        this._renderLargeTreeChart();
     };
 
     Charts.prototype._renderDonutChart = function () {
@@ -150,6 +155,38 @@ define([
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
+            selected_items : param.selected_items,
+            height : s.height,
+            width : s.width,
+            language : s.language
+        });
+    };
+
+    Charts.prototype._renderLargeTreeChart = function () {
+
+        //age_year OR age_month
+        var param = {
+            selected_config : {
+                "gender": "2",
+                "special_condition": ["2"],
+                "age_year": {
+                    "from": 10.5,
+                    "to": 67
+                }
+                // "age_month": {
+                //     "from": 10.5,
+                //     "to": 67
+                // }
+            },
+            selected_items : ["IRON"]
+        }
+
+        this.LargeTreeMap = new LargeTreeMap({
+            elID : s.largeTreeMap_chart.LARGE_TREE_MAP_CONTAINER_ID,
+            cache: C.cache,
+            environment : C.environment,
+            uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
+            selected_config : param.selected_config,
             selected_items : param.selected_items,
             height : s.height,
             width : s.width,

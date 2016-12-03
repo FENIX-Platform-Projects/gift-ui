@@ -338,6 +338,15 @@ define([
         this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
+    PieMacronutrientsChart.prototype.redraw = function (animation) {
+        if(animation) {
+            this.chart.redraw(animation);
+        }
+        else{
+            this.chart.redraw();
+        }
+    };
+
     PieMacronutrientsChart.prototype.dispose = function () {
         this.chart.destroy();
     };

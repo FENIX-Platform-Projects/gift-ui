@@ -348,6 +348,15 @@ define([
         this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
+    DonutChart.prototype.redraw = function (animation) {
+        if(animation) {
+            this.chart.redraw(animation);
+        }
+        else{
+            this.chart.redraw();
+        }
+    };
+
     DonutChart.prototype.dispose = function () {
         this.chart.destroy();
     };

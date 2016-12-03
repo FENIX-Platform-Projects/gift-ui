@@ -290,6 +290,15 @@ define([
         this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
+    ColumnChart.prototype.redraw = function (animation) {
+        if(animation) {
+            this.chart.redraw(animation);
+        }
+        else{
+            this.chart.redraw();
+        }
+    };
+
     ColumnChart.prototype.dispose = function (opts) {
         this.chart.destroy();
     };

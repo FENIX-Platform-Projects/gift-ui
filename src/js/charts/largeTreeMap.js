@@ -224,11 +224,13 @@ define([
         }
     };
 
-    function ThreeLevDrilldown(params) {
+    function LargeTreeMap(params) {
 
         // Load Exporting Module after Highcharts loaded
         require('highcharts/modules/drilldown')(Highcharts);
         require('highcharts-no-data-to-display')(Highcharts);
+        require('highcharts/modules/treemap')(Highcharts);
+        require('highcharts/modules/heatmap')(Highcharts);
 
         this._init(params);
 
@@ -243,7 +245,7 @@ define([
         );
     }
 
-    ThreeLevDrilldown.prototype._init = function (opts) {
+    LargeTreeMap.prototype._init = function (opts) {
         this.environment = opts.environment;
         this.cache = opts.cache;
 
@@ -255,7 +257,7 @@ define([
         this.language = opts.language;
     };
 
-    ThreeLevDrilldown.prototype._updateProcessConfig = function (process, group_code, subgroup_code) {
+    LargeTreeMap.prototype._updateProcessConfig = function (process, group_code, subgroup_code) {
         //process=s.process.first_level_process
         process[0].sid[0].uid = this.uid;
         process[0].parameters = this.selected_config;
@@ -271,26 +273,26 @@ define([
         return process;
     }
 
-    ThreeLevDrilldown.prototype._getProcessedResourceForChart = function (processConfig, group_code, subgroup_code) {
+    LargeTreeMap.prototype._getProcessedResourceForChart = function (processConfig, group_code, subgroup_code) {
         var process = this._updateProcessConfig(processConfig, group_code, subgroup_code);
         //process=s.process.first_level_process
         return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
     };
 
-    ThreeLevDrilldown.prototype._onSuccess = function (resource) {
+    LargeTreeMap.prototype._onSuccess = function (resource) {
         var series = this._processSeries(resource);
         var chartConfig = this._getChartConfig(series);
         return this._renderChart(chartConfig);
     };
 
-    ThreeLevDrilldown.prototype._onError = function (resource) {
+    LargeTreeMap.prototype._onError = function (resource) {
 
         log.info("_onError");
         log.error(resource)
         return;
     };
 
-    ThreeLevDrilldown.prototype._processSeries = function (resource) {
+    LargeTreeMap.prototype._processSeries = function (resource) {
 
         var self = this;
         var metadata = resource.metadata;
@@ -343,7 +345,7 @@ define([
         return dataToChart;
     };
 
-    ThreeLevDrilldown.prototype._getProccessForOtherLevels = function(point, chart){
+    LargeTreeMap.prototype._getProccessForOtherLevels = function(point, chart){
         var self = this;
         var group_code = '';
         var subgroup_code = '';
@@ -371,7 +373,7 @@ define([
         });
     }
 
-    ThreeLevDrilldown.prototype._otherLevelOnSuccess = function (chart, point, resource) {
+    LargeTreeMap.prototype._otherLevelOnSuccess = function (chart, point, resource) {
 
         var ser = this._processSeries(resource);
 
@@ -394,76 +396,135 @@ define([
     };
 
 
-    ThreeLevDrilldown.prototype._getChartConfig = function (series) {
+    LargeTreeMap.prototype._getChartConfig = function (series) {
 
+        console.log(series)
         var self = this;
        var chartConfig =  {
-            chart: {
-                type: 'pie',
-                    events: {
-                        drillup: function () {
-                            s.level_number--;
-                        },
-                        drilldown: function (e) {
-                            if(s.level_number!=3){
-                                s.level_number++;
-                                if (!e.seriesOptions) {
-                                    self._getProccessForOtherLevels(e.point, this);
-                                }
-                            }
-                        }
-                }
-            },
-            title: {
-                text: null
-            },
-            xAxis: {
-                type: 'category'
-            },
+           chart: {
+               // xAxis: {
+               //     events: {
+               //         setExtremes: function (e) {
+               //             console.log(this, "xxxx")
+               //             alert('X drill: min(' + e.min + '), max(' + e.max + ')');
+               //         },
+               //     }
+               // },
+               // yAxis: {
+               //     events: {
+               //         setExtremes: function (e) {
+               //             console.log(this, "yyyyy")
+               //             alert('Y drill: min(' + e.min + '), max(' + e.max + ')');
+               //         },
+               //     }
+               // },
+               events: {
+                   redraw: function (e) {
+                       console.log(e)
 
-            legend: {
-                enabled: false
-            },
+                       var rootNode = this.series[0].rootNode;
 
-            plotOptions: {
-                pie: {
-                    dataLabels: {
-                        style: {
-                            width: '200px'
-                        }
-                    }
-                },
+                       console.log(this)
+                       console.log(rootNode, rootNode.split('-').length)
+                       if (rootNode === '') {
+                           alert(' NO DRILLED - LEVEL 0 ')
+                       } else {
+                           if (rootNode.split('-').length == 2) {
 
-                series: {
-                    borderWidth: 0,
-                        dataLabels: {
-                        enabled: true
-                    }
-                }
-            },
+                               alert(' DRILLED - LEVEL 1');
+                               var data2= [{
+                                   name: 'I am a child 5',
+                                   parent: 'id-1',
+                                   value: 5
+                               }, {
+                                   name: 'I am a child 6',
+                                   parent: 'id-1',
+                                   value: 6
+                               }]
+                               // this.series[0].data = data2;
+                               // this.options.chart.addSeries({
+                               //     data: this.series[0].data
+                               // });
 
-            tooltip: {
-                formatter: function () {
-                  return this.key + ': <b>  '+  Highcharts.numberFormat(this.y, 2) + ' '+ this.point.unit+ '</b>';
+                               var series = this.series[0],
+                                   elProto = this.renderer.Element.prototype,
+                                   animate;
+                               // Add child data to category A
+                               series.addPoint({
+                                   id: "A_AA1",
+                                   name: "A_AA1",
+                                   parent: 'id-1',
+                                   // parent: "A"
+                               }, false);
+                               series.addPoint({
+                                   id: "A_AA1_AAA1",
+                                   name: "A_AA1_AAA1",
+                                   parent: 'id-1',
+                                   // parent: "A_AA1",
+                                   value: 30
+                               });
+
+                               animate = elProto.animate;
+                               elProto.animate = elProto.attr; // Temporarily disable animation
+                               series.drillToNode(series.rootNode); // It sets the axis extremes to the new values, then a redraw.
+                               elProto.animate = animate;
+
+                           } else if (rootNode.split('-').length >= 2) {
+                               alert(' DRILLED - LEVEL 2');
+                           }
+                       }
+                   }
                }
            },
+           series: [{
+               type: 'treemap',
+               layoutAlgorithm: 'squarified',
+               allowDrillToNode: true,
+               animationLimit: 1000,
+               dataLabels: {
+                   enabled: false
+               },
+               levelIsConstant: false,
+               levels: [{
+                   level: 1,
+                   dataLabels: {
+                       enabled: true
+                   },
+                   borderWidth: 3
+               }],
 
-           //remove credits
-           credits: {
-               enabled: false
+               // data: [{
+               //     name: 'I have children',
+               //     id: 'id-1'
+               // },
+               //     {
+               //         name: 'I dklnfgld children',
+               //         parent: 'id-1',
+               //         id: 'id-2'
+               //     }]
+
+               data: [{
+            name: 'I have children',
+            id: 'id-1',
+            value : 4
+        }, {
+            name: 'I am a child',
+            parent: 'id-1',
+            value: 2
+        }]
+           }],
+           subtitle: {
+               text: 'Click points to drill down. Source: <a href="http://apps.who.int/gho/data/node.main.12?lang=en">WHO</a>.'
            },
-
-            series: [{
-                name: 'Items',
-                colorByPoint: true,
-                data: series
-            }]
-        };
+           title: {
+               text: 'Global Mortality Rate 2012, per 100 000 population'
+           }
+       };
 
         return chartConfig;
     };
 
-    ThreeLevDrilldown.prototype._renderChart = function(chartConfig){
+    LargeTreeMap.prototype._renderChart = function(chartConfig){
 
         $('#' + this.elID).css({
             height: s.HEIGHT,
@@ -476,10 +537,11 @@ define([
             }
         });
 
+        console.log("Before render chart")
         this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
-    ThreeLevDrilldown.prototype.redraw = function (animation) {
+    LargeTreeMap.prototype.redraw = function (animation) {
         if(animation) {
             this.chart.redraw(animation);
         }
@@ -488,9 +550,33 @@ define([
         }
     };
 
-    ThreeLevDrilldown.prototype.dispose = function () {
+    LargeTreeMap.prototype.dispose = function () {
         this.chart.destroy();
     };
 
-    return ThreeLevDrilldown;
+    // function addNewData() {
+    //     var series = chart.series[0],
+    //         elProto = chart.renderer.Element.prototype,
+    //         animate;
+    //     // Add child data to category A
+    //     series.addPoint({
+    //         id: "A_AA1",
+    //         name: "A_AA1",
+    //         parent: "A"
+    //     }, false);
+    //     series.addPoint({
+    //         id: "A_AA1_AAA1",
+    //         name: "A_AA1_AAA1",
+    //         parent: "A_AA1",
+    //         value: 30
+    //     });
+    //
+    //     animate = elProto.animate;
+    //     elProto.animate = elProto.attr; // Temporarily disable animation
+    //     series.drillToNode(series.rootNode); // It sets the axis extremes to the new values, then a redraw.
+    //     elProto.animate = animate;
+    //
+    // }
+
+    return LargeTreeMap;
 });
