@@ -335,6 +335,16 @@ define([
         $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " "+ dataToChart[3].unit+ s.DAY);
     };
 
+    ColumnChart.prototype.redraw = function (animation) {
+        //this.chart.yAxis[0].isDirty = true;
+        if(animation) {
+            this.chart.redraw(animation);
+        }
+        else{
+            this.chart.redraw();
+        }
+    };
+
     ColumnChart.prototype.dispose = function (opts) {
         this.chart.destroy();
     };
