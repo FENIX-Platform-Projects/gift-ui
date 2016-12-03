@@ -7,8 +7,9 @@ define([
     "./charts/donutHole",
     "./charts/column",
     "./charts/percentage",
-    "./charts/pieMacronutrients"
-], function ($, log, C, Bubble, Donut, DonutHole, Column, Percentage, PieMacronutrients) {
+    "./charts/pieMacronutrients",
+    "./charts/pieThreeLevDrilldown"
+], function ($, log, C, Bubble, Donut, DonutHole, Column, Percentage, PieMacronutrients, PieThreeLevDrilldown) {
     "use strict";
 
     var s = {
@@ -42,6 +43,9 @@ define([
             PERCENTAGE_CONTAINER_ID : "stacked-percentage",
             BAR_PERCENTAGE_ID : "#stacked-bar-percentage"
         },
+        pieThreeLevDrilldown_chart: {
+            PIE_CONTAINER_ID : "pieThreeLevDrilldown"
+        },
 
         height : 300,
         width: 300,
@@ -65,7 +69,7 @@ define([
         //donut chart
         //this._renderDonutChart();
         //bubble chart
-        this._renderBubbleChart();
+        //this._renderBubbleChart();
         //column chart
         //donut hole
         //this._renderDonutHoleChart();
@@ -73,6 +77,8 @@ define([
         //this._renderPercentageChart();
         //macronutrients chart
         //this._renderMacronutrientsChart();
+        //pie three levels drilldown
+        this._renderThreeLevDrilldownChart();
 
     };
 
@@ -119,21 +125,6 @@ define([
     Charts.prototype._renderDonutHoleChart = function () {
 
         //age_year OR age_month
-        // var param = {
-        //     selected_items : {
-        //         "item": "ENERGY",
-        //         "gender": "2",
-        //         "special_condition": ["2"],
-        //         "age_year": {
-        //             "from": 10.5,
-        //             "to": 67
-        //         }
-        //         // "age_month": {
-        //         //     "from": 10.5,
-        //         //     "to": 67
-        //         // }
-        //     }
-        // }
         var param = {
             selected_items : {
                 "item": "ENERGY",
@@ -145,7 +136,7 @@ define([
                 // }
                 "age_month": {
                     "from": 10.5,
-                    "to": 67
+                    "to": 670
                 }
             }
         }
@@ -155,6 +146,39 @@ define([
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
+            selected_items : param.selected_items,
+            height : s.height,
+            width : s.width,
+            language : s.language
+        });
+    };
+
+    Charts.prototype._renderThreeLevDrilldownChart = function () {
+
+        //age_year OR age_month
+        var param = {
+            selected_config : {
+                "gender": "2",
+                "special_condition": ["2"],
+                "age_year": {
+                    "from": 10.5,
+                    "to": 67
+                }
+                // "age_month": {
+                //     "from": 10.5,
+                //     "to": 67
+                // }
+            },
+            selected_items : ["IRON"]
+        }
+
+
+        this.PieThreeLevDrilldown = new PieThreeLevDrilldown({
+            elID : s.pieThreeLevDrilldown_chart.PIE_CONTAINER_ID,
+            cache: C.cache,
+            environment : C.environment,
+            uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
+            selected_config : param.selected_config,
             selected_items : param.selected_items,
             height : s.height,
             width : s.width,
