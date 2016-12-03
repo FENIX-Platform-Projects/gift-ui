@@ -71,11 +71,11 @@ define([
 
         //Bootstrap
         //require('bootstrap/dist/css/bootstrap.css');
+        //GIFT CSS
+        require("../css/gift.css");
 
         //dropdown selector
         require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
-
-
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
@@ -98,8 +98,7 @@ define([
         //Catalog
         require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
 
-        //GIFT CSS
-        require("../css/gift.css");
+
 
     };
 

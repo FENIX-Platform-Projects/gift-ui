@@ -38,6 +38,10 @@ define([
         );
     }
 
+    Bubble.prototype.redraw= function () {
+
+    };
+
     Bubble.prototype._getBody = function () {
 
         var body;

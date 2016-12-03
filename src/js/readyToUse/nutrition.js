@@ -10,7 +10,7 @@ define([
     "../charts/pieMacronutrients",
     "../charts/pieThreeLevDrilldown",
     "fenix-ui-filter"
-], function ($, log, _, template, labels, C, RC, Percentage, PieMacronutrients, PieThreeLevDrilldown, Filter) {
+], function ($, log, _, template, labels, C, RC, Percentage, pieMacronutrients, PieThreeLevDrilldown, Filter) {
 
     "use strict";
 
@@ -23,15 +23,16 @@ define([
         MACRONUTRIENTS_TAB: "#macronutrients",
         NUTRIENTS: "[data-nutrient]",
         PIE_EL: "pie",
+        TABS_A: "#nutritionTabs > li > a",
 
-        PERCENTAGE_CONTAINER_ID : "stacked-percentage",
-        BAR_PERCENTAGE_ID : "#stacked-bar-percentage",
+        PERCENTAGE_CONTAINER_ID: "stacked-percentage",
+        BAR_PERCENTAGE_ID: "#stacked-bar-percentage",
 
-        MACRONUTRIENTS_PIE_CONTAINER_ID : "macronutrients-pie",
+        MACRONUTRIENTS_PIE_CONTAINER_ID: "macronutrients-pie",
 
-        PIE_CONTAINER_ID : "pieThreeLevDrilldown",
+        PIE_CONTAINER_ID: "pieThreeLevDrilldown",
 
-        FILTER : "[data-role='filter']"
+        FILTER: "[data-role='filter']"
 
     };
 
@@ -47,9 +48,16 @@ define([
 
         this._bindEventListeners();
 
+
     }
 
-    Nutrition.prototype._initComponents = function (obj) {
+    Nutrition.prototype.show = function () {
+        this._render();
+    };
+
+    Nutrition.prototype._initComponents = function () {
+
+        this.$tabs = this.$el.find(s.TABS_A);
 
         this.filter = new Filter({
             el: this.$el.find(s.FILTER),
@@ -65,81 +73,105 @@ define([
 
         this.process = obj.process;
 
-        this._render();
     };
 
     // end api
 
     Nutrition.prototype._render = function () {
 
-        var nutrient = this.$el.find(s.NUTRIENTS).first().data("nutrient");
-
-        this._highlightMenuItem(s.DIETARY_TAB, nutrient);
-        this._refreshStackedChart(nutrient);
-
-        this._highlightMenuItem(s.SOURCE_TAB, nutrient);
-        this._refreshBarsChart(nutrient);
-
-        this._refreshPieChart(nutrient);
+        this._renderTab(this.currentTab);
 
     };
 
-    Nutrition.prototype._refreshStackedChart = function (nutrient) {
+    Nutrition.prototype._renderTab = function (tab) {
 
-        if (this.stackedChart && $.isFunction(this.stackedChart.dispose)) {
-            this.stackedChart.dispose();
+        switch (tab.toLowerCase()) {
+            case "dietary":
+                this._refreshStackedChart();
+                break;
+            case "source" :
+                this._refreshBarsChart();
+                break;
+            case "macronutrients":
+                this._refreshPieChart();
+                break;
         }
+
+        this.currentTab = tab;
+
+    };
+
+    Nutrition.prototype._refreshStackedChart = function () {
+
+        if (this.stackedChartReady) {
+            console.log("redraw stacked");
+            return;
+        }
+
+        console.log("render stacked")
+
+        this.stackedChartReady = true;
 
         this.stackedChart = new Percentage({
-            elID : s.PERCENTAGE_CONTAINER_ID,
-            barID : s.BAR_PERCENTAGE_ID,
+            elID: s.PERCENTAGE_CONTAINER_ID,
+            barID: s.BAR_PERCENTAGE_ID,
             cache: C.cache,
-            environment : C.environment,
-            uid : "gift_process_total_food_consumption_" + this.model.uid,
-            selected_items : $.extend(true, {}, this.process.parameters, {
+            environment: C.environment,
+            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            selected_items: $.extend(true, {}, this.process.parameters, {
                 "item": "VITA"
             }),
-            language : this.lang.toUpperCase()
+            language: this.lang.toUpperCase()
         });
 
     };
 
-    Nutrition.prototype._refreshPieChart = function (nutrient) {
+    Nutrition.prototype._refreshPieChart = function () {
 
-        if (this.PieMacronutrients && $.isFunction(this.PieMacronutrients.dispose)) {
-            this.PieMacronutrients.dispose();
+        if (this.pieMacronutrientsReady) {
+            console.log("redraw pie")
+            return;
         }
 
-        this.PieMacronutrients = new PieMacronutrients({
-            elID : s.MACRONUTRIENTS_PIE_CONTAINER_ID,
+        console.log("render pie");
+
+        this.pieMacronutrientsReady = true;
+
+        this.pieMacronutrients = new pieMacronutrients({
+            elID: s.MACRONUTRIENTS_PIE_CONTAINER_ID,
             cache: C.cache,
-            environment : C.environment,
-            uid : "gift_process_total_food_consumption_" +this.model.uid,
-            selected_items : $.extend(true, {}, this.process.parameters, {
+            environment: C.environment,
+            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            selected_items: $.extend(true, {}, this.process.parameters, {
                 "item": null
             }),
-            language : this.lang.toUpperCase()
+            language: this.lang.toUpperCase()
         });
 
     };
 
-    Nutrition.prototype._refreshBarsChart = function () {
+    Nutrition.prototype._refreshBarsChart = function (force) {
 
-        if (this.barsChart && $.isFunction(this.barsChart.dispose)) {
-            this.barsChart.dispose();
+        if (!force && this.barsChartReady) {
+            console.log("redraw bars")
+            return;
         }
+
+        console.log("render bars")
+
+        this.barsChartReady = true;
 
         var values = this.filter.getValues(),
             items = values.values.items;
 
         this.barsChart = new PieThreeLevDrilldown({
-            elID : s.PIE_CONTAINER_ID,
+            elID: s.PIE_CONTAINER_ID,
             cache: C.cache,
-            environment : C.environment,
-            selected_config : this.process.parameters,
-            selected_items : items,
-            uid : "gift_process_total_weighted_food_consumption_" + this.model.uid,
-            language : this.lang.toUpperCase()
+            environment: C.environment,
+            selected_config: this.process.parameters,
+            selected_items: items,
+            uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,
+            language: this.lang.toUpperCase()
         });
 
     };
@@ -148,6 +180,8 @@ define([
         this.lang = this.initial.lang || C.lang;
         this.$el = this.initial.el;
         this.model = this.initial.model;
+
+        this.currentTab = "dietary"
     };
 
     Nutrition.prototype._attach = function () {
@@ -157,52 +191,69 @@ define([
     Nutrition.prototype._bindEventListeners = function () {
 
         this.filter.on("click", _.bind(this._onSourceNutrientChange, this));
+
+        this.$tabs.on("click", _.bind(this._onTabClick, this))
     };
 
-    Nutrition.prototype._onDietaryNutrientChange = function (evt) {
+    Nutrition.prototype._onTabClick = function (evt) {
+        var tab = $(evt.target).data("tab");
 
-        var nutrient = $(evt.target).data("nutrient");
-
-        if (!nutrient) {
-            alert("Impossible to find [data-nutrient] on menu item");
-            return;
-        }
-
-        if (this.dietaryNutrient === nutrient) {
-            log.warn("Abort because nutrient is already shown");
-            return;
-        }
-        this.dietaryNutrient = nutrient;
-
-        this._highlightMenuItem(s.DIETARY_TAB, nutrient);
-
-        this._refreshStackedChart(nutrient);
-
+        this._renderTab(tab);
     };
 
-    Nutrition.prototype._onSourceNutrientChange = function (evt) {
+    Nutrition.prototype._onSourceNutrientChange = function () {
+
+        this._disposeBarChart();
 
         this._refreshBarsChart();
 
     };
 
-    Nutrition.prototype._highlightMenuItem = function (tab, nutrient) {
-
-        this.$el.find(tab).find(s.NUTRIENTS).removeClass("active");
-        this.$el.find(tab).find(s.NUTRIENTS).filter("[data-nutrient='" + nutrient + "']").addClass("active");
-    };
-
     Nutrition.prototype._disposeCharts = function () {
 
-        _.each(this.charts, function (chart, id) {
-            if ($.isFunction(chart.instance.dispose)) {
-                chart.instance.dispose()
-            } else {
-                console.log(id + " has not the disposition method");
-            }
-        });
+        this._disposeBarChart();
 
-        this.charts = [];
+        this._disposeMacronitrients();
+
+        this._disposeStacked();
+
+    };
+
+    Nutrition.prototype._disposeBarChart = function () {
+        this.barsChartReady = false;
+        if (this.barsChart) {
+            if ($.isFunction(this.barsChart.dispose)) {
+                this.barsChart.dispose();
+            } else {
+                console.log("Bar charts has not dispose method");
+            }
+
+        }
+    };
+
+    Nutrition.prototype._disposeMacronitrients = function () {
+        this.pieMacronutrientsReady = false;
+        if (this.pieMacronutrients) {
+
+            if ($.isFunction(this.pieMacronutrients.dispose)) {
+                this.pieMacronutrients.dispose();
+            } else {
+                console.log("Pie macronutrients has not dispose method")
+            }
+
+        }
+    };
+
+    Nutrition.prototype._disposeStacked = function () {
+        this.stackedChartReady = false;
+        if (this.stackedChart) {
+            if ($.isFunction(this.stackedChart.dispose)) {
+                this.stackedChart.dispose();
+            } else {
+                console.log("stacked method has not dispose method")
+            }
+
+        }
     };
 
     return Nutrition;

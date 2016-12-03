@@ -44,6 +44,15 @@ define([
 
     }
 
+    FoodConsumption.prototype.show = function () {
+
+        // TODO uncomment
+        //this.filter.printDefaultSelection();
+
+        this._render();
+
+    };
+
     FoodConsumption.prototype.refresh = function (obj) {
 
         this._disposeCharts();
@@ -51,11 +60,6 @@ define([
         this.model = obj.model;
 
         this.process = obj.process;
-
-        // TODO uncomment
-        //this.filter.printDefaultSelection();
-
-        this._render();
 
     };
 
@@ -78,7 +82,7 @@ define([
 
     FoodConsumption.prototype._renderDietaryPattern = function () {
 
-        this._renderChart(allowedCharts[0]);
+        this._renderChart(this.currentType || allowedCharts[0]);
     };
 
     FoodConsumption.prototype._renderDailyPortion = function () {
@@ -128,6 +132,81 @@ define([
         this._renderChart(chart);
     };
 
+    FoodConsumption.prototype._renderBubbleChart = function (obj) {
+
+        if (obj.initialized) {
+            _.each(obj.instances, function (i) {
+                i.redraw();
+            });
+            return;
+        }
+
+        var process = $.extend(true, {}, this.process);
+
+        process.parameters.item = "FOOD_AMOUNT_PROC";
+
+        process.sid = [
+            {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
+        ];
+
+        obj.instances.push(new Bubble({
+            el: s.BUBBLE_FOOD,
+            holderEl: s.BUBBLE_FOOD_HOLDER,
+            cache: C.cache,
+            type: "foods",
+            environment: C.environment,
+            process: process,
+            model: this.model
+        }));
+
+        obj.instances.push(new Bubble({
+            el: s.BUBBLE_BEVERAGES,
+            holderEl: s.BUBBLE_BEVERAGES_HOLDER,
+            cache: C.cache,
+            environment: C.environment,
+            type: "beverages",
+            process: process,
+            model: this.model
+        }));
+    };
+
+    FoodConsumption.prototype._renderTreeMap = function (obj) {
+        if (obj.initialized) {
+            console.log("redraw treemap");
+            // _.each(obj.instances, function(i){
+            //     i.redraw();
+            // });
+            return;
+        }
+
+        console.log("render treemap")
+    };
+
+    FoodConsumption.prototype._renderDonutChart = function (obj) {
+
+        if (obj.initialized) {
+            console.log("redraw donut");
+            /* _.each(obj.instances, function(i){
+             i.redraw();
+             });*/
+            return;
+        }
+
+        console.log("render donut");
+
+        var config = {
+            elID: s.DONUT_EL,
+            cache: C.cache,
+            environment: C.environment,
+            uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,
+            selected_items: this.process.parameters,
+            language: this.lang.toUpperCase()
+        };
+
+        obj.instances.push(new DonutHole(config));
+    };
+
+
     FoodConsumption.prototype._renderChart = function (chart) {
 
         if (!_.contains(allowedCharts, chart)) {
@@ -135,68 +214,30 @@ define([
             return;
         }
 
-        var obj = {},
-            type = chart.toLowerCase();
+        this.currentType = chart;
+
+        var type = chart.toLowerCase(),
+            obj = this.charts[type] || {};
 
         this._showChart(type);
 
-        if (this.charts[type] && this.charts[type].initialized === true) {
-            log.warn(type + " is already initialized");
-            return;
+        if (!obj.id) {
+            obj.id = type;
         }
 
-        obj.id = type;
-
-        obj.instances = [];
+        if (!obj.instances) {
+            obj.instances = [];
+        }
 
         switch (type) {
             case "bubble" :
-
-                var process = $.extend(true, {}, this.process);
-
-                process.parameters.item = "FOOD_AMOUNT_PROC";
-
-                process.sid = [
-                    {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
-                ];
-
-                obj.instances.push(new Bubble({
-                    el: s.BUBBLE_FOOD,
-                    holderEl: s.BUBBLE_FOOD_HOLDER,
-                    cache: C.cache,
-                    type: "foods",
-                    environment: C.environment,
-                    process: process,
-                    model: this.model
-                }));
-
-                obj.instances.push(new Bubble({
-                    el: s.BUBBLE_BEVERAGES,
-                    holderEl: s.BUBBLE_BEVERAGES_HOLDER,
-                    cache: C.cache,
-                    environment: C.environment,
-                    type: "beverages",
-                    process: process,
-                    model: this.model
-                }));
-
+                this._renderBubbleChart(obj);
                 break;
             case "treemap" :
-                console.log("treemap");
+                this._renderTreeMap(obj);
                 break;
             case "donut" :
-
-                var config = {
-                    elID: s.DONUT_EL,
-                    cache: C.cache,
-                    environment: C.environment,
-                    uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,
-                    selected_items: this.process.parameters,
-                    language: this.lang.toUpperCase()
-                };
-
-                obj.instances.push(new DonutHole(config));
-
+                this._renderDonutChart(obj);
                 break;
             default:
                 log.error("Impossible to find constructor for chart: " + type);

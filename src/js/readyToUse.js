@@ -155,7 +155,7 @@ define([
 
         this.filter = new Filter($.extend(true, {
             el: s.FILTER
-        }, C.populationFilter))
+        }, C.populationFilter));
 
     };
 
@@ -164,6 +164,10 @@ define([
         if (!_.contains(this.allowedSections, section)) {
             section = sections.SEARCH;
             log.warn("Show " + section + " section abort because invalid: show 'search' section instead");
+        }
+
+        if (section === sections.SEARCH) {
+            this.loaded = false;
         }
 
         if (!RC.forceShowDashboardSection && section === sections.DASHBOARD && !this.model) {
@@ -193,21 +197,26 @@ define([
 
     ReadyToUse.prototype._onTabClick = function (evt) {
 
-        //TODO enable to implement lazy loading
-        return;
-
         var tab = $(evt.target).data("tab");
+
+        this._showTab(tab);
+    };
+
+    ReadyToUse.prototype._showTab = function (tab) {
         switch (tab.toLowerCase()) {
             case "foodconsumption":
-                this.foodConsumptionTab.refresh(this.model);
+                this.foodConsumptionTab.show();
                 break;
             case "foodsafety":
-                this.foodSafetyTab.refresh(this.model);
+                this.foodSafetyTab.show();
                 break;
             case "nutrition":
-                this.nutritionTab.refresh(this.model);
+                this.nutritionTab.show();
                 break;
         }
+
+        this.currentTab = tab.toLowerCase();
+
     };
 
     ReadyToUse.prototype._updateModelAndProcess = function () {
@@ -219,7 +228,7 @@ define([
             return
         }
 
-        var parameters= {},
+        var parameters = {},
             process = {
                 name: "gift_population_filter"
             };
@@ -256,18 +265,20 @@ define([
                 ageGranularity = values.ageGranularity || [];
 
             parameters["age_" + ageGranularity[0]] = {
-                from : _.findWhere(age, {parent : "from"}).value,
-                to : _.findWhere(age, {parent : "to"}).value
+                from: _.findWhere(age, {parent: "from"}).value,
+                to: _.findWhere(age, {parent: "to"}).value
             }
         }
 
-        function cleanValues( array) {
+        function cleanValues(array) {
             return _.without(array, "none");
         }
 
     };
 
     ReadyToUse.prototype._onSearchButtonClick = function () {
+
+        this.loaded = false;
 
         this._updateModelAndProcess();
 
@@ -328,19 +339,24 @@ define([
         this._updateModelAndProcess();
 
         this.foodConsumptionTab.refresh({
-            model : this.model,
-            process : this.process
+            model: this.model,
+            process: this.process
         });
 
         this.foodSafetyTab.refresh({
-            model : this.model,
-            process : this.process
+            model: this.model,
+            process: this.process
         });
 
         this.nutritionTab.refresh({
-            model : this.model,
-            process : this.process
+            model: this.model,
+            process: this.process
         });
+
+        if (!this.loaded) {
+            this.loaded = true;
+            this._showTab(this.currentTab || "foodconsumption");
+        }
 
     };
 
@@ -360,9 +376,6 @@ define([
     // CSS
 
     ReadyToUse.prototype._importThirdPartyCss = function () {
-
-        //Bootstrap
-        //require('bootstrap/dist/css/bootstrap.css');
 
         //host override
         require('../css/gift.css');

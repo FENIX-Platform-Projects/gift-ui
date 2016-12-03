@@ -51,16 +51,19 @@ define([
 
     }
 
+    FoodSafety.prototype.show = function () {
+
+        this.filter.printDefaultSelection();
+
+        this._renderChart();
+    };
+
     FoodSafety.prototype.refresh = function (obj) {
 
         this._disposeChart();
 
         this.model = obj.model;
         this.process = obj.process;
-
-        this.filter.printDefaultSelection();
-
-        this._renderChart();
 
     };
 
@@ -91,10 +94,21 @@ define([
 
     FoodSafety.prototype._onFilterClick = function () {
 
-        this._renderChart();
+        this._renderChart(true);
     };
 
-    FoodSafety.prototype._renderChart = function () {
+    FoodSafety.prototype._renderChart = function (force) {
+
+        if (!force && this.chartReady) {
+            console.log("redraw columns");
+            return;
+        }
+
+        this.chartReady = true;
+
+        if (this.chart && $.isFunction(this.chart.dispose)) {
+            //this.chart.dispose();
+        }
 
         var values = this.filter.getValues(),
             code = values.values.foodex2_code[0],
@@ -134,6 +148,8 @@ define([
             process_name: "gift_std_percentile"
         };
 
+        console.log("render columns");
+
         this.chart = new Columns({
             elID: s.COLUMN_CONTAINER_ID,
             columnAmountID: amount_id,
@@ -153,10 +169,15 @@ define([
 
     FoodSafety.prototype._disposeChart = function () {
 
-        if (this.chart && $.isFunction(this.chart.dispose)) {
-            this.chart.dispose()
-        } else {
-            console.log("Chart has not the disposition method");
+        this.chartReady = false;
+
+        if (this.chart) {
+            if ($.isFunction(this.chart.dispose)) {
+                this.chart.dispose()
+            } else {
+                console.log("Food safery chart has not dispose method")
+            }
+
         }
     };
 
