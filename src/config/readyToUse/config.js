@@ -48,7 +48,7 @@ define(["underscore"], function (_) {
                     core: {
                         multiple: false
                     },
-                    //plugins: null
+                    plugins: null
 
                 }
             },

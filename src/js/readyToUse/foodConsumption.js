@@ -20,7 +20,7 @@ define([
             BUBBLE_BEVERAGES: "#bubble-beverages",
             BUBBLE_BEVERAGES_HOLDER: "#bubble-beverages-holder",
             LARGE_TREE_MAP_CONTAINER_ID : "largeTree",
-            LARGE_TREE_BEVERAGER_MAP_CONTAINER_ID : "largeTree-beverages",
+            LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID : "largeTree-beverages",
             MENU_ITEMS: "[data-chart]",
             CONTENTS: "[data-content]",
             BUBBLE_EL: "#bubble",
@@ -209,6 +209,17 @@ define([
             environment : C.environment,
             uid : "gift_process_total_food_consumption_" + this.model.uid,
             selected_items : process.parameters,
+            levels_number: 3,
+            language: this.lang.toUpperCase()
+        }));
+
+        obj.instances.push(new LargeTreeMap({
+            elID : s.LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID,
+            cache: C.cache,
+            environment : C.environment,
+            uid : "gift_process_total_food_consumption_" + this.model.uid,
+            selected_items : process.parameters,
+            levels_number: 2,
             language: this.lang.toUpperCase()
         }));
     };

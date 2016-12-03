@@ -4,12 +4,14 @@
 
         <ul id="nutritionTabs" class="nav nav-pills">
 
-            <li class="active"><a data-toggle="tab" data-tab='dietary' href="#dietaryAdequacy">{{dietaryAdequacy}}</a></li>
-            <li><a data-toggle="tab" data-tab='source' href="#sourceOfNutrientsInTheDiet">{{sourceOfNutrientsInTheDiet}}</a></li>
+            <li class="active"><a data-toggle="tab" data-tab='dietary' href="#dietaryAdequacy">{{dietaryAdequacy}}</a>
+            </li>
+            <li><a data-toggle="tab" data-tab='source'
+                   href="#sourceOfNutrientsInTheDiet">{{sourceOfNutrientsInTheDiet}}</a></li>
             <li><a data-toggle="tab" data-tab='macronutrients' href="#macronutrients"> {{macronutrients}}</a></li>
         </ul>
 
-        <div class="tab-content">
+        <div class="tab-content chart-holder">
             <div id="dietaryAdequacy" class="tab-pane fade in active">
                 <div class="row">
                     <div class="col-xs-4">
@@ -22,7 +24,7 @@
                             <span>{{dietaryDescription}}</span>
                         </div>
 
-<!--                        <ul class="list-group">
+                        <!--                        <ul class="list-group">
                             <li class="list-group-item" data-nutrient="vitaminA">{{vitaminA}}</li>
                             <li class="list-group-item" data-nutrient="iron">{{iron}}</li>
                             <li class="list-group-item" data-nutrient="calcium">{{calcium}}</li>
@@ -38,7 +40,8 @@
                             <div class="col-xs-4"></div>
                             <div class="col-xs-5 col-offset-xs-2">
                                 <div id="bar-details" class="bar-details text-center">
-                                    <b><span class="percentage" id="stacked-bar-percentage"> - </span></b> of the population is AT
+                                    <b><span class="percentage" id="stacked-bar-percentage"> - </span></b> of the
+                                    population is AT
                                     RISK of VITAMIN A inadequacy
                                 </div>
                                 <div class="bar-holder">
@@ -74,7 +77,6 @@
                     <div class="col-xs-8">
 
                         <div class="row">
-                            <div class="col-xs-4"></div>
                             <div class="col-xs-5 col-offset-xs-2">
                                 <div id="pieThreeLevDrilldown"></div>
                             </div>
@@ -102,9 +104,8 @@
 
                     <div class="col-xs-8">
                         <div class="row">
-                            <div class="col-xs-4"></div>
 
-                            <div class="col-xs-5">
+                            <div class="col-xs-6">
                                 <div class="macronutrients-pie-holder">
                                     <div id="macronutrients-pie"></div>
                                     <div class="actual-label text-center"><b>ACTUAL</b></div>
@@ -112,13 +113,14 @@
                                 </div>
 
                             </div>
-                            <div class="col-xs-3">
+                            <div class="col-xs-6">
                                 <div id="macronutrients-pie-legend" class="legend">
                                     <ul class="list-unstyled">
                                         <li><span class="marker carbohydrates"></span> Carbohydrates - actual</li>
                                         <li><span class="marker protein"></span> Protein - actual</li>
                                         <li><span class="marker fats"></span> Fats - actual</li>
-                                        <li><span class="marker carbohydrates alpha"></span> Carbohydrates - recommended</li>
+                                        <li><span class="marker carbohydrates alpha"></span> Carbohydrates - recommended
+                                        </li>
                                         <li><span class="marker protein alpha"></span> Protein - recommended</li>
                                         <li><span class="marker fats alpha"></span> Fats - recommended</li>
                                     </ul>
@@ -127,11 +129,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </div>

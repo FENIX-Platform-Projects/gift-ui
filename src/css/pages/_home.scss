@@ -5,20 +5,24 @@ $superlight-gray: #f2f2f2;
 
 /* Fast Links */
 
-.fast-link-container {
+
 
   .fast-link-header {
     height: 25px;
-    border-bottom: 1px solid $fenix-light-hr;
-    margin-bottom: 15px;
+
 
     h3 {
       margin-top: 0;
+      padding-bottom: 15px;
     }
 
   }
 
+.home-tiles-container{
+  margin-bottom: 15px;
 }
+
+
 
 .home-tiles {
   height: 140px;
