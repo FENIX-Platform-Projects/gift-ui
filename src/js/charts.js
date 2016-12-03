@@ -13,7 +13,7 @@ define([
     "use strict";
 
     var s = {
-         BUBBLE_FOOD: "#bubble-food",
+        BUBBLE_FOOD: "#bubble-food",
         BUBBLE_BEVERAGES: "#bubble-beverages",
         donutHole_chart : {
             DONUT_CONTAINER_ID : "hole_donut"
@@ -71,6 +71,7 @@ define([
         //bubble chart
         //this._renderBubbleChart();
         //column chart
+        this._renderStandardColumnChart();
         //donut hole
         //this._renderDonutHoleChart();
         //percentage chart
@@ -78,7 +79,7 @@ define([
         //macronutrients chart
         //this._renderMacronutrientsChart();
         //pie three levels drilldown
-        this._renderThreeLevDrilldownChart();
+        //this._renderThreeLevDrilldownChart();
 
     };
 
