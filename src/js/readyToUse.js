@@ -219,9 +219,7 @@ define([
             return
         }
 
-        var parameters= {
-                item: "FOOD_AMOUNT_PROC"
-            },
+        var parameters= {},
             process = {
                 name: "gift_population_filter"
             };
@@ -328,9 +326,6 @@ define([
         this._updateTitle();
 
         this._updateModelAndProcess();
-
-        //show fist tab
-        this.$el.find(s.TABS).find('a[href="#foodConsumptionTab"]').tab('show');
 
         this.foodConsumptionTab.refresh({
             model : this.model,

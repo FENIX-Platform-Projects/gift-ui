@@ -324,7 +324,7 @@ define([
 
     ColumnChart.prototype._setHTMLvariables = function (dataToChart) {
         //Progress bar
-        console.log(dataToChart)
+
         $(this.columnBarID).css({
             width: dataToChart[0].value+ dataToChart[0].unit
         });
@@ -333,7 +333,7 @@ define([
         $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " "+ dataToChart[1].unit+ s.DAY);
         $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " "+ dataToChart[2].unit+ s.DAY);
         $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " "+ dataToChart[3].unit+ s.DAY);
-    }
+    };
 
     ColumnChart.prototype.dispose = function (opts) {
         this.chart.destroy();

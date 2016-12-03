@@ -14,6 +14,7 @@ define(["underscore"], function (_) {
                 hideFilter: true,
                 hideButtons: true,
                 hideSummary: true,
+                default : ["01"],
                 config: {
                     core: {
                         multiple: false
@@ -21,6 +22,39 @@ define(["underscore"], function (_) {
                     plugins: null
 
                 }
+            },
+
+            template : {
+                hideHeader : true
+            }
+        }
+
+    };
+    var itemsFilter = {
+
+        items: {
+
+            cl: {
+                uid: "GIFT_Items_filter"
+            },
+
+            selector: {
+                id: "tree",
+                hideFilter: true,
+                hideButtons: true,
+                hideSummary: true,
+                default : ["IRON"],
+                config: {
+                    core: {
+                        multiple: false
+                    },
+                    plugins: null
+
+                }
+            },
+
+            template : {
+                hideHeader : true
             }
         }
 
@@ -68,6 +102,8 @@ define(["underscore"], function (_) {
 
         foodSafetyFilter: foodGroupsFilter,
 
-        foodConsumptionFilter: foodGroupsFilter
+        foodConsumptionFilter: foodGroupsFilter,
+
+        nutritionSourceFilter : itemsFilter
     }
 });

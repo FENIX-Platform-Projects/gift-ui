@@ -152,7 +152,11 @@ define([
         switch (type) {
             case "bubble" :
 
-                this.process.sid = [
+                var process = $.extend(true, {}, this.process);
+
+                process.parameters.item = "FOOD_AMOUNT_PROC";
+
+                process.sid = [
                     {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
                 ];
 
@@ -162,7 +166,7 @@ define([
                     cache: C.cache,
                     type: "foods",
                     environment: C.environment,
-                    process: this.process,
+                    process: process,
                     model: this.model
                 }));
 
@@ -172,7 +176,7 @@ define([
                     cache: C.cache,
                     environment: C.environment,
                     type: "beverages",
-                    process: this.process,
+                    process: process,
                     model: this.model
                 }));
 

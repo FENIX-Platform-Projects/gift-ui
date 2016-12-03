@@ -8,8 +8,9 @@ define([
     "../../config/readyToUse/config",
     "../charts/percentage",
     "../charts/pieMacronutrients",
-    "../charts/pieThreeLevDrilldown"
-], function ($, log, _, template, labels, C, RC, Percentage, PieMacronutrients, PieThreeLevDrilldown) {
+    "../charts/pieThreeLevDrilldown",
+    "fenix-ui-filter"
+], function ($, log, _, template, labels, C, RC, Percentage, PieMacronutrients, PieThreeLevDrilldown, Filter) {
 
     "use strict";
 
@@ -28,7 +29,9 @@ define([
 
         MACRONUTRIENTS_PIE_CONTAINER_ID : "macronutrients-pie",
 
-        PIE_CONTAINER_ID : "pieThreeLevDrilldown"
+        PIE_CONTAINER_ID : "pieThreeLevDrilldown",
+
+        FILTER : "[data-role='filter']"
 
     };
 
@@ -40,9 +43,19 @@ define([
 
         this._attach();
 
+        this._initComponents();
+
         this._bindEventListeners();
 
     }
+
+    Nutrition.prototype._initComponents = function (obj) {
+
+        this.filter = new Filter({
+            el: this.$el.find(s.FILTER),
+            selectors: RC.nutritionSourceFilter
+        });
+    };
 
     Nutrition.prototype.refresh = function (obj) {
 
@@ -69,8 +82,6 @@ define([
 
         this._refreshPieChart(nutrient);
 
-        //show fist tab
-        this.$el.find('a[href="#dietaryAdequacy"]').tab('show');
     };
 
     Nutrition.prototype._refreshStackedChart = function (nutrient) {
@@ -112,44 +123,21 @@ define([
 
     };
 
-    Nutrition.prototype._refreshBarsChart = function (nutrient) {
-
-        console.log(nutrient)
+    Nutrition.prototype._refreshBarsChart = function () {
 
         if (this.barsChart && $.isFunction(this.barsChart.dispose)) {
             this.barsChart.dispose();
         }
 
-        //age_year OR age_month
-        var param = {
-
-            selected_items : ["IRON"]
-        }
-
-
-        //age_year OR age_month
-        var param = {
-            selected_config : {
-                "gender": "2",
-                "special_condition": ["2"],
-                "age_year": {
-                    "from": 10.5,
-                    "to": 67
-                }
-                // "age_month": {
-                //     "from": 10.5,
-                //     "to": 67
-                // }
-            },
-            selected_items : ["IRON"]
-        };
+        var values = this.filter.getValues(),
+            items = values.values.items;
 
         this.barsChart = new PieThreeLevDrilldown({
             elID : s.PIE_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
             selected_config : this.process.parameters,
-            selected_items : ["IRON"],
+            selected_items : items,
             uid : "gift_process_total_weighted_food_consumption_" + this.model.uid,
             language : this.lang.toUpperCase()
         });
@@ -168,8 +156,7 @@ define([
 
     Nutrition.prototype._bindEventListeners = function () {
 
-        this.$el.find(s.DIETARY_TAB).find(s.NUTRIENTS).on("click", _.bind(this._onDietaryNutrientChange, this));
-        this.$el.find(s.SOURCE_TAB).find(s.NUTRIENTS).on("click", _.bind(this._onSourceNutrientChange, this));
+        this.filter.on("click", _.bind(this._onSourceNutrientChange, this));
     };
 
     Nutrition.prototype._onDietaryNutrientChange = function (evt) {
@@ -195,23 +182,7 @@ define([
 
     Nutrition.prototype._onSourceNutrientChange = function (evt) {
 
-        var nutrient = $(evt.target).data("nutrient");
-
-        if (!nutrient) {
-            alert("Impossible to find [data-nutrient] on menu item");
-            return;
-        }
-
-        if (this.sourceNutrient === nutrient) {
-            log.warn("Abort because nutrient is already shown");
-            return;
-        }
-
-        this.sourceNutrient = nutrient;
-
-        this._highlightMenuItem(s.SOURCE_TAB, nutrient);
-
-        this._refreshBarsChart(nutrient);
+        this._refreshBarsChart();
 
     };
 
