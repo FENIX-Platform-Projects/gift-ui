@@ -251,7 +251,7 @@ define([
         this.selected_items = opts.selected_items;
         this.selected_config = opts.selected_config;
         this.elID = opts.elID;
-        
+
         this.language = opts.language;
     };
 

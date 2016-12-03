@@ -23,14 +23,6 @@ define([
                                     "codes": [ "CARBOH", "PROTEIN", "FAT" ]
                                 }
                             ]
-                        },
-                        "!group_code": {
-                            "codes": [
-                                {
-                                    "uid": "GIFT_FoodGroups",
-                                    "codes": [ "14" ]
-                                }
-                            ]
                         }
                     }
                 }
@@ -39,10 +31,13 @@ define([
             {
                 "name": "gift_population_filter",
                 "parameters": {
-                    "item": null,
                     "gender": "2",
-                    "special_condition": ["1"],
+                    "special_condition": ["2"],
                     "age_year": {
+                        "from": 10.5,
+                        "to": 67
+                    },
+                    "age_month": {
                         "from": 10.5,
                         "to": 67
                     }
@@ -105,7 +100,6 @@ define([
             }
 
         ]
-
     };
 
     function PieMacronutrientsChart(params) {

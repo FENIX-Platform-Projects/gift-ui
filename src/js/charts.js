@@ -71,13 +71,13 @@ define([
         //bubble chart
         //this._renderBubbleChart();
         //column chart
-        this._renderStandardColumnChart();
+        //this._renderStandardColumnChart();
         //donut hole
         //this._renderDonutHoleChart();
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
-        //this._renderMacronutrientsChart();
+        this._renderMacronutrientsChart();
         //pie three levels drilldown
         //this._renderThreeLevDrilldownChart();
 
@@ -100,14 +100,17 @@ define([
     Charts.prototype._renderMacronutrientsChart = function () {
 
         var param = {
-            selected_items : {
-                    "item": null,
-                    "gender": "2",
-                    "special_condition": ["1"],
-                    "age_year": {
-                        "from": 10.5,
-                            "to": 67
-                    }
+            selected_items: {
+                "gender": "2",
+                "special_condition": ["2"],
+                "age_year": {
+                    "from": 10.5,
+                    "to": 67
+                }
+                // "age_month": {
+                //     "from": 10.5,
+                //     "to": 67
+                // }
             }
         }
 
@@ -264,7 +267,11 @@ define([
                 "age_year": {
                     "from": 10.5,
                     "to": 67
-                }
+                },
+                // "age_month": {
+                //     "from": 10.5,
+                //     "to": 67
+                // }
             },
             selected_group :{
                 "percentileSize" : 5,
@@ -303,6 +310,10 @@ define([
                     "from": 10.5,
                     "to": 67
                 }
+                // "age_month": {
+                //     "from": 10.5,
+                //     "to": 67
+                // }
             }
         }
 
