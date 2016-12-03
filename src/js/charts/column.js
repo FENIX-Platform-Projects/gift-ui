@@ -273,7 +273,7 @@ define([
             height: s.HEIGHT,
             width: s.WIDTH
         })
-        Highcharts.chart(this.elID, chartConfig);
+        this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
     ColumnChart.prototype._processSeries = function (resource) {
@@ -336,7 +336,7 @@ define([
     }
 
     ColumnChart.prototype.dispose = function (opts) {
-
+        this.chart.destroy();
     };
 
     return ColumnChart;

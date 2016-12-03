@@ -383,7 +383,7 @@ define([
             height: s.HEIGHT,
             width: s.WIDTH
         })
-        Highcharts.chart(this.elID, chartConfig);
+        this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
     PercentageChart.prototype._processSeries = function (resource) {
@@ -459,7 +459,7 @@ define([
     }
 
     PercentageChart.prototype.dispose = function (opts) {
-
+        this.chart.destroy();
     };
 
     return PercentageChart;

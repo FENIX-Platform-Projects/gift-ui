@@ -287,11 +287,11 @@ define([
     };
 
     ColumnChart.prototype._renderChart = function(chartConfig){
-        Highcharts.chart(this.elID, chartConfig);
+        this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
     ColumnChart.prototype.dispose = function (opts) {
-
+        this.chart.destroy();
     };
 
     return ColumnChart;

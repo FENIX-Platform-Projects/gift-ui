@@ -132,8 +132,6 @@ define([
         this.process = s.process;
         this.elID = opts.elID;
 
-        this.height = opts.height;
-        this.width = opts.width;
         this.language = opts.language;
     };
 
@@ -343,10 +341,11 @@ define([
             height: s.HEIGHT,
             width: s.WIDTH
         })
-        Highcharts.chart(this.elID, chartConfig);
+        this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
     PieMacronutrientsChart.prototype.dispose = function () {
+        this.chart.destroy();
     };
 
     return PieMacronutrientsChart;

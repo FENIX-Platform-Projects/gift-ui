@@ -251,9 +251,7 @@ define([
         this.selected_items = opts.selected_items;
         this.selected_config = opts.selected_config;
         this.elID = opts.elID;
-
-        this.height = opts.height;
-        this.width = opts.width;
+        
         this.language = opts.language;
     };
 
@@ -471,10 +469,11 @@ define([
             height: s.HEIGHT,
             width: s.WIDTH
         })
-        Highcharts.chart(this.elID, chartConfig);
+        this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
     ThreeLevDrilldown.prototype.dispose = function () {
+        this.chart.destroy();
     };
 
     return ThreeLevDrilldown;

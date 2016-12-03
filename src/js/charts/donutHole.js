@@ -150,8 +150,6 @@ define([
         this.first_level_process = s.first_level_process;
         this.elID = opts.elID;
 
-        this.height = opts.height;
-        this.width = opts.width;
         this.language = opts.language;
     };
 
@@ -359,10 +357,11 @@ define([
             height: s.HEIGHT,
             width: s.WIDTH
         })
-        Highcharts.chart(this.elID, chartConfig);
+        this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
     DonutHole.prototype.dispose = function () {
+        this.chart.destroy();
     };
 
     return DonutHole;
