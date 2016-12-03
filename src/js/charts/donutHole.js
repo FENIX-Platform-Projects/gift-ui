@@ -9,6 +9,7 @@ define([
     var s = {
         HEIGHT : 500,
         WIDTH : 500,
+        level_number: 1,
         process : {
             first_level_process : [
                 {
@@ -286,13 +287,17 @@ define([
        var chartConfig =  {
             chart: {
                 type: 'pie',
-                    events: {
+                events: {
+                    drillup: function () {
+                        s.level_number--;
+                    },
                     drilldown: function (e) {
-                        if (!e.seriesOptions) {
-
-                            console.log(e.point.name, e.point.code);
-
-                            self._getProccessForSecondLevel(e.point, this);
+                        if(s.level_number!=2){
+                            s.level_number++;
+                            if (!e.seriesOptions) {
+                                console.log(e.point.name, e.point.code);
+                                self._getProccessForSecondLevel(e.point, this);
+                            }
                         }
                     }
                 }
