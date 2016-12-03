@@ -442,7 +442,7 @@ define([
                 allowDrillToNode: true,
                 animationLimit: 1000,
                 dataLabels: {
-                    enabled: false
+                    enabled: true
                 },
                 levelIsConstant: false,
                 levels: [{
@@ -454,44 +454,25 @@ define([
                 }],
 
                 tooltip: {
-                    formatter: function () {
-                        return '<b>' + this.unit + '</b>';
-                    }
+                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.value}{point.unit}</b><br/>'
                 },
 
                 data : series
-
-                // data: [{
-                //     name: 'I have children2',
-                //     id: 'id-2',
-                //     value : 4
-                // },{
-                //  name: 'I have children',
-                //  id: 'id-1',
-                //  value : 4
-                //  }, {
-                //      name: 'I am a child',
-                //      parent: 'id-1',
-                //      value: 2
-                //  },
-                // {
-                //     name: 'I am a child',
-                //     parent: 'id-1',
-                //     value: 3
-                // },
-                //      {
-                //         name: 'I am a child2',
-                //         parent: 'id-2',
-                //         value: 2
-                //     },
-                //     {
-                //         name: 'I am a child2',
-                //         parent: 'id-2',
-                //         value: 3
-                //     }]
             }],
             title: {
-                text: ''
+                text: '',
+                style: {
+                    display: 'none'
+                }
+            },
+            subtitle: {
+                text: '',
+                style: {
+                    display: 'none'
+                }
+            },
+            credits: {
+                enabled: false
             }
         };
 

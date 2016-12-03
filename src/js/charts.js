@@ -77,7 +77,7 @@ define([
         //column chart
         //this._renderStandardColumnChart();
         //donut hole
-        this._renderDonutHoleChart();
+        //this._renderDonutHoleChart();
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
@@ -85,7 +85,7 @@ define([
         //pie three levels drilldown
         //this._renderThreeLevDrilldownChart();
         //large tree map
-        //this._renderLargeTreeChart();
+        this._renderLargeTreeChart();
     };
 
     Charts.prototype._renderDonutChart = function () {
