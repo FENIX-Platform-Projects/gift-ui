@@ -230,8 +230,6 @@ define([
         require('highcharts/modules/drilldown')(Highcharts);
         require('highcharts-no-data-to-display')(Highcharts);
 
-        log.setLevel("trace");
-
         this._init(params);
 
         this.bridge = new Bridge({

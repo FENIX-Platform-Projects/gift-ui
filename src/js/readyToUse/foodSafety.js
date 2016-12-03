@@ -17,7 +17,6 @@ define([
         COLUMNS_EL: "column",
         FILTER: "[data-role='filter']",
         BUBBLE: "#bubble",
-        COLUMN_CONTAINER_ID : "column",
         BAR_ID : "#columns-progress-bar",
         PERCENTAGE_ID : "#percentage",
         AMOUNT_LOW : "#amount_low",
@@ -26,7 +25,16 @@ define([
         DONUT_CONTAINER_ID : "donut",
         height : 300,
         width: 300,
-        language : "EN"
+        language : "EN",
+
+
+        COLUMN_CONTAINER_ID : "column-standard",
+        COLUMN_BAR_ID : "#column-standard-progress-bar",
+        COLUMN_PERCENTAGE_ID : "#column-standard-percentage",
+        COLUMN_PERCENTAGE_ITEM_ID : "#column-standard-percentage-item",
+        COLUMN_AMOUNT_LOW : "#column_standard_amount_low",
+        COLUMN_AMOUNT_MIDDLE : "#column_standard_amount_middle",
+        COLUMN_AMOUNT_HIGH : "#column_standard_amount_high"
     };
 
     function FoodSafety(opts) {
@@ -88,26 +96,44 @@ define([
 
     FoodSafety.prototype._renderChart = function () {
 
+        var values = this.filter.getValues(),
+            food = values.values.foodex2_code[0],
+            label =values.labels.foodex2_code[food];
+
+
         return;
 
         var amount_id = {
-            low : s.AMOUNT_LOW,
-            middle : s.AMOUNT_MIDDLE,
-            high : s.AMOUNT_HIGH
+            low : s.COLUMN_AMOUNT_LOW,
+            middle : s.COLUMN_AMOUNT_MIDDLE,
+            high : s.COLUMN_AMOUNT_HIGH
         };
 
-        //render chart here
+        var param = {
+            selected_items :this.process.parameters,
+            selected_group :{
+                "percentileSize" : 5,
+                "group" : "02",
+                "subgroup" : "0201",
+                "food" : null
+            },
+            process_name : "gift_std_percentile"
+        };
+
         this.chart = new Columns({
-            elID : s.COLUMNS_EL,
-            amountID : amount_id,
-            barID : s.BAR_ID,
-            percentageID : s.PERCENTAGE_ID,
+            elID : s.COLUMN_CONTAINER_ID,
+            columnAmountID : amount_id,
+            columnBarID : s.COLUMN_BAR_ID,
+            columnPercentageID : s.COLUMN_PERCENTAGE_ID,
+            columnPercentageItemID : s.COLUMN_PERCENTAGE_ITEM_ID,
+            columnPercentageItemLabel : label.toUpperCase(),
             cache: C.cache,
             environment : C.environment,
-            uid : "gift_process_total_weighted_food_consumption_" + this.model.uid,
-            selected_items : "FOOD_AMOUNT_PROC",
-            selected_group : this.filter.getValues().values.food[0],
-            language : this.lang.toUpperCase()
+            uid : "gift_process_total_food_consumption_" + this.model.uid,
+            selected_items : param.selected_items,
+            selected_group : param.selected_group,
+            process_name : param.process_name,
+            language : s.language
         });
     };
 

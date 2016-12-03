@@ -110,8 +110,6 @@ define([
 
     function PieMacronutrientsChart(params) {
 
-        log.setLevel("trace");
-
         this._init(params);
 
         this.bridge = new Bridge({

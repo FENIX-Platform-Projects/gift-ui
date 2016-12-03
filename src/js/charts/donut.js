@@ -122,8 +122,6 @@ define([
         // Load Exporting Module after Highcharts loaded
         require('highcharts/modules/drilldown')(Highcharts);
 
-        log.setLevel("trace");
-
         this._init(params);
 
         this.bridge = new Bridge({
@@ -179,10 +177,8 @@ define([
     };
 
     DonutChart.prototype._onError = function (resource) {
-
         log.info("_onError");
         log.error(resource)
-        return;
     };
 
     DonutChart.prototype._processSeries = function (resource) {

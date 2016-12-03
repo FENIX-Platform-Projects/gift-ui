@@ -110,11 +110,11 @@ define([
 
     };
 
-    FoodConsumption.prototype._onFilterClick = function (evt) {
+    /* // TODO uncomment
+     FoodConsumption.prototype._onFilterClick = function (evt) {
 
-        var values = this.filter.getValues();
-        console.log(values)
-    };
+     var values = this.filter.getValues();
+     };*/
 
     FoodConsumption.prototype._onMenuItemClick = function (evt) {
 
@@ -182,18 +182,16 @@ define([
                 break;
             case "donut" :
 
-                /*   var config = {
-                 elID : s.DONUT_EL,
-                 cache: this.cache,
-                 environment : this.environment,
-                 uid : "gift_process_total_weighted_food_consumption_" + this.model.uid,
-                 selected_items : [ "ENERGY" ],
-                 height : 300,
-                 width : 300,
-                 language : this.lang.toUpperCase()
-                 };
+                var config = {
+                    elID: s.DONUT_EL,
+                    cache: C.cache,
+                    environment: C.environment,
+                    uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,
+                    selected_items: this.process.parameters,
+                    language: this.lang.toUpperCase()
+                };
 
-                 obj.instance = new DonutHole(config);*/
+                obj.instances.push(new DonutHole(config));
 
                 break;
             default:

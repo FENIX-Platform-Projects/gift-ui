@@ -5,8 +5,11 @@ define([
     "../../html/readyToUse/nutrition.hbs",
     "../../nls/labels",
     "../../config/config",
-    "../../config/readyToUse/config"
-], function ($, log, _, template, labels, C, RC) {
+    "../../config/readyToUse/config",
+    "../charts/percentage",
+    "../charts/pieMacronutrients",
+    "../charts/pieThreeLevDrilldown"
+], function ($, log, _, template, labels, C, RC, Percentage, PieMacronutrients, PieThreeLevDrilldown) {
 
     "use strict";
 
@@ -18,7 +21,15 @@ define([
         SOURCE_TAB: "#sourceOfNutrientsInTheDiet",
         MACRONUTRIENTS_TAB: "#macronutrients",
         NUTRIENTS: "[data-nutrient]",
-        PIE_EL: "pie"
+        PIE_EL: "pie",
+
+        PERCENTAGE_CONTAINER_ID : "stacked-percentage",
+        BAR_PERCENTAGE_ID : "#stacked-bar-percentage",
+
+        MACRONUTRIENTS_PIE_CONTAINER_ID : "macronutrients-pie",
+
+        PIE_CONTAINER_ID : "pieThreeLevDrilldown"
+
     };
 
     function Nutrition(opts) {
@@ -30,8 +41,6 @@ define([
         this._attach();
 
         this._bindEventListeners();
-
-        this._render();
 
     }
 
@@ -70,28 +79,80 @@ define([
             this.stackedChart.dispose();
         }
 
+        this.stackedChart = new Percentage({
+            elID : s.PERCENTAGE_CONTAINER_ID,
+            barID : s.BAR_PERCENTAGE_ID,
+            cache: C.cache,
+            environment : C.environment,
+            uid : "gift_process_total_food_consumption_" + this.model.uid,
+            selected_items : $.extend(true, {}, this.process.parameters, {
+                "item": "VITA"
+            }),
+            language : this.lang.toUpperCase()
+        });
+
     };
 
     Nutrition.prototype._refreshPieChart = function (nutrient) {
 
-        var config = {
-            elID: s.PIE_EL,
+        if (this.PieMacronutrients && $.isFunction(this.PieMacronutrients.dispose)) {
+            this.PieMacronutrients.dispose();
+        }
+
+        this.PieMacronutrients = new PieMacronutrients({
+            elID : s.MACRONUTRIENTS_PIE_CONTAINER_ID,
             cache: C.cache,
-            environment: C.environment,
-            uid: "gift_process_total_weighted_food_consumption_000042BUR201001",
-            selected_items: ["IRON"],
-            height: 300,
-            width: 300,
-            language: s.language
-        };
+            environment : C.environment,
+            uid : "gift_process_total_food_consumption_" +this.model.uid,
+            selected_items : $.extend(true, {}, this.process.parameters, {
+                "item": null
+            }),
+            language : this.lang.toUpperCase()
+        });
 
     };
 
     Nutrition.prototype._refreshBarsChart = function (nutrient) {
 
+        console.log(nutrient)
+
         if (this.barsChart && $.isFunction(this.barsChart.dispose)) {
             this.barsChart.dispose();
         }
+
+        //age_year OR age_month
+        var param = {
+
+            selected_items : ["IRON"]
+        }
+
+
+        //age_year OR age_month
+        var param = {
+            selected_config : {
+                "gender": "2",
+                "special_condition": ["2"],
+                "age_year": {
+                    "from": 10.5,
+                    "to": 67
+                }
+                // "age_month": {
+                //     "from": 10.5,
+                //     "to": 67
+                // }
+            },
+            selected_items : ["IRON"]
+        };
+
+        this.barsChart = new PieThreeLevDrilldown({
+            elID : s.PIE_CONTAINER_ID,
+            cache: C.cache,
+            environment : C.environment,
+            selected_config : this.process.parameters,
+            selected_items : ["IRON"],
+            uid : "gift_process_total_weighted_food_consumption_" + this.model.uid,
+            language : this.lang.toUpperCase()
+        });
 
     };
 
