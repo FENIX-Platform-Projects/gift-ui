@@ -12,6 +12,10 @@ define(function () {
         // //Bootstrap
         // require('bootstrap/dist/css/bootstrap.css');
 
+
+        //SANDBOXED BOOTSTRAP
+        require("../css/sandboxed-bootstrap.css");
+
         //host override
         require('../css/gift.css');
 

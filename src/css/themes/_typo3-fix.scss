@@ -54,3 +54,42 @@ a:focus, a:hover{
   }
 
 }
+
+[data-page="readyToUse"]{
+  .fx-catalog{
+    border:1px solid $fenix-light-gray;
+  }
+}
+
+
+
+.cat-toolbar{
+  padding: 0;
+
+  .cat-title{
+    margin: 5px 15px;
+    margin-bottom: 5px !important;
+  }
+}
+
+.modal-body{
+  padding: 0 15px;
+}
+
+
+#fx-data-management-content{
+
+  .catalog-modal .modal-lg{
+    width: 100% !important;
+  }
+
+  #fx-data-management-menu{
+
+    .container{
+      width: 100% !important;
+    }
+
+  }
+
+}
+

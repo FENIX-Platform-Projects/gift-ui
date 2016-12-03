@@ -148,8 +148,6 @@ define([
         var series = this._processSeries(resource);
         var chartConfig = this._getChartConfig(series);
 
-        // console.log(chartConfig)
-
        return this._renderChart(chartConfig);
     };
 

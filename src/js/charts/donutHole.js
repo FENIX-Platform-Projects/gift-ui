@@ -171,7 +171,6 @@ define([
     DonutHole.prototype._getProcessedResourceForChart = function (processConfig, group_code) {
         var process = this._updateProcessConfig(processConfig, group_code);
         //process=s.process.first_level_process
-        console.log(process)
         return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
     };
 
@@ -189,7 +188,6 @@ define([
     };
 
     DonutHole.prototype._processSeries = function (resource) {
-        console.log(resource)
 
         var self = this;
         var metadata = resource.metadata;
@@ -213,8 +211,6 @@ define([
                 code_column_id = columns[i].id;
             }
         }
-        console.log(code_column_id, um_column_id)
-
 
         var umLabelIdx =  _.findIndex(columns, function (col ){
             return col.id== um_column_id +'_'+self.language.toUpperCase();
@@ -260,7 +256,6 @@ define([
 
     DonutHole.prototype._secondLevelOnSuccess = function (chart, point, resource) {
 
-        console.log(resource)
         var ser = this._processSeries(resource);
 
         var chart = chart,
@@ -295,7 +290,6 @@ define([
                         if(s.level_number!=2){
                             s.level_number++;
                             if (!e.seriesOptions) {
-                                console.log(e.point.name, e.point.code);
                                 self._getProccessForSecondLevel(e.point, this);
                             }
                         }

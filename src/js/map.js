@@ -443,6 +443,9 @@ define(['jquery','underscore','loglevel','handlebars',
 
     Map.prototype._importThirdPartyCss = function () {
 
+        //SANDBOXED BOOTSTRAP
+        require("../css/sandboxed-bootstrap.css");
+
         //map requirements
         require('leaflet/dist/leaflet.css');
         require('leaflet-panel-layers/src/leaflet-panel-layers.css');

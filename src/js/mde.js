@@ -140,6 +140,9 @@ define([
 
     MDE.prototype._importThirdPartyCss = function () {
 
+        //SANDBOXED BOOTSTRAP
+        require("../css/sandboxed-bootstrap.css");
+
         //dropdown selector
         require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");

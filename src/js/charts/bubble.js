@@ -291,7 +291,8 @@ define([
 
             var sub = {
                 name: subgroup[details["subgroup_code_" + lang].index],
-                size: subgroup[details["value"].index]
+                size: subgroup[details["value"].index],
+                color: colors.pop()
             };
 
             var group = _.find(result, function (item) {
@@ -309,7 +310,8 @@ define([
 
             var f = {
                 name: food[details["foodex2_code_" + lang].index],
-                size: food[details["value"].index]
+                size: food[details["value"].index],
+                //color: colors.pop()
             };
 
             var group = _.find(result, function (item) {
@@ -374,7 +376,7 @@ define([
 
         return {
             name: "Beverages",
-            color: "red",
+            color: "#fff2cc",
             children: children
         };
 
@@ -391,7 +393,8 @@ define([
 
             var f = {
                 name: food[details["foodex2_code_" + lang].index],
-                size: food[details["value"].index]
+                size: food[details["value"].index],
+                color: colors.pop()
             };
 
             var subgroup = _.find(result, function (item) {
