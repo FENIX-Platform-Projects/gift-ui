@@ -2,8 +2,6 @@
 @import 'base/fx-fonts-import';
 
 .fx-sandbox.fao-holder {
-  @import 'fx-boot/bootstrap';
-
   //@import "fenix-ui-catalog";
   //@import "fenix-ui-filter";
 
@@ -18,8 +16,10 @@
   @import 'base/fx-radio-checkbox';
   @import 'base/fx-typography';
 
-  @import "../../node_modules/fenix-ui-filter/src/css/fenix-ui-filter";
-  @import "../../node_modules/fenix-ui-catalog/src/css/fenix-ui-catalog";
+
+  //@import "../../node_modules/fenix-ui-filter/src/css/fenix-ui-filter";
+  //@import "../../node_modules/fenix-ui-catalog/src/css/fenix-ui-catalog";
+  //@import "../../node_modules/fenix-ui-dropdown/src/css/fenix-ui-dropdown";
 
   //pages
   @import 'pages/readyToUse';
@@ -28,6 +28,9 @@
   @import 'pages/home';
   @import 'pages/statistics';
 
+
+  @import 'themes/fx-material-theme-light';
+  @import 'themes/unified-style';
   @import 'themes/typo3-fix';
 
 
@@ -39,8 +42,6 @@
   }
 
 }
-
-
 
 // Modal in bootstrap FIX
 

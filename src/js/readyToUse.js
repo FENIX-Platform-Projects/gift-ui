@@ -377,8 +377,8 @@ define([
 
     ReadyToUse.prototype._importThirdPartyCss = function () {
 
-        //host override
-        require('../css/gift.css');
+        //SANDBOXED BOOTSTRAP
+        require("../css/sandboxed-bootstrap.css");
 
         //dropdown selector
         require("../../node_modules/selectize/dist/css/selectize.bootstrap3.css");
@@ -389,16 +389,20 @@ define([
         require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css");
         //time selector
         require("../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css");
-        // fenix-ui-filter
-        require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+        // // fenix-ui-filter
+         require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
 
-        // fenix-ui-dropdown
-        require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
+        // // fenix-ui-dropdown
+         require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
-        // fenix-ui-catalog
-        require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
+        // // fenix-ui-catalog
+         require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
+
+        //GIFT CSS
+        require("../css/gift.css");
+
 
 
     };
