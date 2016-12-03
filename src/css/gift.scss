@@ -4,13 +4,22 @@
 .fx-sandbox.fao-holder {
   @import 'fx-boot/bootstrap';
 
-  @import "fenix-ui-catalog";
-  @import "fenix-ui-filter";
+  //@import "fenix-ui-catalog";
+  //@import "fenix-ui-filter";
 
-  @import 'base/variables';
+  //@import 'base/variables';
+  @import 'themes/fx-variables';
   @import 'utils/fx-utils';
 
+  @import 'base/fx-buttons';
+  @import 'base/fx-fixed-height';
+  @import 'base/fx-fonts-import';
   @import 'base/fx-icons';
+  @import 'base/fx-radio-checkbox';
+  @import 'base/fx-typography';
+
+  @import "../../node_modules/fenix-ui-filter/src/css/fenix-ui-filter";
+  @import "../../node_modules/fenix-ui-catalog/src/css/fenix-ui-catalog";
 
   //pages
   @import 'pages/readyToUse';
@@ -21,6 +30,7 @@
 
   @import 'themes/typo3-fix';
 
+
   #mde {
     .modal-content {
       width: 877px !important;
@@ -29,6 +39,8 @@
   }
 
 }
+
+
 
 // Modal in bootstrap FIX
 
