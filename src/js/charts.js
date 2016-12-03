@@ -77,7 +77,7 @@ define([
         //column chart
         //this._renderStandardColumnChart();
         //donut hole
-        //this._renderDonutHoleChart();
+        this._renderDonutHoleChart();
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
@@ -85,7 +85,7 @@ define([
         //pie three levels drilldown
         //this._renderThreeLevDrilldownChart();
         //large tree map
-        this._renderLargeTreeChart();
+        //this._renderLargeTreeChart();
     };
 
     Charts.prototype._renderDonutChart = function () {
@@ -139,14 +139,14 @@ define([
                 "item": "ENERGY",
                 "gender": "2",
                 "special_condition": ["2"],
-                // "age_year": {
-                //     "from": 10.5,
-                //     "to": 67
-                // }
-                "age_month": {
+                "age_year": {
                     "from": 10.5,
-                    "to": 670
+                    "to": 67
                 }
+                // "age_month": {
+                //     "from": 10.5,
+                //     "to": 670
+                // }
             }
         }
 
@@ -166,27 +166,22 @@ define([
 
         //age_year OR age_month
         var param = {
-            selected_config : {
-                "gender": "2",
+            selected_items : {
+                "item": "FOOD_AMOUNT_PROC",
+                "gender": null,
                 "special_condition": ["2"],
                 "age_year": {
                     "from": 10.5,
                     "to": 67
                 }
-                // "age_month": {
-                //     "from": 10.5,
-                //     "to": 67
-                // }
-            },
-            selected_items : ["IRON"]
+            }
         }
 
         this.LargeTreeMap = new LargeTreeMap({
             elID : s.largeTreeMap_chart.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
-            uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
-            selected_config : param.selected_config,
+            uid : "gift_process_total_food_consumption_000042BUR201001",
             selected_items : param.selected_items,
             height : s.height,
             width : s.width,

@@ -133,11 +133,11 @@ define([
 
 
         var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language;
+            return col.id== um_column_id +'_'+self.language.toUpperCase();
         });
 
         var codeLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== code_column_id +'_'+self.language;
+            return col.id== code_column_id +'_'+self.language.toUpperCase();
         });
 
         //console.log(data)
