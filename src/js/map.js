@@ -14,6 +14,8 @@ define(['jquery','underscore','loglevel','handlebars',
     'fenix-ui-map',
     'fenix-ui-metadata-viewer'
 
+    //TODO 'fenix-ui-bridge'
+
 ], function ($, _, log, Handlebars,
     C,
     ConsC,
