@@ -204,6 +204,10 @@ define([
                 }
             },
 
+            tooltip : {
+                enabled : false
+            },
+
             //hide xAxis
             xAxis: {
                 categories: ['1','2','3'],
@@ -262,18 +266,11 @@ define([
                 enabled: false
             },
 
-            tooltip: {
-                formatter: function () {
-                    return '<b>' + this.y + '</b>';
-                }
-            },
-
             plotOptions: {
                 series: {
                     animation: false
                 }
             },
-
 
             series: [{
                 data: [5,50,5],

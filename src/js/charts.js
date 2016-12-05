@@ -75,14 +75,14 @@ define([
         //bubble chart
         //this._renderBubbleChart();
         //column chart
-        //this._renderStandardColumnChart();
+       // this._renderStandardColumnChart();
         //this._renderAverageColumnChart();
         //donut hole
-        this._renderDonutHoleChart();
+        //this._renderDonutHoleChart();
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
-        //this._renderMacronutrientsChart();
+        this._renderMacronutrientsChart();
         //pie three levels drilldown
         //this._renderThreeLevDrilldownChart();
         //large tree map
@@ -223,7 +223,7 @@ define([
                 //     "to": 67
                 // }
             },
-            selected_items : ["IRON"]
+            selected_items : ["VITA"]
         }
 
         var instance = new PieThreeLevDrilldown({
@@ -348,7 +348,7 @@ define([
             columnPercentageItemLabel : 'DRIED FRUIT',
             cache: C.cache,
             environment : C.environment,
-            uid : "gift_process_total_food_consumption_000042BUR201001",
+            uid : "gift_process_food_consumption_000042BUR201001",
             selected_items : param.selected_items,
             selected_group : param.selected_group,
             process_name : param.process_name,

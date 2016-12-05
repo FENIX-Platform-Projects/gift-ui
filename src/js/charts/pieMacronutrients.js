@@ -200,21 +200,20 @@ define([
                 var obj = {};
 
                 var it = data[i];
-
-                if (i == 0) {
-                    obj.color = '#2e76b7';
-                }
-                else if (i == 1) {
-                    obj.color = '#fcc00d';
-                }
-                else if (i == 2) {
-                    obj.color = '#bf1818';
-                }
-
                 obj.y = it[value_index];
                 obj.unit = it[umLabelIdx];
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
+
+                if (obj.code == "FAT") {
+                    obj.color = '#2e76b7';
+                }
+                else if (obj.code == "PROTEIN") {
+                    obj.color = '#bf1818';
+                }
+                else if (obj.code == "CARBOH") {
+                    obj.color = '#fcc00d';
+                }
 
                 dataToChart.push(obj);
             }
