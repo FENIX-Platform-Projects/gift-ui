@@ -152,7 +152,7 @@ define([
             {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
         ];
 
-        obj.instances.push(new Bubble({
+        var instance = new Bubble({
             el: s.BUBBLE_FOOD,
             holderEl: s.BUBBLE_FOOD_HOLDER,
             cache: C.cache,
@@ -160,7 +160,13 @@ define([
             environment: C.environment,
             process: process,
             model: this.model
-        }));
+        });
+
+        instance.on("ready", function() {
+            //alert("Ciao!")
+        })
+
+        obj.instances.push(instance);
 
         obj.instances.push(new Bubble({
             el: s.BUBBLE_BEVERAGES,
@@ -213,7 +219,8 @@ define([
             language: this.lang.toUpperCase()
         }));
 
-        obj.instances.push(new LargeTreeMap({
+
+        var instance = new LargeTreeMap({
             elID : s.LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID,
             cache: C.cache,
             environment : C.environment,
@@ -221,7 +228,9 @@ define([
             selected_items : process.parameters,
             levels_number: 2,
             language: this.lang.toUpperCase()
-        }));
+        });
+
+        obj.instances.push(instance);
     };
 
     FoodConsumption.prototype._renderDonutChart = function (obj) {

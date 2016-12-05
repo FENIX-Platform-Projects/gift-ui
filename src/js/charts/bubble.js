@@ -20,6 +20,8 @@ define([
         this.holderEl = $(opts.holderEl);
         this.lang = opts.lang || "EN";
 
+        this.channels = {};
+
         this.process = opts.process;
 
         //get processed resource
@@ -225,7 +227,9 @@ define([
 
         var model = this._buildModel(data);
 
-        this._render(model)
+        this._render(model);
+
+        this._trigger("ready");
 
     };
 
@@ -662,6 +666,33 @@ define([
 
     Bubble.prototype.dispose = function () {
         d3.selectAll("svg > *").remove();
+    };
+
+    Bubble.prototype._trigger = function (channel) {
+
+        if (!this.channels[channel]) {
+            return false;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+            var subscription = this.channels[channel][i];
+            subscription.callback.apply(subscription.context, args);
+        }
+
+        return this;
+    };
+
+    /**
+     * pub/sub
+     * @return {Object} component instance
+     */
+    Bubble.prototype.on = function (channel, fn, context) {
+        var _context = context || this;
+        if (!this.channels[channel]) {
+            this.channels[channel] = [];
+        }
+        this.channels[channel].push({context: _context, callback: fn});
+        return this;
     };
 
     return Bubble;
