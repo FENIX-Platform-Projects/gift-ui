@@ -76,8 +76,9 @@ define([
         //this._renderBubbleChart();
         //column chart
         //this._renderStandardColumnChart();
+        //this._renderAverageColumnChart();
         //donut hole
-        //this._renderDonutHoleChart();
+        this._renderDonutHoleChart();
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
@@ -85,12 +86,12 @@ define([
         //pie three levels drilldown
         //this._renderThreeLevDrilldownChart();
         //large tree map
-        this._renderLargeTreeMapChart();
+        //this._renderLargeTreeMapChart();
     };
 
     Charts.prototype._renderDonutChart = function () {
 
-        this.Donut = new Donut({
+        var instance = new Donut({
             elID : s.DONUT_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
@@ -100,6 +101,10 @@ define([
             width : s.width,
             language : s.language
         });
+
+        instance.on("ready", function() {
+            console.log('the chart has been Loaded')
+        })
     };
 
     Charts.prototype._renderMacronutrientsChart = function () {
@@ -119,7 +124,7 @@ define([
             }
         }
 
-        this.PieMacronutrients = new PieMacronutrients({
+        var instance = new PieMacronutrients({
             elID : s.macronutrients_chart.MACRONUTRIENTS_PIE_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
@@ -129,6 +134,10 @@ define([
             width : s.width,
             language : s.language
         });
+
+        instance.on("ready", function() {
+            console.log('the chart has been Loaded')
+        })
     };
 
     Charts.prototype._renderDonutHoleChart = function () {
@@ -150,7 +159,7 @@ define([
             }
         }
 
-        this.DonutHole = new DonutHole({
+        var instance = new DonutHole({
             elID : s.donutHole_chart.DONUT_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
@@ -160,6 +169,10 @@ define([
             width : s.width,
             language : s.language
         });
+
+        instance.on("ready", function() {
+            console.log('the chart has been Loaded')
+        })
     };
 
     Charts.prototype._renderLargeTreeMapChart = function () {
@@ -177,7 +190,7 @@ define([
             }
         }
 
-        this.LargeTreeMap = new LargeTreeMap({
+        var instance = new LargeTreeMap({
             elID : s.largeTreeMap_chart.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
@@ -188,6 +201,10 @@ define([
             levels_number: 2,
             language : s.language
         });
+
+        instance.on("ready", function() {
+            console.log('the chart has been Loaded')
+        })
     };
 
     Charts.prototype._renderThreeLevDrilldownChart = function () {
@@ -209,8 +226,7 @@ define([
             selected_items : ["IRON"]
         }
 
-
-        this.PieThreeLevDrilldown = new PieThreeLevDrilldown({
+        var instance = new PieThreeLevDrilldown({
             elID : s.pieThreeLevDrilldown_chart.PIE_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
@@ -221,6 +237,10 @@ define([
             width : s.width,
             language : s.language
         });
+
+        instance.on("ready", function() {
+            console.log('the chart has been Loaded')
+        })
     };
 
     Charts.prototype._renderBubbleChart = function () {
@@ -267,7 +287,7 @@ define([
             process_name : "gift_average_percentile"
         }
 
-        this.Column = new Column({
+        var instance = new Column({
             elID : s.column_average_chart.COLUMN_CONTAINER_ID,
             columnAmountID : amount_id,
             columnBarID : s.column_average_chart.COLUMN_BAR_ID,
@@ -282,6 +302,10 @@ define([
             process_name : param.process_name,
             language : s.language
         });
+
+        instance.on("ready", function() {
+            console.log('the chart has been Loaded')
+        })
     };
 
     Charts.prototype._renderStandardColumnChart = function () {
@@ -300,7 +324,7 @@ define([
                 "age_year": {
                     "from": 10.5,
                     "to": 67
-                },
+                }
                 // "age_month": {
                 //     "from": 10.5,
                 //     "to": 67
@@ -315,7 +339,7 @@ define([
             process_name : "gift_std_percentile"
         }
 
-        this.Column = new Column({
+        var instance = new Column({
             elID : s.column_standard_chart.COLUMN_CONTAINER_ID,
             columnAmountID : amount_id,
             columnBarID : s.column_standard_chart.COLUMN_BAR_ID,
@@ -330,6 +354,10 @@ define([
             process_name : param.process_name,
             language : s.language
         });
+
+        instance.on("ready", function() {
+            console.log('the chart has been Loaded')
+        })
     };
 
     Charts.prototype._renderPercentageChart = function () {
@@ -350,7 +378,7 @@ define([
             }
         }
 
-        this.Percentage = new Percentage({
+        var instance = new Percentage({
             elID : s.percentage_chart.PERCENTAGE_CONTAINER_ID,
             barID : s.percentage_chart.BAR_PERCENTAGE_ID,
             cache: C.cache,
@@ -359,6 +387,10 @@ define([
             selected_items : param.selected_items,
             language : s.language
         });
+
+        instance.on("ready", function() {
+            console.log('the chart has been Loaded')
+        })
     };
 
     Charts.prototype._importThirdPartyCss = function () {

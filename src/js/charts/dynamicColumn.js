@@ -60,6 +60,9 @@ define([
         this.height = opts.height;
         this.width = opts.width;
         this.language = opts.language;
+
+        //pub/sub
+        this.channels = {};
     };
 
 
@@ -202,7 +205,12 @@ define([
                 spacingTop: 0,
                 spacingBottom: 0,
                 spacingLeft: 0,
-                spacingRight: 0
+                spacingRight: 0,
+                events: {
+                    load: function(event) {
+                        self._trigger("ready");
+                    }
+                }
             },
 
             //hide xAxis
@@ -301,6 +309,33 @@ define([
 
     ColumnChart.prototype.dispose = function (opts) {
         this.chart.destroy();
+    };
+
+    ColumnChart.prototype._trigger = function (channel) {
+
+        if (!this.channels[channel]) {
+            return false;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+            var subscription = this.channels[channel][i];
+            subscription.callback.apply(subscription.context, args);
+        }
+
+        return this;
+    };
+
+    /**
+     * pub/sub
+     * @return {Object} component instance
+     */
+    ColumnChart.prototype.on = function (channel, fn, context) {
+        var _context = context || this;
+        if (!this.channels[channel]) {
+            this.channels[channel] = [];
+        }
+        this.channels[channel].push({context: _context, callback: fn});
+        return this;
     };
 
     return ColumnChart;

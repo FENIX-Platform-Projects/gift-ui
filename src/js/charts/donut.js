@@ -145,6 +145,9 @@ define([
         this.elID = opts.elID;
 
         this.language = opts.language;
+
+        //pub/sub
+        this.channels = {};
     };
 
 
@@ -277,7 +280,10 @@ define([
             chart: {
                 type: 'pie',
                     events: {
-                    drilldown: function (e) {
+                        load: function(event) {
+                            self._trigger("ready");
+                        },
+                        drilldown: function (e) {
                         if (!e.seriesOptions) {
 
                             console.log(e.point.name, e.point.code);
@@ -359,6 +365,33 @@ define([
 
     DonutChart.prototype.dispose = function () {
         this.chart.destroy();
+    };
+
+    DonutChart.prototype._trigger = function (channel) {
+
+        if (!this.channels[channel]) {
+            return false;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+            var subscription = this.channels[channel][i];
+            subscription.callback.apply(subscription.context, args);
+        }
+
+        return this;
+    };
+
+    /**
+     * pub/sub
+     * @return {Object} component instance
+     */
+    DonutChart.prototype.on = function (channel, fn, context) {
+        var _context = context || this;
+        if (!this.channels[channel]) {
+            this.channels[channel] = [];
+        }
+        this.channels[channel].push({context: _context, callback: fn});
+        return this;
     };
 
     return DonutChart;

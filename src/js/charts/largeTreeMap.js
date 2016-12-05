@@ -428,6 +428,9 @@ define([
         this.levels_number = opts.levels_number;
 
         this.language = opts.language;
+
+        //pub/sub
+        this.channels = {};
     };
 
     LargeTreeMap.prototype._updateProcessConfig = function (process, group_code, subgroup_code) {
@@ -649,6 +652,13 @@ define([
 
         var self = this;
         var chartConfig =  {
+            chart: {
+                events: {
+                    load: function(event) {
+                        self._trigger("ready");
+                    }
+                }
+            },
             series: [{
                 type: 'treemap',
                 layoutAlgorithm: 'squarified',
@@ -720,6 +730,34 @@ define([
     LargeTreeMap.prototype.dispose = function () {
         this.chart.destroy();
     };
+
+    LargeTreeMap.prototype._trigger = function (channel) {
+
+        if (!this.channels[channel]) {
+            return false;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+            var subscription = this.channels[channel][i];
+            subscription.callback.apply(subscription.context, args);
+        }
+
+        return this;
+    };
+
+    /**
+     * pub/sub
+     * @return {Object} component instance
+     */
+    LargeTreeMap.prototype.on = function (channel, fn, context) {
+        var _context = context || this;
+        if (!this.channels[channel]) {
+            this.channels[channel] = [];
+        }
+        this.channels[channel].push({context: _context, callback: fn});
+        return this;
+    };
+
 
     return LargeTreeMap;
 });

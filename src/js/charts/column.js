@@ -142,6 +142,9 @@ define([
         this.columnPercentageItemLabel = opts.columnPercentageItemLabel;
         this.language = opts.language;
         this.filter = opts.filter;
+
+        //pub/sub
+        this.channels = {};
     };
 
     ColumnChart.prototype._updateProcessConfig = function (process) {
@@ -188,11 +191,17 @@ define([
         var chartConfig =  {
             chart: {
                 type: 'column',
+                animation: false,
                 margin: [10, 10, 10, 10],
                 spacingTop: 0,
                 spacingBottom: 0,
                 spacingLeft: 0,
-                spacingRight: 0
+                spacingRight: 0,
+                events: {
+                    load: function(event) {
+                        self._trigger("ready");
+                    }
+                }
             },
 
             //hide xAxis
@@ -258,6 +267,13 @@ define([
                     return '<b>' + this.y + '</b>';
                 }
             },
+
+            plotOptions: {
+                series: {
+                    animation: false
+                }
+            },
+
 
             series: [{
                 data: [5,50,5],
@@ -347,6 +363,33 @@ define([
 
     ColumnChart.prototype.dispose = function (opts) {
         this.chart.destroy();
+    };
+
+    ColumnChart.prototype._trigger = function (channel) {
+
+        if (!this.channels[channel]) {
+            return false;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+            var subscription = this.channels[channel][i];
+            subscription.callback.apply(subscription.context, args);
+        }
+
+        return this;
+    };
+
+    /**
+     * pub/sub
+     * @return {Object} component instance
+     */
+    ColumnChart.prototype.on = function (channel, fn, context) {
+        var _context = context || this;
+        if (!this.channels[channel]) {
+            this.channels[channel] = [];
+        }
+        this.channels[channel].push({context: _context, callback: fn});
+        return this;
     };
 
     return ColumnChart;

@@ -127,6 +127,9 @@ define([
         this.elID = opts.elID;
 
         this.language = opts.language;
+
+        //pub/sub
+        this.channels = {};
     };
 
 
@@ -221,10 +224,7 @@ define([
     };
 
     PieMacronutrientsChart.prototype._getChartConfig = function (series) {
-
-
         var self = this;
-
         var chartConfig =  {
             chart: {
                 type: 'pie',
@@ -235,8 +235,9 @@ define([
                 spacingRight: 0,
                 backgroundColor:'rgba(255, 255, 255, 0)',
                 events: {
-                    load: function () {
+                    load: function(event) {
                         //this.renderer.image('src/img/pie/background-alpha.svg', 0, 0, s.HEIGHT, s.WIDTH).add();
+                        self._trigger("ready");
                     }
                 }
             },
@@ -347,6 +348,33 @@ define([
 
     PieMacronutrientsChart.prototype.dispose = function () {
         this.chart.destroy();
+    };
+
+    PieMacronutrientsChart.prototype._trigger = function (channel) {
+
+        if (!this.channels[channel]) {
+            return false;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+            var subscription = this.channels[channel][i];
+            subscription.callback.apply(subscription.context, args);
+        }
+
+        return this;
+    };
+
+    /**
+     * pub/sub
+     * @return {Object} component instance
+     */
+    PieMacronutrientsChart.prototype.on = function (channel, fn, context) {
+        var _context = context || this;
+        if (!this.channels[channel]) {
+            this.channels[channel] = [];
+        }
+        this.channels[channel].push({context: _context, callback: fn});
+        return this;
     };
 
     return PieMacronutrientsChart;

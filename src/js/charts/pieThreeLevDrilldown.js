@@ -253,6 +253,9 @@ define([
         this.elID = opts.elID;
 
         this.language = opts.language;
+
+        //pub/sub
+        this.channels = {};
     };
 
     ThreeLevDrilldown.prototype._updateProcessConfig = function (process, group_code, subgroup_code) {
@@ -395,12 +398,14 @@ define([
 
 
     ThreeLevDrilldown.prototype._getChartConfig = function (series) {
-
         var self = this;
        var chartConfig =  {
             chart: {
                 type: 'pie',
                     events: {
+                        load: function(event) {
+                            self._trigger("ready");
+                        },
                         drillup: function () {
                             s.level_number--;
                         },
@@ -490,6 +495,33 @@ define([
 
     ThreeLevDrilldown.prototype.dispose = function () {
         this.chart.destroy();
+    };
+
+    ThreeLevDrilldown.prototype._trigger = function (channel) {
+
+        if (!this.channels[channel]) {
+            return false;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+            var subscription = this.channels[channel][i];
+            subscription.callback.apply(subscription.context, args);
+        }
+
+        return this;
+    };
+
+    /**
+     * pub/sub
+     * @return {Object} component instance
+     */
+    ThreeLevDrilldown.prototype.on = function (channel, fn, context) {
+        var _context = context || this;
+        if (!this.channels[channel]) {
+            this.channels[channel] = [];
+        }
+        this.channels[channel].push({context: _context, callback: fn});
+        return this;
     };
 
     return ThreeLevDrilldown;

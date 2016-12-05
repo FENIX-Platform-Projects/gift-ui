@@ -162,6 +162,9 @@ define([
         this.barID = opts.barID;
 
         this.language = opts.language;
+
+        //pub/sub
+        this.channels = {};
     };
 
     PercentageChart.prototype._updateProcessConfig = function (process) {
@@ -196,15 +199,20 @@ define([
 
     PercentageChart.prototype._getChartConfig = function (series) {
 
+        var self = this;
         var chartConfig = {
-
             chart: {
                 type: 'bar',
                 margin: [0, 0, 0, 0],
                 spacingTop: 0,
                 spacingBottom: 0,
                 spacingLeft: 0,
-                spacingRight: 0
+                spacingRight: 0,
+                events: {
+                    load: function(event) {
+                        self._trigger("ready");
+                    }
+                }
             },
 
             //hide xAxis
@@ -462,6 +470,33 @@ define([
 
     PercentageChart.prototype.dispose = function (opts) {
         this.chart.destroy();
+    };
+
+    PercentageChart.prototype._trigger = function (channel) {
+
+        if (!this.channels[channel]) {
+            return false;
+        }
+        var args = Array.prototype.slice.call(arguments, 1);
+        for (var i = 0, l = this.channels[channel].length; i < l; i++) {
+            var subscription = this.channels[channel][i];
+            subscription.callback.apply(subscription.context, args);
+        }
+
+        return this;
+    };
+
+    /**
+     * pub/sub
+     * @return {Object} component instance
+     */
+    PercentageChart.prototype.on = function (channel, fn, context) {
+        var _context = context || this;
+        if (!this.channels[channel]) {
+            this.channels[channel] = [];
+        }
+        this.channels[channel].push({context: _context, callback: fn});
+        return this;
     };
 
     return PercentageChart;
