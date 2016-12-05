@@ -154,12 +154,14 @@ define(['jquery','underscore','loglevel','handlebars',
 
                     var confid = m.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code;
 
-                    self.mapCodesGroup.push({
-                        uid: m.uid,
-                        confid: confid,
-                        title: m.title[ LANG ],
-                        codes: m.meContent.seCoverage.coverageGeographic.codes
-                    });
+                    if(ConsC.codelistStyles[ confid ].visible) {
+                        self.mapCodesGroup.push({
+                            uid: m.uid,
+                            confid: confid,
+                            title: m.title[ LANG ],
+                            codes: m.meContent.seCoverage.coverageGeographic.codes
+                        });
+                    }
                 }
             });
         });
