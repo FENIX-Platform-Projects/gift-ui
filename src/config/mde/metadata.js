@@ -1225,21 +1225,21 @@ define(
                                 },
                                 "PopulationGroups": {
 
+                                    disabled : true,
+
                                     classNames: "well",
 
                                     "template": {
                                         "title": "Specific population groups surveyed",
                                         "footer": "List the specific population groups that have been covered by the study (e.g. women in reproductive age, children under 5 years, elderly, etc.)",
                                     },
-                                    /*
-                                     "dependencies": {
-                                     "statisticalPopulation": [{
-                                     event: 'select',
-                                     id: 'readOnlyIfNotValue',
-                                     args: {value: "2"}
-                                     }]
-                                     },
-                                     */
+                                    dependencies: {
+                                        statisticalPopulation: [{
+                                            id: "enableIfValue",
+                                            event: "select",
+                                            args: {value: "2"}
+                                        }]
+                                    },
                                     "incremental": true,
 
                                     "selectors": {
@@ -1483,7 +1483,7 @@ define(
                                         "output": "array<number>"
                                     },
                                     selectors: {
-                                        "underReporting": {
+                                        "underReportingPercentage": {
                                             template: {
                                                 title: "Percentage of under-reporting at individual level",
                                                 footer: "Report the percentage of individuals in the sample, whose data was identified as under-reported according to the applied methods of assessing under and over-reporting"
@@ -1498,7 +1498,7 @@ define(
                                             }
 
                                         },
-                                        "overReporting": {
+                                        "overReportingPercentage": {
                                             template: {
                                                 title: "Percentage of over-reporting at individual level",
                                                 footer: "Report the percentage of individuals in the sample, whose data was identified as under-reported according to the applied methods of assessing under and over-reporting"
@@ -1838,20 +1838,20 @@ define(
 
                                     classNames: "well",
 
+                                    disabled : true,
+
                                     "template": {
                                         "title": "Macronutrients and dietary components available in the dataset - details",
                                         "hideDescription": true,
                                         "footer": "List additional macronutrients and dietary components reported here above as 'other'",
                                     },
-                                    /*
-                                     dependencies: {
-                                     MacroDietaryComponents: [{
-                                     id: "readOnlyIfNotValue",
-                                     event: "select",
-                                     args: {value: "9"}
-                                     }]
-                                     },
-                                     */
+                                    dependencies: {
+                                        MacroDietaryComponents: [{
+                                            id: "enableIfValue",
+                                            event: "select",
+                                            args: {value: "9"}
+                                        }]
+                                    },
                                     "incremental": true,
 
                                     "selectors": {
@@ -1895,20 +1895,21 @@ define(
 
                                     classNames: "well",
 
+                                    disabled : true,
+
                                     "template": {
                                         "title": "Micronutrients and minerals available in the dataset - details",
                                         "hideDescription": true,
                                         "footer": "List additional micronutrients reported here above as 'other'",
                                     },
-                                    /*
-                                     dependencies: {
-                                     MicroDietaryComponents: [{
-                                     id: "readOnlyIfNotValue",
-                                     event: "select",
-                                     args: {value: "13"}
-                                     }]
-                                     },
-                                     */
+                                    dependencies: {
+                                        MicroDietaryComponents: [{
+                                            id: "enableIfValue",
+                                            event: "select",
+                                            args: {value: "13"}
+                                        }]
+                                    },
+
                                     "incremental": true,
 
                                     "selectors": {
