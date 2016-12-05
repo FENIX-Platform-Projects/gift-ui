@@ -248,11 +248,17 @@ define([
         }).on("export", _.bind(function (model) {
 
             var s = model.uid,
+                version = version,
                 filename = s.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
             var payload = {
 
-                resource: {metadata: model},
+                resource: {
+                    metadata: {
+                        uid: s,
+                        version: version
+                    }
+                },
 
                 "input": {
                     "plugin": "inputMD",
