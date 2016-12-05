@@ -306,30 +306,9 @@ define([
         this.metadataViewer = new MetadataViewer({
             model: this.model,
             cache: this.cache,
-            /*  specialFields : {
-             "metadataLanguage": true,
-             "language": true,
-             "characterSet": true,
-             "disseminationPeriodicity": true,
-             "confidentialityStatus": true,
-             "referencePeriod": true,
-             "referenceArea": true,
-             "coverageSectors": true,
-             "coverageGeographic": true,
-             "updatePeriodicity": true,
-             "projection": true,
-             "ellipsoid": true,
-             "datum": true,
-             "typeOfProduct": true,
-             "processing": true,
-             "topologyLevel": true,
-             "typeOfCollection": true,
-             "collectionPeriodicity": true,
-             "originOfCollectedData": true,
-             "dataAdjustment": true
-             },*/
+            specialFields : C.mdsdSpecialFields,
             environment: this.environment,
-            bridge: RC.mdsdService,
+            bridge: C.mdsdService,
             hideExportButton: false,
             lang: this.lang,
             el: this.$el.find(s.METADATA_VIEWER)

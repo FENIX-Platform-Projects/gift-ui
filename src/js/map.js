@@ -12,7 +12,8 @@ define(['jquery','underscore','loglevel','handlebars',
     'leaflet-panel-layers',
     '../lib/leaflet.markercluster-src',
     'fenix-ui-map',
-    'fenix-ui-metadata-viewer'
+    'fenix-ui-metadata-viewer',
+    'fenix-ui-reports'
 
     //TODO 'fenix-ui-bridge'
 
@@ -29,7 +30,8 @@ define(['jquery','underscore','loglevel','handlebars',
     LeafletPanel,
     LeafletMarkecluster,
     FenixMap,
-    MetadataViewer
+    MetadataViewer,
+             Reports
 ) {
     "use strict";
     var LANG = C.lang;
@@ -82,6 +84,11 @@ define(['jquery','underscore','loglevel','handlebars',
         self.titleByCodes = {};
         self.metadataByCountry = {};
         self.metadataByUid = {};
+
+        this.reports = new Reports({
+            cache: C.cache,
+            environment: C.environment,
+        });
         
         $.ajax({
             async: false,                
@@ -430,19 +437,56 @@ define(['jquery','underscore','loglevel','handlebars',
     Map.prototype._renderMeta = function(model) {
 
         this.$metamodal.modal('show');
+
         this.metadataViewer = new MetadataViewer({
             model: model,
             el: this.$meta,
             lang: C.lang,
             environment: C.environment,
-            hideExportButton: true,
+            hideExportButton: false,
+            specialFields : C.mdsdSpecialFields,
             expandAttributesRecursively: ['meContent'],
             popover: {
                 placement: 'left'
             }
-        }).on('export', function(e) {
-            console.log('EXPORT MODEL',e)
-        });
+        }).on("export", _.bind(function (model) {
+
+            var s = model.uid,
+                filename = s.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+            var payload = {
+
+                resource: {metadata: model},
+
+                "input": {
+                    "plugin": "inputMD",
+                    "config": {
+                        "template": "gift"
+
+                    }
+                },
+
+                "output": {
+                    "plugin": "outputMD",
+                    "config": {
+                        "full": false,
+                        lang: C.lang.toUpperCase(),
+                        "template": "fao",
+                        "fileName": filename + ".pdf"
+                    }
+                }
+            };
+
+            log.info("Configure FENIX export: table");
+
+            log.info(payload);
+
+            this.reports.export({
+                format: "table",
+                config: payload
+            });
+
+        }, this));
     };
 
     Map.prototype._importThirdPartyCss = function () {

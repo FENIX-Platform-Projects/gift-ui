@@ -1,14 +1,42 @@
-define(["underscore"],function (_) {
+define(["underscore"], function (_) {
 
     "use strict";
 
     return {
 
-        environment : "production",
+        environment: "production",
 
-        cache : false,
+        cache: false,
 
-        lang : "EN",
+        lang: "EN",
+
+        mdsdService: {
+            serviceProvider: "http://fenixrepo.fao.org/cdn/",
+            mdsdService: "mdsd/gift/mdsd.json"
+        },
+
+        /* mdsdSpecialFields : {
+         "metadataLanguage": true,
+         "language": true,
+         "characterSet": true,
+         "disseminationPeriodicity": true,
+         "confidentialityStatus": true,
+         "referencePeriod": true,
+         "referenceArea": true,
+         "coverageSectors": true,
+         "coverageGeographic": true,
+         "updatePeriodicity": true,
+         "projection": true,
+         "ellipsoid": true,
+         "datum": true,
+         "typeOfProduct": true,
+         "processing": true,
+         "topologyLevel": true,
+         "typeOfCollection": true,
+         "collectionPeriodicity": true,
+         "originOfCollectedData": true,
+         "dataAdjustment": true
+         },*/
 
         consumption: {
             service: {
@@ -236,7 +264,7 @@ define(["underscore"],function (_) {
                     selector: {
                         id: "tree",
                         hideSummary: true,
-                        sort : true
+                        sort: true
                     },
 
                     template: {
@@ -304,7 +332,7 @@ define(["underscore"],function (_) {
 
                     format: {
                         metadataAttribute: "meContent.seReferencePopulation.referenceArea",
-                        output : "codes"
+                        output: "codes"
                     }
                 },
 

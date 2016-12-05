@@ -10,8 +10,9 @@ define([
     "fenix-ui-catalog",
     "fenix-ui-bridge",
     "fenix-ui-metadata-viewer",
+    "fenix-ui-reports",
     "handlebars"
-], function ($, log, _, C, SC, CatalogTemplate, template, labels, Catalog, Bridge, MetadataViewer, Handlebars) {
+], function ($, log, _, C, SC, CatalogTemplate, template, labels, Catalog, Bridge, MetadataViewer, Reports, Handlebars) {
 
     "use strict";
 
@@ -84,8 +85,6 @@ define([
         //tree selector
         require("../../node_modules/jstree/dist/themes/default/style.min.css");
 
-
-
         //range selector
         require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.css");
         require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css");
@@ -129,6 +128,11 @@ define([
         this.bridge = new Bridge({
             environment: this.environment,
             cache: this.cache
+        });
+
+        this.reports = new Reports({
+            cache: this.cache,
+            environment: this.environment,
         });
 
     };
@@ -228,19 +232,57 @@ define([
         }
 
         this.$metamodal.modal('show');
+
         var metadataViewer = new MetadataViewer({
             model: data,
             el: this.$meta,
+            bridge: C.mdsdService,
+            specialFields : C.mdsdSpecialFields,
             lang: this.lang,
             environment: this.environment,
-            hideExportButton: true,
+            hideExportButton: false,
             expandAttributesRecursively: ['meContent'],
             popover: {
                 placement: 'left'
             }
-        }).on('export', function(e) {
-           // console.log('EXPORT MODEL',e)
-        });
+        }).on("export", _.bind(function (model) {
+
+            var s = model.uid,
+                filename = s.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+            var payload = {
+
+                resource: {metadata: model},
+
+                "input": {
+                    "plugin": "inputMD",
+                    "config": {
+                        "template": "gift"
+
+                    }
+                },
+
+                "output": {
+                    "plugin": "outputMD",
+                    "config": {
+                        "full": false,
+                        lang: this.lang.toUpperCase(),
+                        "template": "fao",
+                        "fileName": filename + ".pdf"
+                    }
+                }
+            };
+
+            log.info("Configure FENIX export: table");
+
+            log.info(payload);
+
+            this.reports.export({
+                format: "table",
+                config: payload
+            });
+
+        }, this));
     };
 
     return new Statistics();
