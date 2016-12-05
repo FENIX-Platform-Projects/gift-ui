@@ -232,9 +232,11 @@ define(["underscore"],function (_) {
                         uid: "GAUL0",
                         version: "2014"
                     },
+
                     selector: {
                         id: "tree",
-                        hideSummary: true
+                        hideSummary: true,
+                        sort : true
                     },
 
                     template: {

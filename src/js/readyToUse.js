@@ -9,10 +9,11 @@ define([
     "fenix-ui-catalog",
     "fenix-ui-metadata-viewer",
     "fenix-ui-filter",
+    "fenix-ui-reports",
     "./readyToUse/foodConsumption",
     "./readyToUse/foodSafety",
     "./readyToUse/nutrition"
-], function ($, log, _, C, RC, template, labels, Catalog, MetadataViewer, Filter, FoodConsumption, FoodSafety, Nutrition) {
+], function ($, log, _, C, RC, template, labels, Catalog, MetadataViewer, Filter, Reports, FoodConsumption, FoodSafety, Nutrition) {
 
     "use strict";
 
@@ -103,6 +104,11 @@ define([
         this.$metaButton = this.$el.find(s.META);
         this.$metaModal = this.$el.find(s.META_MODAL);
         this.$tabs = this.$el.find(s.TABS_A);
+
+        this.reports = new Reports({
+            cache: this.cache,
+            environment: this.environment,
+        });
 
     };
 
@@ -300,10 +306,71 @@ define([
         this.metadataViewer = new MetadataViewer({
             model: this.model,
             cache: this.cache,
+            /*  specialFields : {
+             "metadataLanguage": true,
+             "language": true,
+             "characterSet": true,
+             "disseminationPeriodicity": true,
+             "confidentialityStatus": true,
+             "referencePeriod": true,
+             "referenceArea": true,
+             "coverageSectors": true,
+             "coverageGeographic": true,
+             "updatePeriodicity": true,
+             "projection": true,
+             "ellipsoid": true,
+             "datum": true,
+             "typeOfProduct": true,
+             "processing": true,
+             "topologyLevel": true,
+             "typeOfCollection": true,
+             "collectionPeriodicity": true,
+             "originOfCollectedData": true,
+             "dataAdjustment": true
+             },*/
             environment: this.environment,
+            bridge: RC.mdsdService,
+            hideExportButton: false,
             lang: this.lang,
             el: this.$el.find(s.METADATA_VIEWER)
-        });
+        }).on("export", _.bind(function (model) {
+
+            var s = model.uid,
+                filename = s.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+
+            var payload = {
+
+                resource: {metadata: model},
+
+                "input": {
+                    "plugin": "inputMD",
+                    "config": {
+                        "template": "gift"
+
+                    }
+                },
+
+                "output": {
+                    "plugin": "outputMD",
+                    "config": {
+                        "full": false,
+                        lang: this.lang.toUpperCase(),
+                        "template": "fao",
+                        "fileName": filename + ".pdf"
+                    }
+                }
+            };
+
+            log.info("Configure FENIX export: table");
+
+            log.info(payload);
+
+            this.reports.export({
+                format: "table",
+                config: payload
+            });
+
+        }, this));
 
     };
 
@@ -390,19 +457,18 @@ define([
         //time selector
         require("../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css");
         // // fenix-ui-filter
-         require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+        require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
 
         // // fenix-ui-dropdown
-         require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
+        require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
         // // fenix-ui-catalog
-         require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
+        require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
 
         //GIFT CSS
         require("../css/gift.css");
-
 
 
     };

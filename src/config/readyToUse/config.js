@@ -100,6 +100,11 @@ define(["underscore"], function (_) {
 
         //forceShowDashboardSection: true,
 
+        mdsdService : {
+            serviceProvider : "http://fenixrepo.fao.org/cdn/",
+            mdsdService : "mdsd/gift/mdsd.json"
+        },
+
         foodSafetyFilter: foodGroupsFilter,
 
         foodConsumptionFilter: foodGroupsFilter,
