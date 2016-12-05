@@ -81,7 +81,11 @@ define(function () {
         iron: "Iron",
         calcium: "Calcium",
         zinc: "Zinc",
-        fola: "Fola"
+        fola: "Fola",
+
+        bubbleTitle : "Daily diet: grams per person per day",
+        treeMapTitle : "Daily diet: proportion of different food groups",
+        donutTitle : "Daily diet: calories per person per day"
 
 
     }
