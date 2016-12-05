@@ -302,7 +302,7 @@ define(['jquery','underscore','loglevel','handlebars',
         self.layersByCodes['All']= {
             active: true,
             order: 10,
-            name: 'All Data by Country',
+            name: i18nLabels['layer_all'],
             icon: '<i class="label label-'+ConsC.codelistStyles['All'].className+' text-primary">&nbsp;</i>',
             layer: self.layerAll
         };
