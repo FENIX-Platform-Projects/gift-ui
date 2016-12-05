@@ -468,24 +468,6 @@ define(
                         "seReferencePopulation": {
                             "title": "Reference Population",
                             "selectors": {
-                                "statisticalPopulation": {
-                                    cl: GIFT_StatisticalPopulation,
-                                    "selector": {
-                                        "id": "dropdown",
-                                        "config": {"maxItems": 1},
-                                        "sort": false,
-                                    },
-                                    "template": {
-                                        "title": "Study population",
-                                        "hideDescription": true,
-                                        "footer": "Specify the population group which was the basis for sampling",
-
-                                    },
-                                    "format": {
-                                        "output": "codes"
-                                    },
-                                    "constraints": {"presence": true}
-                                },
                                 "referenceArea": {
                                     "cl": AreaOfReference,
                                     "selector": {
@@ -638,24 +620,6 @@ define(
                                 "sePrimaryDataCollection": {
                                     "title": "Primary Data Collection",
                                     "selectors": {
-                                        "typeOfCollection": {
-                                            "cl": TypeOfCollection,
-                                            "selector": {
-                                                "id": "dropdown",
-                                                "sort": false,
-                                                "config": {"maxItems": 1},
-                                            },
-                                            "template": {
-                                                "title": "Sample selection method",
-                                                "hideDescription": true,
-                                                "footer": "Name the method used in selecting the sample for the study.",
-
-                                            },
-                                            "format": {
-                                                "output": "codes"
-                                            },
-                                            "constraints": {"presence": true}
-                                        },
                                         "samplingProcedure": {
                                             "selector": {
                                                 "id": "input",
@@ -676,7 +640,12 @@ define(
                                             "format": {
                                                 "output": "label"
                                             }
-                                        },
+                                        }
+                                    }
+                                },
+                                "seSecondaryDataCollection": {
+                                    "title": "Secondary Data Collection",
+                                    "selectors": {
                                         "organization": {
                                             "selector": {
                                                 "id": "input",
@@ -698,7 +667,7 @@ define(
                                                 "output": "label"
                                             },
                                             "constraints": {"presence": true}
-                                        },
+                                        }
                                     }
                                 }
                             }
@@ -987,15 +956,7 @@ define(
                                 },
                                 "AssessmentMethodDetails": {
                                     "selector": {
-                                        "id": "textarea",
-                                        "config": {"readonly": true}
-                                    },
-                                    "dependencies": {
-                                        "AssessmentMethod": [{
-                                            id: "readOnlyIfNotValue",
-                                            event: "select",
-                                            args: {value: "4"}
-                                        }]
+                                        "id": "textarea"
                                     },
                                     "template": {
                                         "title": "Dietary assessment method - details",
@@ -1167,6 +1128,24 @@ define(
                                 "title": "Sampling information",
                             },
                             "selectors": {
+                                "typeOfCollection": {
+                                    "cl": TypeOfCollection,
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "sort": false,
+                                        "config": {"maxItems": 1},
+                                    },
+                                    "template": {
+                                        "title": "Sample selection method",
+                                        "hideDescription": true,
+                                        "footer": "Name the method used in selecting the sample for the study.",
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    },
+                                    "constraints": {"presence": true}
+                                },
+
                                 "SamplingInformationDetails": {
                                     "selector": {
                                         "id": "input",
@@ -1176,13 +1155,20 @@ define(
                                                 "value": "SamplingInformationDetails",
                                                 "label": "Sample selection method - details"
                                             }
-                                        ]
+                                        ],
+                                        "config": {"readonly": true}
+                                    },
+                                    "dependencies": {
+                                        "typeOfCollection": [{
+                                            id: "readOnlyIfNotValue",
+                                            event: "select",
+                                            args: {value: "8"}
+                                        }]
                                     },
                                     "template": {
                                         "title": "Sample selection method - details",
                                         "hideDescription": true,
                                         "footer": "Specify other sample selection method",
-
                                     },
                                     "format": {
                                         "output": "label"
@@ -1219,6 +1205,24 @@ define(
                                         "output": "number"
                                     }
                                 },
+                                "statisticalPopulation": {
+                                    cl: GIFT_StatisticalPopulation,
+                                    "selector": {
+                                        "id": "dropdown",
+                                        "config": {"maxItems": 1},
+                                        "sort": false,
+                                    },
+                                    "template": {
+                                        "title": "Study population",
+                                        "hideDescription": true,
+                                        "footer": "Specify the population group which was the basis for sampling",
+
+                                    },
+                                    "format": {
+                                        "output": "codes"
+                                    },
+                                    "constraints": {"presence": true}
+                                },
                                 "PopulationGroups": {
 
                                     classNames: "well",
@@ -1227,7 +1231,15 @@ define(
                                         "title": "Specific population groups surveyed",
                                         "footer": "List the specific population groups that have been covered by the study (e.g. women in reproductive age, children under 5 years, elderly, etc.)",
                                     },
-
+                                    /*
+                                     "dependencies": {
+                                     "statisticalPopulation": [{
+                                     event: 'select',
+                                     id: 'readOnlyIfNotValue',
+                                     args: {value: "2"}
+                                     }]
+                                     },
+                                     */
                                     "incremental": true,
 
                                     "selectors": {
@@ -1240,6 +1252,7 @@ define(
                                             "format": {
                                                 "output": "label"
                                             }
+
                                         }
                                     },
                                     format: {
@@ -1255,6 +1268,7 @@ define(
                                             "value": "SampleSizeGroups",
                                             "label": "Sample size of the specific population group surveyed"
                                         }],
+                                        "config": {"readonly": true}
                                     },
                                     "template": {
                                         "title": "Sample size of the specific population group surveyed",
@@ -1265,10 +1279,10 @@ define(
                                         "output": "number"
                                     },
                                     "dependencies": {
-                                        "RepeatedDietary": [{
-                                            id: "readOnlyIfNotValue",
-                                            event: "select",
-                                            args: {value: true}
+                                        "statisticalPopulation": [{
+                                            event: 'select',
+                                            id: 'readOnlyIfNotValue',
+                                            args: {value: "2"}
                                         }]
                                     }
                                 },
@@ -1821,25 +1835,46 @@ define(
                                     }
                                 },
                                 "MacroDietaryComponentsDetails": {
-                                    "selector": {
-                                        "id": "textarea",
-                                        "config": {"readonly": true}
-                                    },
-                                    dependencies: {
-                                        MacroDietaryComponents: [{
-                                            id: "readOnlyIfNotValue",
-                                            event: "select",
-                                            args: {value: "9"}
-                                        }]
-                                    },
+
+                                    classNames: "well",
+
                                     "template": {
                                         "title": "Macronutrients and dietary components available in the dataset - details",
                                         "hideDescription": true,
                                         "footer": "List additional macronutrients and dietary components reported here above as 'other'",
                                     },
-                                    "format": {
-                                        "output": "label"
+                                    /*
+                                     dependencies: {
+                                     MacroDietaryComponents: [{
+                                     id: "readOnlyIfNotValue",
+                                     event: "select",
+                                     args: {value: "9"}
+                                     }]
+                                     },
+                                     */
+                                    "incremental": true,
+
+                                    "selectors": {
+                                        "MacroDietaryComponentsDetailsList": {
+                                            "selector": {
+                                                "id": "input",
+                                                "type": "text",
+                                                "source": [{"value": "MacroDietaryComponentsDetailsList"}]
+                                            },
+                                            "format": {
+                                                "output": "label"
+                                            },
+                                            "template": {
+                                                "title": "Macronutrients and dietary components available in the dataset - details",
+                                                "hideDescription": true,
+                                                "footer": "List additional macronutrients and dietary components reported here above as 'other'",
+                                            },
+                                        }
+                                    },
+                                    format: {
+                                        output: "array<label>"
                                     }
+
                                 },
                                 "MicroDietaryComponents": {
                                     "cl": GIFT_Micronutrients,
@@ -1857,26 +1892,48 @@ define(
                                     }
                                 },
                                 "MicroDietaryComponentsDetails": {
-                                    "selector": {
-                                        "id": "textarea",
-                                        "config": {"readonly": true}
-                                    },
-                                    dependencies: {
-                                        MicroDietaryComponents: [{
-                                            id: "readOnlyIfNotValue",
-                                            event: "select",
-                                            args: {value: "13"}
-                                        }]
-                                    },
+
+                                    classNames: "well",
+
                                     "template": {
                                         "title": "Micronutrients and minerals available in the dataset - details",
                                         "hideDescription": true,
                                         "footer": "List additional micronutrients reported here above as 'other'",
                                     },
-                                    "format": {
-                                        "output": "label"
+                                    /*
+                                     dependencies: {
+                                     MicroDietaryComponents: [{
+                                     id: "readOnlyIfNotValue",
+                                     event: "select",
+                                     args: {value: "13"}
+                                     }]
+                                     },
+                                     */
+                                    "incremental": true,
+
+                                    "selectors": {
+                                        "MicroDietaryComponentsDetailsList": {
+                                            "selector": {
+                                                "id": "input",
+                                                "type": "text",
+                                                "source": [{"value": "MicroDietaryComponentsDetailsList"}]
+                                            },
+                                            "format": {
+                                                "output": "label"
+                                            },
+                                            "template": {
+                                                "title": "Micronutrients and minerals available in the dataset - details",
+                                                "hideDescription": true,
+                                                "footer": "List additional micronutrients reported here above as 'other'",
+                                            }
+                                        }
+                                    },
+                                    format: {
+                                        output: "array<label>"
                                     }
+
                                 }
+
                             }
                         },
                         "AdditionalInformation": {
