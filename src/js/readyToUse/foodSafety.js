@@ -29,6 +29,7 @@ define([
 
 
         COLUMN_CONTAINER_ID: "column-standard",
+        COLUMN_LABELS_ID : "columnStandard",
         COLUMN_BAR_ID: "#column-standard-progress-bar",
         COLUMN_PERCENTAGE_ID: "#column-standard-percentage",
         COLUMN_PERCENTAGE_ITEM_ID: "#column-standard-percentage-item",
@@ -152,6 +153,7 @@ define([
 
         this.chart = new Columns({
             elID: s.COLUMN_CONTAINER_ID,
+            labelsId : s.COLUMN_LABELS_ID,
             columnAmountID: amount_id,
             columnBarID: s.COLUMN_BAR_ID,
             columnPercentageID: s.COLUMN_PERCENTAGE_ID,

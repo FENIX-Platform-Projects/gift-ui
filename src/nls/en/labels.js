@@ -83,14 +83,8 @@ define(function () {
         zinc: "Zinc",
         fola: "Fola",
 
-        bubbleTitle : "DAILY DIET: GRAMS PER PERSON PER DAY",
-        treeMapTitle : "Daily diet: proportion of different food groups",
-        donutTitle : "Daily diet: calories per person per day",
-
         //Charts titles
-
-        //Average Column Chart
-        bubbleTitle : "Daily diet: grams per person per day",
+        bubbleTitle : "DAILY DIET: GRAMS PER PERSON PER DAY",
         columnAverage_title : "DAILY PORTION ON DAYS OF CONSUMPTION",
         columnStandard_title : "DAILY PORTION ON DAYS OF CONSUMPTION",
         stackedPercentage_title_firstPart : "PERCENTAGE OF POPULATION AT RISK OF",

@@ -27,10 +27,13 @@ define([
 
         PERCENTAGE_CONTAINER_ID: "stacked-percentage",
         BAR_PERCENTAGE_ID: "#stacked-bar-percentage",
+        PERCENTAGE_LABELS_ID : "stackedPercentage",
 
         MACRONUTRIENTS_PIE_CONTAINER_ID: "macronutrients-pie",
+        MACRONUTRIENTS_PIE_LABELS_ID : "macronutrientsPie",
 
         PIE_CONTAINER_ID: "pieThreeLevDrilldown",
+        PIE_LABELS_ID : "pieThreeLevDrilldown",
 
         FILTER: "[data-role='filter']"
 
@@ -114,6 +117,7 @@ define([
 
         this.stackedChart = new Percentage({
             elID: s.PERCENTAGE_CONTAINER_ID,
+            labelsId : s.PERCENTAGE_LABELS_ID,
             barID: s.BAR_PERCENTAGE_ID,
             cache: C.cache,
             environment: C.environment,
@@ -139,6 +143,7 @@ define([
 
         this.pieMacronutrients = new pieMacronutrients({
             elID: s.MACRONUTRIENTS_PIE_CONTAINER_ID,
+            labelsId : s.MACRONUTRIENTS_PIE_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
             uid: "gift_process_total_food_consumption_" + this.model.uid,
@@ -166,6 +171,7 @@ define([
 
         this.barsChart = new PieThreeLevDrilldown({
             elID: s.PIE_CONTAINER_ID,
+            labelsId : s.PIE_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
             selected_config: this.process.parameters,

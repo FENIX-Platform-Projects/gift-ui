@@ -26,6 +26,7 @@ define([
             BUBBLE_EL: "#bubble",
             TREEMAP: "#treemap",
             DONUT_EL: "donut",
+            DONUT_LABELS_ID: "holeDonut",
             TITLE: "[data-role='title']",
             DESCRIPTION: "[data-role='description']",
             FILTER: "[data-role='filter']"
@@ -212,6 +213,7 @@ define([
 
         obj.instances.push(new LargeTreeMap({
             elID : s.LARGE_TREE_MAP_CONTAINER_ID,
+            labelsId : s.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_food_consumption_" + this.model.uid,
@@ -223,6 +225,7 @@ define([
 
         var instance = new LargeTreeMap({
             elID : s.LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID,
+            labelsId : s.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_food_consumption_" + this.model.uid,
@@ -248,6 +251,7 @@ define([
 
         var config = {
             elID: s.DONUT_EL,
+            labelsId : s.DONUT_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
             uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,
