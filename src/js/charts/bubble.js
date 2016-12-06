@@ -3,8 +3,9 @@ define([
     "fenix-ui-bridge",
     "d3",
     "underscore",
-    "../../config/readyToUse/config"
-], function (Bridge, d3, _, RC) {
+    "../../config/readyToUse/config",
+    "../../html/readyToUse/charts/bubbleTooltip.hbs"
+], function (Bridge, d3, _, RC, tooltipTemplate) {
 
     "use strict";
 
@@ -40,7 +41,7 @@ define([
         );
     }
 
-    Bubble.prototype.redraw= function () {
+    Bubble.prototype.redraw = function () {
 
     };
 
@@ -296,7 +297,8 @@ define([
             var sub = {
                 name: subgroup[details["subgroup_code_" + lang].index],
                 size: subgroup[details["value"].index],
-                color: colors.pop()
+                color: "white",
+                opacity: 0.3
             };
 
             var group = _.find(result, function (item) {
@@ -314,8 +316,7 @@ define([
 
             var f = {
                 name: food[details["foodex2_code_" + lang].index],
-                size: food[details["value"].index]
-                //color: colors.pop()
+                size: food[details["value"].index],
             };
 
             var group = _.find(result, function (item) {
@@ -487,6 +488,11 @@ define([
                     return d.data.color;
                 }
             })
+            .style("fill-opacity", function (d) {
+                if (d.data && d.data.opacity) {
+                    return d.data.opacity;
+                }
+            })
             .on("click", function (node) {
                 d3.event.stopPropagation();
 
@@ -496,8 +502,7 @@ define([
                     zoom(d);
                 }
             })
-            .on("mouseover", function (node) {
-
+            .on("mousemove", function (node) {
                 var current = self.focus.data.name,
                     maxDepthAncestors = getMaxDepth(node).ancestors.reverse(),
                     path = _.map(maxDepthAncestors, function (i) {
@@ -513,9 +518,14 @@ define([
                 }
 
                 //update tooltip content
-                tooltip.html(size + "g")
+                tooltip.html(tooltipTemplate({
+                    size : size,
+                    um : "g",
+                    title : node.data.name
+                } ))
                     .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px");
+                    .style("top", (d3.event.pageY) + "px");
+
 
                 //show tooltip
                 tooltip.transition()
@@ -530,7 +540,7 @@ define([
             });
 
         //create texts
-        var text = g.selectAll("text")
+       /* var text = g.selectAll("text")
             .data(descendants)
             .enter()
             .append("text")
@@ -544,7 +554,7 @@ define([
             .text(function (d) {
                 return d.data.name;
             });
-
+*/
         //if background is clicked then zoom to background
         svg.style("background", "#FFFFFF")
             .on("click", function () {
@@ -682,10 +692,6 @@ define([
         return this;
     };
 
-    /**
-     * pub/sub
-     * @return {Object} component instance
-     */
     Bubble.prototype.on = function (channel, fn, context) {
         var _context = context || this;
         if (!this.channels[channel]) {

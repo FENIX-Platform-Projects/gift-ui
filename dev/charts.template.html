@@ -3,59 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Charts</title>
-
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 </head>
 <body>
 
+<style>
+    body{
+        font-family: 'Open Sans', sans-serif;
+    }
+
+
+</style>
 
 <div class="fx-sandbox fao-holder" style="background-color: white;">
 
     <div class="container-fluid">
         <!--Bubble -->
-        <!--<div class="row">-->
-        <!--<div class="col-xs-6" id="bubble-beverages-holder">-->
-        <!--<svg width="450" height="450" id="bubble-beverages"></svg>-->
-        <!--</div>-->
-        <!--<div class="col-xs-6" id="bubble-food-holder">-->
-        <!--<svg width="450" height="450" id="bubble-food"></svg>-->
-        <!--</div>-->
-        <!--</div>-->
+        <div class="row">
+<!--            <div class="col-xs-6" id="bubble-beverages-holder">
+                <svg width="450" height="450" id="bubble-beverages"></svg>
+            </div>-->
+            <div class="col-xs-6" id="bubble-food-holder">
+                <svg width="450" height="450" id="bubble-food"></svg>
+            </div>
+        </div>
 
         <!--<hr/>-->
 
         <!-- Macronutrients -->
         <!--<div class="row">-->
-            <!--<div class="col-xs-12" id = 'macronutrientsPie-title'></div>-->
+        <!--<div class="col-xs-12" id = 'macronutrientsPie-title'></div>-->
         <!--</div>-->
         <!--<div class="row">-->
-            <!--<div class="col-xs-4"></div>-->
+        <!--<div class="col-xs-4"></div>-->
 
-            <!--<div class="col-xs-5">-->
-                <!--<div class="macronutrients-pie-holder">-->
-                    <!--<div id="macronutrients-pie"></div>-->
-                    <!--<div class="actual-label text-center"><b>ACTUAL</b></div>-->
-                    <!--<div class="recommended-label text-center"><b>RECOMMENDED</b></div>-->
-                <!--</div>-->
+        <!--<div class="col-xs-5">-->
+        <!--<div class="macronutrients-pie-holder">-->
+        <!--<div id="macronutrients-pie"></div>-->
+        <!--<div class="actual-label text-center"><b>ACTUAL</b></div>-->
+        <!--<div class="recommended-label text-center"><b>RECOMMENDED</b></div>-->
+        <!--</div>-->
 
-            <!--</div>-->
-            <!--<div class="col-xs-3">-->
-                <!--<div id="macronutrients-pie-legend" class="legend">-->
-                    <!--<ul class="list-unstyled">-->
-                        <!--<li><span class="marker carbohydrates"></span> Carbohydrates - actual</li>-->
-                        <!--<li><span class="marker protein"></span> Protein - actual</li>-->
-                        <!--<li><span class="marker fats"></span> Fats - actual</li>-->
-                        <!--<li><span class="marker carbohydrates alpha"></span> Carbohydrates - recommended</li>-->
-                        <!--<li><span class="marker protein alpha"></span> Protein - recommended</li>-->
-                        <!--<li><span class="marker fats alpha"></span> Fats - recommended</li>-->
-                    <!--</ul>-->
-                <!--</div>-->
-            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-xs-3">-->
+        <!--<div id="macronutrients-pie-legend" class="legend">-->
+        <!--<ul class="list-unstyled">-->
+        <!--<li><span class="marker carbohydrates"></span> Carbohydrates - actual</li>-->
+        <!--<li><span class="marker protein"></span> Protein - actual</li>-->
+        <!--<li><span class="marker fats"></span> Fats - actual</li>-->
+        <!--<li><span class="marker carbohydrates alpha"></span> Carbohydrates - recommended</li>-->
+        <!--<li><span class="marker protein alpha"></span> Protein - recommended</li>-->
+        <!--<li><span class="marker fats alpha"></span> Fats - recommended</li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
         <!--<hr/>-->
 
         <!-- Column Percentage Average(Column) -->
         <!--<div class="row">-->
-            <!--<div class="col-xs-12" id = 'columnAverage-title'></div>-->
+        <!--<div class="col-xs-12" id = 'columnAverage-title'></div>-->
         <!--</div>-->
         <!--<div class="row">-->
         <!--<div class="col-xs-4"></div>-->
@@ -96,9 +103,9 @@
         <!--</div>-->
         <!--<hr/>-->
 
-        <!-- Column Percentage Standard (Column) -->
+        <!-- Column Percentage Standard (Column)
         <div class="row">
-            <div class="col-xs-12" id = 'columnStandard-title'></div>
+            <div class="col-xs-12" id='columnStandard-title'></div>
         </div>
         <div class="row">
             <div class="col-xs-4"></div>
@@ -137,26 +144,26 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!--<hr/>-->
 
         <!-- Stacked percentage bars -->
         <!--<div class="row">-->
-            <!--<div class="col-xs-12" id = 'stackedPercentage-title'></div>-->
+        <!--<div class="col-xs-12" id = 'stackedPercentage-title'></div>-->
         <!--</div>-->
         <!--<div class="row">-->
-            <!--<div class="col-xs-4"></div>-->
-            <!--<div class="col-xs-5 col-offset-xs-2">-->
-                <!--<div id="bar-details" class="bar-details text-center">-->
-                    <!--<b><span class="percentage" id="stacked-bar-percentage">37,5%</span></b> of the population is AT-->
-                    <!--RISK of IRON inadequacy-->
-                <!--</div>-->
-                <!--<div class="bar-holder">-->
-                    <!--<div class="bar-mask"></div>-->
-                    <!--&lt;!&ndash;<div id="bar"></div>&ndash;&gt;-->
-                    <!--<div id="stacked-percentage"></div>-->
-                <!--</div>-->
-            <!--</div>-->
+        <!--<div class="col-xs-4"></div>-->
+        <!--<div class="col-xs-5 col-offset-xs-2">-->
+        <!--<div id="bar-details" class="bar-details text-center">-->
+        <!--<b><span class="percentage" id="stacked-bar-percentage">37,5%</span></b> of the population is AT-->
+        <!--RISK of IRON inadequacy-->
+        <!--</div>-->
+        <!--<div class="bar-holder">-->
+        <!--<div class="bar-mask"></div>-->
+        <!--&lt;!&ndash;<div id="bar"></div>&ndash;&gt;-->
+        <!--<div id="stacked-percentage"></div>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
         <!--<hr/>-->
 
@@ -174,25 +181,25 @@
 
         <!-- Pie with three Levels Drilldown -->
         <!--<div class="row">-->
-            <!--<div class="col-xs-12" id = 'pieThreeLevDrilldown-title'></div>-->
+        <!--<div class="col-xs-12" id = 'pieThreeLevDrilldown-title'></div>-->
         <!--</div>-->
         <!--<div class="row">-->
-            <!--<div class="col-xs-4"></div>-->
-            <!--<div class="col-xs-5 col-offset-xs-2">-->
-                <!--<div id="pieThreeLevDrilldown"></div>-->
-            <!--</div>-->
+        <!--<div class="col-xs-4"></div>-->
+        <!--<div class="col-xs-5 col-offset-xs-2">-->
+        <!--<div id="pieThreeLevDrilldown"></div>-->
+        <!--</div>-->
         <!--</div>-->
         <!--<hr/>-->
 
         <!-- Large Tree -->
         <!--<div class="row">-->
-            <!--<div class="col-xs-12" id = 'largeTree-title'></div>-->
+        <!--<div class="col-xs-12" id = 'largeTree-title'></div>-->
         <!--</div>-->
         <!--<div class="row">-->
-            <!--<div class="col-xs-4"></div>-->
-            <!--<div class="col-xs-5 col-offset-xs-2">-->
-                <!--<div id="largeTree"></div>-->
-            <!--</div>-->
+        <!--<div class="col-xs-4"></div>-->
+        <!--<div class="col-xs-5 col-offset-xs-2">-->
+        <!--<div id="largeTree"></div>-->
+        <!--</div>-->
         <!--</div>-->
         <!--<hr/>-->
     </div>
