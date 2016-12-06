@@ -359,7 +359,7 @@ define([
     };
 
     ColumnChart.prototype.dispose = function (opts) {
-        this.chart.destroy();
+        //this.chart.destroy();
     };
 
     ColumnChart.prototype._trigger = function (channel) {

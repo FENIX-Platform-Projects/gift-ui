@@ -314,7 +314,7 @@ define([
 
             var f = {
                 name: food[details["foodex2_code_" + lang].index],
-                size: food[details["value"].index],
+                size: food[details["value"].index]
                 //color: colors.pop()
             };
 
@@ -356,7 +356,7 @@ define([
 
     Bubble.prototype._buildBeveragesModel = function (raw) {
 
-        var colors = RC["bubbleChartColors_" + this.type] || [],
+        var colors = RC["bubbleChartColors_" + this.type].slice(0) || [],
             lang = this.lang.toUpperCase(),
             data = raw || {},
             resourceSubgroups = data.food_subgroup || {},

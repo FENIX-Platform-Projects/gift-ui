@@ -149,7 +149,9 @@ define([
 
     PieMacronutrientsChart.prototype._onSuccess = function (resource) {
         var series = this._processSeries(resource);
+        console.log(series)
         var chartConfig = this._getChartConfig(series);
+
 
        return this._renderChart(chartConfig);
     };
@@ -218,8 +220,14 @@ define([
                 dataToChart.push(obj);
             }
         }
+        //order series
 
-        return dataToChart;
+        var result = [];
+        result.push(_.findWhere(dataToChart, {name : "Fat"}));
+        result.push(_.findWhere(dataToChart, {name : "Carbohydrates"}));
+        result.push(_.findWhere(dataToChart, {name : "Protein"}));
+
+        return result;
     };
 
     PieMacronutrientsChart.prototype._getChartConfig = function (series) {
