@@ -191,23 +191,19 @@ define([
         var columns = metadata.dsd.columns;
         var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
 
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].subject == 'um')
-            {
+        for(var i=0; i< columns.length;i++) {
+            if (columns[i].subject == 'um') {
                 um_index = i;
                 um_column_id = columns[i].id;
             }
-            else if(columns[i].subject == 'value')
-            {
+            else if (columns[i].subject == 'value') {
                 value_index = i;
             }
-            else if(columns[i].dataType == 'code'){
+            else if (columns[i].dataType == 'code') {
                 code_index = i;
                 code_column_id = columns[i].id;
             }
         }
-        console.log(code_column_id, um_column_id)
-
 
         var umLabelIdx =  _.findIndex(columns, function (col ){
             return col.id== um_column_id +'_'+self.language;
@@ -285,9 +281,6 @@ define([
                         },
                         drilldown: function (e) {
                         if (!e.seriesOptions) {
-
-                            console.log(e.point.name, e.point.code);
-
                             self._getProccessForSecondLevel(e.point, this);
                         }
                     }
