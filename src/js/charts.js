@@ -84,7 +84,7 @@ define([
         //macronutrients chart
         //this._renderMacronutrientsChart();
         //pie three levels drilldown
-        //this._renderThreeLevDrilldownChart();
+        this._renderThreeLevDrilldownChart();
         //large tree map
         //this._renderLargeTreeMapChart();
     };

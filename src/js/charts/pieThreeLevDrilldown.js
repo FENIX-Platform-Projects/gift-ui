@@ -426,22 +426,36 @@ define([
                 type: 'category'
             },
 
-            legend: {
-                enabled: false
-            },
+           legend: {
+               enabled: true,
+               floating: false,
 
+               labelFormatter: function() {
+                   // do truncation here and return string
+                   // this.name holds the whole label
+                   // for example:
+                   return this.name.slice(0, 15)+'...'
+               }
+               //  layout: "hori"
+           },
             plotOptions: {
                 pie: {
                     dataLabels: {
-                        enabled: false
+                        enabled: false,
+                        style: {
+                            width: '80px'
+                        }
                     },
-                    showInLegend: true
+                    showInLegend: true,
+                    innerSize: '40%'
                 },
+
+
 
                 series: {
                     borderWidth: 0,
                         dataLabels: {
-                        enabled: true
+                        enabled: false
                     }
                 }
             },

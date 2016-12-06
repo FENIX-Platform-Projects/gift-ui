@@ -312,7 +312,14 @@ define([
 
             legend: {
                 enabled: true,
-                floating: true
+                floating: false,
+
+                labelFormatter: function() {
+                    // do truncation here and return string
+                    // this.name holds the whole label
+                    // for example:
+                    return this.name.slice(0, 15)+'...'
+                }
               //  layout: "hori"
             },
 
