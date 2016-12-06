@@ -78,11 +78,11 @@ define([
        // this._renderStandardColumnChart();
         //this._renderAverageColumnChart();
         //donut hole
-        //this._renderDonutHoleChart();
+        this._renderDonutHoleChart();
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
-        this._renderMacronutrientsChart();
+        //this._renderMacronutrientsChart();
         //pie three levels drilldown
         //this._renderThreeLevDrilldownChart();
         //large tree map

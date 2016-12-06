@@ -281,6 +281,7 @@ define([
 
     DonutHole.prototype._getChartConfig = function (series) {
 
+
         var self = this;
        var chartConfig =  {
             chart: {
@@ -310,24 +311,28 @@ define([
             },
 
             legend: {
-                enabled: false
+                enabled: true,
+                floating: true
+              //  layout: "hori"
             },
 
             plotOptions: {
                 pie: {
                     dataLabels: {
+                        enabled: false,
                         style: {
-                            width: '200px'
+                            width: '80px'
                         }
                     },
+                    showInLegend: true,
                     innerSize: '40%'
                 },
 
                 series: {
                     borderWidth: 0,
-                        dataLabels: {
-                        enabled: true
-                    }
+                    //     dataLabels: {
+                    //     enabled: true
+                    // }
                 }
             },
 

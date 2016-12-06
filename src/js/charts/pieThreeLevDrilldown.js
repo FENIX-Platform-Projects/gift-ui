@@ -433,10 +433,9 @@ define([
             plotOptions: {
                 pie: {
                     dataLabels: {
-                        style: {
-                            width: '200px'
-                        }
-                    }
+                        enabled: false
+                    },
+                    showInLegend: true
                 },
 
                 series: {
