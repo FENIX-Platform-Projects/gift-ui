@@ -173,6 +173,7 @@ define([
         this.barsChart = new PieThreeLevDrilldown({
             elID: s.PIE_CONTAINER_ID,
             labelsId : s.PIE_LABELS_ID,
+            title : 'IRON',
             cache: C.cache,
             environment: C.environment,
             selected_config: this.process.parameters,

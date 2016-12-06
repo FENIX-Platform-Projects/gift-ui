@@ -453,8 +453,6 @@ define([
                     innerSize: '40%'
                 },
 
-
-
                 series: {
                     borderWidth: 0,
                         dataLabels: {
