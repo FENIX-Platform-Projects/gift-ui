@@ -9572,4 +9572,7 @@ button_new_2:before {
 .panel-heading a.collapsed:after {
   content: "\e080"; }
 
+.fx-md-viewer-container .popover-title .text-info {
+  font-family: "Open Sans", Arial, Helvetica, Verdana, sans-serif; }
+
 /*# sourceMappingURL=gift.css.map */
