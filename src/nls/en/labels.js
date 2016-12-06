@@ -83,10 +83,25 @@ define(function () {
         zinc: "Zinc",
         fola: "Fola",
 
-        bubbleTitle : "Daily diet: grams per person per day",
+        bubbleTitle : "DAILY DIET: GRAMS PER PERSON PER DAY",
         treeMapTitle : "Daily diet: proportion of different food groups",
-        donutTitle : "Daily diet: calories per person per day"
+        donutTitle : "Daily diet: calories per person per day",
 
+        //Charts titles
+
+        //Average Column Chart
+        bubbleTitle : "Daily diet: grams per person per day",
+        columnAverage_title : "DAILY PORTION ON DAYS OF CONSUMPTION",
+        columnStandard_title : "DAILY PORTION ON DAYS OF CONSUMPTION",
+        stackedPercentage_title_firstPart : "PERCENTAGE OF POPULATION AT RISK OF",
+        stackedPercentage_title_secondPart : "INADEQUACY",
+        macronutrientsPie_title : "MACRONUTRIENT CONTRIBUTION TO THE TOTAL ENERGY INTAKE",
+        pieThreeLevDrilldown_title_firstPart : "SOURCES OF",
+        pieThreeLevDrilldown_title_secondPart : "IN THE DIET",
+        largeTree_title : "DAILY DIET: PROPORTION OF DIFFERENT FOOD GROUPS",
+        holeDonut_title : "DAILY DIET: CALORIES PER PERSON PER DAY",
+        bubbleFood_title : "Foods",
+        bubbleBeverages_title : "Beverages"
 
     }
 });

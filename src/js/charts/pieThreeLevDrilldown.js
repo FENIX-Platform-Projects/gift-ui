@@ -2,9 +2,10 @@ define([
     "underscore",
     "jquery",
     "loglevel",
+    "../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
-], function (_, $, log, Bridge, Highcharts) {
+], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
         HEIGHT : 500,
@@ -251,9 +252,10 @@ define([
         this.selected_items = opts.selected_items;
         this.selected_config = opts.selected_config;
         this.elID = opts.elID;
+        this.title = opts.title;
 
         this.language = opts.language;
-
+        this.labelsId = opts.labelsId;
         //pub/sub
         this.channels = {};
     };
@@ -282,6 +284,7 @@ define([
 
     ThreeLevDrilldown.prototype._onSuccess = function (resource) {
         var series = this._processSeries(resource);
+        this._setHTMLvariables();
         var chartConfig = this._getChartConfig(series);
         return this._renderChart(chartConfig);
     };
@@ -495,6 +498,10 @@ define([
         });
 
         this.chart = Highcharts.chart(this.elID, chartConfig);
+    };
+
+    ThreeLevDrilldown.prototype._setHTMLvariables = function () {
+        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title_firstPart'] + " "+this.title+ " "+ labels[this.language.toLowerCase()][this.labelsId+'_title_secondPart']);
     };
 
     ThreeLevDrilldown.prototype.redraw = function (animation) {

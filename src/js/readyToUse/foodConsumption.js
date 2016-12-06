@@ -152,6 +152,7 @@ define([
             {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
         ];
 
+
         var instance = new Bubble({
             el: s.BUBBLE_FOOD,
             holderEl: s.BUBBLE_FOOD_HOLDER,

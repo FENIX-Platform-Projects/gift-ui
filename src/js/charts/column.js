@@ -2,9 +2,10 @@ define([
     "underscore",
     "jquery",
     "loglevel",
+    "../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
-], function (_, $, log, Bridge, Highcharts) {
+], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
         HEIGHT : 300,
@@ -135,6 +136,7 @@ define([
         this.process = s.process;
 
         this.elID = opts.elID;
+        this.labelsId = opts.labelsId;
         this.columnAmountID = opts.columnAmountID;
         this.columnBarID = opts.columnBarID;
         this.columnPercentageID = opts.columnPercentageID;
@@ -337,10 +339,14 @@ define([
 
     ColumnChart.prototype._setHTMLvariables = function (dataToChart) {
         //Progress bar
+        //alert(labels[this.language.toLowerCase()]['catalog_empty']);
 
         $(this.columnBarID).css({
             width: dataToChart[0].value+ dataToChart[0].unit
         });
+        console.log(this.labelsId)
+        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title'] + ": "+this.columnPercentageItemLabel);
+
         $(this.columnPercentageID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
         $(this.columnPercentageItemID).html(this.columnPercentageItemLabel);
         $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " "+ dataToChart[1].unit+ s.DAY);

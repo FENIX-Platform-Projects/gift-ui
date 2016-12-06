@@ -2,9 +2,10 @@ define([
     "underscore",
     "jquery",
     "loglevel",
+    "../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
-], function (_, $, log, Bridge, Highcharts) {
+], function (_, $, log, labels, Bridge, Highcharts) {
 
 
     var s = {
@@ -127,7 +128,7 @@ define([
         this.elID = opts.elID;
 
         this.language = opts.language;
-
+        this.labelsId = opts.labelsId;
         //pub/sub
         this.channels = {};
     };
@@ -149,7 +150,7 @@ define([
 
     PieMacronutrientsChart.prototype._onSuccess = function (resource) {
         var series = this._processSeries(resource);
-        console.log(series)
+        this._setHTMLvariables();
         var chartConfig = this._getChartConfig(series);
 
 
@@ -369,6 +370,10 @@ define([
         }
 
         return this;
+    };
+
+    PieMacronutrientsChart.prototype._setHTMLvariables = function () {
+        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title']);
     };
 
     /**

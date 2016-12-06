@@ -15,15 +15,19 @@ define([
 
     var s = {
         BUBBLE_FOOD: "#bubble-food",
+        //BUBBLE_LABELS : "bubble",
         BUBBLE_BEVERAGES: "#bubble-beverages",
         donutHole_chart : {
-            DONUT_CONTAINER_ID : "hole_donut"
+            DONUT_CONTAINER_ID : "hole_donut",
+            DONUT_LABELS_ID : "holeDonut",
         },
         macronutrients_chart : {
-            MACRONUTRIENTS_PIE_CONTAINER_ID : "macronutrients-pie"
+            MACRONUTRIENTS_PIE_CONTAINER_ID : "macronutrients-pie",
+            MACRONUTRIENTS_PIE_LABELS_ID : "macronutrientsPie",
         },
         column_average_chart: {
             COLUMN_CONTAINER_ID : "column-average",
+            COLUMN_LABELS_ID : "columnAverage",
             COLUMN_BAR_ID : "#column-average-progress-bar",
             COLUMN_PERCENTAGE_ID : "#column-average-percentage",
             COLUMN_PERCENTAGE_ITEM_ID : "#column-average-percentage-item",
@@ -33,6 +37,7 @@ define([
         },
         column_standard_chart: {
             COLUMN_CONTAINER_ID : "column-standard",
+            COLUMN_LABELS_ID : "columnStandard",
             COLUMN_BAR_ID : "#column-standard-progress-bar",
             COLUMN_PERCENTAGE_ID : "#column-standard-percentage",
             COLUMN_PERCENTAGE_ITEM_ID : "#column-standard-percentage-item",
@@ -42,13 +47,16 @@ define([
         },
         percentage_chart: {
             PERCENTAGE_CONTAINER_ID : "stacked-percentage",
+            PERCENTAGE_LABELS_ID : "stackedPercentage",
             BAR_PERCENTAGE_ID : "#stacked-bar-percentage"
         },
         pieThreeLevDrilldown_chart: {
-            PIE_CONTAINER_ID : "pieThreeLevDrilldown"
+            PIE_CONTAINER_ID : "pieThreeLevDrilldown",
+            PIE_LABELS_ID : "pieThreeLevDrilldown"
         },
         largeTreeMap_chart: {
-            LARGE_TREE_MAP_CONTAINER_ID : "largeTree"
+            LARGE_TREE_MAP_CONTAINER_ID : "largeTree",
+            LARGE_TREE_MAP_LABELS_ID : "largeTree"
         },
 
         height : 300,
@@ -75,10 +83,10 @@ define([
         //bubble chart
         //this._renderBubbleChart();
         //column chart
-       // this._renderStandardColumnChart();
-        //this._renderAverageColumnChart();
+        this._renderStandardColumnChart();
+       // this._renderAverageColumnChart();
         //donut hole
-        this._renderDonutHoleChart();
+        //this._renderDonutHoleChart();
         //percentage chart
         //this._renderPercentageChart();
         //macronutrients chart
@@ -126,6 +134,7 @@ define([
 
         var instance = new PieMacronutrients({
             elID : s.macronutrients_chart.MACRONUTRIENTS_PIE_CONTAINER_ID,
+            labelsId : s.macronutrients_chart.MACRONUTRIENTS_PIE_LABELS_ID,
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_food_consumption_000042BUR201001",
@@ -161,6 +170,7 @@ define([
 
         var instance = new DonutHole({
             elID : s.donutHole_chart.DONUT_CONTAINER_ID,
+            labelsId : s.donutHole_chart.DONUT_LABELS_ID,
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
@@ -192,6 +202,7 @@ define([
 
         var instance = new LargeTreeMap({
             elID : s.largeTreeMap_chart.LARGE_TREE_MAP_CONTAINER_ID,
+            labelsId : s.largeTreeMap_chart.LARGE_TREE_MAP_LABELS_ID,
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_food_consumption_000042BUR201001",
@@ -223,11 +234,13 @@ define([
                 //     "to": 67
                 // }
             },
-            selected_items : ["VITA"]
+            selected_items : ["IRON"]
         }
 
         var instance = new PieThreeLevDrilldown({
             elID : s.pieThreeLevDrilldown_chart.PIE_CONTAINER_ID,
+            labelsId : s.pieThreeLevDrilldown_chart.PIE_LABELS_ID,
+            title : 'IRON',
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_weighted_food_consumption_000042BUR201001",
@@ -247,6 +260,7 @@ define([
 
         this.foodBubble = new Bubble({
             el : s.BUBBLE_FOOD,
+            // labelsId : s.BUBBLE_LABELS,
             cache: C.cache,
             type : "foods",
             environment : C.environment
@@ -254,6 +268,7 @@ define([
 
         this.beveragesBubble = new Bubble({
             el : s.BUBBLE_BEVERAGES,
+            // labelsId : s.BUBBLE_LABELS,
             cache: C.cache,
             environment : C.environment,
             type : "beverages"
@@ -289,6 +304,7 @@ define([
 
         var instance = new Column({
             elID : s.column_average_chart.COLUMN_CONTAINER_ID,
+            labelsId : s.column_average_chart.COLUMN_LABELS_ID,
             columnAmountID : amount_id,
             columnBarID : s.column_average_chart.COLUMN_BAR_ID,
             columnPercentageID : s.column_average_chart.COLUMN_PERCENTAGE_ID,
@@ -341,6 +357,7 @@ define([
 
         var instance = new Column({
             elID : s.column_standard_chart.COLUMN_CONTAINER_ID,
+            labelsId : s.column_standard_chart.COLUMN_LABELS_ID,
             columnAmountID : amount_id,
             columnBarID : s.column_standard_chart.COLUMN_BAR_ID,
             columnPercentageID : s.column_standard_chart.COLUMN_PERCENTAGE_ID,
@@ -380,6 +397,7 @@ define([
 
         var instance = new Percentage({
             elID : s.percentage_chart.PERCENTAGE_CONTAINER_ID,
+            labelsId : s.percentage_chart.PERCENTAGE_LABELS_ID,
             barID : s.percentage_chart.BAR_PERCENTAGE_ID,
             cache: C.cache,
             environment : C.environment,

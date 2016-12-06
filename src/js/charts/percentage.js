@@ -2,9 +2,10 @@ define([
     "underscore",
     "jquery",
     "loglevel",
+    "../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
-], function (_, $, log, Bridge, Highcharts) {
+], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
         HEIGHT : 200,
@@ -162,6 +163,7 @@ define([
         this.barID = opts.barID;
 
         this.language = opts.language;
+        this.labelsId = opts.labelsId;
 
         //pub/sub
         this.channels = {};
@@ -457,6 +459,8 @@ define([
     PercentageChart.prototype._setHTMLvariables = function (dataToChart) {
         //Progress bar
         $(this.barID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
+
+        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title_firstPart'] + " VITAMINA A "+labels[this.language.toLowerCase()][this.labelsId+'_title_secondPart']);
     }
 
     PercentageChart.prototype.redraw = function (animation) {

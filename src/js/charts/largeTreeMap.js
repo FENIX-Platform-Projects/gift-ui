@@ -2,9 +2,10 @@ define([
     "underscore",
     "jquery",
     "loglevel",
+    "../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
-], function (_, $, log, Bridge, Highcharts) {
+], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
         HEIGHT : 500,
@@ -425,6 +426,7 @@ define([
         this.uid = opts.uid;
         this.selected_items = opts.selected_items;
         this.elID = opts.elID;
+        this.labelsId = opts.labelsId;
         this.levels_number = opts.levels_number;
 
         this.language = opts.language;
@@ -464,6 +466,7 @@ define([
             series = this._processSeries_thirdLevel(resource, series);
         }
 
+        this._setHTMLvariables();
         var chartConfig = this._getChartConfig(series);
         return this._renderChart(chartConfig);
     };
@@ -716,6 +719,10 @@ define([
         });
 
         this.chart = Highcharts.chart(this.elID, chartConfig);
+    };
+
+    LargeTreeMap.prototype._setHTMLvariables = function () {
+        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title']);
     };
 
     LargeTreeMap.prototype.redraw = function (animation) {
