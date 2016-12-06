@@ -1,9 +1,9 @@
 define(
     function () {
 
-        var IANA = {uid: 'IANAcharacterSet'},
-            ROLE = {uid: "ResponsiblePartyRole"},
+        var ROLE = {uid: "ResponsiblePartyRole"},
             GAUL = {uid: 'GAUL0', version: "2014"},
+            DataAdjustment = {uid: 'CL_ADJUSTMENT', version: "1.1"},
             Languages = {uid: 'GIFT_ISO639-2', version: "1998"},
             TypeOfCollection = {uid: 'GIFT_TypeOfCollection'},
             StatusConfidenciality = {uid: 'GIFT_ConfidentialityStatus'},
@@ -17,7 +17,7 @@ define(
             GIFT_QuantityReporting = {uid: 'GIFT_QuantityReporting'},
             GIFT_Macronutrients = {uid: 'GIFT_Macronutrients'},
             GIFT_Micronutrients = {uid: 'GIFT_Micronutrients'},
-            YESNO = {uid: "YesNo"}
+            YESNO = {uid: "YesNo"};
 
         return {
 
@@ -704,17 +704,17 @@ define(
                                     }
                                 },
                                 "dataAdjustment": {
+                                    "cl": DataAdjustment,
                                     "selector": {
-                                        "id": "textarea",
+                                        "id": "dropdown"
+                                    },
+                                    "format": {
+                                        "output": "codes"
                                     },
                                     "template": {
                                         "title": "Any other alteration from the original data",
                                         "hideDescription": true,
                                         "footer": "Report (if any) any adjustments or alterations of the original dataset",
-
-                                    },
-                                    "format": {
-                                        "output": "label"
                                     }
                                 }
                             }
@@ -821,15 +821,17 @@ define(
                                                         "label": "Type of resource - details"
                                                     }
                                                 ],
-                                                "config": {"readonly": true}
+                                                //"config": {"readonly": true}
                                             },
-                                            "dependencies": {
-                                                "ResourceType": [{
-                                                    event: 'select',
-                                                    id: 'readOnlyIfNotValue',
-                                                    args: {value: "5"}
-                                                }]
-                                            },
+                                            /*
+                                             "dependencies": {
+                                             "ResourceType": [{
+                                             event: 'select',
+                                             id: 'readOnlyIfNotValue',
+                                             args: {value: "5"}
+                                             }]
+                                             },
+                                             */
                                             "template": {
                                                 "title": "Type of resource - details",
                                                 "hideDescription": true,
@@ -1225,7 +1227,7 @@ define(
                                 },
                                 "PopulationGroups": {
 
-                                    disabled : true,
+                                    //disabled : true,
 
                                     classNames: "well",
 
@@ -1233,13 +1235,15 @@ define(
                                         "title": "Specific population groups surveyed",
                                         "footer": "List the specific population groups that have been covered by the study (e.g. women in reproductive age, children under 5 years, elderly, etc.)",
                                     },
-                                    dependencies: {
-                                        statisticalPopulation: [{
-                                            id: "enableIfValue",
-                                            event: "select",
-                                            args: {value: "2"}
-                                        }]
-                                    },
+                                    /*
+                                     dependencies: {
+                                     statisticalPopulation: [{
+                                     id: "enableIfValue",
+                                     event: "select",
+                                     args: {value: "2"}
+                                     }]
+                                     },
+                                     */
                                     "incremental": true,
 
                                     "selectors": {
@@ -1268,7 +1272,7 @@ define(
                                             "value": "SampleSizeGroups",
                                             "label": "Sample size of the specific population group surveyed"
                                         }],
-                                        "config": {"readonly": true}
+                                        //"config": {"readonly": true}
                                     },
                                     "template": {
                                         "title": "Sample size of the specific population group surveyed",
@@ -1278,13 +1282,15 @@ define(
                                     "format": {
                                         "output": "number"
                                     },
-                                    "dependencies": {
-                                        "statisticalPopulation": [{
-                                            event: 'select',
-                                            id: 'readOnlyIfNotValue',
-                                            args: {value: "2"}
-                                        }]
-                                    }
+                                    /*
+                                     "dependencies": {
+                                     "statisticalPopulation": [{
+                                     event: 'select',
+                                     id: 'readOnlyIfNotValue',
+                                     args: {value: "2"}
+                                     }]
+                                     }
+                                     */
                                 },
                                 "PurposedlyGroups": {
 
@@ -1838,20 +1844,22 @@ define(
 
                                     classNames: "well",
 
-                                    disabled : true,
+                                    //disabled : true,
 
                                     "template": {
                                         "title": "Macronutrients and dietary components available in the dataset - details",
                                         "hideDescription": true,
                                         "footer": "List additional macronutrients and dietary components reported here above as 'other'",
                                     },
-                                    dependencies: {
-                                        MacroDietaryComponents: [{
-                                            id: "enableIfValue",
-                                            event: "select",
-                                            args: {value: "9"}
-                                        }]
-                                    },
+                                    /*
+                                     dependencies: {
+                                     MacroDietaryComponents: [{
+                                     id: "enableIfValue",
+                                     event: "select",
+                                     args: {value: "9"}
+                                     }]
+                                     },
+                                     */
                                     "incremental": true,
 
                                     "selectors": {
@@ -1895,21 +1903,22 @@ define(
 
                                     classNames: "well",
 
-                                    disabled : true,
+                                    //disabled : true,
 
                                     "template": {
                                         "title": "Micronutrients and minerals available in the dataset - details",
                                         "hideDescription": true,
                                         "footer": "List additional micronutrients reported here above as 'other'",
                                     },
-                                    dependencies: {
-                                        MicroDietaryComponents: [{
-                                            id: "enableIfValue",
-                                            event: "select",
-                                            args: {value: "13"}
-                                        }]
-                                    },
-
+                                    /*
+                                     dependencies: {
+                                     MicroDietaryComponents: [{
+                                     id: "enableIfValue",
+                                     event: "select",
+                                     args: {value: "13"}
+                                     }]
+                                     },
+                                     */
                                     "incremental": true,
 
                                     "selectors": {
