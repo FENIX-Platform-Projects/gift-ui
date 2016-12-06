@@ -78,7 +78,8 @@ define(["underscore"], function (_) {
                     },
 
                     format: {
-                        output: "codes"
+                        output: "codes",
+                        uid: "GIFT_Gender"
                     }
                 },
 
@@ -120,7 +121,8 @@ define(["underscore"], function (_) {
                     },
 
                     format: {
-                        output: "codes"
+                        output: "codes",
+                        uid: "GIFT_SpecialConditions"
                     }
                 },
 
@@ -275,7 +277,8 @@ define(["underscore"], function (_) {
 
                     format: {
                         metadataAttribute: "meContent.seCoverage.coverageGeographic",
-                        output: "codes"
+                        output: "codes",
+                        uid : "GAUL"
                     }
                 },
 
@@ -332,7 +335,8 @@ define(["underscore"], function (_) {
 
                     format: {
                         metadataAttribute: "meContent.seReferencePopulation.referenceArea",
-                        output: "codes"
+                        output: "codes",
+                        uid : "GIFT_ReferenceArea"
                     }
                 },
 
@@ -359,7 +363,8 @@ define(["underscore"], function (_) {
 
                     format: {
                         metadataAttribute: "meContent.seCoverage.coverageSectors",
-                        output: "codes"
+                        output: "codes",
+                        uid: "GIFT_CoverageSector"
                     }
                 },
 
