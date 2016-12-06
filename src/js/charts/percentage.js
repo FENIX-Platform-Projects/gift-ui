@@ -157,6 +157,7 @@ define([
 
         this.uid = opts.uid;
         this.selected_items = opts.selected_items;
+        this.selected_item_label = opts.selected_item_label;
         this.process = s.process;
 
         this.elID = opts.elID;
@@ -457,10 +458,12 @@ define([
     };
 
     PercentageChart.prototype._setHTMLvariables = function (dataToChart) {
+        
         //Progress bar
         $(this.barID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
+        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title_firstPart'] + " "+this.selected_item_label+" "+labels[this.language.toLowerCase()][this.labelsId+'_title_secondPart']);
 
-        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title_firstPart'] + " VITAMINA A "+labels[this.language.toLowerCase()][this.labelsId+'_title_secondPart']);
+        $('#'+this.labelsId+'-description').html(labels[this.language.toLowerCase()][this.labelsId+'_descr_firstPart'] + " "+this.selected_item_label+" "+labels[this.language.toLowerCase()][this.labelsId+'_descr_secondPart']);
     }
 
     PercentageChart.prototype.redraw = function (animation) {

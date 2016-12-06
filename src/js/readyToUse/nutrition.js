@@ -125,6 +125,7 @@ define([
             selected_items: $.extend(true, {}, this.process.parameters, {
                 "item": "VITA"
             }),
+            selected_item_label : "VITAMINA A",
             language: this.lang.toUpperCase()
         });
 

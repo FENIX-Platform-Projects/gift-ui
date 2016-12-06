@@ -402,6 +402,7 @@ define([
             cache: C.cache,
             environment : C.environment,
             uid : "gift_process_total_food_consumption_000042BUR201001",
+            selected_item_label : "VITAMINA A",
             selected_items : param.selected_items,
             language : s.language
         });

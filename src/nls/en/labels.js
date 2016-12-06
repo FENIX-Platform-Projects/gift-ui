@@ -85,17 +85,20 @@ define(function () {
 
         //Charts titles
         bubbleTitle : "DAILY DIET: GRAMS PER PERSON PER DAY",
+        bubbleFoodTitle : "Foods",
+        bubbleBeveragesTitle : "Beverages",
         columnAverage_title : "DAILY PORTION ON DAYS OF CONSUMPTION",
         columnStandard_title : "DAILY PORTION ON DAYS OF CONSUMPTION",
+        columnStandard_barDescr_firstPart : "of the population consumed",
+        columnStandard_barDescr_secondPart : "during the survey days",
         stackedPercentage_title_firstPart : "PERCENTAGE OF POPULATION AT RISK OF",
         stackedPercentage_title_secondPart : "INADEQUACY",
+        stackedPercentage_descr_firstPart : "of the population is AT RISK of",
+        stackedPercentage_descr_secondPart : "inadequacy",
         macronutrientsPie_title : "MACRONUTRIENT CONTRIBUTION TO THE TOTAL ENERGY INTAKE",
         pieThreeLevDrilldown_title_firstPart : "SOURCES OF",
         pieThreeLevDrilldown_title_secondPart : "IN THE DIET",
         largeTree_title : "DAILY DIET: PROPORTION OF DIFFERENT FOOD GROUPS",
-        holeDonut_title : "DAILY DIET: CALORIES PER PERSON PER DAY",
-        bubbleFood_title : "Foods",
-        bubbleBeverages_title : "Beverages"
-
+        holeDonut_title : "DAILY DIET: CALORIES PER PERSON PER DAY"
     }
 });
