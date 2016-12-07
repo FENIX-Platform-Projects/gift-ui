@@ -2,7 +2,7 @@ define([
     "underscore",
     "jquery",
     "loglevel",
-    "../../nls/labels",
+    "../../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
 ], function (_, $, log, labels, Bridge, Highcharts) {
@@ -144,6 +144,8 @@ define([
             cache: this.cache
         });
 
+        this._setHTMLvariables([{}]);
+
         this._getProcessedResourceForChart(s.process).then(
             _.bind(this._onSuccess, this),
             _.bind(this._onError, this)
@@ -174,9 +176,8 @@ define([
 
         process[0].sid[0].uid = this.uid;
 
-        if (this.selected_items) {
-            process[0].parameters = this.selected_items;
-        }
+        process[0].parameters = this.selected_items;
+
         return process;
     }
 

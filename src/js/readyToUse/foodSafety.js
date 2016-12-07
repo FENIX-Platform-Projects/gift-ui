@@ -7,7 +7,7 @@ define([
     "../../config/config",
     "../../config/readyToUse/config",
     "fenix-ui-filter",
-    "../charts/column"
+    "../charts/foodSafety/column"
 ], function ($, log, _, template, labels, C, RC, Filter, Columns) {
 
     "use strict";

@@ -2,19 +2,19 @@ define([
     "underscore",
     "jquery",
     "loglevel",
-    "../../nls/labels",
+    "../../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
 ], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
-        HEIGHT : 300,
-        WIDTH : 300,
-        DAY : "/day",
-        process : [
+        HEIGHT: 300,
+        WIDTH: 300,
+        DAY: "/day",
+        process: [
             {
                 "name": "gift_population_filter",
-                "sid": [ { "uid": "gift_process_food_consumption_000042BUR201001" } ],
+                "sid": [{"uid": "gift_process_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "item": "FOOD_AMOUNT_PROC",
                     "gender": "2",
@@ -27,16 +27,16 @@ define([
             },
 
             {
-                "name" : "asTable"
+                "name": "asTable"
             },
 
             {
                 "name": "gift_std_percentile",
                 "parameters": {
-                    "percentileSize" : 5,
-                    "group" : "02",
-                    "subgroup" : "0201",
-                    "food" : null
+                    "percentileSize": 5,
+                    "group": "02",
+                    "subgroup": "0201",
+                    "food": null
                 }
             }
 
@@ -113,9 +113,12 @@ define([
         this._init(params);
 
         this.bridge = new Bridge({
-            environment :  this.environment,
-            cache :  this.cache
+            environment: this.environment,
+            cache: this.cache
         });
+
+        //force title to display before request for usability
+        this._setHTMLvariables([{}, {}, {}, {}]);
 
         this._getProcessedResourceForChart(s.process).then(
             _.bind(this._onSuccess, this),
@@ -153,25 +156,25 @@ define([
 
         process[0].sid[0].uid = this.uid;
 
-        if(this.selected_items){
+        if (this.selected_items) {
             process[0].parameters = this.selected_items;
         }
 
-        if(this.selected_group){
+        if (this.selected_group) {
             process[2].parameters = this.selected_group;
         }
 
-        if(this.process_name){
+        if (this.process_name) {
             process[2].name = this.process_name;
         }
 
         return process;
-    }
+    };
 
     ColumnChart.prototype._getProcessedResourceForChart = function (processConfig) {
         var process = this._updateProcessConfig(processConfig);
 
-        return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
+        return this.bridge.getProcessedResource({body: process, params: {language: this.language}});
     };
 
     ColumnChart.prototype._onSuccess = function (resource) {
@@ -190,7 +193,7 @@ define([
     ColumnChart.prototype._getChartConfig = function () {
 
         var self = this;
-        var chartConfig =  {
+        var chartConfig = {
             chart: {
                 type: 'column',
                 animation: false,
@@ -200,19 +203,19 @@ define([
                 spacingLeft: 0,
                 spacingRight: 0,
                 events: {
-                    load: function(event) {
+                    load: function (event) {
                         self._trigger("ready");
                     }
                 }
             },
 
-            tooltip : {
-                enabled : false
+            tooltip: {
+                enabled: false
             },
 
             //hide xAxis
             xAxis: {
-                categories: ['1','2','3'],
+                categories: ['1', '2', '3'],
                 lineWidth: 0,
                 minorGridLineWidth: 0,
                 lineColor: 'transparent',
@@ -275,7 +278,7 @@ define([
             },
 
             series: [{
-                data: [5,50,5],
+                data: [5, 50, 5],
                 pointWidth: 80
             }]
         };
@@ -283,7 +286,7 @@ define([
         return chartConfig;
     };
 
-    ColumnChart.prototype._renderChart = function(chartConfig){
+    ColumnChart.prototype._renderChart = function (chartConfig) {
         $('#' + this.elID).css({
             height: s.HEIGHT,
             width: s.WIDTH
@@ -298,30 +301,28 @@ define([
         var data = resource.data;
 
         var columns = metadata.dsd.columns;
-        var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
+        var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].subject == 'um')
-            {
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].subject == 'um') {
                 um_index = i;
                 um_column_id = columns[i].id;
             }
-            else if(columns[i].subject == 'value')
-            {
+            else if (columns[i].subject == 'value') {
                 value_index = i;
             }
-            else if(columns[i].subject == 'item'){
+            else if (columns[i].subject == 'item') {
                 code_index = i;
                 code_column_id = columns[i].id;
             }
         }
 
-        var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language;
+        var umLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == um_column_id + '_' + self.language;
         });
 
         var htmlData = [];
-        if(data) {
+        if (data) {
             for (var i = 0; i < data.length; i++) {
                 var obj = {};
 
@@ -338,25 +339,26 @@ define([
     };
 
     ColumnChart.prototype._setHTMLvariables = function (dataToChart) {
+
         //Progress bar
         $(this.columnBarID).css({
-            width: dataToChart[0].value+ dataToChart[0].unit
+            width: dataToChart[0].value + dataToChart[0].unit
         });
-        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title'] + ": "+this.columnPercentageItemLabel);
+        $('#' + this.labelsId + '-title').html(labels[this.language.toLowerCase()][this.labelsId + '_title'] + ": " + this.columnPercentageItemLabel);
 
         $(this.columnPercentageID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
         $(this.columnPercentageItemID).html(this.columnPercentageItemLabel);
-        $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " "+ dataToChart[1].unit+ s.DAY);
-        $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " "+ dataToChart[2].unit+ s.DAY);
-        $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " "+ dataToChart[3].unit+ s.DAY);
+        $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " " + dataToChart[1].unit + s.DAY);
+        $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " " + dataToChart[2].unit + s.DAY);
+        $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " " + dataToChart[3].unit + s.DAY);
     };
 
     ColumnChart.prototype.redraw = function (animation) {
         //this.chart.yAxis[0].isDirty = true;
-        if(animation) {
+        if (animation) {
             this.chart.redraw(animation);
         }
-        else{
+        else {
             this.chart.redraw();
         }
     };
@@ -379,10 +381,6 @@ define([
         return this;
     };
 
-    /**
-     * pub/sub
-     * @return {Object} component instance
-     */
     ColumnChart.prototype.on = function (channel, fn, context) {
         var _context = context || this;
         if (!this.channels[channel]) {

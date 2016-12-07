@@ -8,12 +8,12 @@ define([
 
 
     var s = {
-        HEIGHT : 500,
-        WIDTH : 500,
-        first_level_process : [
+        HEIGHT: 500,
+        WIDTH: 500,
+        first_level_process: [
             {
                 "name": "filter",
-                "sid" : [{"uid":"gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "columns": [
                         "group_code",
@@ -25,7 +25,7 @@ define([
                             "codes": [
                                 {
                                     "uid": "GIFT_Items",
-                                    "codes": [ "IRON" ]
+                                    "codes": ["IRON"]
                                 }
                             ]
                         },
@@ -33,7 +33,7 @@ define([
                             "codes": [
                                 {
                                     "uid": "GIFT_FoodGroups",
-                                    "codes": [ "14" ]
+                                    "codes": ["14"]
                                 }
                             ]
                         }
@@ -48,11 +48,11 @@ define([
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         },
                         {
-                            "columns": [ "um" ],
+                            "columns": ["um"],
                             "rule": "max"
                         }
                     ]
@@ -65,10 +65,10 @@ define([
                 }
             }
         ],
-        second_level_process : [
+        second_level_process: [
             {
                 "name": "filter",
-                "sid" : [{"uid":"gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "columns": [
                         "subgroup_code",
@@ -80,7 +80,7 @@ define([
                             "codes": [
                                 {
                                     "uid": "GIFT_Items",
-                                    "codes": [ "IRON" ]
+                                    "codes": ["IRON"]
                                 }
                             ]
                         },
@@ -88,7 +88,7 @@ define([
                             "codes": [
                                 {
                                     "uid": "GIFT_FoodGroups",
-                                    "codes": [ "01" ]
+                                    "codes": ["01"]
                                 }
                             ]
                         }
@@ -104,11 +104,11 @@ define([
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         },
                         {
-                            "columns": [ "um" ],
+                            "columns": ["um"],
                             "rule": "max"
                         }
                     ]
@@ -125,8 +125,8 @@ define([
         this._init(params);
 
         this.bridge = new Bridge({
-            environment :  this.environment,
-            cache :  this.cache
+            environment: this.environment,
+            cache: this.cache
         });
 
         this._getProcessedResourceForChart(s.first_level_process).then(
@@ -150,25 +150,22 @@ define([
         this.channels = {};
     };
 
-
     DonutChart.prototype._updateProcessConfig = function (process, group_code) {
         process[0].sid[0].uid = this.uid;
         // "codes": [ "IRON" ]
         process[0].parameters.rows.item.codes[0].codes = this.selected_items;
 
-        if(group_code){
+        if (group_code) {
             process[0].parameters.rows.group_code.codes[0].codes = group_code;
         }
 
         return process;
     }
 
-
-
     DonutChart.prototype._getProcessedResourceForChart = function (processConfig, group_code) {
         var process = this._updateProcessConfig(processConfig, group_code);
 
-        return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
+        return this.bridge.getProcessedResource({body: process, params: {language: this.language}});
     };
 
     DonutChart.prototype._onSuccess = function (resource) {
@@ -189,9 +186,9 @@ define([
         var data = resource.data;
 
         var columns = metadata.dsd.columns;
-        var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
+        var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
-        for(var i=0; i< columns.length;i++) {
+        for (var i = 0; i < columns.length; i++) {
             if (columns[i].subject == 'um') {
                 um_index = i;
                 um_column_id = columns[i].id;
@@ -205,22 +202,22 @@ define([
             }
         }
 
-        var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language;
+        var umLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == um_column_id + '_' + self.language;
         });
 
-        var codeLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== code_column_id +'_'+self.language;
+        var codeLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == code_column_id + '_' + self.language;
         });
 
         var dataToChart = [];
-        if(data){
-            for(var i=0; i< data.length;i++) {
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
                 var obj = {};
 
                 var it = data[i];
 
-                obj.y =it[value_index];
+                obj.y = it[value_index];
                 obj.unit = it[umLabelIdx];
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
@@ -233,7 +230,7 @@ define([
         return dataToChart;
     };
 
-    DonutChart.prototype._getProccessForSecondLevel = function(point, chart){
+    DonutChart.prototype._getProccessForSecondLevel = function (point, chart) {
         var self = this;
         var group_code = [];
         group_code.push(point.code);
@@ -253,9 +250,9 @@ define([
 
         var chart = chart,
             drilldowns = {};
-            drilldowns[point.code] = {};
-            drilldowns[point.code].name = point.name;
-            drilldowns[point.code].data = ser;
+        drilldowns[point.code] = {};
+        drilldowns[point.code].name = point.name;
+        drilldowns[point.code].data = ser;
 
         var series = drilldowns[point.code];
 
@@ -272,17 +269,17 @@ define([
     DonutChart.prototype._getChartConfig = function (series) {
 
         var self = this;
-       var chartConfig =  {
-           lang: {
-               drillUpText: 'Back'
-           },
+        var chartConfig = {
+            lang: {
+                drillUpText: 'Back'
+            },
             chart: {
                 type: 'pie',
-                    events: {
-                        load: function(event) {
-                            self._trigger("ready");
-                        },
-                        drilldown: function (e) {
+                events: {
+                    load: function (event) {
+                        self._trigger("ready");
+                    },
+                    drilldown: function (e) {
                         if (!e.seriesOptions) {
                             self._getProccessForSecondLevel(e.point, this);
                         }
@@ -310,7 +307,7 @@ define([
                 },
                 series: {
                     borderWidth: 0,
-                        dataLabels: {
+                    dataLabels: {
                         enabled: true
                     }
                 }
@@ -318,14 +315,14 @@ define([
 
             tooltip: {
                 formatter: function () {
-                  return this.key + ': <b>  '+  Highcharts.numberFormat(this.y, 2) + ' '+ this.point.unit+ '</b>';
-               }
-           },
+                    return this.key + ': <b>  ' + Highcharts.numberFormat(this.y, 2) + ' ' + this.point.unit + '</b>';
+                }
+            },
 
-           //remove credits
-           credits: {
-               enabled: false
-           },
+            //remove credits
+            credits: {
+                enabled: false
+            },
 
             series: [{
                 name: 'Items',
@@ -333,15 +330,15 @@ define([
                 data: series
             }],
 
-                drilldown: {
-            series: []
-        }
+            drilldown: {
+                series: []
+            }
         };
 
         return chartConfig;
     };
 
-    DonutChart.prototype._renderChart = function(chartConfig){
+    DonutChart.prototype._renderChart = function (chartConfig) {
 
         $('#' + this.elID).css({
             height: s.HEIGHT,
@@ -351,10 +348,10 @@ define([
     };
 
     DonutChart.prototype.redraw = function (animation) {
-        if(animation) {
+        if (animation) {
             this.chart.redraw(animation);
         }
-        else{
+        else {
             this.chart.redraw();
         }
     };

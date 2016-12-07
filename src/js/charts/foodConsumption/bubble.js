@@ -3,9 +3,9 @@ define([
     "fenix-ui-bridge",
     "d3",
     "underscore",
-    "../charts/valueFormatter",
-    "../../config/readyToUse/config",
-    "../../html/readyToUse/charts/bubbleTooltip.hbs"
+    "../valueFormatter",
+    "../../../config/readyToUse/config",
+    "../../../html/readyToUse/charts/bubbleTooltip.hbs"
 ], function (Bridge, d3, _, Formatter, RC, tooltipTemplate) {
 
     "use strict";

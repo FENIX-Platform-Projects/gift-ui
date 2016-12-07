@@ -6,11 +6,11 @@ define([
     "../../nls/labels",
     "../../config/config",
     "../../config/readyToUse/config",
-    "../charts/bubble",
-    "../charts/donutHole",
-    "../charts/largeTreeMap",
+    "../charts/foodConsumption/bubble",
+    "../charts/foodConsumption/donut",
+    "../charts/foodConsumption/treemap",
     "fenix-ui-filter"
-], function ($, log, _, template, labels, C, RC, Bubble, DonutHole, LargeTreeMap, Filter) {
+], function ($, log, _, template, labels, C, RC, Bubble, DonutHole, TreeMap, Filter) {
 
     "use strict";
 
@@ -206,7 +206,7 @@ define([
             {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
         ];
 
-        obj.instances.push(new LargeTreeMap({
+        obj.instances.push(new TreeMap({
             elID: s.LARGE_TREE_MAP_CONTAINER_ID,
             labelsId: s.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
@@ -218,7 +218,7 @@ define([
         }));
 
 
-        var instance = new LargeTreeMap({
+        var instance = new TreeMap({
             elID: s.LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID,
             labelsId: s.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,

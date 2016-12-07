@@ -2,7 +2,7 @@ define([
     "underscore",
     "jquery",
     "loglevel",
-    "../../nls/labels",
+    "../../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
 ], function (_, $, log, labels, Bridge, Highcharts) {
@@ -24,10 +24,6 @@ define([
                             "from": 10.5,
                             "to": 67
                         }
-                        // "age_month": {
-                        //     "from": 10.5,
-                        //     "to": 67
-                        // }
                     }
                 },
                 {
@@ -38,11 +34,11 @@ define([
                         ],
                         "aggregations": [
                             {
-                                "columns": ["value"],
+                                "columns": [ "value" ],
                                 "rule": "SUM"
                             },
                             {
-                                "columns": ["um"],
+                                "columns": [ "um" ],
                                 "rule": "max"
                             }
                         ]
@@ -67,13 +63,8 @@ define([
                             "from": 10.5,
                             "to": 67
                         }
-                        // "age_month": {
-                        //     "from": 10.5,
-                        //     "to": 67
-                        // }
                     }
                 },
-
                 {
                     "name": "filter",
                     "parameters": {
@@ -87,7 +78,7 @@ define([
                                 "codes": [
                                     {
                                         "uid": "GIFT_FoodGroups",
-                                        "codes": ["01"]
+                                        "codes": [ "01" ]
                                     }
                                 ]
                             }
@@ -103,11 +94,11 @@ define([
                         ],
                         "aggregations": [
                             {
-                                "columns": ["value"],
+                                "columns": [ "value" ],
                                 "rule": "SUM"
                             },
                             {
-                                "columns": ["um"],
+                                "columns": [ "um" ],
                                 "rule": "max"
                             }
                         ]
@@ -135,6 +126,8 @@ define([
             environment: this.environment,
             cache: this.cache
         });
+
+        this._setHTMLvariables();
 
         this._getProcessedResourceForChart(s.process.first_level_process).then(
             _.bind(this._onSuccess, this),
@@ -188,7 +181,6 @@ define([
 
         log.info("_onError");
         log.error(resource)
-        return;
     };
 
     DonutHole.prototype._processSeries = function (resource) {
@@ -400,7 +392,7 @@ define([
     };
 
     DonutHole.prototype.dispose = function () {
-        this.chart.destroy();
+        //this.chart.destroy();
     };
 
     DonutHole.prototype._trigger = function (channel) {

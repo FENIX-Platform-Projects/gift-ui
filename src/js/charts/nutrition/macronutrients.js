@@ -2,26 +2,26 @@ define([
     "underscore",
     "jquery",
     "loglevel",
-    "../../nls/labels",
+    "../../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
 ], function (_, $, log, labels, Bridge, Highcharts) {
 
 
     var s = {
-        HEIGHT : 300,
-        WIDTH : 300,
-        process : [
+        HEIGHT: 300,
+        WIDTH: 300,
+        process: [
             {
                 "name": "filter",
-                "sid" : [{"uid":"gift_process_total_food_consumption_000042BUR201001"}],
+                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "rows": {
                         "item": {
                             "codes": [
                                 {
                                     "uid": "GIFT_Items",
-                                    "codes": [ "CARBOH", "PROTEIN", "FAT" ]
+                                    "codes": ["CARBOH", "PROTEIN", "FAT"]
                                 }
                             ]
                         }
@@ -53,7 +53,7 @@ define([
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         }
                     ]
@@ -61,11 +61,11 @@ define([
             },
 
             {
-                "name" : "select",
-                "parameters" : {
-                    "values" : {
-                        "item" : null,
-                        "value" : "case when item='CARBOH' then value*4 when item='PROTEIN' then value*4 when item='FAT' then value*9 end"
+                "name": "select",
+                "parameters": {
+                    "values": {
+                        "item": null,
+                        "value": "case when item='CARBOH' then value*4 when item='PROTEIN' then value*4 when item='FAT' then value*9 end"
                     }
                 }
             },
@@ -84,7 +84,7 @@ define([
                     "column": {
                         "dataType": "code",
                         "id": "um",
-                        "subject" : "um",
+                        "subject": "um",
                         "title": {
                             "EN": "Unit of measure"
                         },
@@ -108,9 +108,11 @@ define([
         this._init(params);
 
         this.bridge = new Bridge({
-            environment :  this.environment,
-            cache :  this.cache
+            environment: this.environment,
+            cache: this.cache
         });
+
+        this._setHTMLvariables();
 
         this._getProcessedResourceForChart(s.process).then(
             _.bind(this._onSuccess, this),
@@ -136,7 +138,7 @@ define([
 
     PieMacronutrientsChart.prototype._updateProcessConfig = function (process, group_code) {
         process[0].sid[0].uid = this.uid;
-        if(this.selected_items){
+        if (this.selected_items) {
             process[1].parameters = this.selected_items;
         }
         return process;
@@ -145,7 +147,7 @@ define([
     PieMacronutrientsChart.prototype._getProcessedResourceForChart = function (processConfig, group_code) {
         var process = this._updateProcessConfig(processConfig, group_code);
 
-        return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
+        return this.bridge.getProcessedResource({body: process, params: {language: this.language}});
     };
 
     PieMacronutrientsChart.prototype._onSuccess = function (resource) {
@@ -154,7 +156,7 @@ define([
         var chartConfig = this._getChartConfig(series);
 
 
-       return this._renderChart(chartConfig);
+        return this._renderChart(chartConfig);
     };
 
     PieMacronutrientsChart.prototype._onError = function (resource) {
@@ -171,34 +173,32 @@ define([
         var data = resource.data;
 
         var columns = metadata.dsd.columns;
-        var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
+        var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].subject == 'um')
-            {
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].subject == 'um') {
                 um_index = i;
                 um_column_id = columns[i].id;
             }
-            else if(columns[i].subject == 'value')
-            {
+            else if (columns[i].subject == 'value') {
                 value_index = i;
             }
-            else if(columns[i].dataType == 'code'){
+            else if (columns[i].dataType == 'code') {
                 code_index = i;
                 code_column_id = columns[i].id;
             }
         }
 
-        var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language;
+        var umLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == um_column_id + '_' + self.language;
         });
 
-        var codeLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== code_column_id +'_'+self.language;
+        var codeLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == code_column_id + '_' + self.language;
         });
 
         var dataToChart = [];
-        if(data) {
+        if (data) {
             for (var i = 0; i < data.length; i++) {
                 var obj = {};
 
@@ -224,16 +224,16 @@ define([
         //order series
 
         var result = [];
-        result.push(_.findWhere(dataToChart, {name : "Fat"}));
-        result.push(_.findWhere(dataToChart, {name : "Carbohydrates"}));
-        result.push(_.findWhere(dataToChart, {name : "Protein"}));
+        result.push(_.findWhere(dataToChart, {name: "Fat"}));
+        result.push(_.findWhere(dataToChart, {name: "Carbohydrates"}));
+        result.push(_.findWhere(dataToChart, {name: "Protein"}));
 
         return result;
     };
 
     PieMacronutrientsChart.prototype._getChartConfig = function (series) {
         var self = this;
-        var chartConfig =  {
+        var chartConfig = {
             chart: {
                 type: 'pie',
                 margin: [0, 0, 0, 0],
@@ -241,9 +241,9 @@ define([
                 spacingBottom: 0,
                 spacingLeft: 0,
                 spacingRight: 0,
-                backgroundColor:'rgba(255, 255, 255, 0)',
+                backgroundColor: 'rgba(255, 255, 255, 0)',
                 events: {
-                    load: function(event) {
+                    load: function (event) {
                         //this.renderer.image('src/img/pie/background-alpha.svg', 0, 0, s.HEIGHT, s.WIDTH).add();
                         self._trigger("ready");
                     }
@@ -267,7 +267,7 @@ define([
             plotOptions: {
                 pie: {
                     borderColor: '#000000',
-                   // colors: ['#000000', '#fcc00d', '#bf1818'],
+                    // colors: ['#000000', '#fcc00d', '#bf1818'],
                     allowPointSelect: true,
                     center: ["50%", "50%"],
                     //set radius
@@ -298,9 +298,9 @@ define([
             },
 
             series: [{
-                            name: 'Percentage',
-                            data: series
-                        }]
+                name: 'Percentage',
+                data: series
+            }]
 
             // series: [{
             //     name: 'Percentage',
@@ -323,7 +323,7 @@ define([
 
     };
 
-    PieMacronutrientsChart.prototype._renderChart = function(chartConfig){
+    PieMacronutrientsChart.prototype._renderChart = function (chartConfig) {
 
         // Make monochrome colors and set them as default for all pies
         // Highcharts.getOptions().plotOptions.pie.colors = (function () {
@@ -346,16 +346,16 @@ define([
     };
 
     PieMacronutrientsChart.prototype.redraw = function (animation) {
-        if(animation) {
+        if (animation) {
             this.chart.redraw(animation);
         }
-        else{
+        else {
             this.chart.redraw();
         }
     };
 
     PieMacronutrientsChart.prototype.dispose = function () {
-        this.chart.destroy();
+        //this.chart.destroy();
     };
 
     PieMacronutrientsChart.prototype._trigger = function (channel) {
@@ -373,7 +373,7 @@ define([
     };
 
     PieMacronutrientsChart.prototype._setHTMLvariables = function () {
-        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title']);
+        $('#' + this.labelsId + '-title').html(labels[this.language.toLowerCase()][this.labelsId + '_title']);
     };
 
     /**

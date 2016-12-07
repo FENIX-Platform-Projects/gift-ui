@@ -2,21 +2,21 @@ define([
     "underscore",
     "jquery",
     "loglevel",
-    "../../nls/labels",
+    "../../../nls/labels",
     "fenix-ui-bridge",
     "highcharts",
-    "../charts/valueFormatter"
+    "../../charts/valueFormatter"
 ], function (_, $, log, labels, Bridge, Highcharts, Formatter) {
 
     var s = {
-        HEIGHT : 500,
-        WIDTH : 500,
+        HEIGHT: 500,
+        WIDTH: 500,
         level_number: 1,
         //Food
         three_levels_process: [
             {
                 "name": "gift_population_filter",
-                "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
+                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "item": "FOOD_AMOUNT_PROC",
                     "gender": null,
@@ -42,7 +42,7 @@ define([
                             "codes": [
                                 {
                                     "uid": "GIFT_FoodGroups",
-                                    "codes": [ "14" ]
+                                    "codes": ["14"]
                                 }
                             ]
                         }
@@ -52,7 +52,7 @@ define([
 
             {
                 "name": "group",
-                "rid": { "uid": "food_level_group" },
+                "rid": {"uid": "food_level_group"},
                 "parameters": {
                     "by": [
                         "group_code",
@@ -61,7 +61,7 @@ define([
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         }
                     ]
@@ -70,7 +70,7 @@ define([
 
             {
                 "name": "group",
-                "rid": { "uid": "subgroup_level_group" },
+                "rid": {"uid": "subgroup_level_group"},
                 "parameters": {
                     "by": [
                         "group_code",
@@ -78,7 +78,7 @@ define([
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         }
                     ]
@@ -87,14 +87,14 @@ define([
 
             {
                 "name": "group",
-                "rid": { "uid": "group_level_group" },
+                "rid": {"uid": "group_level_group"},
                 "parameters": {
                     "by": [
                         "group_code"
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         }
                     ]
@@ -111,12 +111,12 @@ define([
 
             {
                 "name": "addcolumn",
-                "rid": { "uid": "group_data" },
+                "rid": {"uid": "group_data"},
                 "parameters": {
                     "column": {
                         "dataType": "code",
                         "id": "um",
-                        "subject" : "um",
+                        "subject": "um",
                         "title": {
                             "EN": "Unit of measure"
                         },
@@ -133,42 +133,40 @@ define([
             },
 
 
-
-
             {
                 "name": "join",
                 "sid": [
-                    { "uid": "group_level_group" },
-                    { "uid": "subgroup_level_group" }
+                    {"uid": "group_level_group"},
+                    {"uid": "subgroup_level_group"}
                 ],
                 "parameters": {
                     "joins": [
-                        [ { "type": "id", "value": "group_code" } ],
-                        [ { "type": "id", "value": "group_code" } ]
+                        [{"type": "id", "value": "group_code"}],
+                        [{"type": "id", "value": "group_code"}]
                     ],
                     "values": []
                 }
             },
 
             {
-                "name" : "select",
-                "parameters" : {
-                    "values" : {
-                        "group_code" : null,
-                        "subgroup_level_group_subgroup_code" : null,
-                        "subgroup_level_group_value" : "(subgroup_level_group_value*100.0)/group_level_group_value"
+                "name": "select",
+                "parameters": {
+                    "values": {
+                        "group_code": null,
+                        "subgroup_level_group_subgroup_code": null,
+                        "subgroup_level_group_value": "(subgroup_level_group_value*100.0)/group_level_group_value"
                     }
                 }
             },
 
             {
                 "name": "addcolumn",
-                "rid": { "uid": "subgroup_data" },
+                "rid": {"uid": "subgroup_data"},
                 "parameters": {
                     "column": {
                         "dataType": "code",
                         "id": "um",
-                        "subject" : "um",
+                        "subject": "um",
                         "title": {
                             "EN": "Unit of measure"
                         },
@@ -185,41 +183,40 @@ define([
             },
 
 
-
             {
                 "name": "join",
                 "sid": [
-                    { "uid": "subgroup_level_group" },
-                    { "uid": "food_level_group" }
+                    {"uid": "subgroup_level_group"},
+                    {"uid": "food_level_group"}
                 ],
                 "parameters": {
                     "joins": [
-                        [ { "type": "id", "value": "subgroup_code" } ],
-                        [ { "type": "id", "value": "subgroup_code" } ]
+                        [{"type": "id", "value": "subgroup_code"}],
+                        [{"type": "id", "value": "subgroup_code"}]
                     ],
                     "values": []
                 }
             },
 
             {
-                "name" : "select",
-                "parameters" : {
-                    "values" : {
-                        "subgroup_code" : null,
-                        "food_level_group_foodex2_code" : null,
-                        "food_level_group_value" : "(food_level_group_value*100.0)/subgroup_level_group_value"
+                "name": "select",
+                "parameters": {
+                    "values": {
+                        "subgroup_code": null,
+                        "food_level_group_foodex2_code": null,
+                        "food_level_group_value": "(food_level_group_value*100.0)/subgroup_level_group_value"
                     }
                 }
             },
 
             {
                 "name": "addcolumn",
-                "rid": { "uid": "food_data" },
+                "rid": {"uid": "food_data"},
                 "parameters": {
                     "column": {
                         "dataType": "code",
                         "id": "um",
-                        "subject" : "um",
+                        "subject": "um",
                         "title": {
                             "EN": "Unit of measure"
                         },
@@ -237,10 +234,10 @@ define([
 
         ],
         //Beverages
-        two_levels_process:[
+        two_levels_process: [
             {
                 "name": "gift_population_filter",
-                "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
+                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "item": "FOOD_AMOUNT_PROC",
                     "gender": null,
@@ -265,7 +262,7 @@ define([
                             "codes": [
                                 {
                                     "uid": "GIFT_FoodGroups",
-                                    "codes": [ "14" ]
+                                    "codes": ["14"]
                                 }
                             ]
                         }
@@ -275,7 +272,7 @@ define([
 
             {
                 "name": "group",
-                "rid": { "uid": "food_level_group" },
+                "rid": {"uid": "food_level_group"},
                 "parameters": {
                     "by": [
                         "subgroup_code",
@@ -283,7 +280,7 @@ define([
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         }
                     ]
@@ -292,14 +289,14 @@ define([
 
             {
                 "name": "group",
-                "rid": { "uid": "subgroup_level_group" },
+                "rid": {"uid": "subgroup_level_group"},
                 "parameters": {
                     "by": [
                         "subgroup_code"
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         }
                     ]
@@ -316,12 +313,12 @@ define([
 
             {
                 "name": "addcolumn",
-                "rid": { "uid": "subgroup_data" },
+                "rid": {"uid": "subgroup_data"},
                 "parameters": {
                     "column": {
                         "dataType": "code",
                         "id": "um",
-                        "subject" : "um",
+                        "subject": "um",
                         "title": {
                             "EN": "Unit of measure"
                         },
@@ -338,42 +335,40 @@ define([
             },
 
 
-
-
             {
                 "name": "join",
                 "sid": [
-                    { "uid": "subgroup_level_group" },
-                    { "uid": "food_level_group" }
+                    {"uid": "subgroup_level_group"},
+                    {"uid": "food_level_group"}
                 ],
                 "parameters": {
                     "joins": [
-                        [ { "type": "id", "value": "subgroup_code" } ],
-                        [ { "type": "id", "value": "subgroup_code" } ]
+                        [{"type": "id", "value": "subgroup_code"}],
+                        [{"type": "id", "value": "subgroup_code"}]
                     ],
                     "values": []
                 }
             },
 
             {
-                "name" : "select",
-                "parameters" : {
-                    "values" : {
-                        "subgroup_code" : null,
-                        "food_level_group_foodex2_code" : null,
-                        "food_level_group_value" : "(food_level_group_value*100.0)/subgroup_level_group_value"
+                "name": "select",
+                "parameters": {
+                    "values": {
+                        "subgroup_code": null,
+                        "food_level_group_foodex2_code": null,
+                        "food_level_group_value": "(food_level_group_value*100.0)/subgroup_level_group_value"
                     }
                 }
             },
 
             {
                 "name": "addcolumn",
-                "rid": { "uid": "food_data" },
+                "rid": {"uid": "food_data"},
                 "parameters": {
                     "column": {
                         "dataType": "code",
                         "id": "um",
-                        "subject" : "um",
+                        "subject": "um",
                         "title": {
                             "EN": "Unit of measure"
                         },
@@ -402,17 +397,19 @@ define([
         this._init(params);
 
         this.bridge = new Bridge({
-            environment :  this.environment,
-            cache :  this.cache
+            environment: this.environment,
+            cache: this.cache
         });
 
-        var process ='';
-        if(this.levels_number==2){
+        var process = '';
+        if (this.levels_number == 2) {
             process = s.two_levels_process;
         }
-        else if(this.levels_number==3){
+        else if (this.levels_number == 3) {
             process = s.three_levels_process;
         }
+
+        this._setHTMLvariables();
 
         this._getProcessedResourceForChart(process).then(
             _.bind(this._onSuccess, this),
@@ -446,19 +443,19 @@ define([
 
     LargeTreeMap.prototype._getProcessedResourceForChart = function (processConfig) {
         var process = this._updateProcessConfig(processConfig);
-        return this.bridge.getProcessedResource({body: processConfig, params: {language : this.language}});
+        return this.bridge.getProcessedResource({body: processConfig, params: {language: this.language}});
     };
 
     LargeTreeMap.prototype._onSuccess = function (resource) {
         //Preparing series
         var series = '';
-        if(this.levels_number==2){
+        if (this.levels_number == 2) {
             //Subgroup Data
             series = this._processSeries_firstLevel(resource);
             //Food Data
             series = this._processSeries_thirdLevel(resource, series);
         }
-        else if(this.levels_number==3){
+        else if (this.levels_number == 3) {
             //Group Data
             series = this._processSeries_firstLevel(resource);
             //Subgroup Data
@@ -483,10 +480,10 @@ define([
 
         var resorce = '';
 
-        if(this.levels_number==2){
+        if (this.levels_number == 2) {
             resource = resourceObj.subgroup_data;
         }
-        else if(this.levels_number==3){
+        else if (this.levels_number == 3) {
             resource = resourceObj.group_data;
         }
 
@@ -495,63 +492,63 @@ define([
         var columns = metadata.dsd.columns;
 
         var dataToChart = [];
-        if(this.levels_number==2){
+        if (this.levels_number == 2) {
             var subgroup_code_id_index = '', value_index = '', subgroup_label_index = '', um_label_index = '';
-            for(var i=0; i< columns.length;i++){
-                if(columns[i].id == "subgroup_code"){
+            for (var i = 0; i < columns.length; i++) {
+                if (columns[i].id == "subgroup_code") {
                     subgroup_code_id_index = i;
                 }
-                else if(columns[i].subject == "value"){
+                else if (columns[i].subject == "value") {
                     value_index = i;
                 }
-                else if(columns[i].id == "subgroup_code"+this.language.toUpperCase()){
+                else if (columns[i].id == "subgroup_code" + this.language.toUpperCase()) {
                     subgroup_label_index = i;
                 }
-                else if(columns[i].id == "um_"+this.language.toUpperCase()){
+                else if (columns[i].id == "um_" + this.language.toUpperCase()) {
                     um_label_index = i;
                 }
             }
 
             var dataToChart = [];
 
-            if(data){
-                for(var i=0; i< data.length;i++) {
+            if (data) {
+                for (var i = 0; i < data.length; i++) {
                     var obj = {};
                     var it = data[i];
 
                     obj.name = it[subgroup_label_index];
                     obj.id = it[subgroup_code_id_index];
-                    obj.value = Formatter.format(parseInt(parseInt(it[value_index],10).toFixed(2),10));
+                    obj.value = Formatter.format(parseInt(parseInt(it[value_index], 10).toFixed(2), 10));
                     obj.unit = it[um_label_index];
                     dataToChart.push(obj);
                 }
             }
         }
-        else if(this.levels_number==3){
+        else if (this.levels_number == 3) {
             var group_code_id_index = '', value_index = '', group_label_index = '', um_label_index = '';
-            for(var i=0; i< columns.length;i++){
-                if(columns[i].id == "group_code"){
+            for (var i = 0; i < columns.length; i++) {
+                if (columns[i].id == "group_code") {
                     group_code_id_index = i;
                 }
-                else if(columns[i].subject == "value"){
+                else if (columns[i].subject == "value") {
                     value_index = i;
                 }
-                else if(columns[i].id == "group_code_"+this.language.toUpperCase()){
+                else if (columns[i].id == "group_code_" + this.language.toUpperCase()) {
                     group_label_index = i;
                 }
-                else if(columns[i].id == "um_"+this.language.toUpperCase()){
+                else if (columns[i].id == "um_" + this.language.toUpperCase()) {
                     um_label_index = i;
                 }
             }
 
-            if(data){
-                for(var i=0; i< data.length;i++) {
+            if (data) {
+                for (var i = 0; i < data.length; i++) {
                     var obj = {};
                     var it = data[i];
 
                     obj.name = it[group_label_index];
                     obj.id = it[group_code_id_index];
-                    obj.value = Formatter.format(parseInt(parseInt(it[value_index],10).toFixed(2),10));
+                    obj.value = Formatter.format(parseInt(parseInt(it[value_index], 10).toFixed(2), 10));
                     obj.unit = it[um_label_index];
                     dataToChart.push(obj);
                 }
@@ -572,33 +569,33 @@ define([
         var columns = metadata.dsd.columns;
 
         var parent_group_code_id_index = '', subgroup_code_index = '', value_index = '', subgroup_label_index = '', um_label_index = '';
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].id == "group_code"){
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].id == "group_code") {
                 parent_group_code_id_index = i;
             }
-            if(columns[i].id == "subgroup_level_group_subgroup_code"){
+            if (columns[i].id == "subgroup_level_group_subgroup_code") {
                 subgroup_code_index = i;
             }
-            else if(columns[i].id == "subgroup_level_group_value"){
+            else if (columns[i].id == "subgroup_level_group_value") {
                 value_index = i;
             }
-            else if(columns[i].id == "subgroup_level_group_subgroup_code_"+this.language.toUpperCase()){
+            else if (columns[i].id == "subgroup_level_group_subgroup_code_" + this.language.toUpperCase()) {
                 subgroup_label_index = i;
             }
-            else if(columns[i].id == "um_"+this.language.toUpperCase()){
+            else if (columns[i].id == "um_" + this.language.toUpperCase()) {
                 um_label_index = i;
             }
         }
 
-        if(data){
-            for(var i=0; i< data.length;i++) {
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
                 var obj = {};
                 var it = data[i];
 
                 obj.parent = it[parent_group_code_id_index];
                 obj.name = it[subgroup_label_index];
                 obj.id = it[subgroup_code_index];
-                obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10);
+                obj.value = parseInt(parseInt(it[value_index], 10).toFixed(2), 10);
                 obj.unit = it[um_label_index];
 
                 dataToChart.push(obj);
@@ -618,33 +615,33 @@ define([
 
         var parent_subgroup_code_id_index = '', food_code_index = '', value_index = '', food_label_index = '', um_label_index = '';
 
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].id == "subgroup_code"){
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].id == "subgroup_code") {
                 parent_subgroup_code_id_index = i;
             }
-            if(columns[i].id == "food_level_group_foodex2_code"){
+            if (columns[i].id == "food_level_group_foodex2_code") {
                 food_code_index = i;
             }
-            else if(columns[i].id == "food_level_group_value"){
+            else if (columns[i].id == "food_level_group_value") {
                 value_index = i;
             }
-            else if(columns[i].id == "food_level_group_foodex2_code_"+this.language.toUpperCase()){
+            else if (columns[i].id == "food_level_group_foodex2_code_" + this.language.toUpperCase()) {
                 food_label_index = i;
             }
-            else if(columns[i].id == "um_"+this.language.toUpperCase()){
+            else if (columns[i].id == "um_" + this.language.toUpperCase()) {
                 um_label_index = i;
             }
         }
 
-        if(data){
-            for(var i=0; i< data.length;i++) {
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
                 var obj = {};
                 var it = data[i];
 
                 obj.parent = it[parent_subgroup_code_id_index];
                 obj.name = it[food_label_index];
                 obj.id = it[food_code_index];
-                obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10);
+                obj.value = parseInt(parseInt(it[value_index], 10).toFixed(2), 10);
                 obj.unit = it[um_label_index];
                 dataToChart.push(obj);
             }
@@ -656,13 +653,13 @@ define([
     LargeTreeMap.prototype._getChartConfig = function (series) {
 
         var self = this;
-        var chartConfig =  {
+        var chartConfig = {
             lang: {
                 drillUpText: 'Back'
             },
             chart: {
                 events: {
-                    load: function(event) {
+                    load: function (event) {
                         self._trigger("ready");
                     }
                 }
@@ -688,7 +685,7 @@ define([
                     pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.value}{point.unit}</b><br/>'
                 },
 
-                data : series
+                data: series
             }],
             title: {
                 text: '',
@@ -710,7 +707,7 @@ define([
         return chartConfig;
     };
 
-    LargeTreeMap.prototype._renderChart = function(chartConfig){
+    LargeTreeMap.prototype._renderChart = function (chartConfig) {
 
         $('#' + this.elID).css({
             height: s.HEIGHT,
@@ -727,20 +724,20 @@ define([
     };
 
     LargeTreeMap.prototype._setHTMLvariables = function () {
-        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title']);
+        $('#' + this.labelsId + '-title').html(labels[this.language.toLowerCase()][this.labelsId + '_title']);
     };
 
     LargeTreeMap.prototype.redraw = function (animation) {
-        if(animation) {
+        if (animation) {
             this.chart.redraw(animation);
         }
-        else{
+        else {
             this.chart.redraw();
         }
     };
 
     LargeTreeMap.prototype.dispose = function () {
-        this.chart.destroy();
+        //this.chart.destroy();
     };
 
     LargeTreeMap.prototype._trigger = function (channel) {

@@ -84,21 +84,21 @@ define(function () {
         fola: "Fola",
 
         //Charts titles
-        bubbleTitle : "DAILY DIET: GRAMS PER PERSON PER DAY",
+        bubbleTitle : "Daily dieter: grams per person per day",
         bubbleFoodTitle : "Foods",
         bubbleBeveragesTitle : "Beverages",
-        columnAverage_title : "DAILY PORTION ON DAYS OF CONSUMPTION",
-        columnStandard_title : "DAILY PORTION ON DAYS OF CONSUMPTION",
+        columnAverage_title : "Daily portion on days of consumption",
+        columnStandard_title : "Daily portion on days of consumption",
         columnStandard_barDescr_firstPart : "of the population consumed",
         columnStandard_barDescr_secondPart : "during the survey days",
-        stackedPercentage_title_firstPart : "PERCENTAGE OF POPULATION AT RISK OF",
-        stackedPercentage_title_secondPart : "INADEQUACY",
+        stackedPercentage_title_firstPart : "Percentage of the population at risk of",
+        stackedPercentage_title_secondPart : "Inadequacy",
         stackedPercentage_descr_firstPart : "of the population is AT RISK of",
         stackedPercentage_descr_secondPart : "inadequacy",
-        macronutrientsPie_title : "MACRONUTRIENT CONTRIBUTION TO THE TOTAL ENERGY INTAKE",
-        pieThreeLevDrilldown_title_firstPart : "SOURCES OF",
-        pieThreeLevDrilldown_title_secondPart : "IN THE DIET",
-        largeTree_title : "DAILY DIET: PROPORTION OF DIFFERENT FOOD GROUPS",
-        holeDonut_title : "DAILY DIET: CALORIES PER PERSON PER DAY"
+        macronutrientsPie_title : "Macronutrients contribution to the total energy intake",
+        pieThreeLevDrilldown_title_firstPart : "Source of",
+        pieThreeLevDrilldown_title_secondPart : "in the diet",
+        largeTree_title : "Daily diet: portion of different food groups",
+        holeDonut_title : "Daily diet: calories per person per day"
     }
 });

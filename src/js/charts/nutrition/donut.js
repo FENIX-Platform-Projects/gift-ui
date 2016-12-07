@@ -2,86 +2,85 @@ define([
     "underscore",
     "jquery",
     "loglevel",
-    "../../nls/labels",
+    "../../../nls/labels",
     "fenix-ui-bridge",
     "highcharts"
 ], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
-        HEIGHT : 500,
-        WIDTH : 500,
+        HEIGHT: 500,
+        WIDTH: 500,
         level_number: 1,
-        process : {
-            first_level_process :
-                [
-                    {
-                        "name": "gift_population_filter",
-                        "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
-                        "parameters": {
-                            "gender": "2",
-                            "special_condition": ["2"],
-                            "age_year": {
-                                "from": 10.5,
-                                "to": 67
-                            }
-                            // "age_month": {
-                            //     "from": 10.5,
-                            //     "to": 67
-                            // }
-                        }
-                    },
-                    {
-                        "name": "filter",
-                        "parameters": {
-                            "columns": [
-                                "group_code",
-                                "value",
-                                "um"
-                            ],
-                            "rows": {
-                                "item": {
-                                    "codes": [
-                                        {
-                                            "uid": "GIFT_Items",
-                                            "codes": [
-                                                "IRON"
-                                            ]
-                                        }
-                                    ]
-                                }
-                            }
-                        }
-                    },
-
-                    {
-                        "name": "group",
-                        "parameters": {
-                            "by": [
-                                "group_code"
-                            ],
-                            "aggregations": [
-                                {
-                                    "columns": [ "value" ],
-                                    "rule": "SUM"
-                                },
-                                {
-                                    "columns": [ "um" ],
-                                    "rule": "max"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "name": "order",
-                        "parameters": {
-                            "value": "DESC"
-                        }
-                    }
-                ],
-            second_level_process : [
+        process: {
+            first_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
+                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                    "parameters": {
+                        "gender": "2",
+                        "special_condition": ["2"],
+                        "age_year": {
+                            "from": 10.5,
+                            "to": 67
+                        }
+                        // "age_month": {
+                        //     "from": 10.5,
+                        //     "to": 67
+                        // }
+                    }
+                },
+                {
+                    "name": "filter",
+                    "parameters": {
+                        "columns": [
+                            "group_code",
+                            "value",
+                            "um"
+                        ],
+                        "rows": {
+                            "item": {
+                                "codes": [
+                                    {
+                                        "uid": "GIFT_Items",
+                                        "codes": [
+                                            "IRON"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+
+                {
+                    "name": "group",
+                    "parameters": {
+                        "by": [
+                            "group_code"
+                        ],
+                        "aggregations": [
+                            {
+                                "columns": ["value"],
+                                "rule": "SUM"
+                            },
+                            {
+                                "columns": ["um"],
+                                "rule": "max"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "order",
+                    "parameters": {
+                        "value": "DESC"
+                    }
+                }
+            ],
+            second_level_process: [
+                {
+                    "name": "gift_population_filter",
+                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
                     "parameters": {
                         "gender": "2",
                         "special_condition": ["2"],
@@ -109,7 +108,7 @@ define([
                                 "codes": [
                                     {
                                         "uid": "GIFT_Items",
-                                        "codes": [ "IRON" ]
+                                        "codes": ["IRON"]
                                     }
                                 ]
                             },
@@ -117,7 +116,7 @@ define([
                                 "codes": [
                                     {
                                         "uid": "GIFT_FoodGroups",
-                                        "codes": [ "04" ]
+                                        "codes": ["04"]
                                     }
                                 ]
                             }
@@ -133,11 +132,11 @@ define([
                         ],
                         "aggregations": [
                             {
-                                "columns": [ "value" ],
+                                "columns": ["value"],
                                 "rule": "SUM"
                             },
                             {
-                                "columns": [ "um" ],
+                                "columns": ["um"],
                                 "rule": "max"
                             }
                         ]
@@ -150,10 +149,10 @@ define([
                     }
                 }
             ],
-            third_level_process : [
+            third_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
+                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
                     "parameters": {
                         "gender": "2",
                         "special_condition": ["2"],
@@ -181,7 +180,7 @@ define([
                                 "codes": [
                                     {
                                         "uid": "GIFT_Items",
-                                        "codes": [ "IRON" ]
+                                        "codes": ["IRON"]
                                     }
                                 ]
                             },
@@ -189,7 +188,7 @@ define([
                                 "codes": [
                                     {
                                         "uid": "GIFT_FoodGroups",
-                                        "codes": [ "0104" ]
+                                        "codes": ["0104"]
                                     }
                                 ]
                             }
@@ -205,11 +204,11 @@ define([
                         ],
                         "aggregations": [
                             {
-                                "columns": [ "value" ],
+                                "columns": ["value"],
                                 "rule": "SUM"
                             },
                             {
-                                "columns": [ "um" ],
+                                "columns": ["um"],
                                 "rule": "max"
                             }
                         ]
@@ -234,9 +233,10 @@ define([
         this._init(params);
 
         this.bridge = new Bridge({
-            environment :  this.environment,
-            cache :  this.cache
+            environment: this.environment,
+            cache: this.cache
         });
+        this._setHTMLvariables();
 
         this._getProcessedResourceForChart(s.process.first_level_process).then(
             _.bind(this._onSuccess, this),
@@ -266,10 +266,10 @@ define([
         process[0].parameters = this.selected_config;
         process[1].parameters.rows.item.codes[0].codes = this.selected_items;
 
-        if(group_code){
+        if (group_code) {
             process[1].parameters.rows.group_code.codes[0].codes = group_code;
         }
-        if(subgroup_code){
+        if (subgroup_code) {
             process[1].parameters.rows.subgroup_code.codes[0].codes = subgroup_code;
         }
 
@@ -279,7 +279,7 @@ define([
     ThreeLevDrilldown.prototype._getProcessedResourceForChart = function (processConfig, group_code, subgroup_code) {
         var process = this._updateProcessConfig(processConfig, group_code, subgroup_code);
         //process=s.process.first_level_process
-        return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
+        return this.bridge.getProcessedResource({body: process, params: {language: this.language}});
     };
 
     ThreeLevDrilldown.prototype._onSuccess = function (resource) {
@@ -303,40 +303,38 @@ define([
         var data = resource.data;
 
         var columns = metadata.dsd.columns;
-        var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
+        var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].subject == 'um')
-            {
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].subject == 'um') {
                 um_index = i;
                 um_column_id = columns[i].id;
             }
-            else if(columns[i].subject == 'value')
-            {
+            else if (columns[i].subject == 'value') {
                 value_index = i;
             }
-            else if(columns[i].dataType == 'code'){
+            else if (columns[i].dataType == 'code') {
                 code_index = i;
                 code_column_id = columns[i].id;
             }
         }
 
-        var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language;
+        var umLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == um_column_id + '_' + self.language;
         });
 
-        var codeLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== code_column_id +'_'+self.language;
+        var codeLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == code_column_id + '_' + self.language;
         });
 
         var dataToChart = [];
 
-        if(data){
-            for(var i=0; i< data.length;i++) {
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
                 var obj = {};
                 var it = data[i];
 
-                obj.y =it[value_index];
+                obj.y = it[value_index];
                 obj.unit = it[umLabelIdx];
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
@@ -349,18 +347,18 @@ define([
         return dataToChart;
     };
 
-    ThreeLevDrilldown.prototype._getProccessForOtherLevels = function(point, chart){
+    ThreeLevDrilldown.prototype._getProccessForOtherLevels = function (point, chart) {
         var self = this;
         var group_code = '';
         var subgroup_code = '';
-        var process ='';
-        if(s.level_number==2){
+        var process = '';
+        if (s.level_number == 2) {
             //Second level
             group_code = [];
             group_code.push(point.code);
             process = s.process.second_level_process;
         }
-        else if(s.level_number==3){
+        else if (s.level_number == 3) {
             //Second level
             subgroup_code = [];
             subgroup_code.push(point.code);
@@ -383,9 +381,9 @@ define([
 
         var chart = chart,
             drilldowns = {};
-            drilldowns[point.code] = {};
-            drilldowns[point.code].name = point.name;
-            drilldowns[point.code].data = ser;
+        drilldowns[point.code] = {};
+        drilldowns[point.code].name = point.name;
+        drilldowns[point.code].data = ser;
 
         var series = drilldowns[point.code];
 
@@ -402,27 +400,27 @@ define([
 
     ThreeLevDrilldown.prototype._getChartConfig = function (series) {
         var self = this;
-       var chartConfig =  {
-           lang: {
-               drillUpText: 'Back'
-           },
+        var chartConfig = {
+            lang: {
+                drillUpText: 'Back'
+            },
             chart: {
                 type: 'pie',
-                    events: {
-                        load: function(event) {
-                            self._trigger("ready");
-                        },
-                        drillup: function () {
-                            s.level_number--;
-                        },
-                        drilldown: function (e) {
-                            if(s.level_number!=3){
-                                s.level_number++;
-                                if (!e.seriesOptions) {
-                                    self._getProccessForOtherLevels(e.point, this);
-                                }
+                events: {
+                    load: function (event) {
+                        self._trigger("ready");
+                    },
+                    drillup: function () {
+                        s.level_number--;
+                    },
+                    drilldown: function (e) {
+                        if (s.level_number != 3) {
+                            s.level_number++;
+                            if (!e.seriesOptions) {
+                                self._getProccessForOtherLevels(e.point, this);
                             }
                         }
+                    }
                 }
             },
             title: {
@@ -432,18 +430,18 @@ define([
                 type: 'category'
             },
 
-           legend: {
-               enabled: true,
-               floating: false,
+            legend: {
+                enabled: true,
+                floating: false,
 
-               labelFormatter: function() {
-                   // do truncation here and return string
-                   // this.name holds the whole label
-                   // for example:
-                   return this.name.slice(0, 15)+'...'
-               }
-               //  layout: "hori"
-           },
+                labelFormatter: function () {
+                    // do truncation here and return string
+                    // this.name holds the whole label
+                    // for example:
+                    return this.name.slice(0, 15) + '...'
+                }
+                //  layout: "hori"
+            },
             plotOptions: {
                 pie: {
                     dataLabels: {
@@ -458,7 +456,7 @@ define([
 
                 series: {
                     borderWidth: 0,
-                        dataLabels: {
+                    dataLabels: {
                         enabled: false
                     }
                 }
@@ -466,14 +464,14 @@ define([
 
             tooltip: {
                 formatter: function () {
-                  return this.key + ': <b>  '+  Highcharts.numberFormat(this.y, 2) + ' '+ this.point.unit+ '</b>';
-               }
-           },
+                    return this.key + ': <b>  ' + Highcharts.numberFormat(this.y, 2) + ' ' + this.point.unit + '</b>';
+                }
+            },
 
-           //remove credits
-           credits: {
-               enabled: false
-           },
+            //remove credits
+            credits: {
+                enabled: false
+            },
 
             series: [{
                 name: 'Items',
@@ -485,7 +483,7 @@ define([
         return chartConfig;
     };
 
-    ThreeLevDrilldown.prototype._renderChart = function(chartConfig){
+    ThreeLevDrilldown.prototype._renderChart = function (chartConfig) {
 
         $('#' + this.elID).css({
             height: s.HEIGHT,
@@ -502,20 +500,27 @@ define([
     };
 
     ThreeLevDrilldown.prototype._setHTMLvariables = function () {
-        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title_firstPart'] + " "+this.title+ " "+ labels[this.language.toLowerCase()][this.labelsId+'_title_secondPart']);
+
+        var lang = this.language.toLowerCase(),
+            prefix = labels[lang][this.labelsId + '_title_firstPart'],
+            postfix = labels[lang][this.labelsId + '_title_secondPart'],
+            nutrient = "<span class='title-nutrient'>" + ( this.title || " - " ) + "</span>",
+            title = prefix + " " + nutrient + " " + postfix;
+
+        $('#' + this.labelsId + '-title').html(title);
     };
 
     ThreeLevDrilldown.prototype.redraw = function (animation) {
-        if(animation) {
+        if (animation) {
             this.chart.redraw(animation);
         }
-        else{
+        else {
             this.chart.redraw();
         }
     };
 
     ThreeLevDrilldown.prototype.dispose = function () {
-        this.chart.destroy();
+        //this.chart.destroy();
     };
 
     ThreeLevDrilldown.prototype._trigger = function (channel) {

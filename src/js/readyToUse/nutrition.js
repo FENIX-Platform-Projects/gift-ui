@@ -6,9 +6,9 @@ define([
     "../../nls/labels",
     "../../config/config",
     "../../config/readyToUse/config",
-    "../charts/percentage",
-    "../charts/pieMacronutrients",
-    "../charts/pieThreeLevDrilldown",
+    "../charts/nutrition/percentage",
+    "../charts/nutrition/macronutrients",
+    "../charts/nutrition/donut",
     "fenix-ui-filter"
 ], function ($, log, _, template, labels, C, RC, Percentage, pieMacronutrients, PieThreeLevDrilldown, Filter) {
 

@@ -2,14 +2,14 @@ define([
     "jquery",
     "loglevel",
     "../config/config",
-    "./charts/bubble",
-    "./charts/donut",
-    "./charts/donutHole",
-    "./charts/column",
-    "./charts/percentage",
-    "./charts/pieMacronutrients",
-    "./charts/pieThreeLevDrilldown",
-    "./charts/largeTreeMap"
+    "./charts/foodConsumption/bubble",
+    "./charts/foodConsumption/donut",
+    "./charts/foodConsumption/donut",
+    "./charts/foodSafety/column",
+    "./charts/nutrition/percentage",
+    "./charts/nutrition/macronutrients",
+    "./charts/nutrition/donut",
+    "./charts/foodConsumption/treemap"
 ], function ($, log, C, Bubble, Donut, DonutHole, Column, Percentage, PieMacronutrients, PieThreeLevDrilldown, LargeTreeMap) {
     "use strict";
 

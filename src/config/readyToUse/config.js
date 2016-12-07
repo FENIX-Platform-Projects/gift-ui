@@ -56,7 +56,9 @@ define(["underscore"], function (_) {
             },
 
             template : {
-                hideHeader : true
+                title : "Select a nutrient:",
+                hideSwitch : true,
+                hideRemoveButton : true,
             }
         }
 
@@ -168,12 +170,7 @@ define(["underscore"], function (_) {
                     path : "title",
                     type: "i18n",
                     title : "Title",
-                    width: "50%"
-                },
-                sampleSize : {
-                    path : "sampleSize",
-                    title : "Sample Size",
-                    width: "20%"
+                    width: "80%"
                 }
             },
 

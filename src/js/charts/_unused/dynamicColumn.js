@@ -7,27 +7,26 @@ define([
 ], function (_, $, log, Bridge, Highcharts) {
 
     var s = {
-        first_level_process :
-            [
-                {
-                    "name": "gift_average_percentile",
+        first_level_process: [
+            {
+                "name": "gift_average_percentile",
 
-                    "sid" : [{"uid":"gift_process_total_food_consumption_000042BUR201001"}],
+                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
 
-                    "parameters": {
+                "parameters": {
 
-                        "percentileSize" : 5,
+                    "percentileSize": 5,
 
-                        "item" : "FOOD_AMOUNT_PROC",
+                    "item": "FOOD_AMOUNT_PROC",
 
-                        "group" : "01",
+                    "group": "01",
 
-                        "subgroup" : null,
+                    "subgroup": null,
 
-                        "food" : null
-                    }
+                    "food": null
                 }
-            ]
+            }
+        ]
     };
 
     function ColumnChart(params) {
@@ -35,8 +34,8 @@ define([
         this._init(params);
 
         this.bridge = new Bridge({
-            environment :  this.environment,
-            cache :  this.cache
+            environment: this.environment,
+            cache: this.cache
         });
 
         this._getProcessedResourceForChart(s.first_level_process).then(
@@ -69,19 +68,19 @@ define([
     ColumnChart.prototype._updateProcessConfig = function (process) {
         process[0].sid[0].uid = this.uid;
 
-        if(this.selected_items){
+        if (this.selected_items) {
             process[0].parameters.item = this.selected_items;
         }
 
-        if(this.selected_group){
+        if (this.selected_group) {
             process[0].parameters.group = this.selected_group;
         }
 
-        if(this.selected_subgroup){
+        if (this.selected_subgroup) {
             process[0].parameters.subgroup = this.selected_subgroup;
         }
 
-        if(this.selected_food){
+        if (this.selected_food) {
             process[0].parameters.food = this.selected_food;
         }
 
@@ -91,7 +90,7 @@ define([
     ColumnChart.prototype._getProcessedResourceForChart = function (processConfig) {
         var process = this._updateProcessConfig(processConfig);
 
-        return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
+        return this.bridge.getProcessedResource({body: process, params: {language: this.language}});
     };
 
     ColumnChart.prototype._onSuccess = function (resource) {
@@ -115,19 +114,17 @@ define([
         var data = resource.data;
 
         var columns = metadata.dsd.columns;
-        var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
+        var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].subject == 'um')
-            {
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].subject == 'um') {
                 um_index = i;
                 um_column_id = columns[i].id;
             }
-            else if(columns[i].subject == 'value')
-            {
+            else if (columns[i].subject == 'value') {
                 value_index = i;
             }
-            else if(columns[i].subject == 'item'){
+            else if (columns[i].subject == 'item') {
                 code_index = i;
                 code_column_id = columns[i].id;
             }
@@ -135,18 +132,18 @@ define([
         console.log(code_column_id, um_column_id)
 
 
-        var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language.toUpperCase();
+        var umLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == um_column_id + '_' + self.language.toUpperCase();
         });
 
-        var codeLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== code_column_id +'_'+self.language.toUpperCase();
+        var codeLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == code_column_id + '_' + self.language.toUpperCase();
         });
 
         //console.log(data)
         var dataToChart = [];
         var categoriesToChart = [];
-        if(data) {
+        if (data) {
             for (var i = 1; i < data.length; i++) {
                 // var obj = {};
 
@@ -172,13 +169,13 @@ define([
 
         //Progress bar
         $('#columns-progress-bar').css({
-            width: data[0][value_index]+'%'
+            width: data[0][value_index] + '%'
         });
 
         return {series: dataToChart, categories: categoriesToChart};
     };
 
-    ColumnChart.prototype._getProccessForSecondLevel = function(point, chart){
+    ColumnChart.prototype._getProccessForSecondLevel = function (point, chart) {
         var self = this;
         var group_code = [];
         group_code.push(point.code);
@@ -198,7 +195,7 @@ define([
         //chartData = {series: dataToChart, categories: categoriesToChart}
 
         var self = this;
-        var chartConfig =  {
+        var chartConfig = {
             chart: {
                 type: 'column',
                 margin: [10, 10, 10, 10],
@@ -207,7 +204,7 @@ define([
                 spacingLeft: 0,
                 spacingRight: 0,
                 events: {
-                    load: function(event) {
+                    load: function (event) {
                         self._trigger("ready");
                     }
                 }
@@ -294,15 +291,15 @@ define([
         return chartConfig;
     };
 
-    ColumnChart.prototype._renderChart = function(chartConfig){
+    ColumnChart.prototype._renderChart = function (chartConfig) {
         this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
     ColumnChart.prototype.redraw = function (animation) {
-        if(animation) {
+        if (animation) {
             this.chart.redraw(animation);
         }
-        else{
+        else {
             this.chart.redraw();
         }
     };

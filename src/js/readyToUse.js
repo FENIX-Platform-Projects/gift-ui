@@ -161,8 +161,7 @@ define([
 
         this.filter = new Filter($.extend(true, {
             el: s.FILTER
-        }, C.populationFilter)).
-            on("click", _.bind(this._onSearchButtonClick, this));
+        }, C.populationFilter))
     };
 
     ReadyToUse.prototype._showSection = function (section) {
@@ -192,6 +191,8 @@ define([
 
         this.catalog.on("select", _.bind(this._onCatalogSelect, this));
 
+        this.filter.on("change", _.bind(this._onFilterChangeEvent, this));
+
         this.$backButton.on("click", _.bind(this._onBackButtonClick, this));
 
         this.$metaButton.on("click", _.bind(this._onMetaButtonClick, this));
@@ -204,6 +205,30 @@ define([
         var tab = $(evt.target).data("tab");
 
         this._showTab(tab);
+    };
+
+
+    ReadyToUse.prototype._onFilterChangeEvent = function () {
+
+        log.info("Change from filter");
+
+        this._tryRefresh();
+
+    };
+
+    ReadyToUse.prototype._tryRefresh = function () {
+
+        log.info("Refresh catalog results");
+
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+            log.info("Abort search timeout");
+        }
+
+        this.searchTimeout = window.setTimeout(_.bind(function () {
+            this._refresh();
+        }, this), 300);
+
     };
 
     ReadyToUse.prototype._showTab = function (tab) {
@@ -280,7 +305,7 @@ define([
 
     };
 
-    ReadyToUse.prototype._onSearchButtonClick = function () {
+    ReadyToUse.prototype._refresh = function () {
 
         this.loaded = false;
 
