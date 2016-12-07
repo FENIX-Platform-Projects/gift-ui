@@ -108,7 +108,7 @@ $width: 300px;
 
 
     h1{
-      font-size: 10px;
+      font-size: 10px !important;
       color:$fx-cool-blue;
       margin-bottom: 15px;
       padding-bottom: 5px;
@@ -546,6 +546,12 @@ $width: 300px;
   padding: 1px 5px;
   border-color: transparent;
   border-radius: 5px;
+}
+
+
+[data-role="description"]{
+  margin-bottom: 20px;
+  display: inline-block;
 }
 
 #sourceOfNutrientsInTheDiet{

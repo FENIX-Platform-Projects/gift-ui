@@ -280,7 +280,7 @@ define([
 
         return {
             name: "Food",
-            color: "#f7faff",
+            color: "#E8ECF2",
             children: children
         };
 
