@@ -15,28 +15,54 @@ define(["underscore"], function (_) {
             mdsdService: "mdsd/gift/mdsd.json"
         },
 
-        /* mdsdSpecialFields : {
-         "metadataLanguage": true,
-         "language": true,
-         "characterSet": true,
-         "disseminationPeriodicity": true,
-         "confidentialityStatus": true,
-         "referencePeriod": true,
-         "referenceArea": true,
-         "coverageSectors": true,
-         "coverageGeographic": true,
-         "updatePeriodicity": true,
-         "projection": true,
-         "ellipsoid": true,
-         "datum": true,
-         "typeOfProduct": true,
-         "processing": true,
-         "topologyLevel": true,
-         "typeOfCollection": true,
-         "collectionPeriodicity": true,
-         "originOfCollectedData": true,
-         "dataAdjustment": true
-         },*/
+        mdsdSpecialFields: {
+            "metadataLanguage": true,
+            "language": true,
+            "characterSet": true,
+            "disseminationPeriodicity": true,
+            "confidentialityStatus": true,
+            "referencePeriod": true,
+            "referenceArea": true,
+            "coverageSectors": true,
+            "coverageGeographic": true,
+            "updatePeriodicity": true,
+            "projection": true,
+            "ellipsoid": true,
+            "datum": true,
+            "typeOfProduct": true,
+            "processing": true,
+            "topologyLevel": true,
+            "typeOfCollection": true,
+            "collectionPeriodicity": true,
+            "originOfCollectedData": true,
+            "dataAdjustment": true,
+
+            // GIFT
+            "ResourceType": true,
+            "AssessmentMethod": true,
+            "RepeatedDietary": true,
+            "SurveyAdministrationMethod": true,
+            "statisticalPopulation": true,
+            "DataAlreadyCorrected": true,
+            "FoodCoverageTotal": true,
+            "DrinkingWater": true,
+            "SupplementInformation": true,
+            "QuantitiesReported": true,
+            "MacroDietaryComponents": true,
+            "MicroDietaryComponents": true,
+            "Age": true,
+            "Sex": true,
+            "BodyWeight": true,
+            "BodyHeight": true,
+            "PhysicalActivityLevel": true,
+            "InterviewDate": true,
+            "GeographicalLocalization": true,
+            "SocioDemographic": true,
+            "EducationLiteracy": true,
+            "Ethnicity": true
+
+
+        },
 
         consumption: {
             service: {
@@ -278,7 +304,7 @@ define(["underscore"], function (_) {
                     format: {
                         metadataAttribute: "meContent.seCoverage.coverageGeographic",
                         output: "codes",
-                        uid : "GAUL"
+                        uid: "GAUL"
                     }
                 },
 
@@ -336,7 +362,7 @@ define(["underscore"], function (_) {
                     format: {
                         metadataAttribute: "meContent.seReferencePopulation.referenceArea",
                         output: "codes",
-                        uid : "GIFT_ReferenceArea"
+                        uid: "GIFT_ReferenceArea"
                     }
                 },
 

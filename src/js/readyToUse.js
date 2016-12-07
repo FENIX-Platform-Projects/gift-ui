@@ -447,13 +447,15 @@ define([
         // // fenix-ui-dropdown
         require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
 
-        //meta viewer requirements
-        require("jquery-treegrid-webpack/css/jquery.treegrid.css");
+
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");
         // // fenix-ui-catalog
         require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
+
+        //meta viewer requirements
+        require("jquery-treegrid-webpack/css/jquery.treegrid.css");
 
         //GIFT CSS
         require("../css/gift.css");
