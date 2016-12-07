@@ -1143,7 +1143,7 @@ define(
                                         "footer": "Name the method used in selecting the sample for the study.",
                                     },
                                     "format": {
-                                        "output": "codes"
+                                        "output": "codes:extended"
                                     },
                                     "constraints": {"presence": true}
                                 },
@@ -1221,7 +1221,7 @@ define(
 
                                     },
                                     "format": {
-                                        "output": "codes"
+                                        "output": "codes:extended"
                                     },
                                     "constraints": {"presence": true}
                                 },

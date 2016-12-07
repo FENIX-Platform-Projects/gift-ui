@@ -2,14 +2,16 @@ define([
     "jquery",
     "loglevel",
     "fenix-ui-uploader",
+    "fenix-ui-catalog",
     "../config/config",
     "../config/mde/catalog",
 
-], function ($, log, Uploader, C, CataConf) {
+], function ($, log, Uploader, Catalog, C, CataConf) {
 
     "use strict";
 
     var s = {
+        CATALOG: "#catalog",
         DATA_UPLOADER: "#dataUploader"
     };
 
@@ -17,17 +19,23 @@ define([
         console.clear();
         log.setLevel("trace");
         this._importThirdPartyCss();
-        this._renderMDE();
+        this._render();
 
     }
 
-    DataUploader.prototype._renderMDE = function () {
+    DataUploader.prototype._render = function () {
 
-       console.log("Render Data Uploader editor here");
-       this.uploader = new Uploader();
-       this.uploader.render({
-           container : s.DATA_UPLOADER
-       });
+        this.catalog = new Catalog({
+            el: s.CATALOG
+        });
+
+        this.uploader = new Uploader();
+
+        this.uploader.render({
+            container : s.DATA_UPLOADER,
+            context : "4"
+        });
+
 
     };
 
@@ -35,6 +43,10 @@ define([
 
         //SANDBOXED BOOTSTRAP
         require("../css/sandboxed-bootstrap.css");
+        // fenix filter
+        require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
+        require("../../node_modules/fenix-ui-catalog/dist/fenix-ui-catalog.min.css");
+        require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
         //host override
         require('../css/gift.css');
 
