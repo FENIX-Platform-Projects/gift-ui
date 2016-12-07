@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Metadata editor</title>
+    <title>Data Uploader</title>
 </head>
 <body>
 
@@ -12,8 +12,26 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <div id="catalog"></div>
-                <div id="dataUploader"></div>
+                <div data-role="modal" class="modal fade catalog-modal catalog-dm" tabindex="-1" role="dialog"
+                     aria-labelledby="analysisCatalog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <div id="catalog-container"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="datauploader-container">
+                    <button disabled class="btn btn-default fx-button-primary-color" id="fxDUpBack">Back</button><br>
+                    <br>
+                    <span>Press the + below to upload the file</span>
+                    <div id="dataUploader"></div>
+                </div>
+
+
             </div>
         </div>
 
