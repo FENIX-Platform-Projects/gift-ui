@@ -14,7 +14,7 @@
     "dev:readyToUse": "cross-env SECTIONS=readyToUse NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:statistics": "cross-env SECTIONS=statistics NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:base": "cross-env SECTIONS=base NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
-    "build": "cross-env SECTIONS=readyToUse,map,base,mde,statistics NODE_ENV=production webpack --display-error-details ",
+    "build": "cross-env SECTIONS=readyToUse,map,base,mde,statistics,dataupload NODE_ENV=production webpack --display-error-details ",
     "build:base": "cross-env SECTIONS=base NODE_ENV=production webpack --display-error-details ",
     "build:map": "cross-env SECTIONS=map NODE_ENV=production webpack --display-error-details ",
     "build:statistics": "cross-env SECTIONS=statistics NODE_ENV=production webpack --display-error-details ",

@@ -43,7 +43,7 @@ define([
                             "id": "landing"
                         },
                         "label": {
-                            "EN": "Data Management",
+                            "EN": "Home",
                             "FR": "Gestion des Données"
                         }
                     },
