@@ -9569,7 +9569,7 @@ button_new_2:before {
       margin-bottom: 5px !important; }
   .fx-sandbox.fao-holder .modal-body {
     padding: 0 15px; }
-  .fx-sandbox.fao-holder #fx-data-management-content .catalog-modal .modal-lg {
+  .fx-sandbox.fao-holder #fx-data-management-content .catalog-modal .modal-lg, .fx-sandbox.fao-holder #fx-data-upload-content .catalog-modal .modal-lg {
     width: 100% !important; }
   .fx-sandbox.fao-holder #fx-data-management-menu .container {
     width: 100% !important; }
