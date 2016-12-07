@@ -28,7 +28,9 @@ module.exports = sections.map(function (section) {
             alias: {
                 'bootstrap-table': Path.join(__dirname, 'node_modules/bootstrap-table/dist/bootstrap-table.min.js'),
                 'handlebars': Path.join(__dirname, 'node_modules/handlebars/dist/handlebars.js'),
-                'jquery': Path.join(__dirname, 'node_modules/jquery/dist/jquery')
+                'jquery': Path.join(__dirname, 'node_modules/jquery/dist/jquery'),
+                // required by fenix-ui-uploader
+                "jquery-ui/widget": Path.join(__dirname, 'node_modules/jquery.ui.widget/jquery.ui.widget'),
             }
         },
 
