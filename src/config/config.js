@@ -382,7 +382,7 @@ define(["underscore"], function (_) {
 
                     },
                     template: {
-                        title: "Coverage Sector",
+                        title: "Typology of the geographical area coverage",
                         hideSwitch: true,
                         hideRemoveButton: true
                     },
