@@ -19,8 +19,8 @@ define([
             BUBBLE_FOOD_HOLDER: "#bubble-food-holder",
             BUBBLE_BEVERAGES: "#bubble-beverages",
             BUBBLE_BEVERAGES_HOLDER: "#bubble-beverages-holder",
-            LARGE_TREE_MAP_CONTAINER_ID : "largeTree",
-            LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID : "largeTree-beverages",
+            LARGE_TREE_MAP_CONTAINER_ID: "largeTree",
+            LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID: "largeTree-beverages",
             MENU_ITEMS: "[data-chart]",
             CONTENTS: "[data-content]",
             BUBBLE_EL: "#bubble",
@@ -163,10 +163,6 @@ define([
             model: this.model
         });
 
-        instance.on("ready", function() {
-            //alert("Ciao!")
-        })
-
         obj.instances.push(instance);
 
         obj.instances.push(new Bubble({
@@ -189,18 +185,18 @@ define([
             return;
         }
 
-     /*   //age_year OR age_month
-        var param = {
-            selected_items : {
-                "item": "FOOD_AMOUNT_PROC",
-                "gender": null,
-                "special_condition": ["2"],
-                "age_year": {
-                    "from": 10.5,
-                    "to": 67
-                }
-            }
-        };*/
+        /*   //age_year OR age_month
+         var param = {
+         selected_items : {
+         "item": "FOOD_AMOUNT_PROC",
+         "gender": null,
+         "special_condition": ["2"],
+         "age_year": {
+         "from": 10.5,
+         "to": 67
+         }
+         }
+         };*/
 
         var process = $.extend(true, {}, this.process);
 
@@ -211,24 +207,24 @@ define([
         ];
 
         obj.instances.push(new LargeTreeMap({
-            elID : s.LARGE_TREE_MAP_CONTAINER_ID,
-            labelsId : s.LARGE_TREE_MAP_CONTAINER_ID,
+            elID: s.LARGE_TREE_MAP_CONTAINER_ID,
+            labelsId: s.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
-            environment : C.environment,
-            uid : "gift_process_total_food_consumption_" + this.model.uid,
-            selected_items : process.parameters,
+            environment: C.environment,
+            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            selected_items: process.parameters,
             levels_number: 3,
             language: this.lang.toUpperCase()
         }));
 
 
         var instance = new LargeTreeMap({
-            elID : s.LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID,
-            labelsId : s.LARGE_TREE_MAP_CONTAINER_ID,
+            elID: s.LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID,
+            labelsId: s.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
-            environment : C.environment,
-            uid : "gift_process_total_food_consumption_" + this.model.uid,
-            selected_items : process.parameters,
+            environment: C.environment,
+            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            selected_items: process.parameters,
             levels_number: 2,
             language: this.lang.toUpperCase()
         });
@@ -250,7 +246,7 @@ define([
 
         var config = {
             elID: s.DONUT_EL,
-            labelsId : s.DONUT_LABELS_ID,
+            labelsId: s.DONUT_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
             uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,

@@ -258,10 +258,8 @@ define([
 
     Charts.prototype._renderBubbleChart = function () {
 
-        var model = {
+        var foodModel = {
             "holderEl": "#bubble-food-holder",
-            "cache": false,
-            "type": "foods",
             "environment": "production",
             "process": {
                 "name": "gift_population_filter",
@@ -522,21 +520,208 @@ define([
 
         this.foodBubble = new Bubble($.extend({
             el: s.BUBBLE_FOOD,
-            // labelsId : s.BUBBLE_LABELS,
             cache: C.cache,
             type: "foods",
             environment: C.environment
-        }, model));
+        }, foodModel));
 
-        return;
+        var beveragesModel = {
+            "type": "beverages",
+            "process": {
+                "name": "gift_population_filter",
+                "parameters": {
+                    "special_condition": ["1", "2", "3", "4"],
+                    "age_year": {"from": 0, "to": 120},
+                    "item": "FOOD_AMOUNT_PROC"
+                },
+                "sid": [{"uid": "gift_process_total_weighted_food_consumption_000023BGD201001"}]
+            },
+            "model": {
+                "language": {
+                    "version": "1998",
+                    "idCodeList": "GIFT_ISO639-2",
+                    "codes": [{"code": "eng", "label": {"EN": "English"}}],
+                    "extendedName": {"EN": "International Standard Organization - Language"}
+                },
+                "title": {"EN": "Bangladesh - 2007/2008 - HarvestPlus/UC Davis"},
+                "dsd": {"rid": "66_4001"},
+                "rid": "12_2464",
+                "uid": "000023BGD201001",
+                "meContent": {
+                    "description": {"EN": "#"},
+                    "resourceRepresentationType": "dataset",
+                    "seReferencePopulation": {
+                        "referenceArea": {
+                            "idCodeList": "GIFT_ReferenceArea",
+                            "codes": [{"code": "5", "label": {"EN": "Other (please specify)"}}],
+                            "extendedName": {"EN": "WHO-FAO GIFT, area of reference"}
+                        }
+                    },
+                    "seCoverage": {
+                        "coverageSectors": {
+                            "idCodeList": "GIFT_CoverageSector",
+                            "codes": [{"code": "3", "label": {"EN": "Both rural and urban"}}],
+                            "extendedName": {"EN": "WHO-FAO GIFT, coverage sectors"}
+                        },
+                        "coverageSectorsDetails": {"EN": ""},
+                        "coverageTime": {"from": 1481065200000, "to": 1481065200000},
+                        "coverageGeographic": {
+                            "version": "2014",
+                            "idCodeList": "GAUL0",
+                            "codes": [{
+                                "code": "23",
+                                "label": {
+                                    "PT": "Bangladesh",
+                                    "FR": "Bangladesh",
+                                    "AR": "بنغلاديش",
+                                    "EN": "Bangladesh",
+                                    "RU": "Бангладеш",
+                                    "ES": "Bangladesh",
+                                    "ZH": "孟加拉国"
+                                }
+                            }],
+                            "extendedName": {"EN": "Global administrative unit layer country level"}
+                        }
+                    },
+                    "keywords": [""],
+                    "resourceRepresentationTypeLabel": {"EN": "Dataset"}
+                },
+                "languageDetails": {"EN": ""},
+                "contacts": [{
+                    "organization": {"EN": "HarvestPlus"},
+                    "position": {"EN": ""},
+                    "role": "distributor",
+                    "contactInfo": {
+                        "address": "",
+                        "phone": "",
+                        "emailAddress": "fao-who-gift@fao.org",
+                        "contactInstruction": {"EN": ""}
+                    },
+                    "pointOfContact": "",
+                    "specify": {"EN": ""},
+                    "organizationUnit": {"EN": ""},
+                    "roleLabel": {"FR": "Distributeur", "EN": "Distributor"}
+                }],
+                "additions": {
+                    "DataAnalysisInformation": {
+                        "ExclusionRecruitment": {"EN": ""},
+                        "ExclusionDataCleaning": {"EN": ""},
+                        "MethodReporting": {"EN": ""},
+                        "ReportingIndividualLevel": {"underReportingPercentage": 0, "overReportingPercentage": 0},
+                        "ReportingGroupLevel": {
+                            "underReporting": {
+                                "idCodeList": "YesNo",
+                                "codes": [{"code": "no", "label": {"EN": "No"}}]
+                            },
+                            "overReporting": {"idCodeList": "YesNo", "codes": [{"code": "no", "label": {"EN": "No"}}]}
+                        },
+                        "DataAlreadyCorrected": {
+                            "idCodeList": "YesNo",
+                            "codes": [{"code": "no", "label": {"EN": "No"}}]
+                        },
+                        "AssessmentIntake": {"EN": ""}
+                    },
+                    "sampledPopulationInformation": {
+                        "sampleSize": 1,
+                        "statisticalPopulation": {"idCodeList": "GIFT_StatisticalPopulation", "codes": [{"code": "1"}]},
+                        "PurposedlyGroupsDetails": {"EN": ""}
+                    },
+                    "FoodCompositionInformation": {"FoodComsumption": {"EN": ""}},
+                    "AdditionalInformation": {
+                        "VariablesAvailability": {
+                            "Age": {
+                                "idCodeList": "YesNo",
+                                "codes": [{"code": "yes", "label": {"EN": "Yes"}}]
+                            },
+                            "Sex": {"idCodeList": "YesNo", "codes": [{"code": "yes", "label": {"EN": "Yes"}}]},
+                            "BodyWeight": {"idCodeList": "YesNo", "codes": [{"code": "yes", "label": {"EN": "Yes"}}]},
+                            "BodyHeight": {"idCodeList": "YesNo", "codes": [{"code": "yes", "label": {"EN": "Yes"}}]},
+                            "PhysicalActivityLevel": {
+                                "idCodeList": "YesNo",
+                                "codes": [{"code": "no", "label": {"EN": "No"}}]
+                            },
+                            "InterviewDate": {"idCodeList": "YesNo", "codes": [{"code": "no", "label": {"EN": "No"}}]},
+                            "GeographicalLocalization": {
+                                "idCodeList": "YesNo",
+                                "codes": [{"code": "no", "label": {"EN": "No"}}]
+                            }
+                        }
+                    },
+                    "SamplingInformation": {
+                        "typeOfCollection": {
+                            "idCodeList": "GIFT_TypeOfCollection",
+                            "codes": [{"code": "8"}]
+                        }, "SamplingInformationDetails": {"EN": ""}
+                    },
+                    "SurveyInformation": {
+                        "GeographicalCoverageDetails": {"EN": ""},
+                        "StudyAreasDetails": {"EN": ""},
+                        "SeasonsCoverage": {"EN": ""},
+                        "AssessmentMethod": {
+                            "idCodeList": "GIFT_DietaryMethod",
+                            "codes": [{"code": "1", "label": {"EN": "24-hour recall"}}]
+                        },
+                        "AssessmentMethodDetails": {"EN": ""},
+                        "RepeatedDietary": {"idCodeList": "YesNo", "codes": [{"code": "yes", "label": {"EN": "Yes"}}]},
+                        "SizeOfSample": {"EN": ""},
+                        "SurveyAdministrationMethod": {
+                            "idCodeList": "GIFT_DataCollection",
+                            "codes": [{"code": "1", "label": {"EN": "Paper questionnaire"}}]
+                        },
+                        "SurveyAdministrationMethodDetails": {"EN": ""}
+                    },
+                    "FoodConsumptionInformation": {
+                        "FoodCoverageTotal": {
+                            "idCodeList": "YesNo",
+                            "codes": [{"code": "yes", "label": {"EN": "Yes"}}]
+                        },
+                        "FoodCoverageDetails": {"EN": ""},
+                        "DrinkingWater": {"idCodeList": "YesNo", "codes": [{"code": "yes", "label": {"EN": "Yes"}}]},
+                        "SupplementInformation": {
+                            "idCodeList": "YesNo",
+                            "codes": [{"code": "no", "label": {"EN": "No"}}]
+                        },
+                        "SupplementInformationDetails": {"EN": ""},
+                        "NumberOfFood": 1,
+                        "PortionSizes": {"EN": ""},
+                        "RecipesManagement": {"EN": ""},
+                        "QuantitiesReported": {
+                            "idCodeList": "GIFT_QuantityReporting",
+                            "codes": [{"code": "5", "label": {"EN": "Other"}}]
+                        },
+                        "QuantitiesReportedDetails": {"EN": ""}
+                    }
+                },
+                "meInstitutionalMandate": {
+                    "legalActsAgreements": {"EN": ""},
+                    "institutionalMandateDataSharing": {"EN": ""}
+                },
+                "meAccessibility": {
+                    "seConfidentiality": {
+                        "confidentialityStatus": {
+                            "idCodeList": "GIFT_ConfidentialityStatus",
+                            "codes": [{"code": "1", "label": {"EN": "Off"}}],
+                            "extendedName": {"EN": "WHO-FAO GIFT, available confidentiality status"}
+                        }
+                    }
+                },
+                "meMaintenance": {"seUpdate": {"updateDate": 1481024288914}},
+                "meStatisticalProcessing": {
+                    "seDataSource": {
+                        "sePrimaryDataCollection": {"samplingProcedure": {"EN": ""}},
+                        "seSecondaryDataCollection": {"organization": {"EN": "#"}}
+                    }, "seDataCompilation": {"missingData": {"EN": ""}, "weights": {"EN": ""}}
+                }
+            }
+        }
 
-        this.beveragesBubble = new Bubble({
+        this.beveragesBubble = new Bubble($.extend({
             el: s.BUBBLE_BEVERAGES,
-            // labelsId : s.BUBBLE_LABELS,
             cache: C.cache,
             environment: C.environment,
             type: "beverages"
-        });
+        }, beveragesModel));
+
     };
 
     Charts.prototype._renderAverageColumnChart = function () {
@@ -664,11 +849,11 @@ define([
             labelsId: s.percentage_chart.PERCENTAGE_LABELS_ID,
             barID: s.percentage_chart.BAR_PERCENTAGE_ID,
             cache: C.cache,
-            environment : C.environment,
-            uid : "gift_process_total_food_consumption_000042BUR201001",
-            selected_item_label : "VITAMINA A",
-            selected_items : param.selected_items,
-            language : s.language
+            environment: C.environment,
+            uid: "gift_process_total_food_consumption_000042BUR201001",
+            selected_item_label: "VITAMINA A",
+            selected_items: param.selected_items,
+            language: s.language
         });
 
         instance.on("ready", function () {

@@ -5,7 +5,7 @@
         <ul class="nav nav-pills">
 
             <li class="active"><a data-toggle="tab" href="#dietaryPattern">{{dietaryPattern}}</a></li>
-<!--            <li><a data-toggle="tab" href="#dailyPortion">{{dailyPortion}}</a></li>-->
+            <!--            <li><a data-toggle="tab" href="#dailyPortion">{{dailyPortion}}</a></li>-->
 
         </ul>
 
@@ -15,10 +15,10 @@
                 <div class="row">
                     <div class="col-xs-3">
                         <div>
-                            <h3>
-                                <span>{{indicator}}</span>
-                                <span data-role="title"></span>
-                            </h3>
+
+                            <span>{{indicator}}</span>
+                            <h3 class="indicator-title" data-role="title"></h3>
+
                             <span data-role="description"></span>
                         </div>
                         <ul class="list-group">
@@ -36,18 +36,19 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div>{{bubbleTitle}}</div>
-
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-xs-6" id="bubble-beverages-holder">
-                                    <svg width="310" height="310" id="bubble-beverages"></svg>
-                                   <h3>{{bubbleFoodTitle}}</h3>
+                                    <svg width="200" height="200" id="bubble-beverages"></svg>
+                                    <h3>{{bubbleBeveragesTitle}}</h3>
+
                                 </div>
                                 <div class="col-xs-6" id="bubble-food-holder">
                                     <svg width="310" height="310" id="bubble-food"></svg>
-                                                                       <div>{{bubbleBeveragesTitle}}</div>
+                                    <h3>{{bubbleFoodTitle}}</h3>
+
                                 </div>
                             </div>
 
@@ -58,7 +59,7 @@
                             <div class="col-xs-12">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                         <div class="col-xs-12" id = 'largeTree-title'></div>
+                                        <div class="col-xs-12" id='largeTree-title'></div>
                                     </div>
                                 </div>
                             </div>
@@ -81,7 +82,7 @@
                             <div class="col-xs-12">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                         <div class="col-xs-12" id = 'holeDonut-title'></div>
+                                        <div class="col-xs-12" id='holeDonut-title'></div>
                                     </div>
                                 </div>
                             </div>
@@ -98,7 +99,7 @@
 
             </div>
 
-<!--            <div id="dailyPortion" class="tab-pane fade">
+            <!--            <div id="dailyPortion" class="tab-pane fade">
 
                 <div class="row">
                     <div class="col-xs-4">

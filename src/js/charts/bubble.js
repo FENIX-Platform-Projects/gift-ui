@@ -3,9 +3,10 @@ define([
     "fenix-ui-bridge",
     "d3",
     "underscore",
+    "../charts/valueFormatter",
     "../../config/readyToUse/config",
     "../../html/readyToUse/charts/bubbleTooltip.hbs"
-], function (Bridge, d3, _, RC, tooltipTemplate) {
+], function (Bridge, d3, _, Formatter, RC, tooltipTemplate) {
 
     "use strict";
 
@@ -279,7 +280,7 @@ define([
 
         return {
             name: "Food",
-            color: "#fff2cc",
+            color: "#f7faff",
             children: children
         };
 
@@ -288,7 +289,9 @@ define([
             result.push({
                 name: group[details["group_code_" + lang].index],
                 size: group[details["value"].index],
-                color: colors.pop()
+                label: Formatter.format(group[details["value"].index]),
+                color: colors.pop(),
+                level : "1"
             });
         }
 
@@ -297,8 +300,10 @@ define([
             var sub = {
                 name: subgroup[details["subgroup_code_" + lang].index],
                 size: subgroup[details["value"].index],
+                label: Formatter.format(subgroup[details["value"].index]),
                 color: "white",
-                opacity: 0.3
+                opacity: 0.3,
+                level : "2"
             };
 
             var group = _.find(result, function (item) {
@@ -317,6 +322,8 @@ define([
             var f = {
                 name: food[details["foodex2_code_" + lang].index],
                 size: food[details["value"].index],
+                label: Formatter.format(food[details["value"].index]),
+                level : "3"
             };
 
             var group = _.find(result, function (item) {
@@ -381,7 +388,7 @@ define([
 
         return {
             name: "Beverages",
-            color: "#fff2cc",
+            color: "#213648",
             children: children
         };
 
@@ -390,7 +397,8 @@ define([
             result.push({
                 name: subgroup[details["subgroup_code_" + lang].index],
                 size: subgroup[details["value"].index],
-                color: colors.pop()
+                color: colors.pop(),
+                level : "1"
             });
         }
 
@@ -399,7 +407,8 @@ define([
             var f = {
                 name: food[details["foodex2_code_" + lang].index],
                 size: food[details["value"].index],
-                color: colors.pop()
+                color: colors.pop(),
+                level : "2"
             };
 
             var subgroup = _.find(result, function (item) {
@@ -481,7 +490,7 @@ define([
             .enter() // create elements if there are not enough circle in g (originally empty)
             .append("circle")
             .attr("class", function (d) {
-                return d.parent ? (d.children ? "node" : "node node--leaf" ) : "node node--root";
+                return ("level-" + d.data.level + " ") + (d.parent ? (d.children ? "node" : "node node--leaf" ) : "node node--root");
             })
             .style("fill", function (d) {
                 if (d.data && d.data.color) {
@@ -503,6 +512,7 @@ define([
                 }
             })
             .on("mousemove", function (node) {
+
                 var current = self.focus.data.name,
                     maxDepthAncestors = getMaxDepth(node).ancestors.reverse(),
                     path = _.map(maxDepthAncestors, function (i) {
@@ -511,21 +521,28 @@ define([
                     currentIndex = path.indexOf(current),
                     d = maxDepthAncestors[currentIndex + 1];
 
-                var size = getSize(d);
-
-                if (isNaN(size)) {
-                    return
+                if (node.data.name === self.focus.data.name) {
+                    return;
                 }
+
+                /*g.selectAll("circle")
+                    .classed("no-pointer-event", true);
+
+                g.selectAll("circle.level-" + (currentIndex + 1))
+                    .classed("no-pointer-event", false);*/
+
+                var size = getSize(d),
+                    x = d3.event.pageX - $(self.el).offset().left,
+                    y = d3.event.pageY - $(self.el).offset().top;
 
                 //update tooltip content
                 tooltip.html(tooltipTemplate({
-                    size : size,
-                    um : "g",
-                    title : node.data.name
-                } ))
-                    .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY) + "px");
-
+                    size: Formatter.formatLabel(size),
+                    um: "g",
+                    title: d.data.name
+                }))
+                    .style("left", x + "px")
+                    .style("top", y + "px");
 
                 //show tooltip
                 tooltip.transition()
@@ -540,21 +557,21 @@ define([
             });
 
         //create texts
-       /* var text = g.selectAll("text")
-            .data(descendants)
-            .enter()
-            .append("text")
-            .attr("class", "label")
-            .style("fill-opacity", function (d) { //set if text should be visible or not
-                return d.parent === root ? 1 : 0;
-            })
-            .style("display", function (d) {
-                return d.parent === root ? "inline" : "none";
-            })
-            .text(function (d) {
-                return d.data.name;
-            });
-*/
+        /* var text = g.selectAll("text")
+         .data(descendants)
+         .enter()
+         .append("text")
+         .attr("class", "label")
+         .style("fill-opacity", function (d) { //set if text should be visible or not
+         return d.parent === root ? 1 : 0;
+         })
+         .style("display", function (d) {
+         return d.parent === root ? "inline" : "none";
+         })
+         .text(function (d) {
+         return d.data.name;
+         });
+         */
         //if background is clicked then zoom to background
         svg.style("background", "#FFFFFF")
             .on("click", function () {
@@ -570,7 +587,7 @@ define([
 
             var transition =
                 svg.transition()
-                    .duration(d3.event.altKey ? 7500 : 750)
+                    .duration(1000)
                     .tween("zoom", function (d) {
                         var i = d3.interpolateZoom(view, [self.focus.x, self.focus.y, self.focus.r * 2 + margin]);
                         return function (t) {
@@ -665,10 +682,6 @@ define([
         function getSize(node) {
 
             var size = (node.data && !isNaN(parseInt(node.data.size))) ? +node.data.size : 0;
-
-            _.each(node.children, function (child) {
-                size += getSize(child);
-            });
 
             return size;
         }

@@ -8952,6 +8952,10 @@ button_new_2:before {
     display: none; }
     .fx-sandbox.fao-holder [data-page="readyToUse"] [data-section].active, .fx-sandbox.fao-holder [data-page="readyToUse"] [data-content].active {
       display: block; }
+  .fx-sandbox.fao-holder [data-page="readyToUse"] [data-role="title"] {
+    margin-bottom: 16px !important; }
+  .fx-sandbox.fao-holder .indicator-title {
+    margin-bottom: 10px !important; }
   .fx-sandbox.fao-holder .legend {
     position: relative;
     top: 50px; }
@@ -8966,12 +8970,11 @@ button_new_2:before {
     top: 3px; }
   .fx-sandbox.fao-holder .node {
     cursor: pointer; }
-  .fx-sandbox.fao-holder .node:hover {
-    stroke: #FFFFFF;
-    stroke-width: 1.5px; }
   .fx-sandbox.fao-holder .node--leaf {
     fill: white;
-    opacity: 0.3; }
+    fill-opacity: 0.3; }
+  .fx-sandbox.fao-holder .no-pointer-event {
+    pointer-events: none; }
   .fx-sandbox.fao-holder .label {
     font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-anchor: middle;
@@ -8987,10 +8990,11 @@ button_new_2:before {
     position: relative; }
   .fx-sandbox.fao-holder .tooltip-bubble-chart {
     position: absolute;
-    width: 200px;
-    margin-left: -100px;
-    margin-top: 10px;
-    padding: 10px;
+    width: 125px;
+    -ms-transform: translate(-50%, -120%);
+    -webkit-transform: translate(-50%, -120%);
+    transform: translate(-50%, -120%);
+    padding: 5px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
@@ -8999,22 +9003,31 @@ button_new_2:before {
     pointer-events: none;
     overflow: visible; }
     .fx-sandbox.fao-holder .tooltip-bubble-chart h1 {
-      font-size: 14px;
-      color: #0d6cac; }
+      font-size: 10px;
+      color: #0d6cac;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #ddd; }
     .fx-sandbox.fao-holder .tooltip-bubble-chart span {
-      font-size: 20px;
-      color: #333; }
+      font-size: 14px;
+      padding-top: 5px;
+      display: inline-block;
+      color: #333;
+      margin-bottom: 10px; }
     .fx-sandbox.fao-holder .tooltip-bubble-chart * {
       pointer-events: none; }
     .fx-sandbox.fao-holder .tooltip-bubble-chart .tooltip-arrow {
       position: absolute;
-      top: -10px;
+      bottom: -9px;
       width: 0;
       height: 0;
-      left: 90px;
+      left: 50%;
+      -ms-transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
       border-left: 10px solid transparent;
       border-right: 10px solid transparent;
-      border-bottom: 10px solid rgba(255, 255, 255, 0.9); }
+      border-top: 10px solid rgba(255, 255, 255, 0.9); }
   .fx-sandbox.fao-holder .bar-holder {
     width: 300px;
     position: relative; }
