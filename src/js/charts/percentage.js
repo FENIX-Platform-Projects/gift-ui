@@ -8,12 +8,12 @@ define([
 ], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
-        HEIGHT : 200,
-        WIDTH : 300,
-        process : [
+        HEIGHT: 200,
+        WIDTH: 300,
+        process: [
             {
                 "name": "gift_population_filter",
-                "sid": [ { "uid": "gift_process_total_food_consumption_000042BUR201001" } ],
+                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "item": "VITA",
                     "gender": "2",
@@ -21,7 +21,7 @@ define([
                     "age_year": {
                         "from": 10.5,
                         "to": 67
-                     }
+                    }
                     // "age_month": {
                     //     "from": 10.5,
                     //     "to": 67
@@ -52,22 +52,22 @@ define([
 
             {
                 "name": "group",
-                "rid" : { "uid" : "subjects_data" },
+                "rid": {"uid": "subjects_data"},
                 "parameters": {
                     "by": [
                         "subject"
                     ],
                     "aggregations": [
                         {
-                            "columns": [ "value" ],
+                            "columns": ["value"],
                             "rule": "SUM"
                         },
                         {
-                            "columns": [ "suggested_value" ],
+                            "columns": ["suggested_value"],
                             "rule": "MAX"
                         },
                         {
-                            "columns": [ "um" ],
+                            "columns": ["um"],
                             "rule": "MAX"
                         }
                     ]
@@ -76,24 +76,24 @@ define([
 
 
             {
-                "name" : "select",
-                "parameters" : {
-                    "values" : {
-                        "value" : "count(*)"
+                "name": "select",
+                "parameters": {
+                    "values": {
+                        "value": "count(*)"
                     }
                 }
             },
 
             {
-                "name" : "var",
-                "result" : false,
-                "parameters" : {
-                    "global" : true,
-                    "variables" : [
+                "name": "var",
+                "result": false,
+                "parameters": {
+                    "global": true,
+                    "variables": [
                         {
-                            "key" : "populationSize",
-                            "type" : "id",
-                            "value" : "value"
+                            "key": "populationSize",
+                            "type": "id",
+                            "value": "value"
                         }
                     ]
                 }
@@ -101,13 +101,13 @@ define([
 
 
             {
-                "name" : "select",
-                "sid" : [{ "uid" : "subjects_data" }],
-                "parameters" : {
-                    "values" : {
-                        "value" : "(count(*)*100.0)/<<populationSize[0]>>"
+                "name": "select",
+                "sid": [{"uid": "subjects_data"}],
+                "parameters": {
+                    "values": {
+                        "value": "(count(*)*100.0)/<<populationSize[0]>>"
                     },
-                    "query" : "where value<suggested_value"
+                    "query": "where value<suggested_value"
                 }
             },
 
@@ -140,8 +140,8 @@ define([
         this._init(params);
 
         this.bridge = new Bridge({
-            environment :  this.environment,
-            cache :  this.cache
+            environment: this.environment,
+            cache: this.cache
         });
 
         this._getProcessedResourceForChart(s.process).then(
@@ -174,7 +174,7 @@ define([
 
         process[0].sid[0].uid = this.uid;
 
-        if(this.selected_items){
+        if (this.selected_items) {
             process[0].parameters = this.selected_items;
         }
         return process;
@@ -183,7 +183,7 @@ define([
     PercentageChart.prototype._getProcessedResourceForChart = function (processConfig) {
         var process = this._updateProcessConfig(processConfig);
 
-        return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
+        return this.bridge.getProcessedResource({body: process, params: {language: this.language}});
     };
 
     PercentageChart.prototype._onSuccess = function (resource) {
@@ -197,7 +197,6 @@ define([
     PercentageChart.prototype._onError = function (resource) {
         log.info("_onError");
         log.error(resource)
-        return;
     };
 
     PercentageChart.prototype._getChartConfig = function (series) {
@@ -212,7 +211,7 @@ define([
                 spacingLeft: 0,
                 spacingRight: 0,
                 events: {
-                    load: function(event) {
+                    load: function (event) {
                         self._trigger("ready");
                     }
                 }
@@ -233,8 +232,8 @@ define([
 
             //hide yAxis
             yAxis: {
-                min : 0,
-                max :100,
+                min: 0,
+                max: 100,
                 gridLineWidth: 0,
                 minorGridLineWidth: 0,
                 lineWidth: 0,
@@ -287,18 +286,17 @@ define([
                 }
             },
 
-            series : series
+            series: series
         };
 
         return chartConfig;
     };
 
 
-
     PercentageChart.prototype._getChartConfig2 = function () {
 
         var self = this;
-        var chartConfig =  {
+        var chartConfig = {
             chart: {
                 type: 'column',
                 margin: [10, 10, 10, 10],
@@ -382,7 +380,7 @@ define([
         return chartConfig;
     };
 
-    PercentageChart.prototype._renderChart = function(chartConfig){
+    PercentageChart.prototype._renderChart = function (chartConfig) {
         $('#' + this.elID).css({
             height: s.HEIGHT,
             width: s.WIDTH
@@ -397,26 +395,24 @@ define([
         var data = resource.data;
 
         var columns = metadata.dsd.columns;
-        var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
+        var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].subject == 'um')
-            {
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].subject == 'um') {
                 um_index = i;
                 um_column_id = columns[i].id;
             }
-            else if(columns[i].subject == 'value')
-            {
+            else if (columns[i].subject == 'value') {
                 value_index = i;
             }
         }
 
-        var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language;
+        var umLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == um_column_id + '_' + self.language;
         });
 
         var htmlData = [];
-        if(data) {
+        if (data) {
             for (var i = 0; i < data.length; i++) {
                 var obj = {};
 
@@ -434,49 +430,49 @@ define([
 
     PercentageChart.prototype._dataToChartSeries = function (htmlData) {
 
-        var atRisk = parseInt(htmlData[0].valueFormat,10);
-        var notAtRisk = 100-atRisk;
+        var atRisk = parseInt(htmlData[0].valueFormat, 10);
+        var notAtRisk = 100 - atRisk;
         var atRiskValues = [];
         atRiskValues.push(atRisk);
         var notAtRiskValues = [];
         notAtRiskValues.push(notAtRisk);
 
-        var series= [
+        var series = [
             {
-                name: 'At risk',
-                color: 'red',
-                pointWidth: 200,
-                data: atRiskValues
-            },{
                 name: 'Not at risk',
                 color: '#333333',
                 pointWidth: 200,
                 data: notAtRiskValues
+            }, {
+                name: 'At risk',
+                color: 'red',
+                pointWidth: 200,
+                data: atRiskValues
             }]
 
         return series;
     };
 
     PercentageChart.prototype._setHTMLvariables = function (dataToChart) {
-        
+
         //Progress bar
         $(this.barID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
-        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title_firstPart'] + " "+this.selected_item_label+" "+labels[this.language.toLowerCase()][this.labelsId+'_title_secondPart']);
+        $('#' + this.labelsId + '-title').html(labels[this.language.toLowerCase()][this.labelsId + '_title_firstPart'] + " " + this.selected_item_label + " " + labels[this.language.toLowerCase()][this.labelsId + '_title_secondPart']);
 
-        $('#'+this.labelsId+'-description').html(labels[this.language.toLowerCase()][this.labelsId+'_descr_firstPart'] + " "+this.selected_item_label+" "+labels[this.language.toLowerCase()][this.labelsId+'_descr_secondPart']);
+        $('#' + this.labelsId + '-description').html(labels[this.language.toLowerCase()][this.labelsId + '_descr_firstPart'] + " " + this.selected_item_label + " " + labels[this.language.toLowerCase()][this.labelsId + '_descr_secondPart']);
     }
 
     PercentageChart.prototype.redraw = function (animation) {
-        if(animation) {
+        if (animation) {
             this.chart.redraw(animation);
         }
-        else{
+        else {
             this.chart.redraw();
         }
     };
 
     PercentageChart.prototype.dispose = function (opts) {
-        this.chart.destroy();
+        //this.chart.destroy();
     };
 
     PercentageChart.prototype._trigger = function (channel) {

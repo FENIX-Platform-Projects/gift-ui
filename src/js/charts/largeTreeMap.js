@@ -4,8 +4,9 @@ define([
     "loglevel",
     "../../nls/labels",
     "fenix-ui-bridge",
-    "highcharts"
-], function (_, $, log, labels, Bridge, Highcharts) {
+    "highcharts",
+    "../charts/valueFormatter"
+], function (_, $, log, labels, Bridge, Highcharts, Formatter) {
 
     var s = {
         HEIGHT : 500,
@@ -481,6 +482,7 @@ define([
     LargeTreeMap.prototype._processSeries_firstLevel = function (resourceObj) {
 
         var resorce = '';
+
         if(this.levels_number==2){
             resource = resourceObj.subgroup_data;
         }
@@ -519,7 +521,7 @@ define([
 
                     obj.name = it[subgroup_label_index];
                     obj.id = it[subgroup_code_id_index];
-                    obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10);
+                    obj.value = Formatter.format(parseInt(parseInt(it[value_index],10).toFixed(2),10));
                     obj.unit = it[um_label_index];
                     dataToChart.push(obj);
                 }
@@ -549,7 +551,7 @@ define([
 
                     obj.name = it[group_label_index];
                     obj.id = it[group_code_id_index];
-                    obj.value = parseInt(parseInt(it[value_index],10).toFixed(2),10);
+                    obj.value = Formatter.format(parseInt(parseInt(it[value_index],10).toFixed(2),10));
                     obj.unit = it[um_label_index];
                     dataToChart.push(obj);
                 }
@@ -655,6 +657,9 @@ define([
 
         var self = this;
         var chartConfig =  {
+            lang: {
+                drillUpText: 'Back'
+            },
             chart: {
                 events: {
                     load: function(event) {

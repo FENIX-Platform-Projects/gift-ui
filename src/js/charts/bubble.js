@@ -154,18 +154,16 @@ define([
                         "name": "filter",
                         "parameters": {
                             "columns": [
-                                "group_code",
                                 "subgroup_code",
                                 "foodex2_code",
-                                "value",
-                                "um"
+                                "value"
                             ],
                             "rows": {
                                 "group_code": {
                                     "codes": [
                                         {
                                             "uid": "GIFT_FoodGroups",
-                                            "codes": ["14"]
+                                            "codes": [ "14" ]
                                         }
                                     ]
                                 }
@@ -174,22 +172,45 @@ define([
                     },
 
                     {
+                        "name": "addcolumn",
+                        "parameters": {
+                            "column": {
+                                "dataType": "code",
+                                "id": "um",
+                                "subject" : "um",
+                                "title": {
+                                    "EN": "Unit of measure"
+                                },
+                                "domain": {
+                                    "codes": [
+                                        {
+                                            "idCodeList": "GIFT_UM"
+                                        }
+                                    ]
+                                }
+                            },
+                            "value": "ml"
+                        }
+                    },
+
+
+
+                    {
                         "name": "group",
-                        "rid": {"uid": "food_food"},
-                        "result": true,
+                        "rid" : {"uid":"food_food"},
+                        "result" : true,
                         "parameters": {
                             "by": [
-                                "group_code",
                                 "subgroup_code",
                                 "foodex2_code"
                             ],
                             "aggregations": [
                                 {
-                                    "columns": ["value"],
+                                    "columns": [ "value" ],
                                     "rule": "SUM"
                                 },
                                 {
-                                    "columns": ["um"],
+                                    "columns": [ "um" ],
                                     "rule": "max"
                                 }
                             ]
@@ -198,19 +219,36 @@ define([
 
                     {
                         "name": "group",
-                        "rid": {"uid": "food_subgroup"},
+                        "rid" : {"uid":"food_subgroup"},
+                        "result" : true,
                         "parameters": {
                             "by": [
-                                "group_code",
                                 "subgroup_code"
                             ],
                             "aggregations": [
                                 {
-                                    "columns": ["value"],
+                                    "columns": [ "value" ],
                                     "rule": "SUM"
                                 },
                                 {
-                                    "columns": ["um"],
+                                    "columns": [ "um" ],
+                                    "rule": "max"
+                                }
+                            ]
+                        }
+                    },
+
+                    {
+                        "name": "group",
+                        "rid" : {"uid":"food_total"},
+                        "parameters": {
+                            "aggregations": [
+                                {
+                                    "columns": [ "value" ],
+                                    "rule": "SUM"
+                                },
+                                {
+                                    "columns": [ "um" ],
                                     "rule": "max"
                                 }
                             ]
@@ -289,7 +327,6 @@ define([
             result.push({
                 name: group[details["group_code_" + lang].index],
                 size: group[details["value"].index],
-                label: Formatter.format(group[details["value"].index]),
                 color: colors.pop(),
                 level : "1"
             });
@@ -300,7 +337,6 @@ define([
             var sub = {
                 name: subgroup[details["subgroup_code_" + lang].index],
                 size: subgroup[details["value"].index],
-                label: Formatter.format(subgroup[details["value"].index]),
                 color: "white",
                 opacity: 0.3,
                 level : "2"
@@ -322,7 +358,6 @@ define([
             var f = {
                 name: food[details["foodex2_code_" + lang].index],
                 size: food[details["value"].index],
-                label: Formatter.format(food[details["value"].index]),
                 level : "3"
             };
 
@@ -537,7 +572,7 @@ define([
 
                 //update tooltip content
                 tooltip.html(tooltipTemplate({
-                    size: Formatter.formatLabel(size),
+                    size: Formatter.format(size),
                     um: "g",
                     title: d.data.name
                 }))

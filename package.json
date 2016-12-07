@@ -35,7 +35,7 @@
     "bootstrap": "^3.3.7",
     "d3": "^4.4.0",
     "fenix-ui-bridge": "^1.0.0-beta.12",
-    "fenix-ui-catalog": "^2.0.0-beta.25",
+    "fenix-ui-catalog": "^2.0.0-beta.28",
     "fenix-ui-data-management": "^2.0.0-beta.85",
     "fenix-ui-filter": "^3.0.0-beta.64",
     "fenix-ui-map": "^2.7.0",

@@ -25,7 +25,9 @@ define(["underscore"], function (_) {
             },
 
             template : {
-                hideHeader : true
+                title : "Select a food:",
+                hideSwitch : true,
+                hideRemoveButton : true,
             }
         }
 
@@ -99,6 +101,7 @@ define(["underscore"], function (_) {
 
         catalog: {
             pluginRegistry: {
+
                 contextSystem: {
                     selector: {
                         source: [
@@ -107,19 +110,32 @@ define(["underscore"], function (_) {
                         default: ["gift"]
                     }
                 },
+
                 dataDomain: {
+                    selector: {
+                        id: "dropdown",
+                        hideSummary: true,
+                        config: {
+                            plugins: ['remove_button'],
+                            mode: 'multi'
+                        }
+                    },
+
+                    template: {
+                        hideRemoveButton: false
+                    },
+
+                    format: {
+                        output: "codes",
+                        metadataAttribute: "meContent.seCoverage.coverageSectors"
+                    },
                     cl: {
                         uid: "GIFT_CoverageSector",
                         level: 1,
                         levels: 1
                     }
                 },
-                statusOfConfidentiality: {
-                    uid: "GIFT_ConfidentialityStatus"
-                },
-                referenceArea: {
-                    uid: "GIFT_ReferenceArea"
-                },
+
                 coverageTime: {
                     selector: {
                         id: "range",
@@ -143,12 +159,29 @@ define(["underscore"], function (_) {
                         metadataAttribute: "meContent.seCoverage.coverageTime",
                         output: "time"
                     }
+
                 }
             },
+
+            columns : {
+                title: {
+                    path : "title",
+                    type: "i18n",
+                    title : "Title",
+                    width: "50%"
+                },
+                sampleSize : {
+                    path : "sampleSize",
+                    title : "Sample Size",
+                    width: "20%"
+                }
+            },
+
             baseFilter: {
                 "dsd.contextSystem": {"enumeration": ["gift"]},
                 "meContent.resourceRepresentationType": {"enumeration": ["dataset"]}
             },
+
             defaultSelectors: ["freeText", "region", "coverageTime"],
             menuExcludedItems: ["accessibility"]
         },

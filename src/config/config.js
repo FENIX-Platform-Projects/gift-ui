@@ -313,7 +313,7 @@ define(["underscore"], function (_) {
                     selector: {
                         id: "range",
                         config: {
-                            min: 1983,
+                            min: 1980,
                             max: new Date().getFullYear(),
                             type: "double",
                             grid: true,
@@ -354,7 +354,7 @@ define(["underscore"], function (_) {
                         default: ["none"]
                     },
                     template: {
-                        title: "Reference Area",
+                        title: "Geographical/Administrative coverage",
                         hideSwitch: true,
                         hideRemoveButton: true
                     },

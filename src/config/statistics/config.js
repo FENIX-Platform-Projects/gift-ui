@@ -40,8 +40,6 @@ define(["jquery", "underscore"],function ($, _) {
                   }
                 });
 
-                console.log(final)
-
                 return final;
 
             },

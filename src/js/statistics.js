@@ -152,16 +152,12 @@ define([
         SC.catalog.selectorsDependencies = filter.dependencies;
         SC.catalog.template = Handlebars.compile(this.catalogTemplate);
 
-        //console.log(SC.catalog.template())
-
-        var model = $.extend(true, SC.catalog, {
+        var model = $.extend(true, {}, SC.catalog, {
             el: this.$el.find(s.CATALOG_HOLDER),
             cache: this.cache,
             environment: this.environment,
             hideCloseButton: true
         });
-
-        //console.log(JSON.stringify(model))
 
         this.catalog = new Catalog(model);
     };

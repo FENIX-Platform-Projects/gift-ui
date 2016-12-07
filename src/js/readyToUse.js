@@ -161,8 +161,8 @@ define([
 
         this.filter = new Filter($.extend(true, {
             el: s.FILTER
-        }, C.populationFilter));
-
+        }, C.populationFilter)).
+            on("click", _.bind(this._onSearchButtonClick, this));
     };
 
     ReadyToUse.prototype._showSection = function (section) {
@@ -195,8 +195,6 @@ define([
         this.$backButton.on("click", _.bind(this._onBackButtonClick, this));
 
         this.$metaButton.on("click", _.bind(this._onMetaButtonClick, this));
-
-        this.$searchButton.on("click", _.bind(this._onSearchButtonClick, this));
 
         this.$tabs.on("click", _.bind(this._onTabClick, this))
     };
@@ -388,6 +386,10 @@ define([
 
         this._updateTitle();
 
+        if (!this.model) {
+            return
+        }
+
         this._updateModelAndProcess();
 
         this.foodConsumptionTab.refresh({
@@ -414,7 +416,7 @@ define([
 
     ReadyToUse.prototype._updateTitle = function () {
 
-        var model = this.model,
+        var model = this.model || {},
             title = model.title || {};
 
         this.$dashboardTitle.html(title[this.lang.toUpperCase()] || model.uid);
@@ -441,13 +443,11 @@ define([
         require("../../node_modules/ion-rangeslider/css/ion.rangeSlider.skinHTML5.css");
         //time selector
         require("../../node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css");
-        // // fenix-ui-filter
+        // fenix-ui-filter
         require("../../node_modules/fenix-ui-filter/dist/fenix-ui-filter.min.css");
 
-        // // fenix-ui-dropdown
+        // fenix-ui-dropdown
         require("../../node_modules/fenix-ui-dropdown/dist/fenix-ui-dropdown.min.css");
-
-
 
         // bootstrap-table
         require("../../node_modules/bootstrap-table/dist/bootstrap-table.min.css");

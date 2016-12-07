@@ -403,6 +403,9 @@ define([
     ThreeLevDrilldown.prototype._getChartConfig = function (series) {
         var self = this;
        var chartConfig =  {
+           lang: {
+               drillUpText: 'Back'
+           },
             chart: {
                 type: 'pie',
                     events: {

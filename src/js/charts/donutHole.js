@@ -8,14 +8,14 @@ define([
 ], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
-        HEIGHT : 500,
-        WIDTH : 500,
+        HEIGHT: 500,
+        WIDTH: 500,
         level_number: 1,
-        process : {
-            first_level_process : [
+        process: {
+            first_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
+                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
                     "parameters": {
                         "item": "ENERGY",
                         "gender": "2",
@@ -38,11 +38,11 @@ define([
                         ],
                         "aggregations": [
                             {
-                                "columns": [ "value" ],
+                                "columns": ["value"],
                                 "rule": "SUM"
                             },
                             {
-                                "columns": [ "um" ],
+                                "columns": ["um"],
                                 "rule": "max"
                             }
                         ]
@@ -55,10 +55,10 @@ define([
                     }
                 }
             ],
-            second_level_process : [
+            second_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [ { "uid": "gift_process_total_weighted_food_consumption_000042BUR201001" } ],
+                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
                     "parameters": {
                         "item": "ENERGY",
                         "gender": "2",
@@ -87,7 +87,7 @@ define([
                                 "codes": [
                                     {
                                         "uid": "GIFT_FoodGroups",
-                                        "codes": [ "01" ]
+                                        "codes": ["01"]
                                     }
                                 ]
                             }
@@ -103,11 +103,11 @@ define([
                         ],
                         "aggregations": [
                             {
-                                "columns": [ "value" ],
+                                "columns": ["value"],
                                 "rule": "SUM"
                             },
                             {
-                                "columns": [ "um" ],
+                                "columns": ["um"],
                                 "rule": "max"
                             }
                         ]
@@ -132,8 +132,8 @@ define([
         this._init(params);
 
         this.bridge = new Bridge({
-            environment :  this.environment,
-            cache :  this.cache
+            environment: this.environment,
+            cache: this.cache
         });
 
         this._getProcessedResourceForChart(s.process.first_level_process).then(
@@ -163,7 +163,7 @@ define([
         process[0].sid[0].uid = this.uid;
         process[0].parameters = this.selected_items;
 
-        if(group_code){
+        if (group_code) {
             process[1].parameters.rows.group_code.codes[0].codes = group_code;
         }
 
@@ -171,11 +171,10 @@ define([
     }
 
 
-
     DonutHole.prototype._getProcessedResourceForChart = function (processConfig, group_code) {
         var process = this._updateProcessConfig(processConfig, group_code);
         //process=s.process.first_level_process
-        return this.bridge.getProcessedResource({body: process, params: {language : this.language}});
+        return this.bridge.getProcessedResource({body: process, params: {language: this.language}});
     };
 
     DonutHole.prototype._onSuccess = function (resource) {
@@ -199,40 +198,38 @@ define([
         var data = resource.data;
 
         var columns = metadata.dsd.columns;
-        var um_index='', value_index= '', code_index = '', code_column_id, um_column_id;
+        var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
-        for(var i=0; i< columns.length;i++){
-            if(columns[i].subject == 'um')
-            {
+        for (var i = 0; i < columns.length; i++) {
+            if (columns[i].subject == 'um') {
                 um_index = i;
                 um_column_id = columns[i].id;
             }
-            else if(columns[i].subject == 'value')
-            {
+            else if (columns[i].subject == 'value') {
                 value_index = i;
             }
-            else if(columns[i].dataType == 'code'){
+            else if (columns[i].dataType == 'code') {
                 code_index = i;
                 code_column_id = columns[i].id;
             }
         }
 
-        var umLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== um_column_id +'_'+self.language.toUpperCase();
+        var umLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == um_column_id + '_' + self.language.toUpperCase();
         });
 
-        var codeLabelIdx =  _.findIndex(columns, function (col ){
-            return col.id== code_column_id +'_'+self.language.toUpperCase();
+        var codeLabelIdx = _.findIndex(columns, function (col) {
+            return col.id == code_column_id + '_' + self.language.toUpperCase();
         });
 
         var dataToChart = [];
 
-        if(data){
-            for(var i=0; i< data.length;i++) {
+        if (data) {
+            for (var i = 0; i < data.length; i++) {
                 var obj = {};
                 var it = data[i];
 
-                obj.y =it[value_index];
+                obj.y = it[value_index];
                 obj.unit = it[umLabelIdx];
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
@@ -245,7 +242,7 @@ define([
         return dataToChart;
     };
 
-    DonutHole.prototype._getProccessForSecondLevel = function(point, chart){
+    DonutHole.prototype._getProccessForSecondLevel = function (point, chart) {
         var self = this;
         var group_code = [];
         group_code.push(point.code);
@@ -265,9 +262,9 @@ define([
 
         var chart = chart,
             drilldowns = {};
-            drilldowns[point.code] = {};
-            drilldowns[point.code].name = point.name;
-            drilldowns[point.code].data = ser;
+        drilldowns[point.code] = {};
+        drilldowns[point.code].name = point.name;
+        drilldowns[point.code].data = ser;
 
         var series = drilldowns[point.code];
 
@@ -285,18 +282,21 @@ define([
 
 
         var self = this;
-       var chartConfig =  {
+        var chartConfig = {
+            lang: {
+                drillUpText: 'Back'
+            },
             chart: {
                 type: 'pie',
                 events: {
-                    load: function(event) {
+                    load: function (event) {
                         self._trigger("ready");
                     },
                     drillup: function () {
                         s.level_number--;
                     },
                     drilldown: function (e) {
-                        if(s.level_number!=2){
+                        if (s.level_number != 2) {
                             s.level_number++;
                             if (!e.seriesOptions) {
                                 self._getProccessForSecondLevel(e.point, this);
@@ -316,13 +316,13 @@ define([
                 enabled: true,
                 floating: false,
 
-                labelFormatter: function() {
+                labelFormatter: function () {
                     // do truncation here and return string
                     // this.name holds the whole label
                     // for example:
-                    return this.name.slice(0, 15)+'...'
+                    return this.name.slice(0, 15) + '...'
                 }
-              //  layout: "hori"
+                //  layout: "hori"
             },
 
             plotOptions: {
@@ -347,14 +347,14 @@ define([
 
             tooltip: {
                 formatter: function () {
-                  return this.key + ': <b>  '+  Highcharts.numberFormat(this.y, 2) + ' '+ this.point.unit+ '</b>';
-               }
-           },
+                    return this.key + ': <b>  ' + Highcharts.numberFormat(this.y, 2) + ' ' + this.point.unit + '</b>';
+                }
+            },
 
-           //remove credits
-           credits: {
-               enabled: false
-           },
+            //remove credits
+            credits: {
+                enabled: false
+            },
 
             series: [{
                 name: 'Items',
@@ -362,15 +362,15 @@ define([
                 data: series
             }]
 
-        //     drilldown: {
-        //     series: []
-        // }
+            //     drilldown: {
+            //     series: []
+            // }
         };
 
         return chartConfig;
     };
 
-    DonutHole.prototype._renderChart = function(chartConfig){
+    DonutHole.prototype._renderChart = function (chartConfig) {
 
         $('#' + this.elID).css({
             height: s.HEIGHT,
@@ -387,14 +387,14 @@ define([
     };
 
     DonutHole.prototype._setHTMLvariables = function () {
-        $('#'+this.labelsId+'-title').html(labels[this.language.toLowerCase()][this.labelsId+'_title']);
+        $('#' + this.labelsId + '-title').html(labels[this.language.toLowerCase()][this.labelsId + '_title']);
     };
 
     DonutHole.prototype.redraw = function (animation) {
-        if(animation) {
+        if (animation) {
             this.chart.redraw(animation);
         }
-        else{
+        else {
             this.chart.redraw();
         }
     };

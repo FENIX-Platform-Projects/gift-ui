@@ -273,6 +273,9 @@ define([
 
         var self = this;
        var chartConfig =  {
+           lang: {
+               drillUpText: 'Back'
+           },
             chart: {
                 type: 'pie',
                     events: {
