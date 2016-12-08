@@ -51,13 +51,30 @@ define(function () {
                     metadataAttribute: "meContent.seCoverage.coverageTime",
                     output: "time"
                 }
+            },
+            "confidentialityStatus": {
+                "cl": {uid: 'GIFT_ConfidentialityStatus'},
+                "selector": {
+                    "id": "dropdown",
+                    "config": {"maxItems": 1},
+                    "sort": false,
+                },
+                "template": {
+                    "title": "Availability of the dataset",
+                    hideSwitch: true,
+                    hideRemoveButton: true
+                },
+                "format": {
+                    metadataAttribute: "meAccessibility.seConfidentiality.confidentialityStatus",
+                    "output": "codes"
+                }
             }
         },
         baseFilter: {
             "dsd.contextSystem": {"enumeration": ["gift"]},
             "meContent.resourceRepresentationType": {"enumeration": ["dataset"]}
         },
-        defaultSelectors: ["freeText", "region", "coverageTime"],
+        defaultSelectors: ["freeText", "region", "coverageTime", "confidentialityStatus"],
         menuExcludedItems: ["accessibility"]
 
     }
