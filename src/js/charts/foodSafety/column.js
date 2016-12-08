@@ -4,8 +4,9 @@ define([
     "loglevel",
     "../../../nls/labels",
     "fenix-ui-bridge",
+    "../../charts/valueFormatter",
     "highcharts"
-], function (_, $, log, labels, Bridge, Highcharts) {
+], function (_, $, log, labels, Bridge, Formatter, Highcharts) {
 
     var s = {
         HEIGHT: 350,
@@ -146,6 +147,7 @@ define([
         this.columnPercentageItemID = opts.columnPercentageItemID;
         this.columnPercentageItemLabel = opts.columnPercentageItemLabel;
         this.language = opts.language;
+        this.holder = opts.holder;
         this.filter = opts.filter;
 
         //pub/sub
@@ -178,6 +180,14 @@ define([
     };
 
     ColumnChart.prototype._onSuccess = function (resource) {
+
+        if (resource.size === 0) {
+            $(this.holder).addClass("no-data");
+            return;
+        }
+
+        $(this.holder).removeClass("no-data");
+
         var data = this._processSeries(resource);
         this._setHTMLvariables(data);
         var chartConfig = this._getChartConfig();
@@ -186,8 +196,7 @@ define([
 
     ColumnChart.prototype._onError = function (resource) {
         log.info("_onError");
-        log.error(resource)
-        return;
+        log.error(resource);
     };
 
     ColumnChart.prototype._getChartConfig = function () {
@@ -290,7 +299,7 @@ define([
         $('#' + this.elID).css({
             height: s.HEIGHT,
             width: s.WIDTH
-        })
+        });
         this.chart = Highcharts.chart(this.elID, chartConfig);
     };
 
@@ -327,9 +336,9 @@ define([
                 var obj = {};
 
                 var it = data[i];
-                obj.valueFormat = it[value_index].toFixed(2);
-                obj.value = it[value_index];
-                obj.unit = it[umLabelIdx];
+                obj.valueFormat = Formatter.format([value_index]) || " - " ;
+                obj.value = it[value_index] || " - ";
+                obj.unit = it[umLabelIdx] || " - ";
 
                 htmlData.push(obj);
             }
@@ -346,11 +355,11 @@ define([
         });
         $('#' + this.labelsId + '-title').html(labels[this.language.toLowerCase()][this.labelsId + '_title'] + ": " + this.columnPercentageItemLabel);
 
-        $(this.columnPercentageID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
-        $(this.columnPercentageItemID).html(this.columnPercentageItemLabel);
-        $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " <span> " + dataToChart[1].unit  + s.DAY + "</span>");
-        $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " <span> " + dataToChart[2].unit + s.DAY + "</span>");
-        $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " <span> " + dataToChart[3].unit + s.DAY + "</span>");
+        $(this.columnPercentageID).html((dataToChart[0].valueFormat || "-") + dataToChart[0].unit);
+        $(this.columnPercentageItemID).html(this.columnPercentageItemLabel || "-");
+        $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " <span> " + (dataToChart[1].unit || "-")  + s.DAY + "</span>");
+        $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " <span> " + (dataToChart[2].unit || "-") + s.DAY + "</span>");
+        $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " <span> " + (dataToChart[3].unit || "-" )+ s.DAY + "</span>");
     };
 
     ColumnChart.prototype.redraw = function (animation) {

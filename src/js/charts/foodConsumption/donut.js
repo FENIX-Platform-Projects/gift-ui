@@ -13,90 +13,116 @@ define([
             "sid": [],
         },
         s = {
-        HEIGHT: 500,
-        WIDTH: 500,
-        level_number: 1,
-        process: {
-            first_level_process: [
-                {
-                    "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
-                    "parameters": {
-                        "item": "ENERGY",
-                        "gender": "2",
-                        "special_condition": ["2"],
-                        "age_year": {
-                            "from": 10.5,
-                            "to": 67
-                        }
-                    }
-                },
-                {
-                    "name": "group",
-                    "parameters": {
-                        "by": [
-                            "group_code"
-                        ],
-                        "aggregations": [
-                            {
-                                "columns": ["value"],
-                                "rule": "SUM"
-                            },
-                            {
-                                "columns": ["um"],
-                                "rule": "max"
-                            }
-                        ]
-                    }
-                },
-                {
-                    "name": "order",
-                    "parameters": {
-                        "value": "DESC"
-                    }
-                }
-            ],
-            second_level_process: [
-                {
-                    "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
-                    "parameters": {
-                        "item": "ENERGY",
-                        "gender": "2",
-                        "special_condition": ["2"],
-                        "age_year": {
-                            "from": 10.5,
-                            "to": 67
-                        }
-                    }
-                },
-                {
-                    "name": "filter",
-                    "parameters": {
-                        "columns": [
-                            "subgroup_code",
-                            "value",
-                            "um"
-                        ],
-                        "rows": {
-                            "group_code": {
-                                "codes": [
-                                    {
-                                        "uid": "GIFT_FoodGroups",
-                                        "codes": ["01"]
-                                    }
-                                ]
+            HEIGHT: 500,
+            WIDTH: 500,
+            title: "#donut-title",
+            level_number: 1,
+            process: {
+                first_level_process: [
+                    {
+                        "name": "gift_population_filter",
+                        "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                        "parameters": {
+                            "item": "ENERGY",
+                            "gender": "2",
+                            "special_condition": ["2"],
+                            "age_year": {
+                                "from": 10.5,
+                                "to": 67
                             }
                         }
+                    },
+                    {
+                        "name": "group",
+                        "parameters": {
+                            "by": [
+                                "group_code"
+                            ],
+                            "aggregations": [
+                                {
+                                    "columns": ["value"],
+                                    "rule": "SUM"
+                                },
+                                {
+                                    "columns": ["um"],
+                                    "rule": "max"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "parameters": {
+                            "value": "DESC"
+                        }
                     }
-                },
+                ],
+                second_level_process: [
+                    {
+                        "name": "gift_population_filter",
+                        "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                        "parameters": {
+                            "item": "ENERGY",
+                            "gender": "2",
+                            "special_condition": ["2"],
+                            "age_year": {
+                                "from": 10.5,
+                                "to": 67
+                            }
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "parameters": {
+                            "columns": [
+                                "subgroup_code",
+                                "value",
+                                "um"
+                            ],
+                            "rows": {
+                                "group_code": {
+                                    "codes": [
+                                        {
+                                            "uid": "GIFT_FoodGroups",
+                                            "codes": ["01"]
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+
+                    {
+                        "name": "group",
+                        "parameters": {
+                            "by": [
+                                "subgroup_code"
+                            ],
+                            "aggregations": [
+                                {
+                                    "columns": ["value"],
+                                    "rule": "SUM"
+                                },
+                                {
+                                    "columns": ["um"],
+                                    "rule": "max"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "parameters": {
+                            "value": "DESC"
+                        }
+                    }
+                ]
+            },
+            totalProcess: [
 
                 {
                     "name": "group",
                     "parameters": {
-                        "by": [
-                            "subgroup_code"
-                        ],
                         "aggregations": [
                             {
                                 "columns": ["value"],
@@ -107,35 +133,10 @@ define([
                                 "rule": "max"
                             }
                         ]
-                    }
-                },
-                {
-                    "name": "order",
-                    "parameters": {
-                        "value": "DESC"
                     }
                 }
             ]
-        },
-        totalProcess :  [
-
-            {
-                "name": "group",
-                "parameters": {
-                    "aggregations": [
-                        {
-                            "columns": [ "value" ],
-                            "rule": "SUM"
-                        },
-                        {
-                            "columns": [ "um" ],
-                            "rule": "max"
-                        }
-                    ]
-                }
-            }
-        ]
-    };
+        };
 
     function DonutHole(params) {
 
@@ -156,7 +157,7 @@ define([
             f = $.extend(true, {}, filter);
 
         f.sid.push({
-            uid :  this.uid
+            uid: this.uid
         });
 
         f.parameters = this.selected_items;
@@ -164,7 +165,8 @@ define([
         p.unshift(f);
 
         this.bridge.getProcessedResource({
-            body: p, params: {language: this.language}})
+            body: p, params: {language: this.language}
+        })
             .then(
                 _.bind(this._onTitleSuccess, this),
                 _.bind(this._onError, this)
@@ -177,8 +179,16 @@ define([
             );
     }
 
-    DonutHole.prototype._onTitleSuccess = function(success) {
-        console.log(success)
+    DonutHole.prototype._onTitleSuccess = function (success) {
+        var r = success.data.length > 0 ? success.data[0] : [],
+            title = Formatter.format(r[0]) + " " + r[2];
+
+        if (r[0]){
+            $(s.title).html(title);
+        } else {
+            $(s.title).html(" ");
+        }
+
     };
 
     DonutHole.prototype._init = function (opts) {
@@ -352,8 +362,10 @@ define([
                 },
 
                 legend: {
+
                     enabled: true,
-                    floating: false,
+
+                    floating: true,
 
                     labelFormatter: function () {
                         // do truncation here and return string
@@ -365,6 +377,7 @@ define([
 
                 plotOptions: {
                     pie: {
+                        size : 300,
                         dataLabels: {
                             enabled: false,
                             style: {

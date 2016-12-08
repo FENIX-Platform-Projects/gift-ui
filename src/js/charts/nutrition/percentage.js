@@ -79,7 +79,7 @@ define([
                 "name": "select",
                 "parameters": {
                     "values": {
-                        "value": "count(*)"
+                        "value": "case when count(*)=0 then 1 else count(*) end"
                     }
                 }
             },
@@ -105,7 +105,7 @@ define([
                 "sid": [{"uid": "subjects_data"}],
                 "parameters": {
                     "values": {
-                        "value": "(count(*)*100.0)/<<populationSize[0]>>"
+                        "value": "trunc((count(*)*100.0)/<<populationSize[0]>>, 2)"
                     },
                     "query": "where value<suggested_value"
                 }
@@ -165,6 +165,8 @@ define([
         this.elID = opts.elID;
         this.barID = opts.barID;
 
+        this.holder = opts.holder;
+
         this.language = opts.language;
         this.labelsId = opts.labelsId;
 
@@ -179,7 +181,7 @@ define([
         process[0].parameters = this.selected_items;
 
         return process;
-    }
+    };
 
     PercentageChart.prototype._getProcessedResourceForChart = function (processConfig) {
         var process = this._updateProcessConfig(processConfig);
@@ -188,6 +190,14 @@ define([
     };
 
     PercentageChart.prototype._onSuccess = function (resource) {
+
+        if (resource.size === 0) {
+            $(this.holder).addClass("no-data");
+            return;
+        }
+
+        $(this.holder).removeClass("no-data");
+
         var data = this._processSeries(resource);
         this._setHTMLvariables(data);
         var series = this._dataToChartSeries(data);

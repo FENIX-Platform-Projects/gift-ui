@@ -25,6 +25,8 @@ define([
         PIE_EL: "pie",
         TABS_A: "#nutritionTabs > li > a",
 
+        PERCENTAGE_HOLDER : "#percentage-holder",
+
         PERCENTAGE_CONTAINER_ID: "stacked-percentage",
         BAR_PERCENTAGE_ID: "#stacked-bar-percentage",
         PERCENTAGE_LABELS_ID : "stackedPercentage",
@@ -120,6 +122,7 @@ define([
             labelsId : s.PERCENTAGE_LABELS_ID,
             barID: s.BAR_PERCENTAGE_ID,
             cache: C.cache,
+            holder : s.PERCENTAGE_HOLDER,
             environment: C.environment,
             uid: "gift_process_total_food_consumption_" + this.model.uid,
             selected_items: $.extend(true, {}, this.process.parameters, {

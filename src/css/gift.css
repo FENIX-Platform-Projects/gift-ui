@@ -8949,7 +8949,6 @@ button_new_2:before {
     overflow: hidden;
     text-overflow: ellipsis; }
   .fx-sandbox.fao-holder .rdu-chart-title {
-    color: red;
     margin-top: 0 !important;
     margin-bottom: 15px !important;
     padding-bottom: 10px;
@@ -9243,6 +9242,13 @@ button_new_2:before {
     font-size: 15px; }
   .fx-sandbox.fao-holder #largeTree .highcharts-text-outline, .fx-sandbox.fao-holder #pieThreeLevDrilldown .highcharts-text-outline, .fx-sandbox.fao-holder #donut .highcharts-text-outline, .fx-sandbox.fao-holder #largeTree-beverages .highcharts-text-outline {
     display: none; }
+  .fx-sandbox.fao-holder #donut-title {
+    font-size: 16px;
+    position: absolute;
+    top: 239px;
+    left: 206px;
+    width: 118px;
+    text-align: center; }
   .fx-sandbox.fao-holder #dietaryPattern .list-group .list-group-item.active {
     background-color: #0d6cac;
     border-color: #0d6cac; }
@@ -9263,6 +9269,23 @@ button_new_2:before {
     display: inline-block; }
   .fx-sandbox.fao-holder #sourceOfNutrientsInTheDiet .jstree-default .jstree-icon, .fx-sandbox.fao-holder #sourceOfNutrientsInTheDiet .jstree-default .jstree-node {
     background-image: none; }
+  .fx-sandbox.fao-holder .no-data {
+    position: relative;
+    opacity: 0.2; }
+    .fx-sandbox.fao-holder .no-data:before {
+      content: 'No Data to display';
+      font-size: 16px;
+      font-weight: bold;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      color: black;
+      -ms-transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+      display: block;
+      opacity: 1;
+      z-index: 2; }
   .fx-sandbox.fao-holder #consumption_map {
     border: 1px solid #D2D0D0; }
     .fx-sandbox.fao-holder #consumption_map ul li {
@@ -9600,6 +9623,10 @@ button_new_2:before {
       margin-bottom: 5px !important; }
   .fx-sandbox.fao-holder .modal-body {
     padding: 0 15px; }
+  .fx-sandbox.fao-holder .modal-body.md-modal {
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: scroll; }
   .fx-sandbox.fao-holder #fx-data-management-content .catalog-modal .modal-lg, .fx-sandbox.fao-holder #fx-data-upload-content .catalog-modal .modal-lg {
     width: 100% !important; }
   .fx-sandbox.fao-holder #fx-data-management-menu .container {

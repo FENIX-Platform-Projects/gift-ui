@@ -304,7 +304,7 @@ define(["underscore"], function (_) {
                     format: {
                         metadataAttribute: "meContent.seCoverage.coverageGeographic",
                         output: "codes",
-                        uid: "GAUL"
+                        uid: "GAUL0"
                     }
                 },
 

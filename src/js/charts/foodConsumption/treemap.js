@@ -449,6 +449,7 @@ define([
     };
 
     LargeTreeMap.prototype._onSuccess = function (resource) {
+
         //Preparing series
         var series = '';
         if (this.levels_number == 2) {
@@ -493,15 +494,17 @@ define([
 
         var dataToChart = [];
         if (this.levels_number == 2) {
+
             var subgroup_code_id_index = '', value_index = '', subgroup_label_index = '', um_label_index = '';
             for (var i = 0; i < columns.length; i++) {
+
                 if (columns[i].id == "subgroup_code") {
                     subgroup_code_id_index = i;
                 }
                 else if (columns[i].subject == "value") {
                     value_index = i;
                 }
-                else if (columns[i].id == "subgroup_code" + this.language.toUpperCase()) {
+                else if (columns[i].id == "subgroup_code_" + this.language.toUpperCase()) {
                     subgroup_label_index = i;
                 }
                 else if (columns[i].id == "um_" + this.language.toUpperCase()) {
@@ -518,7 +521,7 @@ define([
 
                     obj.name = it[subgroup_label_index];
                     obj.id = it[subgroup_code_id_index];
-                    obj.value = Formatter.format(parseInt(parseInt(it[value_index], 10).toFixed(2), 10));
+                    obj.value = Formatter.format(it[value_index]);
                     obj.unit = it[um_label_index];
                     dataToChart.push(obj);
                 }
@@ -548,7 +551,7 @@ define([
 
                     obj.name = it[group_label_index];
                     obj.id = it[group_code_id_index];
-                    obj.value = Formatter.format(parseInt(parseInt(it[value_index], 10).toFixed(2), 10));
+                    obj.value = Formatter.format(it[value_index]);
                     obj.unit = it[um_label_index];
                     dataToChart.push(obj);
                 }

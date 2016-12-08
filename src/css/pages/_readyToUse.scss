@@ -1,6 +1,5 @@
 
 .rdu-chart-title{
-  color:red;
   margin-top: 0 !important;
   margin-bottom: 15px !important;
   padding-bottom: 10px;
@@ -552,6 +551,15 @@ $width: 300px;
 }
 
 
+#donut-title{
+  font-size: 16px;
+  position: absolute;
+  top: 239px;
+  left: 206px;
+  width: 118px;
+  text-align: center;
+}
+
 #dietaryPattern{
   .list-group{
     .list-group-item.active{
@@ -599,4 +607,24 @@ $width: 300px;
   .jstree-default .jstree-icon, .jstree-default .jstree-node{
     background-image: none;
   }
+}
+
+.no-data{
+  position: relative;
+  opacity: 0.2;
+
+  &:before{
+    content: 'No data to display';
+    font-size: 16px;
+    font-weight: bold;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: black;
+    @include fx-transfor-me(translate(-50%,-50%));
+    display: block;
+    opacity: 1;
+    z-index: 2;
+  }
+
 }
