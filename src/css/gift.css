@@ -9297,6 +9297,13 @@ button_new_2:before {
     padding: 6px; }
   .fx-sandbox.fao-holder .leaflet-control-disclaimer .tooltip .tooltip-arrow {
     border-left-color: white; }
+  .fx-sandbox.fao-holder .consumption-popup-list li {
+    padding-left: 33px;
+    position: relative;
+    margin-bottom: 10px !important; }
+  .fx-sandbox.fao-holder .consumption-popup-list li .label {
+    position: absolute;
+    left: 0; }
   .fx-sandbox.fao-holder .catalog-dm {
     position: static;
     display: block;
@@ -9612,14 +9619,3 @@ button_new_2:before {
   font-family: "Open Sans", Arial, Helvetica, Verdana, sans-serif; }
 
 /*# sourceMappingURL=gift.css.map */
-
-.consumption-popup-list li {
-  padding-left: 33px;
-  position: relative;
-  margin-bottom: 10px !important;
-}
-
-.consumption-popup-list li .label {
-  position: absolute;
-  left: 0;
-}
