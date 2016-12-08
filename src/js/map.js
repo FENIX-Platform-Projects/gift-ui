@@ -31,17 +31,16 @@ define(['jquery','underscore','loglevel','handlebars',
     LeafletMarkecluster,
     FenixMap,
     MetadataViewer,
-             Reports
+    Reports
 ) {
     "use strict";
     var LANG = C.lang;
 
     ConsC.codelistStyles = ConsC.codelistStyles[C.environment];
     
-    var confidentialityDataUrl = C.consumption.service[C.environment]+'/msd/resources/find?full=true',
-        confidentialityCodelistUrl = C.consumption.service[C.environment]+
-            //'/msd/resources/uid/GIFT_STATUS',
-            '/msd/resources/uid/GIFT_ConfidentialityStatus';
+    var serv = C.consumption.service[C.environment],
+        confidentialityDataUrl = serv+'/msd/resources/find?full=true',
+        confidentialityCodelistUrl = serv+'/msd/resources/uid/GIFT_ConfidentialityStatus';
     
     var confidentialityDataPayload = {
             "dsd.contextSystem": {
@@ -124,23 +123,24 @@ define(['jquery','underscore','loglevel','handlebars',
         });
 
         $.ajax({
-            async: false,                
+            async: false,
             dataType: 'json',
             method: 'POST',
-            contentType: "application/json; charset=utf-8",            
+            contentType: "application/json; charset=utf-8",
             url: confidentialityDataUrl,
-            data: JSON.stringify(C.consumption.requestBody),      
+            data: JSON.stringify(C.consumption.requestBody),
             success: function(res) {
 
                 res = _.filter(res, function(d) {
-
-                    if(!d.meContent.seCoverage)
-                        console.log('converage field not found',d);
-                    return d.meContent && d.meContent.seCoverage && d.meContent.seCoverage.coverageGeographic;
+                    return d.meContent && 
+                        d.meContent.seCoverage && 
+                        d.meContent.seCoverage.coverageGeographic;
                 });
 
                 self.metadataByCountry = _.groupBy(res, function(d) {
-                    var countryCode =  d.meContent.seCoverage.coverageGeographic.codes[0].code;
+
+                    var countryCode = d.meContent.seCoverage.coverageGeographic.codes[0].code;
+
                     return countryCode;
                 });
 
@@ -299,12 +299,15 @@ define(['jquery','underscore','loglevel','handlebars',
                     };
                 }
                 
-                self.layersByCodes[ code ].layer.addLayer( self._getMarker(items, code) );
+                var m = self._getMarker(items, code);
+                if(m)
+                    self.layersByCodes[ code ].layer.addLayer( m );
 
             });
 
-            if(ConsC.codelistStyles[ items[0].confids[0] ].visible)
-            self.layerAll.addLayer( self._getMarker(items) );
+            var mAll = self._getMarker(items);
+            if(mAll && ConsC.codelistStyles[ items[0].confids[0] ].visible)
+                self.layerAll.addLayer( mAll );
         });
 
     //fixed LEGEND field
@@ -366,6 +369,11 @@ define(['jquery','underscore','loglevel','handlebars',
                     return count;
                 }
             });*/
+            
+        if(!loc) {
+            console.log('centroid ot found',items[0].countryCode, loc);
+            return false;
+        }
 
         var childCount = items.length;
         if(filterCode) {
