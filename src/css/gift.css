@@ -9612,3 +9612,14 @@ button_new_2:before {
   font-family: "Open Sans", Arial, Helvetica, Verdana, sans-serif; }
 
 /*# sourceMappingURL=gift.css.map */
+
+.consumption-popup-list li {
+  padding-left: 33px;
+  position: relative;
+  margin-bottom: 10px !important;
+}
+
+.consumption-popup-list li .label {
+  position: absolute;
+  left: 0;
+}
