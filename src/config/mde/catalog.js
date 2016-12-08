@@ -32,7 +32,7 @@ define(function () {
                 selector: {
                     id: "range",
                     config: {
-                        min: 1983,
+                        min: 1980,
                         max: new Date().getFullYear(),
                         type: "double",
                         grid: true,
