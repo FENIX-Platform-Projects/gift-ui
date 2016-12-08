@@ -8,28 +8,12 @@ define([
     "highcharts"
 ], function (_, $, log, labels, Formatter, Bridge, Highcharts) {
 
-    var s = {
-        HEIGHT: 500,
-        WIDTH: 500,
-        level_number: 1,
-        process: {
-            first_level_process: [
-                {
-                    "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
-                    "parameters": {
-                        "gender": "2",
-                        "special_condition": ["2"],
-                        "age_year": {
-                            "from": 10.5,
-                            "to": 67
-                        }
-                        // "age_month": {
-                        //     "from": 10.5,
-                        //     "to": 67
-                        // }
-                    }
-                },
+    var filter = {
+            "name": "gift_population_filter",
+            "sid": [],
+        },
+        process = {
+            firstLevel: [
                 {
                     "name": "filter",
                     "parameters": {
@@ -52,7 +36,6 @@ define([
                         }
                     }
                 },
-
                 {
                     "name": "group",
                     "parameters": {
@@ -78,24 +61,7 @@ define([
                     }
                 }
             ],
-            second_level_process: [
-                {
-                    "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
-                    "parameters": {
-                        "gender": "2",
-                        "special_condition": ["2"],
-                        "age_year": {
-                            "from": 10.5,
-                            "to": 67
-                        }
-                        // "age_month": {
-                        //     "from": 10.5,
-                        //     "to": 67
-                        // }
-                    }
-                },
-
+            secondLevel: [
                 {
                     "name": "filter",
                     "parameters": {
@@ -150,24 +116,7 @@ define([
                     }
                 }
             ],
-            third_level_process: [
-                {
-                    "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
-                    "parameters": {
-                        "gender": "2",
-                        "special_condition": ["2"],
-                        "age_year": {
-                            "from": 10.5,
-                            "to": 67
-                        }
-                        // "age_month": {
-                        //     "from": 10.5,
-                        //     "to": 67
-                        // }
-                    }
-                },
-
+            thirdLevel: [
                 {
                     "name": "filter",
                     "parameters": {
@@ -222,49 +171,67 @@ define([
                     }
                 }
             ]
-        }
-    };
+        };
 
-    function ThreeLevDrilldown(params) {
+    function Donut(params) {
 
-        // Load Exporting Module after Highcharts loaded
-        //require('highcharts/modules/drilldown')(Highcharts);
+        require('highcharts/modules/drilldown')(Highcharts);
         require('highcharts-no-data-to-display')(Highcharts);
 
         this._init(params);
-
-        s.level_number = 1;
 
         this.bridge = new Bridge({
             environment: this.environment,
             cache: this.cache
         });
-        this._setHTMLvariables();
 
-        this._getProcessedResourceForChart(s.process.first_level_process)
-            .then(
+
+        var chartConfig = this._getChartConfig();
+
+        console.log("ALTRO")
+        console.log(JSON.stringify(chartConfig))
+
+
+        return this._renderChart(chartConfig);
+
+
+
+        var p = process.firstLevel.slice(0),
+            f = $.extend(true, {}, filter);
+
+        f.sid.push({
+            uid : "gift_process_total_weighted_food_consumption_" + this.uid
+        });
+
+        f.parameters = this.parameters;
+
+        p.unshift(f);
+
+            this.bridge.getProcessedResource({
+                body: p,
+                params: {language: "EN"}
+            }).then(
                 _.bind(this._onSuccess, this),
                 _.bind(this._onError, this)
             );
     }
 
-    ThreeLevDrilldown.prototype._init = function (opts) {
+    Donut.prototype._init = function (opts) {
+
         this.environment = opts.environment;
         this.cache = opts.cache;
 
         this.uid = opts.uid;
-        this.selected_items = opts.selected_items;
-        this.selected_config = opts.selected_config;
-        this.elID = opts.elID;
-        this.title = opts.title;
-
-        this.language = opts.language;
+        this.parameters = opts.parameters;
+        this.el = opts.el;
+        this.lang = opts.lang || "EN";
+        this.lang = this.lang.toUpperCase();
         this.labelsId = opts.labelsId;
         //pub/sub
         this.channels = {};
     };
 
-    ThreeLevDrilldown.prototype._updateProcessConfig = function (p, group_code, subgroup_code) {
+    Donut.prototype._updateProcessConfig = function (p, group_code, subgroup_code) {
 
         var process = p.slice(0);
 
@@ -282,79 +249,71 @@ define([
         return process;
     };
 
-    ThreeLevDrilldown.prototype._getProcessedResourceForChart = function (processConfig, group_code, subgroup_code) {
+
+    Donut.prototype._getProcessedResourceForChart = function (processConfig, group_code, subgroup_code) {
         var process = this._updateProcessConfig(processConfig, group_code, subgroup_code);
-        //process=s.process.first_level_process
-        return this.bridge.getProcessedResource({body: process, params: {language: this.language}});
+
     };
 
-    ThreeLevDrilldown.prototype._onSuccess = function (resource) {
-        var series = this._processSeries(resource);
+    Donut.prototype._onSuccess = function (resource) {
 
-        this._setHTMLvariables();
+       // var series = this._processSeries(resource);
 
         var chartConfig = this._getChartConfig(series);
 
         return this._renderChart(chartConfig);
     };
 
-    ThreeLevDrilldown.prototype._onError = function (resource) {
+    Donut.prototype._onError = function (resource) {
         log.info("_onError");
         log.error(resource)
 
     };
 
-    ThreeLevDrilldown.prototype._processSeries = function (resource) {
-        var self = this;
-        var metadata = resource.metadata;
-        var data = resource.data;
+    Donut.prototype._processSeries = function (r) {
 
-        var columns = metadata.dsd.columns;
-        var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
+        var resource = r || {},
+            metadata = resource.metadata,
+            data = resource.data,
+            dsd = metadata.dsd || {},
+            columns = dsd.columns || [];
 
-        for (var i = 0; i < columns.length; i++) {
-            if (columns[i].subject == 'um') {
-                um_index = i;
-                um_column_id = columns[i].id;
-            }
-            else if (columns[i].subject == 'value') {
-                value_index = i;
-            }
-            else if (columns[i].dataType == 'code') {
-                code_index = i;
-                code_column_id = columns[i].id;
-            }
-        }
+        // columns
 
-        var umLabelIdx = _.findIndex(columns, function (col) {
-            return col.id == um_column_id + '_' + self.language;
+        var um = _.findWhere(columns, {id : "um"}),
+            value = _.findWhere(columns, {id : "value"}),
+            groupCode = _.findWhere(columns, {id : "group_code"}),
+            umLabel = _.findWhere(columns, {id : "um_" + this.lang}),
+            groupCodeLabel = _.findWhere(columns, {id : "group_code_" + this.lang});
+
+        var indexUm = _.findIndex(columns, um),
+            indexValue = _.findIndex(columns, value),
+            indexGroupCode = _.findIndex(columns, groupCode),
+            indexUmLabele = _.findIndex(columns, umLabel),
+            indexGroupCodeLabel = _.findIndex(columns, groupCodeLabel);
+
+        var d = [];
+
+        _.each(data, function(row) {
+
+            d.push({
+                name: row[indexGroupCodeLabel],
+                y: Formatter.format(row[indexValue]),
+                drilldown: true
+            });
+
         });
 
-        var codeLabelIdx = _.findIndex(columns, function (col) {
-            return col.id == code_column_id + '_' + self.language;
-        });
+        var result = [{
+            name: 'Groups',
+            colorByPoint: true,
+            data: d
+        }];
 
-        var dataToChart = [];
-
-        if (data) {
-            for (var i = 0; i < data.length; i++) {
-                var obj = {};
-                var it = data[i];
-
-                obj.y = Formatter.format(it[value_index]);
-                obj.unit = it[umLabelIdx];
-                obj.name = it[codeLabelIdx];
-                obj.code = it[code_index];
-                obj.drilldown = true;
-
-                dataToChart.push(obj);
-            }
-        }
-
-        return dataToChart;
+        return result;
     };
 
-    ThreeLevDrilldown.prototype._getProccessForOtherLevels = function (point, chart) {
+    Donut.prototype._getProccessForOtherLevels = function (point, chart) {
         var self = this;
         var group_code = '';
         var subgroup_code = '';
@@ -387,7 +346,7 @@ define([
             });
     };
 
-    ThreeLevDrilldown.prototype._otherLevelOnSuccess = function (chart, point, resource) {
+    Donut.prototype._otherLevelOnSuccess = function (chart, point, resource) {
         var ser = this._processSeries(resource);
 
         var chart = chart,
@@ -397,133 +356,114 @@ define([
         drilldowns[point.code].data = ser;
 
         var series = drilldowns[point.code];
+        console.log("series", series)
         chart.hideLoading();
         chart.addSeriesAsDrilldown(point, series);
 
     };
 
 
-    ThreeLevDrilldown.prototype._getChartConfig = function (series) {
-        var self = this;
+    Donut.prototype._getChartConfig = function () {
 
-        var chartConfig = {
-            lang: {
-                drillUpText: 'Back'
-            },
+        return {
             chart: {
                 type: 'pie',
                 events: {
-                    /*                    load: function (event) {
-                     self._trigger("ready");
-                     },*/
-                  /*  drillup: function () {
-                        s.level_number--;
-                    },
                     drilldown: function (e) {
 
-                        console.log(e.point.name + "------------------------------------------" + Math.random())
+                        console.log("drilldown event")
+                        if (!e.seriesOptions) {
 
-                        if (s.level_number != 3) {
-                            s.level_number++;
-                            if (e.point) {
-                                self._getProccessForOtherLevels(e.point, this);
-                            } else {
-                                console.log("impossible to find point")
-                            }
+                            var chart = this,
+                                drilldowns = {
+                                    'Animals': {
+                                        name: 'Animals',
+                                        data: [
+                                            ['Cows', 2],
+                                            ['Sheep', 3]
+                                        ]
+                                    },
+                                    'Fruits': {
+                                        name: 'Fruits',
+                                        data: [
+                                            ['Apples', 5],
+                                            ['Oranges', 7],
+                                            ['Bananas', 2]
+                                        ]
+                                    },
+                                    'Cars': {
+                                        name: 'Cars',
+                                        data: [
+                                            ['Toyota', 1],
+                                            ['Volkswagen', 2],
+                                            ['Opel', 5]
+                                        ]
+                                    }
+                                },
+                                series = drilldowns[e.point.name];
+
+                            // Show the loading label
+                            chart.showLoading('Simulating Ajax ...');
+
+                            setTimeout(function () {
+                                chart.hideLoading();
+                                chart.addSeriesAsDrilldown(e.point, series);
+                            }, 1000);
                         }
-                        else {
-                            console.log("no drildown because level_number is 3")
-                        }
-                    }*/
+
+                    }
                 }
             },
-            title: {
-                text: null
-            },
+
             xAxis: {
                 type: 'category'
             },
 
             legend: {
-                enabled: true,
-                floating: false,
-
-                /*labelFormatter: function () {
-                 // do truncation here and return string
-                 // this.name holds the whole label
-                 // for example:
-                 return this.name.slice(0, 15) + '...'
-                 }
-                 //  layout: "hori"*/
+                enabled: false
             },
-            plotOptions: {
-                pie: {
-                    dataLabels: {
-                        enabled: false,
-                        style: {
-                            width: '80px'
-                        }
-                    },
-                    showInLegend: true,
-                    innerSize: '40%'
-                },
 
+            plotOptions: {
                 series: {
                     borderWidth: 0,
                     dataLabels: {
-                        enabled: false
+                        enabled: true
                     }
                 }
             },
 
-            tooltip: {
-                formatter: function () {
-                    return this.key + ': <b>  ' + this.y + ' ' + this.point.unit + '</b>';
-                }
-            },
-
-            //remove credits
-            credits: {
-                enabled: false
-            },
-
             series: [{
-                name: 'Items',
+                name: 'Things',
                 colorByPoint: true,
-                data: series
-            }]
-        };
+                data: [{
+                    name: 'Animals',
+                    y: 5,
+                    drilldown: true
+                }, {
+                    name: 'Fruits',
+                    y: 2,
+                    drilldown: true
+                }, {
+                    name: 'Cars',
+                    y: 4,
+                    drilldown: true
+                }]
+            }],
 
-        return chartConfig;
+            drilldown: {
+                series: []
+            }
+        }
     };
 
-    ThreeLevDrilldown.prototype._renderChart = function (chartConfig) {
+    Donut.prototype._renderChart = function (chartConfig) {
 
-        $('#' + this.elID).css({
-            height: s.HEIGHT,
-            width: s.WIDTH
-        });
+        console.log(JSON.stringify(chartConfig))
 
-        window.fx_req_id >= 0 ? window.fx_req_id++ : window.fx_req_id = 0;
-
-        var id = 'test-chart-'+window.fx_req_id;
-
-        var el = $("<div id='"+id+"'></div>");
-
-        $('#' +this.elID).html(el);
-
-        $(id).css({
-            height: s.HEIGHT,
-            width: s.WIDTH
-        });
-
-        //console.log($.fn.highcharts)
-        //console.log($("#" + id).length)
-
-        this.chart = Highcharts.chart(id, chartConfig);
+        Highcharts.chart("container", chartConfig);
     };
 
-    ThreeLevDrilldown.prototype._setHTMLvariables = function () {
+    Donut.prototype._setHTMLvariables = function () {
 
         var lang = this.language.toLowerCase(),
             prefix = labels[lang][this.labelsId + '_title_firstPart'],
@@ -534,7 +474,7 @@ define([
         $('#' + this.labelsId + '-title').html(title);
     };
 
-    ThreeLevDrilldown.prototype.redraw = function (animation) {
+    Donut.prototype.redraw = function (animation) {
         if (animation) {
             this.chart.redraw(animation);
         }
@@ -543,14 +483,14 @@ define([
         }
     };
 
-    ThreeLevDrilldown.prototype.dispose = function () {
+    Donut.prototype.dispose = function () {
         console.log(Highcharts.charts)
         this.chart.destroy();
 
         console.log("DESTROYED")
     };
 
-    ThreeLevDrilldown.prototype._trigger = function (channel) {
+    Donut.prototype._trigger = function (channel) {
 
         if (!this.channels[channel]) {
             return false;
@@ -568,7 +508,7 @@ define([
      * pub/sub
      * @return {Object} component instance
      */
-    ThreeLevDrilldown.prototype.on = function (channel, fn, context) {
+    Donut.prototype.on = function (channel, fn, context) {
         var _context = context || this;
         if (!this.channels[channel]) {
             this.channels[channel] = [];
@@ -577,5 +517,5 @@ define([
         return this;
     };
 
-    return ThreeLevDrilldown;
+    return Donut;
 });

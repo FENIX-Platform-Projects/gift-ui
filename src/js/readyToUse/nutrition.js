@@ -198,7 +198,7 @@ define([
 
     Nutrition.prototype._bindEventListeners = function () {
 
-        this.filter.on("click", _.bind(this._onSourceNutrientChange, this));
+        this.filter.on("select", _.bind(this._onSourceNutrientChange, this));
 
         this.$tabs.on("click", _.bind(this._onTabClick, this))
     };

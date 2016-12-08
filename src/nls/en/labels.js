@@ -99,6 +99,8 @@ define(function () {
         pieThreeLevDrilldown_title_firstPart : "Source of",
         pieThreeLevDrilldown_title_secondPart : "in the diet",
         largeTree_title : "Daily diet: portion of different food groups",
-        holeDonut_title : "Daily diet: calories per person per day"
+        holeDonut_title : "Daily diet: calories per person per day",
+
+        validationErrors : "Invalid selection"
     }
 });

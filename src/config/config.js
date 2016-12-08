@@ -136,7 +136,7 @@ define(["underscore"], function (_) {
                                     payloadIncludes: ["gender", "age", "ageGranularity"],
                                     forbiddenGender: "1",
                                     forbiddenAgeGranularity: "month",
-                                    threshold: 14
+                                    threshold: 12
                                 }
                             }
                         ]

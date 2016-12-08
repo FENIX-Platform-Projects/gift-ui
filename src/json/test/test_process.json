@@ -1,0 +1,40 @@
+[
+  {
+    "name": "gift_population_filter",
+    "sid": [
+      {
+        "uid": "gift_process_total_weighted_food_consumption_000042BUR201001"
+      }
+    ],
+    "parameters": {
+      "item": "ENERGY",
+      "gender": null,
+      "special_condition": [
+        "2"
+      ],
+      "age_year": {
+        "from": 10.5,
+        "to": 67
+      }
+    }
+  },
+  {
+    "name": "group",
+    "parameters": {
+      "aggregations": [
+        {
+          "columns": [
+            "value"
+          ],
+          "rule": "SUM"
+        },
+        {
+          "columns": [
+            "um"
+          ],
+          "rule": "max"
+        }
+      ]
+    }
+  }
+]

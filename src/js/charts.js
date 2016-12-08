@@ -81,7 +81,7 @@ define([
         //donut chart
         //this._renderDonutChart();
         //bubble chart
-        this._renderBubbleChart();
+        //this._renderBubbleChart();
         //column chart
         //this._renderStandardColumnChart();
         // this._renderAverageColumnChart();
@@ -92,7 +92,7 @@ define([
         //macronutrients chart
         //this._renderMacronutrientsChart();
         //pie three levels drilldown
-        //this._renderThreeLevDrilldownChart();
+        this._renderThreeLevDrilldownChart();
         //large tree map
         //this._renderLargeTreeMapChart();
     };
@@ -229,13 +229,11 @@ define([
                     "from": 10.5,
                     "to": 67
                 }
-                // "age_month": {
-                //     "from": 10.5,
-                //     "to": 67
-                // }
             },
-            selected_items: ["IRON"]
+            selected_items: ["ZINC"]
         }
+
+        //"IRON", "CALC", "FOLA", "VITA", "ZINC"
 
         var instance = new PieThreeLevDrilldown({
             elID: s.pieThreeLevDrilldown_chart.PIE_CONTAINER_ID,

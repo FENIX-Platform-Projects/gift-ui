@@ -163,7 +163,7 @@ define([
                                     "codes": [
                                         {
                                             "uid": "GIFT_FoodGroups",
-                                            "codes": [ "14" ]
+                                            "codes": ["14"]
                                         }
                                     ]
                                 }
@@ -177,7 +177,7 @@ define([
                             "column": {
                                 "dataType": "code",
                                 "id": "um",
-                                "subject" : "um",
+                                "subject": "um",
                                 "title": {
                                     "EN": "Unit of measure"
                                 },
@@ -194,11 +194,10 @@ define([
                     },
 
 
-
                     {
                         "name": "group",
-                        "rid" : {"uid":"food_food"},
-                        "result" : true,
+                        "rid": {"uid": "food_food"},
+                        "result": true,
                         "parameters": {
                             "by": [
                                 "subgroup_code",
@@ -206,11 +205,11 @@ define([
                             ],
                             "aggregations": [
                                 {
-                                    "columns": [ "value" ],
+                                    "columns": ["value"],
                                     "rule": "SUM"
                                 },
                                 {
-                                    "columns": [ "um" ],
+                                    "columns": ["um"],
                                     "rule": "max"
                                 }
                             ]
@@ -219,19 +218,19 @@ define([
 
                     {
                         "name": "group",
-                        "rid" : {"uid":"food_subgroup"},
-                        "result" : true,
+                        "rid": {"uid": "food_subgroup"},
+                        "result": true,
                         "parameters": {
                             "by": [
                                 "subgroup_code"
                             ],
                             "aggregations": [
                                 {
-                                    "columns": [ "value" ],
+                                    "columns": ["value"],
                                     "rule": "SUM"
                                 },
                                 {
-                                    "columns": [ "um" ],
+                                    "columns": ["um"],
                                     "rule": "max"
                                 }
                             ]
@@ -240,15 +239,15 @@ define([
 
                     {
                         "name": "group",
-                        "rid" : {"uid":"food_total"},
+                        "rid": {"uid": "food_total"},
                         "parameters": {
                             "aggregations": [
                                 {
-                                    "columns": [ "value" ],
+                                    "columns": ["value"],
                                     "rule": "SUM"
                                 },
                                 {
-                                    "columns": [ "um" ],
+                                    "columns": ["um"],
                                     "rule": "max"
                                 }
                             ]
@@ -328,7 +327,7 @@ define([
                 name: group[details["group_code_" + lang].index],
                 size: group[details["value"].index],
                 color: colors.pop(),
-                level : "1"
+                level: "1"
             });
         }
 
@@ -339,7 +338,7 @@ define([
                 size: subgroup[details["value"].index],
                 color: "white",
                 opacity: 0.3,
-                level : "2"
+                level: "2"
             };
 
             var group = _.find(result, function (item) {
@@ -358,7 +357,7 @@ define([
             var f = {
                 name: food[details["foodex2_code_" + lang].index],
                 size: food[details["value"].index],
-                level : "3"
+                level: "3"
             };
 
             var group = _.find(result, function (item) {
@@ -433,7 +432,7 @@ define([
                 name: subgroup[details["subgroup_code_" + lang].index],
                 size: subgroup[details["value"].index],
                 color: colors.pop(),
-                level : "1"
+                level: "1"
             });
         }
 
@@ -443,7 +442,7 @@ define([
                 name: food[details["foodex2_code_" + lang].index],
                 size: food[details["value"].index],
                 color: colors.pop(),
-                level : "2"
+                level: "2"
             };
 
             var subgroup = _.find(result, function (item) {
@@ -556,15 +555,23 @@ define([
                     currentIndex = path.indexOf(current),
                     d = maxDepthAncestors[currentIndex + 1];
 
-                if (node.data.name === self.focus.data.name) {
+                if (path.indexOf(node.data.name) <= path.indexOf(self.focus.data.name)) {
                     return;
                 }
 
-                /*g.selectAll("circle")
-                    .classed("no-pointer-event", true);
+                var descendants = _.map(self.focus.descendants(), function (a) {
+                    return a.data.name;
+                });
 
-                g.selectAll("circle.level-" + (currentIndex + 1))
-                    .classed("no-pointer-event", false);*/
+                if (!_.contains(descendants, d.data.name)) {
+                    return
+                }
+
+                /*g.selectAll("circle")
+                 .classed("no-pointer-event", true);
+
+                 g.selectAll("circle.level-" + (currentIndex + 1))
+                 .classed("no-pointer-event", false);*/
 
                 var size = getSize(d),
                     x = d3.event.pageX - $(self.el).offset().left,

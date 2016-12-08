@@ -114,7 +114,7 @@ define([
         this.$el.find(s.MENU_ITEMS).on("click", _.bind(this._onMenuItemClick, this));
 
         // TODO uncomment
-        // this.filter.on("click", _.bind(this._onFilterClick, this));
+        // this.filter.on("select", _.bind(this._onFilterClick, this));
 
     };
 
@@ -179,9 +179,9 @@ define([
     FoodConsumption.prototype._renderTreeMap = function (obj) {
         if (obj.initialized) {
             console.log("redraw treemap");
-            // _.each(obj.instances, function(i){
-            //     i.redraw();
-            // });
+             _.each(obj.instances, function(i){
+                 i.redraw();
+             });
             return;
         }
 
@@ -244,13 +244,17 @@ define([
 
         console.log("render donut");
 
+        var params = $.extend(true, {
+            item: "ENERGY"
+        }, this.process.parameters);
+
         var config = {
             elID: s.DONUT_EL,
             labelsId: s.DONUT_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
             uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,
-            selected_items: this.process.parameters,
+            selected_items: params,
             language: this.lang.toUpperCase()
         };
 

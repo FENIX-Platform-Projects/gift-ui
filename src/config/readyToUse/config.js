@@ -101,40 +101,69 @@ define(["underscore"], function (_) {
             "#02abe1",
             "#007ba1"],
 
+        treemapColors :["#ffc666",
+            "#7e5bd1",
+            "#abd950",
+            "#a742b2",
+            "#afe476",
+            "#2d175a",
+            "#edd346",
+            "#e5acff",
+            "#658b00",
+            "#ff81b9",
+            "#007439",
+            "#cc6a0a",
+            "#1eece6",
+            "#8b6f00",
+            "#00bd99",
+            "#465005"],
+
         catalog: {
             pluginRegistry: {
 
-                contextSystem: {
-                    selector: {
-                        source: [
-                            {value: "gift", label: "GIFT"}
-                        ],
-                        default: ["gift"]
+                freeText: {
+
+                    selector : {
+                        id : "input",
+                        type : "text"
+                    },
+
+                    template : {
+                        hideRemoveButton : true,
+                        hideSwitch : true
+                    },
+
+                    format : {
+                        output : "freeText",
+                        metadataAttribute: "freetext"
                     }
+
                 },
 
-                dataDomain: {
-                    selector: {
-                        id: "dropdown",
-                        hideSummary: true,
-                        config: {
+                region: {
+
+                    cl : {
+                        uid: "GAUL0",
+                        version: "2014"
+                    },
+
+                    selector : {
+                        id : "dropdown",
+                        hideSummary : true,
+                        config : {
                             plugins: ['remove_button'],
                             mode: 'multi'
                         }
                     },
 
-                    template: {
-                        hideRemoveButton: false
+                    template : {
+                        hideRemoveButton : true,
+                        hideSwitch : true
                     },
 
-                    format: {
-                        output: "codes",
-                        metadataAttribute: "meContent.seCoverage.coverageSectors"
-                    },
-                    cl: {
-                        uid: "GIFT_CoverageSector",
-                        level: 1,
-                        levels: 1
+                    format : {
+                        output : "codes",
+                        metadataAttribute: "meContent.seCoverage.coverageGeographic"
                     }
                 },
 
@@ -142,7 +171,7 @@ define(["underscore"], function (_) {
                     selector: {
                         id: "range",
                         config: {
-                            min: 1983,
+                            min: 1980,
                             max: new Date().getFullYear(),
                             type: "double",
                             grid: true,
@@ -165,6 +194,8 @@ define(["underscore"], function (_) {
                 }
             },
 
+            hideAddButton : true,
+
             columns : {
                 title: {
                     path : "title",
@@ -176,11 +207,11 @@ define(["underscore"], function (_) {
 
             baseFilter: {
                 "dsd.contextSystem": {"enumeration": ["gift"]},
-                "meContent.resourceRepresentationType": {"enumeration": ["dataset"]}
+                "meContent.resourceRepresentationType": {"enumeration": ["dataset"]},
+                "meAccessibility.seConfidentiality.confidentialityStatus" : {codes: [{uid : "GIFT_ConfidentialityStatus", codes: ["5"]}]}
             },
 
-            defaultSelectors: ["freeText", "region", "coverageTime"],
-            menuExcludedItems: ["accessibility"]
+            defaultSelectors: ["freeText", "region", "coverageTime"]
         },
 
         //forceShowDashboardSection: true,

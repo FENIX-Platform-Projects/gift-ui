@@ -32,7 +32,8 @@ define([
             META_MODAL: "#meta-modal",
             METADATA_VIEWER: "#metadata-viewer-container",
             FILTER: "#population-filter",
-            SEARCH_BUTTON: "[data-role='search']"
+            SEARCH_BUTTON: "[data-role='search']",
+            ERRORS : "[data-role='errors']"
         },
         sections = {
             SEARCH: "search",
@@ -104,6 +105,8 @@ define([
         this.$metaButton = this.$el.find(s.META);
         this.$metaModal = this.$el.find(s.META_MODAL);
         this.$tabs = this.$el.find(s.TABS_A);
+
+        this.$errors = this.$el.find(s.ERRORS);
 
         this.reports = new Reports({
             cache: this.cache,
@@ -191,7 +194,7 @@ define([
 
         this.catalog.on("select", _.bind(this._onCatalogSelect, this));
 
-        this.filter.on("change", _.bind(this._onFilterChangeEvent, this));
+        this.filter.on("select", _.bind(this._onFilterChangeEvent, this));
 
         this.$backButton.on("click", _.bind(this._onBackButtonClick, this));
 
@@ -207,8 +210,31 @@ define([
         this._showTab(tab);
     };
 
+    ReadyToUse.prototype._showErrors = function() {
+
+        this.$errors.show();
+        this.$errors.html(labels[this.lang.toLowerCase()].validationErrors);
+
+    };
+
+    ReadyToUse.prototype._hideErrors = function() {
+
+        this.$errors.hide();
+
+    };
 
     ReadyToUse.prototype._onFilterChangeEvent = function () {
+
+        var values = this.filter.getValues(),
+            valid = values.valid;
+
+        if (!valid){
+            this._showErrors();
+            return
+        } else {
+            this._hideErrors();
+        }
+
 
         log.info("Change from filter");
 

@@ -3,11 +3,16 @@ define([
     "jquery",
     "loglevel",
     "../../../nls/labels",
+    "../../charts/valueFormatter",
     "fenix-ui-bridge",
     "highcharts"
-], function (_, $, log, labels, Bridge, Highcharts) {
+], function (_, $, log, labels, Formatter, Bridge, Highcharts) {
 
-    var s = {
+    var filter = {
+            "name": "gift_population_filter",
+            "sid": [],
+        },
+        s = {
         HEIGHT: 500,
         WIDTH: 500,
         level_number: 1,
@@ -34,11 +39,11 @@ define([
                         ],
                         "aggregations": [
                             {
-                                "columns": [ "value" ],
+                                "columns": ["value"],
                                 "rule": "SUM"
                             },
                             {
-                                "columns": [ "um" ],
+                                "columns": ["um"],
                                 "rule": "max"
                             }
                         ]
@@ -78,7 +83,7 @@ define([
                                 "codes": [
                                     {
                                         "uid": "GIFT_FoodGroups",
-                                        "codes": [ "01" ]
+                                        "codes": ["01"]
                                     }
                                 ]
                             }
@@ -94,11 +99,11 @@ define([
                         ],
                         "aggregations": [
                             {
-                                "columns": [ "value" ],
+                                "columns": ["value"],
                                 "rule": "SUM"
                             },
                             {
-                                "columns": [ "um" ],
+                                "columns": ["um"],
                                 "rule": "max"
                             }
                         ]
@@ -111,12 +116,29 @@ define([
                     }
                 }
             ]
-        }
+        },
+        totalProcess :  [
+
+            {
+                "name": "group",
+                "parameters": {
+                    "aggregations": [
+                        {
+                            "columns": [ "value" ],
+                            "rule": "SUM"
+                        },
+                        {
+                            "columns": [ "um" ],
+                            "rule": "max"
+                        }
+                    ]
+                }
+            }
+        ]
     };
 
     function DonutHole(params) {
 
-        // Load Exporting Module after Highcharts loaded
         require('highcharts/modules/drilldown')(Highcharts);
         require('highcharts-no-data-to-display')(Highcharts);
 
@@ -129,11 +151,35 @@ define([
 
         this._setHTMLvariables();
 
-        this._getProcessedResourceForChart(s.process.first_level_process).then(
-            _.bind(this._onSuccess, this),
-            _.bind(this._onError, this)
-        );
+        //get title
+        var p = s.totalProcess.slice(0),
+            f = $.extend(true, {}, filter);
+
+        f.sid.push({
+            uid :  this.uid
+        });
+
+        f.parameters = this.selected_items;
+
+        p.unshift(f);
+
+        this.bridge.getProcessedResource({
+            body: p, params: {language: this.language}})
+            .then(
+                _.bind(this._onTitleSuccess, this),
+                _.bind(this._onError, this)
+            );
+
+        this._getProcessedResourceForChart(s.process.first_level_process)
+            .then(
+                _.bind(this._onSuccess, this),
+                _.bind(this._onError, this)
+            );
     }
+
+    DonutHole.prototype._onTitleSuccess = function(success) {
+        console.log(success)
+    };
 
     DonutHole.prototype._init = function (opts) {
         this.environment = opts.environment;
@@ -152,7 +198,7 @@ define([
     };
 
     DonutHole.prototype._updateProcessConfig = function (process, group_code) {
-        //process=s.process.first_level_process
+
         process[0].sid[0].uid = this.uid;
         process[0].parameters = this.selected_items;
 
@@ -161,8 +207,7 @@ define([
         }
 
         return process;
-    }
-
+    };
 
     DonutHole.prototype._getProcessedResourceForChart = function (processConfig, group_code) {
         var process = this._updateProcessConfig(processConfig, group_code);
@@ -171,9 +216,13 @@ define([
     };
 
     DonutHole.prototype._onSuccess = function (resource) {
+
         var series = this._processSeries(resource);
+
         this._setHTMLvariables();
+
         var chartConfig = this._getChartConfig(series);
+
         return this._renderChart(chartConfig);
     };
 
@@ -221,7 +270,7 @@ define([
                 var obj = {};
                 var it = data[i];
 
-                obj.y = it[value_index];
+                obj.y = Formatter.format(it[value_index]);
                 obj.unit = it[umLabelIdx];
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
@@ -246,7 +295,7 @@ define([
                 this._onError();
             }
         });
-    }
+    };
 
     DonutHole.prototype._secondLevelOnSuccess = function (chart, point, resource) {
 
@@ -269,95 +318,85 @@ define([
         }, 1000);
     };
 
-
     DonutHole.prototype._getChartConfig = function (series) {
 
-
-        var self = this;
-        var chartConfig = {
-            lang: {
-                drillUpText: 'Back'
-            },
-            chart: {
-                type: 'pie',
-                events: {
-                    load: function (event) {
-                        self._trigger("ready");
-                    },
-                    drillup: function () {
-                        s.level_number--;
-                    },
-                    drilldown: function (e) {
-                        if (s.level_number != 2) {
-                            s.level_number++;
-                            if (!e.seriesOptions) {
-                                self._getProccessForSecondLevel(e.point, this);
+        var self = this,
+            chartConfig = {
+                lang: {
+                    drillUpText: 'Back'
+                },
+                chart: {
+                    type: 'pie',
+                    events: {
+                        load: function (event) {
+                            self._trigger("ready");
+                        },
+                        drillup: function () {
+                            s.level_number--;
+                        },
+                        drilldown: function (e) {
+                            if (s.level_number != 2) {
+                                s.level_number++;
+                                if (!e.seriesOptions) {
+                                    self._getProccessForSecondLevel(e.point, this);
+                                }
                             }
                         }
                     }
-                }
-            },
-            title: {
-                text: null
-            },
-            xAxis: {
-                type: 'category'
-            },
-
-            legend: {
-                enabled: true,
-                floating: false,
-
-                labelFormatter: function () {
-                    // do truncation here and return string
-                    // this.name holds the whole label
-                    // for example:
-                    return this.name.slice(0, 15) + '...'
-                }
-                //  layout: "hori"
-            },
-
-            plotOptions: {
-                pie: {
-                    dataLabels: {
-                        enabled: false,
-                        style: {
-                            width: '80px'
-                        }
-                    },
-                    showInLegend: true,
-                    innerSize: '40%'
+                },
+                title: {
+                    text: null
+                },
+                xAxis: {
+                    type: 'category'
                 },
 
-                series: {
-                    borderWidth: 0,
-                    //     dataLabels: {
-                    //     enabled: true
-                    // }
-                }
-            },
+                legend: {
+                    enabled: true,
+                    floating: false,
 
-            tooltip: {
-                formatter: function () {
-                    return this.key + ': <b>  ' + Highcharts.numberFormat(this.y, 2) + ' ' + this.point.unit + '</b>';
-                }
-            },
+                    labelFormatter: function () {
+                        // do truncation here and return string
+                        // this.name holds the whole label
+                        // for example:
+                        return this.name.slice(0, 15) + '...'
+                    }
+                },
 
-            //remove credits
-            credits: {
-                enabled: false
-            },
+                plotOptions: {
+                    pie: {
+                        dataLabels: {
+                            enabled: false,
+                            style: {
+                                width: '80px'
+                            }
+                        },
+                        showInLegend: true,
+                        innerSize: '40%'
+                    },
 
-            series: [{
-                name: 'Items',
-                colorByPoint: true,
-                data: series
-            }]
+                    series: {
+                        borderWidth: 0
+                    }
+                },
 
-            //     drilldown: {
-            //     series: []
-            // }
-        };
+                tooltip: {
+                    formatter: function () {
+                        return this.key + ': <b>  ' + this.y + ' ' + this.point.unit + '</b>';
+                    }
+                },
+
+                //remove credits
+                credits: {
+                    enabled: false
+                },
+
+                series: [{
+                    name: 'Items',
+                    colorByPoint: true,
+                    data: series
+                }]
+            };
 
         return chartConfig;
     };
@@ -367,7 +406,7 @@ define([
         $('#' + this.elID).css({
             height: s.HEIGHT,
             width: s.WIDTH
-        })
+        });
 
         Highcharts.setOptions({
             lang: {
@@ -409,10 +448,6 @@ define([
         return this;
     };
 
-    /**
-     * pub/sub
-     * @return {Object} component instance
-     */
     DonutHole.prototype.on = function (channel, fn, context) {
         var _context = context || this;
         if (!this.channels[channel]) {

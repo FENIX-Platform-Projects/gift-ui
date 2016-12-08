@@ -3,10 +3,11 @@ define([
     "jquery",
     "loglevel",
     "../../../nls/labels",
+    "../../../config/readyToUse/config",
     "fenix-ui-bridge",
     "highcharts",
     "../../charts/valueFormatter"
-], function (_, $, log, labels, Bridge, Highcharts, Formatter) {
+], function (_, $, log, labels, RC, Bridge, Highcharts, Formatter) {
 
     var s = {
         HEIGHT: 500,
@@ -411,7 +412,8 @@ define([
 
         this._setHTMLvariables();
 
-        this._getProcessedResourceForChart(process).then(
+        this._getProcessedResourceForChart(process)
+            .then(
             _.bind(this._onSuccess, this),
             _.bind(this._onError, this)
         );
@@ -470,15 +472,13 @@ define([
     };
 
     LargeTreeMap.prototype._onError = function (resource) {
-
         log.info("_onError");
-        log.error(resource)
-        return;
+        log.error(resource);
     };
 
     LargeTreeMap.prototype._processSeries_firstLevel = function (resourceObj) {
 
-        var resorce = '';
+        var resource;
 
         if (this.levels_number == 2) {
             resource = resourceObj.subgroup_data;
@@ -650,7 +650,13 @@ define([
         return dataToChart;
     };
 
-    LargeTreeMap.prototype._getChartConfig = function (series) {
+    LargeTreeMap.prototype._getChartConfig = function (s) {
+
+        var colors = RC.treemapColors.slice(0);
+
+        var series = _.map(s, function(ser){
+            return $.extend(true, {color : colors.pop()}, ser);
+        })
 
         var self = this;
         var chartConfig = {
@@ -670,7 +676,7 @@ define([
                 allowDrillToNode: true,
                 animationLimit: 1000,
                 dataLabels: {
-                    enabled: true
+                    enabled: false
                 },
                 levelIsConstant: false,
                 levels: [{
@@ -712,12 +718,6 @@ define([
         $('#' + this.elID).css({
             height: s.HEIGHT,
             width: s.WIDTH
-        })
-
-        Highcharts.setOptions({
-            lang: {
-                drillUpText: '<< Back to {series.name}'
-            }
         });
 
         this.chart = Highcharts.chart(this.elID, chartConfig);

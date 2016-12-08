@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "echo \"Error: please specify a valid section to develop [e.g. npm run dev:analysis]\" && exit 1",
+    "dev:donut": "cross-env SECTIONS=donut NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:charts": "cross-env SECTIONS=charts NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:map": "cross-env SECTIONS=map NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
     "dev:filter": "cross-env SECTIONS=filter NODE_ENV=develop webpack-dev-server --content-base dev --display-error-details --progress --color --inline --hot",
@@ -35,14 +36,14 @@
     "bootstrap": "^3.3.7",
     "d3": "^4.4.0",
     "fenix-ui-bridge": "^1.0.0-beta.12",
-    "fenix-ui-catalog": "^2.0.0-beta.28",
+    "fenix-ui-catalog": "^2.0.0-beta.31",
     "fenix-ui-data-management": "^2.0.0-beta.85",
-    "fenix-ui-filter": "^3.0.0-beta.64",
+    "fenix-ui-filter": "^3.0.0-beta.66",
     "fenix-ui-map": "^2.7.0",
     "fenix-ui-metadata-viewer": "^3.0.0-beta.10",
     "fenix-ui-reports": "^2.0.0-beta.1",
     "fenix-ui-uploader": "^1.0.0-beta.0",
-    "highcharts": "^5.0.5",
+    "highcharts": "^5.0.6",
     "highcharts-no-data-to-display": "^0.1.2",
     "jquery": "^3.1.1",
     "json-loader": "^0.5.4",
@@ -79,6 +80,6 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.3",
-    "webpack-dev-server": "^1.15.1"
+    "webpack-dev-server": "^1.16.2"
   }
 }

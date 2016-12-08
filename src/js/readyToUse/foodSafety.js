@@ -90,7 +90,7 @@ define([
 
     FoodSafety.prototype._bindEventListeners = function () {
 
-        this.filter.on("click", _.bind(this._onFilterClick, this));
+        this.filter.on("select", _.bind(this._onFilterClick, this));
     };
 
     FoodSafety.prototype._onFilterClick = function () {
