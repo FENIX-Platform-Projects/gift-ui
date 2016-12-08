@@ -182,6 +182,13 @@ $width: 300px;
 
 // Columns
 
+.daily-portion-filter{
+
+  .jstree-default .jstree-last{
+    background: none;
+  }
+}
+
 .population-percentage{
   width: 200px;
   height: 45px;
@@ -223,6 +230,8 @@ $width: 300px;
   top: -10px;
   z-index: 1;
 }
+
+
 
 .columns-holder{
   width: 300px;

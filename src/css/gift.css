@@ -9047,6 +9047,8 @@ button_new_2:before {
     background-size: contain;
     background-position: 50% 50%;
     z-index: 1; }
+  .fx-sandbox.fao-holder .daily-portion-filter .jstree-default .jstree-last {
+    background: none; }
   .fx-sandbox.fao-holder .population-percentage {
     width: 200px;
     height: 45px;
