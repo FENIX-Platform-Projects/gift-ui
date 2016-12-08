@@ -14,27 +14,27 @@
             <div id="dietaryPattern" class="tab-pane fade in active">
 
                 <div class="row">
-                    <div class="col-xs-3">
+                    <div class="col-xs-4">
                         <div>
                             <span>{{indicator}}</span>
                             <h3 class="indicator-title" data-role="title"></h3>
                             <span data-role="description"></span>
                         </div>
-                        <ul class="list-group">
+                        <ul class="list-group dietary-list">
                             <li class="list-group-item" data-chart="bubble">{{gramsPerPerson}}</li>
                             <li class="list-group-item" data-chart="treemap">{{percentageAsGPer100g}}</li>
                             <li class="list-group-item" data-chart="donut">{{caloriesPerPerson}}</li>
                         </ul>
                     </div>
 
-                    <div class="col-xs-9">
+                    <div class="col-xs-8">
 
                         <div class="row" data-content="bubble">
 
                             <div class="col-xs-12">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <h3>{{bubbleTitle}}</h3>
+                                        <h3 class="rdu-chart-title">{{bubbleTitle}}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -58,27 +58,21 @@
                         <div class="row" data-content="treemap">
 
                             <div class="col-xs-12">
+                                <h3 class="rdu-chart-title" id='largeTree-title'></h3>
+                            </div>
+
+
+                            <div class="col-xs-12">
+                                <div class="row">
+                                    <div id="largeTree"></div>
+                                </div>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <div class="col-xs-12">
-                                            <h3 id='largeTree-title'></h3>
-                                        </div>
+                                        <div id="largeTree-beverages"></div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="row">
-                                        <div id="largeTree"></div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div id="largeTree-beverages"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
 
@@ -88,7 +82,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <div class="col-xs-12">
-                                            <h3 id='holeDonut-title'></h3>
+                                            <h3 class="rdu-chart-title" id='holeDonut-title'></h3>
                                         </div>
                                     </div>
                                 </div>

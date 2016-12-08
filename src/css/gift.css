@@ -8948,6 +8948,14 @@ button_new_2:before {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; }
+  .fx-sandbox.fao-holder .rdu-chart-title {
+    color: red;
+    margin-top: 0 !important;
+    margin-bottom: 15px !important;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc; }
+  .fx-sandbox.fao-holder .dietary-list li {
+    cursor: pointer; }
   .fx-sandbox.fao-holder [data-page="readyToUse"] [data-section], .fx-sandbox.fao-holder [data-page="readyToUse"] [data-content] {
     display: none; }
     .fx-sandbox.fao-holder [data-page="readyToUse"] [data-section].active, .fx-sandbox.fao-holder [data-page="readyToUse"] [data-content].active {
@@ -9060,7 +9068,9 @@ button_new_2:before {
     background-size: contain;
     background-position: 50% 50%;
     background-repeat: no-repeat;
-    margin-top: 100px; }
+    margin-top: 150px;
+    position: relative;
+    left: 15px; }
     .fx-sandbox.fao-holder .population-percentage .progress-bar {
       background-color: rgba(255, 0, 0, 0.5);
       border: 1px solid red;
@@ -9069,7 +9079,9 @@ button_new_2:before {
       box-shadow: none; }
   .fx-sandbox.fao-holder .population-text {
     width: 200px;
-    color: #ab6830; }
+    color: #ab6830;
+    position: relative;
+    left: 15px; }
     .fx-sandbox.fao-holder .population-text .percentage {
       color: #9bba61; }
     .fx-sandbox.fao-holder .population-text .item {
@@ -9081,8 +9093,10 @@ button_new_2:before {
     top: -10px;
     z-index: 1; }
   .fx-sandbox.fao-holder .columns-holder {
-    width: 300px;
-    position: relative; }
+    width: 350px;
+    position: relative;
+    left: 20px;
+    top: 50px; }
     .fx-sandbox.fao-holder .columns-holder .axis {
       position: absolute;
       width: 100%;
@@ -9097,8 +9111,8 @@ button_new_2:before {
       background-repeat: no-repeat; }
     .fx-sandbox.fao-holder .columns-holder .details {
       position: absolute;
-      height: 75px;
-      width: 75px;
+      height: 100px;
+      width: 100px;
       background-image: url(../img/columns/details.svg);
       background-size: contain;
       background-position: 50% 50%;
@@ -9112,18 +9126,23 @@ button_new_2:before {
         margin: 3px 0; }
       .fx-sandbox.fao-holder .columns-holder .details .percentage {
         font-size: 16px;
-        margin: 14px 0 5px 0; }
+        margin: 18px 0 5px 0; }
       .fx-sandbox.fao-holder .columns-holder .details .text {
-        font-size: 10px;
-        color: orange; }
+        font-size: 9px;
+        color: orange;
+        margin: 9px auto 6px auto;
+        width: 80%; }
       .fx-sandbox.fao-holder .columns-holder .details .amount {
-        font-size: 10px; }
+        font-size: 16px;
+        margin-top: 0; }
+        .fx-sandbox.fao-holder .columns-holder .details .amount span {
+          font-size: 10px; }
       .fx-sandbox.fao-holder .columns-holder .details.low {
-        left: 20px; }
+        left: 15px; }
       .fx-sandbox.fao-holder .columns-holder .details.medium {
-        left: 112px; }
+        left: 124px; }
       .fx-sandbox.fao-holder .columns-holder .details.high {
-        left: 202px; }
+        left: 235px; }
         .fx-sandbox.fao-holder .columns-holder .details.high .amount {
           color: red; }
   .fx-sandbox.fao-holder .stacked-holder {

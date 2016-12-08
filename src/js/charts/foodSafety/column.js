@@ -8,8 +8,8 @@ define([
 ], function (_, $, log, labels, Bridge, Highcharts) {
 
     var s = {
-        HEIGHT: 300,
-        WIDTH: 300,
+        HEIGHT: 350,
+        WIDTH: 350,
         DAY: "/day",
         process: [
             {
@@ -348,9 +348,9 @@ define([
 
         $(this.columnPercentageID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
         $(this.columnPercentageItemID).html(this.columnPercentageItemLabel);
-        $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " " + dataToChart[1].unit + s.DAY);
-        $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " " + dataToChart[2].unit + s.DAY);
-        $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " " + dataToChart[3].unit + s.DAY);
+        $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " <span> " + dataToChart[1].unit  + s.DAY + "</span>");
+        $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " <span> " + dataToChart[2].unit + s.DAY + "</span>");
+        $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " <span> " + dataToChart[3].unit + s.DAY + "</span>");
     };
 
     ColumnChart.prototype.redraw = function (animation) {
