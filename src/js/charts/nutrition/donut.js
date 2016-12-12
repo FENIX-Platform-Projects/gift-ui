@@ -16,7 +16,7 @@ define([
             first_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                    "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                     "parameters": {
                         "gender": "2",
                         "special_condition": ["2"],
@@ -28,6 +28,20 @@ define([
                         //     "from": 10.5,
                         //     "to": 67
                         // }
+                    }
+                },
+
+                {
+                    "name" : "select",
+                    "parameters" : {
+                        "values" : {
+                            "item" : null,
+                            "group_code" : null,
+                            "subgroup_code" : null,
+                            "foodex2_code" : null,
+                            "value" : "value/<<raw_data_population_size[0]>>",
+                            "um" : null
+                        }
                     }
                 },
                 {
@@ -81,7 +95,7 @@ define([
             second_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                    "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                     "parameters": {
                         "gender": "2",
                         "special_condition": ["2"],
@@ -93,6 +107,19 @@ define([
                         //     "from": 10.5,
                         //     "to": 67
                         // }
+                    }
+                },
+                {
+                    "name" : "select",
+                    "parameters" : {
+                        "values" : {
+                            "item" : null,
+                            "group_code" : null,
+                            "subgroup_code" : null,
+                            "foodex2_code" : null,
+                            "value" : "value/<<raw_data_population_size[0]>>",
+                            "um" : null
+                        }
                     }
                 },
 
@@ -153,7 +180,7 @@ define([
             third_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                    "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                     "parameters": {
                         "gender": "2",
                         "special_condition": ["2"],
@@ -165,6 +192,19 @@ define([
                         //     "from": 10.5,
                         //     "to": 67
                         // }
+                    }
+                },
+                {
+                    "name" : "select",
+                    "parameters" : {
+                        "values" : {
+                            "item" : null,
+                            "group_code" : null,
+                            "subgroup_code" : null,
+                            "foodex2_code" : null,
+                            "value" : "value/<<raw_data_population_size[0]>>",
+                            "um" : null
+                        }
                     }
                 },
 
@@ -227,9 +267,12 @@ define([
 
     function ThreeLevDrilldown(params) {
 
-        // Load Exporting Module after Highcharts loaded
-        //require('highcharts/modules/drilldown')(Highcharts);
-        require('highcharts-no-data-to-display')(Highcharts);
+        if (!require.cache[require.resolveWeak("highcharts/modules/drilldown")]) {
+            require('highcharts/modules/drilldown')(Highcharts);
+        }
+        if (!require.cache[require.resolveWeak("highcharts-no-data-to-display")]) {
+            require('highcharts-no-data-to-display')(Highcharts);
+        }
 
         this._init(params);
 
@@ -270,13 +313,13 @@ define([
 
         process[0].sid[0].uid = this.uid;
         process[0].parameters = this.selected_config;
-        process[1].parameters.rows.item.codes[0].codes = this.selected_items;
+        process[2].parameters.rows.item.codes[0].codes = this.selected_items;
 
         if (group_code) {
-            process[1].parameters.rows.group_code.codes[0].codes = group_code;
+            process[2].parameters.rows.group_code.codes[0].codes = group_code;
         }
         if (subgroup_code) {
-            process[1].parameters.rows.subgroup_code.codes[0].codes = subgroup_code;
+            process[2].parameters.rows.subgroup_code.codes[0].codes = subgroup_code;
         }
 
         return process;
@@ -413,15 +456,13 @@ define([
             chart: {
                 type: 'pie',
                 events: {
-                    /*                    load: function (event) {
+                                        load: function (event) {
                      self._trigger("ready");
-                     },*/
-                  /*  drillup: function () {
+                     },
+                    drillup: function () {
                         s.level_number--;
                     },
                     drilldown: function (e) {
-
-                        console.log(e.point.name + "------------------------------------------" + Math.random())
 
                         if (s.level_number != 3) {
                             s.level_number++;
@@ -434,7 +475,7 @@ define([
                         else {
                             console.log("no drildown because level_number is 3")
                         }
-                    }*/
+                    }
                 }
             },
             title: {
@@ -525,6 +566,7 @@ define([
 
     ThreeLevDrilldown.prototype._setHTMLvariables = function () {
 
+
         var lang = this.language.toLowerCase(),
             prefix = labels[lang][this.labelsId + '_title_firstPart'],
             postfix = labels[lang][this.labelsId + '_title_secondPart'],
@@ -544,10 +586,8 @@ define([
     };
 
     ThreeLevDrilldown.prototype.dispose = function () {
-        console.log(Highcharts.charts)
-        this.chart.destroy();
 
-        console.log("DESTROYED")
+        //this.chart.destroy();
     };
 
     ThreeLevDrilldown.prototype._trigger = function (channel) {

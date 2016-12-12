@@ -54,6 +54,19 @@ define([
             case "foods":
 
                 body = [
+                    {
+                        "name" : "select",
+                        "parameters" : {
+                            "values" : {
+                                "item" : null,
+                                "group_code" : null,
+                                "subgroup_code" : null,
+                                "foodex2_code" : null,
+                                "value" : "value/<<raw_data_population_size[0]>>",
+                                "um" : null
+                            }
+                        }
+                    },
 
                     {
                         "name": "filter",
@@ -149,6 +162,20 @@ define([
             case "beverages":
 
                 body = [
+
+                    {
+                        "name" : "select",
+                        "parameters" : {
+                            "values" : {
+                                "item" : null,
+                                "group_code" : null,
+                                "subgroup_code" : null,
+                                "foodex2_code" : null,
+                                "value" : "value/<<raw_data_population_size[0]>>",
+                                "um" : null
+                            }
+                        }
+                    },
 
                     {
                         "name": "filter",

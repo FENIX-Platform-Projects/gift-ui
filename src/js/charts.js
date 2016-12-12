@@ -103,7 +103,7 @@ define([
             elID: s.DONUT_CONTAINER_ID,
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_total_weighted_food_consumption_000042BUR201001",
+            uid: "gift_process_total_food_consumption_000042BUR201001",
             selected_items: ["IRON"],
             height: s.height,
             width: s.width,
@@ -173,7 +173,7 @@ define([
             labelsId: s.donutHole_chart.DONUT_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_total_weighted_food_consumption_000042BUR201001",
+            uid: "gift_process_total_food_consumption_000042BUR201001",
             selected_items: param.selected_items,
             height: s.height,
             width: s.width,
@@ -241,7 +241,7 @@ define([
             title: 'IRON',
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_total_weighted_food_consumption_000042BUR201001",
+            uid: "gift_process_total_food_consumption_000042BUR201001",
             selected_config: param.selected_config,
             selected_items: param.selected_items,
             height: s.height,
@@ -266,7 +266,7 @@ define([
                     "age_year": {"from": 0, "to": 120},
                     "item": "FOOD_AMOUNT_PROC"
                 },
-                "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}]
+                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}]
             },
             "model": {
                 "title": {"EN": "Burkina Faso - 2010 - IRD/HarvestPlus"},
@@ -532,7 +532,7 @@ define([
                     "age_year": {"from": 0, "to": 120},
                     "item": "FOOD_AMOUNT_PROC"
                 },
-                "sid": [{"uid": "gift_process_total_weighted_food_consumption_000023BGD201001"}]
+                "sid": [{"uid": "gift_process_total_food_consumption_000023BGD201001"}]
             },
             "model": {
                 "language": {

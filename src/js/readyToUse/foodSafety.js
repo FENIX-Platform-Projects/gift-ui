@@ -101,7 +101,7 @@ define([
     FoodSafety.prototype._renderChart = function (force) {
 
         if (!force && this.chartReady) {
-            console.log("redraw columns");
+            //console.log("redraw columns");
             return;
         }
 
@@ -149,7 +149,7 @@ define([
             process_name: "gift_std_percentile"
         };
 
-        console.log("render columns");
+        //console.log("render columns");
 
         this.chart = new Columns({
             elID: s.COLUMN_CONTAINER_ID,

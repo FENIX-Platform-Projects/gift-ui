@@ -101,22 +101,21 @@ define(["underscore"], function (_) {
             "#02abe1",
             "#007ba1"],
 
-        treemapColors :["#ffc666",
-            "#7e5bd1",
-            "#abd950",
-            "#a742b2",
-            "#afe476",
-            "#2d175a",
-            "#edd346",
-            "#e5acff",
-            "#658b00",
-            "#ff81b9",
-            "#007439",
-            "#cc6a0a",
-            "#1eece6",
-            "#8b6f00",
-            "#00bd99",
-            "#465005"],
+        treemapColors :["#d4eabc",
+            "#91b2e0",
+            "#eddaac",
+            "#ceb7dd",
+            "#a9c3a1",
+            "#e7b1c0",
+            "#91d0cc",
+            "#e2b1a0",
+            "#9ad2e6",
+            "#c7b794",
+            "#b0c1db",
+            "#caecd9",
+            "#dfd2e2",
+            "#b3beb4",
+            "#efdccd"],
 
         catalog: {
             pluginRegistry: {
@@ -170,6 +169,7 @@ define(["underscore"], function (_) {
                 coverageTime: {
                     selector: {
                         id: "range",
+                        default : [{value : 1980, parent : "from"}, {value : new Date().getFullYear(), parent : "from"}],
                         config: {
                             min: 1980,
                             max: new Date().getFullYear(),

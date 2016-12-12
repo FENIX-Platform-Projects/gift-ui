@@ -21,7 +21,7 @@ define([
                 first_level_process: [
                     {
                         "name": "gift_population_filter",
-                        "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                        "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                         "parameters": {
                             "item": "ENERGY",
                             "gender": "2",
@@ -29,6 +29,19 @@ define([
                             "age_year": {
                                 "from": 10.5,
                                 "to": 67
+                            }
+                        }
+                    },
+                    {
+                        "name" : "select",
+                        "parameters" : {
+                            "values" : {
+                                "item" : null,
+                                "group_code" : null,
+                                "subgroup_code" : null,
+                                "foodex2_code" : null,
+                                "value" : "value/<<raw_data_population_size[0]>>",
+                                "um" : null
                             }
                         }
                     },
@@ -60,7 +73,7 @@ define([
                 second_level_process: [
                     {
                         "name": "gift_population_filter",
-                        "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                        "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                         "parameters": {
                             "item": "ENERGY",
                             "gender": "2",
@@ -71,6 +84,20 @@ define([
                             }
                         }
                     },
+                    {
+                        "name" : "select",
+                        "parameters" : {
+                            "values" : {
+                                "item" : null,
+                                "group_code" : null,
+                                "subgroup_code" : null,
+                                "foodex2_code" : null,
+                                "value" : "value/<<raw_data_population_size[0]>>",
+                                "um" : null
+                            }
+                        }
+                    },
+
                     {
                         "name": "filter",
                         "parameters": {
@@ -121,6 +148,20 @@ define([
             totalProcess: [
 
                 {
+                    "name" : "select",
+                    "parameters" : {
+                        "values" : {
+                            "item" : null,
+                            "group_code" : null,
+                            "subgroup_code" : null,
+                            "foodex2_code" : null,
+                            "value" : "value/<<raw_data_population_size[0]>>",
+                            "um" : null
+                        }
+                    }
+                },
+
+                {
                     "name": "group",
                     "parameters": {
                         "aggregations": [
@@ -140,8 +181,12 @@ define([
 
     function DonutHole(params) {
 
-        require('highcharts/modules/drilldown')(Highcharts);
-        require('highcharts-no-data-to-display')(Highcharts);
+        if (!require.cache[require.resolveWeak("highcharts/modules/drilldown")]) {
+            require('highcharts/modules/drilldown')(Highcharts);
+        }
+        if (!require.cache[require.resolveWeak("highcharts-no-data-to-display")]) {
+            require('highcharts-no-data-to-display')(Highcharts);
+        }
 
         this._init(params);
 
@@ -213,7 +258,8 @@ define([
         process[0].parameters = this.selected_items;
 
         if (group_code) {
-            process[1].parameters.rows.group_code.codes[0].codes = group_code;
+            console.log(process[2])
+            process[2].parameters.rows.group_code.codes[0].codes = group_code;
         }
 
         return process;

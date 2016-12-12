@@ -13,7 +13,7 @@ define([
         first_level_process: [
             {
                 "name": "filter",
-                "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "columns": [
                         "group_code",
@@ -68,7 +68,7 @@ define([
         second_level_process: [
             {
                 "name": "filter",
-                "sid": [{"uid": "gift_process_total_weighted_food_consumption_000042BUR201001"}],
+                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
                 "parameters": {
                     "columns": [
                         "subgroup_code",

@@ -111,7 +111,7 @@ $width: 300px;
 
   //margin-left: -100px;
   //margin-top: 10px;
-  @include  fx-transfor-me(translate(-50%, -120%));
+  @include  fx-transfor-me(translate(-39%,-66%));
   padding: 5px;
   border-radius: 3px;
   background: rgba(255,255,255,0.9);
@@ -607,6 +607,10 @@ $width: 300px;
   .jstree-default .jstree-icon, .jstree-default .jstree-node{
     background-image: none;
   }
+}
+
+.title-nutrient {
+  color : red;
 }
 
 .no-data{

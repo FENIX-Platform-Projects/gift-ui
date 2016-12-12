@@ -150,7 +150,7 @@ define([
         process.parameters.item = "FOOD_AMOUNT_PROC";
 
         process.sid = [
-            {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
+            {uid: "gift_process_total_food_consumption_" + this.model.uid}
         ];
 
         var instance = new Bubble({
@@ -178,32 +178,21 @@ define([
 
     FoodConsumption.prototype._renderTreeMap = function (obj) {
         if (obj.initialized) {
-            console.log("redraw treemap");
-             _.each(obj.instances, function(i){
-                 i.redraw();
-             });
+            //console.log("redraw treemap");
+            _.each(obj.instances, function (i) {
+                i.redraw();
+            });
             return;
         }
 
-        /*   //age_year OR age_month
-         var param = {
-         selected_items : {
-         "item": "FOOD_AMOUNT_PROC",
-         "gender": null,
-         "special_condition": ["2"],
-         "age_year": {
-         "from": 10.5,
-         "to": 67
-         }
-         }
-         };*/
+        //console.log("render treemap");
 
         var process = $.extend(true, {}, this.process);
 
         process.parameters.item = "FOOD_AMOUNT_PROC";
 
         process.sid = [
-            {uid: "gift_process_total_weighted_food_consumption_" + this.model.uid}
+            {uid: "gift_process_total_food_consumption_" + this.model.uid}
         ];
 
         obj.instances.push(new TreeMap({
@@ -235,14 +224,14 @@ define([
     FoodConsumption.prototype._renderDonutChart = function (obj) {
 
         if (obj.initialized) {
-            console.log("redraw donut");
+            //console.log("redraw donut");
             /* _.each(obj.instances, function(i){
              i.redraw();
              });*/
             return;
         }
 
-        console.log("render donut");
+        //console.log("render donut");
 
         var params = $.extend(true, {
             item: "ENERGY"
@@ -253,7 +242,7 @@ define([
             labelsId: s.DONUT_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,
+            uid: "gift_process_total_food_consumption_" + this.model.uid,
             selected_items: params,
             language: this.lang.toUpperCase()
         };

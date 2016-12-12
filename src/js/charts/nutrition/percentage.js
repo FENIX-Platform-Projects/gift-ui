@@ -4,8 +4,9 @@ define([
     "loglevel",
     "../../../nls/labels",
     "fenix-ui-bridge",
-    "highcharts"
-], function (_, $, log, labels, Bridge, Highcharts) {
+    "highcharts",
+    "../valueFormatter"
+], function (_, $, log, labels, Bridge, Highcharts, Formatter) {
 
     var s = {
         HEIGHT: 200,
@@ -22,10 +23,6 @@ define([
                         "from": 10.5,
                         "to": 67
                     }
-                    // "age_month": {
-                    //     "from": 10.5,
-                    //     "to": 67
-                    // }
                 }
             },
 
@@ -52,22 +49,22 @@ define([
 
             {
                 "name": "group",
-                "rid": {"uid": "subjects_data"},
+                "rid" : { "uid" : "subjects_data" },
                 "parameters": {
                     "by": [
                         "subject"
                     ],
                     "aggregations": [
                         {
-                            "columns": ["value"],
+                            "columns": [ "value" ],
                             "rule": "SUM"
                         },
                         {
-                            "columns": ["suggested_value"],
+                            "columns": [ "suggested_value" ],
                             "rule": "MAX"
                         },
                         {
-                            "columns": ["um"],
+                            "columns": [ "um" ],
                             "rule": "MAX"
                         }
                     ]
@@ -76,24 +73,24 @@ define([
 
 
             {
-                "name": "select",
-                "parameters": {
-                    "values": {
-                        "value": "case when count(*)=0 then 1 else count(*) end"
+                "name" : "select",
+                "parameters" : {
+                    "values" : {
+                        "value" : "count(*)"
                     }
                 }
             },
 
             {
-                "name": "var",
-                "result": false,
-                "parameters": {
-                    "global": true,
-                    "variables": [
+                "name" : "var",
+                "result" : false,
+                "parameters" : {
+                    "global" : true,
+                    "variables" : [
                         {
-                            "key": "populationSize",
-                            "type": "id",
-                            "value": "value"
+                            "key" : "populationSize",
+                            "type" : "id",
+                            "value" : "value"
                         }
                     ]
                 }
@@ -101,13 +98,13 @@ define([
 
 
             {
-                "name": "select",
-                "sid": [{"uid": "subjects_data"}],
-                "parameters": {
-                    "values": {
-                        "value": "trunc((count(*)*100.0)/<<populationSize[0]>>, 2)"
+                "name" : "select",
+                "sid" : [{ "uid" : "subjects_data" }],
+                "parameters" : {
+                    "values" : {
+                        "value" : "(count(*)*100.0)/case when <<populationSize[0]>>=0 then 1 else <<populationSize[0]>> end"
                     },
-                    "query": "where value<suggested_value"
+                    "query" : "where value<suggested_value having <<populationSize[0]>>>0"
                 }
             },
 
@@ -138,6 +135,11 @@ define([
     function PercentageChart(params) {
 
         this._init(params);
+
+        // Load Exporting Module after Highcharts loaded
+        if (!require.cache[require.resolveWeak("highcharts-no-data-to-display")]) {
+            require('highcharts-no-data-to-display')(Highcharts);
+        }
 
         this.bridge = new Bridge({
             environment: this.environment,
@@ -428,7 +430,7 @@ define([
                 var obj = {};
 
                 var it = data[i];
-                obj.valueFormat = it[value_index].toFixed(2);
+                obj.valueFormat = Formatter.format(it[value_index]);
                 obj.value = it[value_index];
                 obj.unit = it[umLabelIdx];
 

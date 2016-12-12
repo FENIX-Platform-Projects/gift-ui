@@ -391,9 +391,15 @@ define([
     function LargeTreeMap(params) {
 
         // Load Exporting Module after Highcharts loaded
-        require('highcharts-no-data-to-display')(Highcharts);
-        require('highcharts/modules/treemap')(Highcharts);
-        require('highcharts/modules/heatmap')(Highcharts);
+        if (!require.cache[require.resolveWeak("highcharts/modules/drilldown")]) {
+            require('highcharts/modules/drilldown')(Highcharts);
+        }
+        if (!require.cache[require.resolveWeak("highcharts-no-data-to-display")]) {
+            require('highcharts-no-data-to-display')(Highcharts);
+        }
+        if (!require.cache[require.resolveWeak("highcharts/modules/treemap")]) {
+            require('highcharts/modules/treemap')(Highcharts);
+        }
 
         this._init(params);
 
@@ -658,8 +664,8 @@ define([
         var colors = RC.treemapColors.slice(0);
 
         var series = _.map(s, function(ser){
-            return $.extend(true, {color : colors.pop()}, ser);
-        })
+            return ser.parent ?ser: $.extend(true, {color : colors.pop()}, ser);
+        });
 
         var self = this;
         var chartConfig = {

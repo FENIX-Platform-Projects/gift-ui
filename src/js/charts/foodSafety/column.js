@@ -111,6 +111,11 @@ define([
 
     function ColumnChart(params) {
 
+        // Load Exporting Module after Highcharts loaded
+        if (!require.cache[require.resolveWeak("highcharts-no-data-to-display")]) {
+            require('highcharts-no-data-to-display')(Highcharts);
+        }
+
         this._init(params);
 
         this.bridge = new Bridge({
@@ -335,9 +340,10 @@ define([
             for (var i = 0; i < data.length; i++) {
                 var obj = {};
 
+
                 var it = data[i];
-                obj.valueFormat = Formatter.format([value_index]) || " - " ;
-                obj.value = it[value_index] || " - ";
+                obj.valueFormat = it[value_index] ? Formatter.format(it[value_index]) : " - ";
+                obj.value = it[value_index] ? Formatter.format(it[value_index]) : " - ";
                 obj.unit = it[umLabelIdx] || " - ";
 
                 htmlData.push(obj);
@@ -349,17 +355,20 @@ define([
 
     ColumnChart.prototype._setHTMLvariables = function (dataToChart) {
 
+        //console.log("render")
+
         //Progress bar
         $(this.columnBarID).css({
             width: dataToChart[0].value + dataToChart[0].unit
         });
         $('#' + this.labelsId + '-title').html(labels[this.language.toLowerCase()][this.labelsId + '_title'] + ": " + this.columnPercentageItemLabel);
 
-        $(this.columnPercentageID).html((dataToChart[0].valueFormat || "-") + dataToChart[0].unit);
+        $(this.columnPercentageID).html(dataToChart[0].valueFormat + dataToChart[0].unit);
         $(this.columnPercentageItemID).html(this.columnPercentageItemLabel || "-");
-        $(this.columnAmountID.low).html(dataToChart[1].valueFormat + " <span> " + (dataToChart[1].unit || "-")  + s.DAY + "</span>");
-        $(this.columnAmountID.middle).html(dataToChart[2].valueFormat + " <span> " + (dataToChart[2].unit || "-") + s.DAY + "</span>");
-        $(this.columnAmountID.high).html(dataToChart[3].valueFormat + " <span> " + (dataToChart[3].unit || "-" )+ s.DAY + "</span>");
+
+        $(this.columnAmountID.low).html((dataToChart[1].valueFormat || "-" ) + " <span> " + (dataToChart[1].unit || "-" ) + s.DAY + "</span>");
+        $(this.columnAmountID.middle).html((dataToChart[2].valueFormat || "-" ) + " <span> " + ( dataToChart[2].unit || "-" ) + s.DAY + "</span>");
+        $(this.columnAmountID.high).html((dataToChart[3].valueFormat || "-" ) + " <span> " + (dataToChart[3].unit || "-" ) + s.DAY + "</span>");
     };
 
     ColumnChart.prototype.redraw = function (animation) {

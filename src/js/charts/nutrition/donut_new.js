@@ -10,7 +10,7 @@ define([
 
     var filter = {
             "name": "gift_population_filter",
-            "sid": [],
+            "sid": []
         },
         process = {
             firstLevel: [
@@ -171,50 +171,53 @@ define([
                     }
                 }
             ]
+        },
+        status = {
+            currentLevel : 0
         };
 
     function Donut(params) {
 
-        require('highcharts/modules/drilldown')(Highcharts);
-        require('highcharts-no-data-to-display')(Highcharts);
+        if (!require.cache[require.resolveWeak("highcharts/modules/drilldown")]) {
+            require('highcharts/modules/drilldown')(Highcharts);
+        }
+        if (!require.cache[require.resolveWeak("highcharts-no-data-to-display")]) {
+            require('highcharts-no-data-to-display')(Highcharts);
+        }
 
         this._init(params);
 
-        this.bridge = new Bridge({
-            environment: this.environment,
-            cache: this.cache
-        });
+        this._initComponents();
 
-
-        var chartConfig = this._getChartConfig();
-
-        console.log("ALTRO")
-        console.log(JSON.stringify(chartConfig))
-
-
-        return this._renderChart(chartConfig);
-
-
+        //prepare query
 
         var p = process.firstLevel.slice(0),
             f = $.extend(true, {}, filter);
 
         f.sid.push({
-            uid : "gift_process_total_weighted_food_consumption_" + this.uid
+            uid: "gift_process_total_food_consumption_" + this.uid
         });
 
         f.parameters = this.parameters;
 
         p.unshift(f);
 
-            this.bridge.getProcessedResource({
-                body: p,
-                params: {language: "EN"}
-            }).then(
-                _.bind(this._onSuccess, this),
-                _.bind(this._onError, this)
-            );
+        this.bridge.getProcessedResource({
+            body: p,
+            params: {language: "EN"}
+        }).then(
+            _.bind(this._onSuccess, this),
+            _.bind(this._onError, this)
+        );
     }
+
+    Donut.prototype._initComponents = function () {
+
+        this.bridge = new Bridge({
+            environment: this.environment,
+            cache: this.cache
+        });
+    };
 
     Donut.prototype._init = function (opts) {
 
@@ -230,6 +233,162 @@ define([
         //pub/sub
         this.channels = {};
     };
+
+    Donut.prototype._onSuccess = function (resource) {
+
+        var series = this._processSeries(resource),
+            config = this._getChartConfig(series);
+
+        return this._renderChart(config);
+    };
+
+    Donut.prototype._onError = function (resource) {
+        log.info("_onError");
+        log.error(resource)
+
+    };
+
+    Donut.prototype._processSeries = function (r) {
+
+        var resource = r || {},
+            metadata = resource.metadata,
+            data = resource.data,
+            dsd = metadata.dsd || {},
+            columns = dsd.columns || [];
+
+        // columns
+
+        var um = _.findWhere(columns, {id: "um"}),
+            value = _.findWhere(columns, {id: "value"}),
+            groupCode = _.findWhere(columns, {id: "group_code"}),
+            umLabel = _.findWhere(columns, {id: "um_" + this.lang}),
+            groupCodeLabel = _.findWhere(columns, {id: "group_code_" + this.lang});
+
+        var indexUm = _.findIndex(columns, um),
+            indexValue = _.findIndex(columns, value),
+            indexGroupCode = _.findIndex(columns, groupCode),
+            indexUmLabel = _.findIndex(columns, umLabel),
+            indexGroupCodeLabel = _.findIndex(columns, groupCodeLabel);
+
+        var d = [];
+
+        _.each(data, function (row) {
+
+            d.push({
+                name: row[indexGroupCodeLabel],
+                y: Formatter.format(row[indexValue]),
+                unit: row[indexUmLabel],
+                drilldown: true
+            });
+
+        });
+
+        var result = [{
+            name: 'Groups',
+            colorByPoint: true,
+            data: d
+        }];
+
+        return result;
+    };
+
+    Donut.prototype._getChartConfig = function (series) {
+
+        var self = this;
+
+        return {
+            lang: {
+                drillUpText: 'Back'
+            },
+            chart: {
+                type: 'pie',
+                events: {
+                    load: function () {
+                        self._trigger("ready");
+                    },
+                    drillup: function () {
+                        //s.level_number--;
+                    },
+                    drilldown: function (e) {
+
+
+
+                        console.log(e.point.name + "------------------------------------------" + Math.random())
+
+                        /* if (s.level_number != 3) {
+                         s.level_number++;
+                         if (e.point) {
+                         self._getProccessForOtherLevels(e.point, this);
+                         } else {
+                         console.log("impossible to find point")
+                         }
+                         }
+                         else {
+                         console.log("no drildown because level_number is 3")
+                         }*/
+                    }
+                }
+            },
+            title: {
+                text: null
+            },
+            xAxis: {
+                type: 'category'
+            },
+
+            legend: {
+                enabled: true,
+                floating: false,
+
+                labelFormatter: function () {
+                    return this.name.slice(0, 15) + '...'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    dataLabels: {
+                        enabled: false,
+                        style: {
+                            width: '80px'
+                        }
+                    },
+                    showInLegend: true,
+                    innerSize: '40%'
+                },
+
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+
+            tooltip: {
+                formatter: function () {
+                    return this.key + ': <b>  ' + this.y + ' ' + this.point.unit + '</b>';
+                }
+            },
+
+            //remove credits
+            credits: {
+                enabled: false
+            },
+
+            series: series
+        }
+    };
+
+    Donut.prototype._renderChart = function (chartConfig) {
+
+        Highcharts.chart("container", chartConfig);
+    };
+
+
+
+
+
+/*
 
     Donut.prototype._updateProcessConfig = function (p, group_code, subgroup_code) {
 
@@ -255,63 +414,11 @@ define([
 
     };
 
-    Donut.prototype._onSuccess = function (resource) {
 
-       // var series = this._processSeries(resource);
 
-        var chartConfig = this._getChartConfig(series);
 
-        return this._renderChart(chartConfig);
-    };
 
-    Donut.prototype._onError = function (resource) {
-        log.info("_onError");
-        log.error(resource)
 
-    };
-
-    Donut.prototype._processSeries = function (r) {
-
-        var resource = r || {},
-            metadata = resource.metadata,
-            data = resource.data,
-            dsd = metadata.dsd || {},
-            columns = dsd.columns || [];
-
-        // columns
-
-        var um = _.findWhere(columns, {id : "um"}),
-            value = _.findWhere(columns, {id : "value"}),
-            groupCode = _.findWhere(columns, {id : "group_code"}),
-            umLabel = _.findWhere(columns, {id : "um_" + this.lang}),
-            groupCodeLabel = _.findWhere(columns, {id : "group_code_" + this.lang});
-
-        var indexUm = _.findIndex(columns, um),
-            indexValue = _.findIndex(columns, value),
-            indexGroupCode = _.findIndex(columns, groupCode),
-            indexUmLabele = _.findIndex(columns, umLabel),
-            indexGroupCodeLabel = _.findIndex(columns, groupCodeLabel);
-
-        var d = [];
-
-        _.each(data, function(row) {
-
-            d.push({
-                name: row[indexGroupCodeLabel],
-                y: Formatter.format(row[indexValue]),
-                drilldown: true
-            });
-
-        });
-
-        var result = [{
-            name: 'Groups',
-            colorByPoint: true,
-            data: d
-        }];
-
-        return result;
-    };
 
     Donut.prototype._getProccessForOtherLevels = function (point, chart) {
         var self = this;
@@ -363,105 +470,7 @@ define([
     };
 
 
-    Donut.prototype._getChartConfig = function () {
 
-        return {
-            chart: {
-                type: 'pie',
-                events: {
-                    drilldown: function (e) {
-
-                        console.log("drilldown event")
-                        if (!e.seriesOptions) {
-
-                            var chart = this,
-                                drilldowns = {
-                                    'Animals': {
-                                        name: 'Animals',
-                                        data: [
-                                            ['Cows', 2],
-                                            ['Sheep', 3]
-                                        ]
-                                    },
-                                    'Fruits': {
-                                        name: 'Fruits',
-                                        data: [
-                                            ['Apples', 5],
-                                            ['Oranges', 7],
-                                            ['Bananas', 2]
-                                        ]
-                                    },
-                                    'Cars': {
-                                        name: 'Cars',
-                                        data: [
-                                            ['Toyota', 1],
-                                            ['Volkswagen', 2],
-                                            ['Opel', 5]
-                                        ]
-                                    }
-                                },
-                                series = drilldowns[e.point.name];
-
-                            // Show the loading label
-                            chart.showLoading('Simulating Ajax ...');
-
-                            setTimeout(function () {
-                                chart.hideLoading();
-                                chart.addSeriesAsDrilldown(e.point, series);
-                            }, 1000);
-                        }
-
-                    }
-                }
-            },
-
-            xAxis: {
-                type: 'category'
-            },
-
-            legend: {
-                enabled: false
-            },
-
-            plotOptions: {
-                series: {
-                    borderWidth: 0,
-                    dataLabels: {
-                        enabled: true
-                    }
-                }
-            },
-
-            series: [{
-                name: 'Things',
-                colorByPoint: true,
-                data: [{
-                    name: 'Animals',
-                    y: 5,
-                    drilldown: true
-                }, {
-                    name: 'Fruits',
-                    y: 2,
-                    drilldown: true
-                }, {
-                    name: 'Cars',
-                    y: 4,
-                    drilldown: true
-                }]
-            }],
-
-            drilldown: {
-                series: []
-            }
-        }
-    };
-
-    Donut.prototype._renderChart = function (chartConfig) {
-
-        console.log(JSON.stringify(chartConfig))
-
-        Highcharts.chart("container", chartConfig);
-    };
 
     Donut.prototype._setHTMLvariables = function () {
 
@@ -481,15 +490,18 @@ define([
         else {
             this.chart.redraw();
         }
-    };
+    };*/
 
+    /**
+     * Disposition
+     * */
     Donut.prototype.dispose = function () {
-        console.log(Highcharts.charts)
         this.chart.destroy();
-
-        console.log("DESTROYED")
     };
 
+    /**
+     * pub/sub
+     * */
     Donut.prototype._trigger = function (channel) {
 
         if (!this.channels[channel]) {
@@ -504,10 +516,6 @@ define([
         return this;
     };
 
-    /**
-     * pub/sub
-     * @return {Object} component instance
-     */
     Donut.prototype.on = function (channel, fn, context) {
         var _context = context || this;
         if (!this.channels[channel]) {

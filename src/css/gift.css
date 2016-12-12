@@ -8998,9 +8998,9 @@ button_new_2:before {
   .fx-sandbox.fao-holder .tooltip-bubble-chart {
     position: absolute;
     width: 125px;
-    -ms-transform: translate(-50%, -120%);
-    -webkit-transform: translate(-50%, -120%);
-    transform: translate(-50%, -120%);
+    -ms-transform: translate(-39%, -66%);
+    -webkit-transform: translate(-39%, -66%);
+    transform: translate(-39%, -66%);
     padding: 5px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.9);
@@ -9269,11 +9269,13 @@ button_new_2:before {
     display: inline-block; }
   .fx-sandbox.fao-holder #sourceOfNutrientsInTheDiet .jstree-default .jstree-icon, .fx-sandbox.fao-holder #sourceOfNutrientsInTheDiet .jstree-default .jstree-node {
     background-image: none; }
+  .fx-sandbox.fao-holder .title-nutrient {
+    color: red; }
   .fx-sandbox.fao-holder .no-data {
     position: relative;
     opacity: 0.2; }
     .fx-sandbox.fao-holder .no-data:before {
-      content: 'No Data to display';
+      content: 'No data to display';
       font-size: 16px;
       font-weight: bold;
       position: absolute;

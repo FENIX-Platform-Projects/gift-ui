@@ -109,11 +109,11 @@ define([
     Nutrition.prototype._refreshStackedChart = function () {
 
         if (this.stackedChartReady) {
-            console.log("redraw stacked");
+            //console.log("redraw stacked");
             return;
         }
 
-        console.log("render stacked")
+        //console.log("render stacked")
 
         this.stackedChartReady = true;
 
@@ -171,17 +171,19 @@ define([
         this.barsChartReady = true;
 
         var values = this.filter.getValues(),
-            items = values.values.items;
+            items = values.values.items || [],
+            nutrient = items[0],
+            labels = values.labels.items || {};
 
         this.barsChart = new PieThreeLevDrilldown({
             elID: s.PIE_CONTAINER_ID,
             labelsId : s.PIE_LABELS_ID,
-            title : 'IRON',
+            title : labels[nutrient],
             cache: C.cache,
             environment: C.environment,
             selected_config: this.process.parameters,
             selected_items: items,
-            uid: "gift_process_total_weighted_food_consumption_" + this.model.uid,
+            uid: "gift_process_total_food_consumption_" + this.model.uid,
             language: this.lang.toUpperCase()
         });
 

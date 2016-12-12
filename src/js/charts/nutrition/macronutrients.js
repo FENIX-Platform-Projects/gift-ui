@@ -4,8 +4,9 @@ define([
     "loglevel",
     "../../../nls/labels",
     "fenix-ui-bridge",
-    "highcharts"
-], function (_, $, log, labels, Bridge, Highcharts) {
+    "highcharts",
+    "../valueFormatter"
+], function (_, $, log, labels, Bridge, Highcharts, Formatter) {
 
 
     var s = {
@@ -105,6 +106,12 @@ define([
 
     function PieMacronutrientsChart(params) {
 
+        // Load Exporting Module after Highcharts loaded
+        if (!require.cache[require.resolveWeak("highcharts-no-data-to-display")]) {
+            require('highcharts-no-data-to-display')(Highcharts);
+        }
+
+
         this._init(params);
 
         this.bridge = new Bridge({
@@ -155,15 +162,13 @@ define([
         this._setHTMLvariables();
         var chartConfig = this._getChartConfig(series);
 
-
         return this._renderChart(chartConfig);
     };
 
     PieMacronutrientsChart.prototype._onError = function (resource) {
-
         log.info("_onError");
         log.error(resource)
-        return;
+
     };
 
     PieMacronutrientsChart.prototype._processSeries = function (resource) {
@@ -203,7 +208,7 @@ define([
                 var obj = {};
 
                 var it = data[i];
-                obj.y = it[value_index];
+                obj.y = Formatter.format(it[value_index]);
                 obj.unit = it[umLabelIdx];
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
