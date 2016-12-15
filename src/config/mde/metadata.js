@@ -67,23 +67,21 @@ define(
                     "constraints": {"presence": true}
 
                 },
-                /*
-                 "creationDate": {
-                 "selector": {
-                 "id": "time"
-                 },
-                 "template": {
-                 "title": "Creation Date",
-                 "hideDescription": true,
-                 "footer": "Creation date of the resource.",
+                "creationDate": {
+                    "selector": {
+                        "id": "time"
+                    },
+                    "template": {
+                        "title": "Creation Date",
+                        "hideDescription": true,
+                        "footer": "Creation date of the resource.",
 
-                 },
-                 "format": {
-                 "output": "date"
-                 },
-                 "constraints": {"presence": true}
-                 },
-                 */
+                    },
+                    "format": {
+                        "output": "date"
+                    },
+                    "constraints": {"presence": true}
+                },
                 "language": {
                     "cl": Languages,
                     "selector": {
@@ -104,14 +102,7 @@ define(
                 },
                 "languageDetails": {
                     "selector": {
-                        "id": "input",
-                        "type": "text",
-                        "source": [
-                            {
-                                "value": "languageDetails",
-                                "label": "Dataset language - additional information"
-                            }
-                        ]
+                        "id": "textarea"
                     },
                     "template": {
                         "title": "Dataset language - additional information",
@@ -432,9 +423,19 @@ define(
                     "description": "This section includes a summary of the content of the resource and the description of the geographical, time and sector coverage.",
                     "selectors": {
                         "keywords": {
-                            "selector": {
-                                "id": "input",
-                                "type": "text"
+                            selector: {
+                                id: "dropdown",
+                                config: {
+                                    plugins: ['remove_button'],
+                                    delimiter: ',',
+                                    persist: false,
+                                    create: function (input) {
+                                        return {
+                                            value: input,
+                                            text: input
+                                        }
+                                    }
+                                }
                             },
                             "template": {
                                 "title": "Keywords",
@@ -559,7 +560,12 @@ define(
                                     "selector": {
                                         "id": "dropdown",
                                         "sort": false,
-                                        "config": {"maxItems": 1}
+                                        "config": {"maxItems": 1},
+                                        sort: function (a, b) {
+                                            if (a.text < b.text) return -1;
+                                            if (a.text > b.text) return 1;
+                                            return 0;
+                                        },
                                     },
                                     "template": {
                                         "title": "Study areas",
@@ -799,6 +805,7 @@ define(
                                             "cl": GIFT_TypeOfResource,
                                             "selector": {
                                                 "id": "dropdown",
+                                                config: {maxItems: 1},
                                                 "sort": false
                                             },
                                             "template": {
@@ -844,14 +851,7 @@ define(
                                         },
                                         "ResourceCite": {
                                             "selector": {
-                                                "id": "input",
-                                                "type": "text",
-                                                "source": [
-                                                    {
-                                                        "value": "ResourceCite",
-                                                        "label": "Preferred way to cite the resource"
-                                                    }
-                                                ]
+                                                "id": "textarea",
                                             },
                                             "template": {
                                                 "title": "Preferred way to cite the resource",
@@ -974,7 +974,12 @@ define(
                                     "cl": YESNO,
                                     "selector": {
                                         "id": "dropdown",
-                                        "config": {"maxItems": 1}
+                                        "config": {"maxItems": 1},
+                                        sort: function (a, b) {
+                                            if (a.text > b.text) return -1;
+                                            if (a.text < b.text) return 1;
+                                            return 0;
+                                        }
                                     },
                                     "template": {
                                         "title": "Repeated dietary recall/record",
@@ -1422,17 +1427,11 @@ define(
                             "selectors": {
                                 "ExclusionRecruitment": {
                                     "selector": {
-                                        "id": "textarea",
-                                        "type": "text",
-                                        "source": [
-                                            {
-                                                "value": "ExclusionRecruitment",
-                                                "label": "Exclusion criteria during recruitment"
-                                            }
-                                        ]
+                                        "id": "textarea"
                                     },
                                     "template": {
                                         "title": "Exclusion criteria during recruitment",
+                                        "hideDescription": true,
                                         "footer": "Describe the exclusion criteria (if any) which were applied during sample selection in order to exclude respondents whose data could potentially bias results of the study",
 
                                     },
@@ -1442,17 +1441,11 @@ define(
                                 },
                                 "ExclusionDataCleaning": {
                                     "selector": {
-                                        "id": "input",
-                                        "type": "textarea",
-                                        "source": [
-                                            {
-                                                "value": "ExclusionDataCleaning",
-                                                "label": "Exclusion criteria during data cleaning"
-                                            }
-                                        ]
+                                        "id": "textarea"
                                     },
                                     "template": {
                                         "title": "Exclusion criteria during data cleaning",
+                                        "hideDescription": true,
                                         "footer": "Describe the exclusion criteria (if any) which were applied during data cleaning in order to exclude recalls/records which could potentially bias results of the study",
 
                                     },
@@ -1462,17 +1455,11 @@ define(
                                 },
                                 "MethodReporting": {
                                     "selector": {
-                                        "id": "input",
-                                        "type": "textarea",
-                                        "source": [
-                                            {
-                                                "value": "MethodReporting",
-                                                "label": "Method used to assess over-/under-reporting"
-                                            }
-                                        ]
+                                        "id": "textarea"
                                     },
                                     "template": {
                                         "title": "Method used to assess over-/under-reporting",
+                                        "hideDescription": true,
                                         "footer": "Describe methods (if any) that were used to assess unreliably low or high food intake data from the collected recalls/records",
 
                                     },

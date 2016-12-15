@@ -31,6 +31,7 @@ define(function () {
             coverageTime: {
                 selector: {
                     id: "range",
+                    default : [{value : 1980, parent : "from"}, {value : new Date().getFullYear(), parent : "from"}],
                     config: {
                         min: 1980,
                         max: new Date().getFullYear(),
