@@ -201,7 +201,13 @@ define(["underscore"], function (_) {
                     path : "title",
                     type: "i18n",
                     title : "Title",
-                    width: "80%"
+                    width: "60%"
+                },
+                region: {
+                    path : "meContent.seCoverage.coverageGeographic",
+                    type: "code",
+                    title : "Region",
+                    width: "20%"
                 }
             },
 

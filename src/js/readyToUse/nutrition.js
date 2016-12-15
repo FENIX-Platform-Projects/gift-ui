@@ -124,7 +124,7 @@ define([
             cache: C.cache,
             holder : s.PERCENTAGE_HOLDER,
             environment: C.environment,
-            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            uid: "GIFT_afc_" + this.model.uid,
             selected_items: $.extend(true, {}, this.process.parameters, {
                 "item": "VITA"
             }),
@@ -150,7 +150,7 @@ define([
             labelsId : s.MACRONUTRIENTS_PIE_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            uid: "GIFT_afc_" + this.model.uid,
             selected_items: $.extend(true, {}, this.process.parameters, {
                 "item": null
             }),
@@ -183,7 +183,7 @@ define([
             environment: C.environment,
             selected_config: this.process.parameters,
             selected_items: items,
-            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            uid: "GIFT_afc_" + this.model.uid,
             language: this.lang.toUpperCase()
         });
 

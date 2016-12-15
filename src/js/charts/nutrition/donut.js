@@ -16,7 +16,7 @@ define([
             first_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
+                    "sid": [{"uid": "GIFT_afc_000042BUR201001"}],
                     "parameters": {
                         "gender": "2",
                         "special_condition": ["2"],
@@ -95,7 +95,7 @@ define([
             second_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
+                    "sid": [{"uid": "GIFT_afc_000042BUR201001"}],
                     "parameters": {
                         "gender": "2",
                         "special_condition": ["2"],
@@ -180,7 +180,7 @@ define([
             third_level_process: [
                 {
                     "name": "gift_population_filter",
-                    "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
+                    "sid": [{"uid": "GIFT_afc_000042BUR201001"}],
                     "parameters": {
                         "gender": "2",
                         "special_condition": ["2"],

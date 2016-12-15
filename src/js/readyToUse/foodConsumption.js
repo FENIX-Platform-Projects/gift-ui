@@ -150,7 +150,7 @@ define([
         process.parameters.item = "FOOD_AMOUNT_PROC";
 
         process.sid = [
-            {uid: "gift_process_total_food_consumption_" + this.model.uid}
+            {uid: "GIFT_afc_" + this.model.uid}
         ];
 
         var instance = new Bubble({
@@ -192,7 +192,7 @@ define([
         process.parameters.item = "FOOD_AMOUNT_PROC";
 
         process.sid = [
-            {uid: "gift_process_total_food_consumption_" + this.model.uid}
+            {uid: "GIFT_afc_" + this.model.uid}
         ];
 
         obj.instances.push(new TreeMap({
@@ -200,7 +200,7 @@ define([
             labelsId: s.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            uid: "GIFT_afc_" + this.model.uid,
             selected_items: process.parameters,
             levels_number: 3,
             language: this.lang.toUpperCase()
@@ -212,7 +212,7 @@ define([
             labelsId: s.LARGE_TREE_MAP_CONTAINER_ID,
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            uid: "GIFT_afc_" + this.model.uid,
             selected_items: process.parameters,
             levels_number: 2,
             language: this.lang.toUpperCase()
@@ -242,7 +242,7 @@ define([
             labelsId: s.DONUT_LABELS_ID,
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_total_food_consumption_" + this.model.uid,
+            uid: "GIFT_afc_" + this.model.uid,
             selected_items: params,
             language: this.lang.toUpperCase()
         };

@@ -195,7 +195,7 @@ define([
             f = $.extend(true, {}, filter);
 
         f.sid.push({
-            uid: "gift_process_total_food_consumption_" + this.uid
+            uid: "GIFT_afc_" + this.uid
         });
 
         f.parameters = this.parameters;

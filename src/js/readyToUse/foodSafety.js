@@ -162,7 +162,7 @@ define([
             columnPercentageItemLabel: label.toUpperCase(),
             cache: C.cache,
             environment: C.environment,
-            uid: "gift_process_food_consumption_" + this.model.uid,
+            uid: "GIFT_fc_" + this.model.uid,
             selected_items: param.selected_items,
             selected_group: param.selected_group,
             process_name: param.process_name,

@@ -68,7 +68,7 @@ define(function () {
         //Nutrition
         dietaryAdequacy: "Dietary adequacy",
         sourceOfNutrientsInTheDiet: "Sources of Nutrients in the Diet",
-        macronutrients: "Macronutrients",
+        macronutrients: "Macronutrient contribution to total energy intake",
 
         dietaryTitle: "Percentage of individuals at risk of nutrient inadequacy)",
         dietaryDescription: "This indicator shows the percentage of individuals in the population who are at risk of having an average dietary intake of different nutrients below their requirements for these nutrients. The indicator shows the estimates of population at risk of Vitamin A inadequacy, and in the future it will include iron, calcium, zinc and possibly folic acid. The nutrient reference values used for vitamin A are taken from the HMD (2016) (see methodology section for references).",
@@ -84,7 +84,7 @@ define(function () {
         fola: "Fola",
 
         //Charts titles
-        bubbleTitle : "Daily dieter: grams per person per day",
+        bubbleTitle : "Daily diet: grams per person per day",
         bubbleFoodTitle : "Foods",
         bubbleBeveragesTitle : "Beverages",
         columnAverage_title : "Daily portion on days of consumption",

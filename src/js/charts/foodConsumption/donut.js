@@ -21,7 +21,7 @@ define([
                 first_level_process: [
                     {
                         "name": "gift_population_filter",
-                        "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
+                        "sid": [{"uid": "GIFT_afc_000042BUR201001"}],
                         "parameters": {
                             "item": "ENERGY",
                             "gender": "2",
@@ -73,7 +73,7 @@ define([
                 second_level_process: [
                     {
                         "name": "gift_population_filter",
-                        "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
+                        "sid": [{"uid": "GIFT_afc_000042BUR201001"}],
                         "parameters": {
                             "item": "ENERGY",
                             "gender": "2",

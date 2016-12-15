@@ -11,7 +11,7 @@ define([
             {
                 "name": "gift_average_percentile",
 
-                "sid": [{"uid": "gift_process_total_food_consumption_000042BUR201001"}],
+                "sid": [{"uid": "GIFT_afc_000042BUR201001"}],
 
                 "parameters": {
 

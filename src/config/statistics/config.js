@@ -49,12 +49,23 @@ define(["jquery", "underscore"],function ($, _) {
                     path : "title",
                     type: "i18n",
                     title : "Title",
-                    width: "50%"
+                    width: "40%"
                 },
                 sampleSize : {
                     path : "sampleSize",
                     title : "Sample Size",
-                    width: "20%"
+                    width: "7%"
+                },
+                region: {
+                    path : "meContent.seCoverage.coverageGeographic",
+                    type: "code",
+                    title : "Region",
+                    width: "16%"
+                },
+                year : {
+                    path : "year",
+                    title : "Year",
+                    width: "7%"
                 }
             },
 
