@@ -67,7 +67,7 @@ define(function () {
 
         //Nutrition
         dietaryAdequacy: "Dietary adequacy",
-        sourceOfNutrientsInTheDiet: "Sources of Nutrients in the Diet",
+        sourceOfNutrientsInTheDiet: "Sources of nutrients in the diet",
         macronutrients: "Macronutrient contribution to total energy intake",
 
         dietaryTitle: "Percentage of individuals at risk of nutrient inadequacy)",
