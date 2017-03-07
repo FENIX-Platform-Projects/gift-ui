@@ -72,14 +72,6 @@ define([
             },
 
             {
-                "name": "asTable"
-            },
-
-            {
-                "name": "percentage"
-            },
-
-            {
                 "name": "addcolumn",
                 "parameters": {
                     "column": {
@@ -97,7 +89,7 @@ define([
                             ]
                         }
                     },
-                    "value": "perc"
+                    "value": "kcal"
                 }
             }
 
@@ -281,7 +273,7 @@ define([
                     dataLabels: {
                         enabled: true,
                         formatter: function () {
-                            return '<span class="pie-label">' + Math.round(this.percentage * 100) / 100 + '%<span>';
+                            return '<span class="pie-label">' + Math.round(this.percentage) + '%<span>';
                         },
                         style: {
                             textShadow: false
@@ -293,7 +285,7 @@ define([
 
             tooltip: {
                 formatter: function () {
-                    return this.key + ': <b>' + this.y + '%</b>';
+                    return this.key + ': <b>' + Number(this.y.toFixed(0)).toLocaleString() + ' kcal</b>';
                 }
             },
 
