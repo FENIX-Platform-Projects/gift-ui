@@ -550,14 +550,17 @@ $width: 300px;
 
 }
 
-
-#donut-title{
+#donut-title, #pieThreeLevDrilldown-total {
   font-size: 16px;
   position: absolute;
   top: 239px;
   left: 206px;
   width: 118px;
   text-align: center;
+}
+
+#pieThreeLevDrilldown-total {
+  top: 143px;
 }
 
 #dietaryPattern{
