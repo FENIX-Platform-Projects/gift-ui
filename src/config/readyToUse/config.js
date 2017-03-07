@@ -66,23 +66,54 @@ define(["underscore"], function (_) {
 
     return {
 
+        chartColors : {
+            "01": "#B4730A",//Cereals
+            "02": "#B4490A",//Roots, tubers and plantains"
+            "03": "#602400",//Pulses, seeds and nuts
+            "04": "#016F79",//Milk and milk products
+            "05": "#FF9000",//Eggs
+            "06": "#2E4372",//Fish
+            "07": "#AB0101",//Meat
+            "08": "#833434",//Insects and grubs
+            "09": "#1F510F",//Vegetables
+            "10": "#52980A",//Fruits
+            "11": "#988E20",//Fats and oils
+            "12": "#D14969",//Sweets and sugars
+            "13": "#720D3D",//Spices and condiments
+            "14": "#0A58FD",//Beverages
+            "15": "#180479",//Foods for particular nutritional uses
+            "16": "#1C182E",//Food supplements and similar
+            "17": "#201E27",//Food additives
+
+            //Beverages
+            "1401": "#0A58FD",
+            "1402": "#0A58FD",
+            "1403": "#0A58FD",
+            "1404": "#0A58FD",
+            "1405": "#0A58FD",
+            "1406": "#0A58FD"
+        },
+
         //http://tools.medialab.sciences-po.fr/iwanthue/
-        bubbleChartColors_foods :["#ffc666",
-            "#7e5bd1",
-            "#abd950",
-            "#a742b2",
-            "#afe476",
-            "#2d175a",
-            "#edd346",
-            "#e5acff",
-            "#658b00",
-            "#ff81b9",
-            "#007439",
-            "#cc6a0a",
-            "#1eece6",
-            "#8b6f00",
-            "#00bd99",
-            "#465005"],
+        bubbleChartColors_foods : {
+            "01": "#B4730A",//Cereals
+            "02": "#B4490A",//Roots, tubers and plantains"
+            "03": "#602400",//Pulses, seeds and nuts
+            "04": "#016F79",//Milk and milk products
+            "05": "#FF9000",//Eggs
+            "06": "#2E4372",//Fish
+            "07": "#AB0101",//Meat
+            "08": "#833434",//Insects and grubs
+            "09": "#1F510F",//Vegetables
+            "10": "#52980A",//Fruits
+            "11": "#988E20",//Fats and oils
+            "12": "#D14969",//Sweets and sugars
+            "13": "#720D3D",//Spices and condiments
+            "14": "#0A58FD",//Beverages
+            "15": "#180479",//Foods for particular nutritional uses
+            "16": "#1C182E",//Food supplements and similar
+            "17": "#201E27"//Food additives
+        },
 
         bubbleChartColors_beverages : [
             "#c1eaff",
@@ -100,22 +131,6 @@ define(["underscore"], function (_) {
             "#7096a0",
             "#02abe1",
             "#007ba1"],
-
-        treemapColors :["#d4eabc",
-            "#91b2e0",
-            "#eddaac",
-            "#ceb7dd",
-            "#a9c3a1",
-            "#e7b1c0",
-            "#91d0cc",
-            "#e2b1a0",
-            "#9ad2e6",
-            "#c7b794",
-            "#b0c1db",
-            "#caecd9",
-            "#dfd2e2",
-            "#b3beb4",
-            "#efdccd"],
 
         catalog: {
             pluginRegistry: {

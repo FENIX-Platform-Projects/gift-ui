@@ -206,7 +206,6 @@ define([
             language: this.lang.toUpperCase()
         }));
 
-
         var instance = new TreeMap({
             elID: s.LARGE_TREE_MAP_CONTAINER_BEVERAGES_ID,
             labelsId: s.LARGE_TREE_MAP_CONTAINER_ID,

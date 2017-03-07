@@ -4,9 +4,10 @@ define([
     "loglevel",
     "../../../nls/labels",
     "../../charts/valueFormatter",
+    "../../../config/readyToUse/config",
     "fenix-ui-bridge",
     "highcharts"
-], function (_, $, log, labels, Formatter, Bridge, Highcharts) {
+], function (_, $, log, labels, Formatter, RC, Bridge, Highcharts) {
 
     var s = {
         HEIGHT: 500,
@@ -348,10 +349,12 @@ define([
     };
 
     ThreeLevDrilldown.prototype._processSeries = function (resource) {
+
         var self = this;
         var metadata = resource.metadata;
         var data = resource.data;
 
+        var colors = RC["chartColors"];
         var columns = metadata.dsd.columns;
         var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
@@ -389,6 +392,7 @@ define([
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
                 obj.drilldown = true;
+                obj.color = colors[obj.code];
 
                 dataToChart.push(obj);
             }

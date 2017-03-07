@@ -4,9 +4,10 @@ define([
     "loglevel",
     "../../../nls/labels",
     "../../charts/valueFormatter",
+    "../../../config/readyToUse/config",
     "fenix-ui-bridge",
     "highcharts"
-], function (_, $, log, labels, Formatter, Bridge, Highcharts) {
+], function (_, $, log, labels, Formatter, RC, Bridge, Highcharts) {
 
     var filter = {
             "name": "gift_population_filter",
@@ -290,6 +291,8 @@ define([
 
     DonutHole.prototype._processSeries = function (resource) {
 
+        var colors = RC["chartColors"];
+        console.log(colors);
         var self = this;
         var metadata = resource.metadata;
         var data = resource.data;
@@ -331,6 +334,7 @@ define([
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
                 obj.drilldown = true;
+                obj.color = colors[obj.code];
 
                 dataToChart.push(obj);
             }

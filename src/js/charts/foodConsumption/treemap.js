@@ -661,10 +661,12 @@ define([
 
     LargeTreeMap.prototype._getChartConfig = function (s) {
 
-        var colors = RC.treemapColors.slice(0);
+        // var colors = RC.treemapColors.slice(0);
+        var colors = RC.chartColors;
 
         var series = _.map(s, function(ser){
-            return ser.parent ?ser: $.extend(true, {color : colors.pop()}, ser);
+            // return ser.parent ?ser: $.extend(true, {color : colors.pop()}, ser);
+            return ser.parent ?ser: $.extend(true, {color : colors[ser.id]}, ser);
         });
 
         var self = this;

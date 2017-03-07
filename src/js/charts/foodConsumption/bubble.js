@@ -313,7 +313,7 @@ define([
 
     Bubble.prototype._buildFoodsModel = function (raw) {
 
-        var colors = RC["bubbleChartColors_" + this.type].slice(0) || [],
+        var colors = RC["bubbleChartColors_" + this.type],
             lang = this.lang.toUpperCase(),
             data = raw || {},
             resourceGroups = data.food_group || {},
@@ -353,7 +353,8 @@ define([
             result.push({
                 name: group[details["group_code_" + lang].index],
                 size: group[details["value"].index],
-                color: colors.pop(),
+                // color: colors.pop(),
+                color: colors[group[details["group_code"].index]],
                 level: "1"
             });
         }
@@ -449,7 +450,8 @@ define([
 
         return {
             name: "Beverages",
-            color: "#213648",
+            //color: "#213648",
+            color: "#0A58FD",
             children: children
         };
 

@@ -53,7 +53,6 @@ define([
 
         this._bindEventListeners();
 
-
     }
 
     Nutrition.prototype.show = function () {
