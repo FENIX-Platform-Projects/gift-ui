@@ -8,3 +8,4 @@ Web.config
 .DS_Store
 /config/auth_users.json
 stats.json
+/dist/
