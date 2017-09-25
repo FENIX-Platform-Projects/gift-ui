@@ -36,6 +36,15 @@ define(function () {
         search_criteria: "Search Criteria",
         click_expand_collapse: "Click to expand or collapse the Search Criteria box",
         fenix_metadata: "FENIX metadata",
+        downloadDataModalText1: "The dataset you are going to download is shared through FAO/WHO GIFT by:",
+        downloadDataModalText2: "We thank them for their collaboration.",
+        downloadDataModalText3: "By downloading this dataset you accept to:",
+        downloadDataModalBulletPoint1: "- comply with all applicable laws, including, without limitation, privacy laws, intellectual property laws, anti-spam laws;",
+        downloadDataModalBulletPoint2: "- not publicly represent or imply that FAO is participating in, or has sponsored, approved or endorsed the manner or purpose of your use of the database;",
+        downloadDataModalBulletPoint3: "- provide the following acknowledgment to the contributor whenever publishing or presenting publicly the data or its derivatives:",
+        downloadDataModalText4: "Or shortly",
+        downloadDataJustification: "Short description of the intended use of the data",
+        downloadDataModalButton: "I understand and wish to proceed",
 
 
         //Ready To Use section
@@ -101,6 +110,15 @@ define(function () {
         largeTree_title : "Daily diet: portion of different food groups",
         holeDonut_title : "Daily diet: calories per person per day",
 
-        validationErrors : "Invalid selection"
+        validationErrors : "Invalid selection",
+
+        downloadPopupAll : "ALL",
+        downloadPopupVariableDictionary : "Variable dictionary",
+        downloadPopupMetadataPdf : "Meta-data pdf",
+        downloadPopupFoodCompositionTable : "Food composition table",
+        downloadPopupRecipeFiles : "Recipe files",
+        downloadPopupSourceLink : "Source Link"
+
+
     }
 });

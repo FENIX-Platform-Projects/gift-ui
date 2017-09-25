@@ -661,12 +661,39 @@ define([
 
     LargeTreeMap.prototype._getChartConfig = function (s) {
 
-        // var colors = RC.treemapColors.slice(0);
-        var colors = RC.chartColors;
-
+        var chartColors = RC.chartColors;
+        var color_counterMAP = {};
+        var j =0;
+        var gradient_obj = RC["color_gradient"];
         var series = _.map(s, function(ser){
-            // return ser.parent ?ser: $.extend(true, {color : colors.pop()}, ser);
-            return ser.parent ?ser: $.extend(true, {color : colors[ser.id]}, ser);
+            var counter = 0;
+            var colors = [];
+            if(ser.parent)
+            {
+                var actual_color = chartColors[ser.parent];
+                var gradient_properties = Object.getOwnPropertyNames(gradient_obj);
+                for(var i=0; i<gradient_properties.length; i++){
+                    if(gradient_properties[i].toUpperCase() == actual_color){
+                        colors = gradient_obj[gradient_properties[i]];
+                        break;
+                    }
+                }
+
+                if(!color_counterMAP.hasOwnProperty(actual_color)){
+                    //Counter is zero
+                    counter = 0;
+                    color_counterMAP[actual_color] = counter;
+                }
+                else{
+                    counter = color_counterMAP[actual_color]+1;
+                    color_counterMAP[actual_color] = counter;
+                }
+                return $.extend(true, {color : colors[counter]}, ser);
+            }
+            else{
+                //return ser;
+                return ser.parent ?ser: $.extend(true, {color : chartColors[ser.id]}, ser);
+            }
         });
 
         var self = this;

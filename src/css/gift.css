@@ -9242,13 +9242,15 @@ button_new_2:before {
     font-size: 15px; }
   .fx-sandbox.fao-holder #largeTree .highcharts-text-outline, .fx-sandbox.fao-holder #pieThreeLevDrilldown .highcharts-text-outline, .fx-sandbox.fao-holder #donut .highcharts-text-outline, .fx-sandbox.fao-holder #largeTree-beverages .highcharts-text-outline {
     display: none; }
-  .fx-sandbox.fao-holder #donut-title {
+  .fx-sandbox.fao-holder #donut-title, .fx-sandbox.fao-holder #pieThreeLevDrilldown-total {
     font-size: 16px;
     position: absolute;
     top: 239px;
     left: 206px;
     width: 118px;
     text-align: center; }
+  .fx-sandbox.fao-holder #pieThreeLevDrilldown-total {
+    top: 135px; }
   .fx-sandbox.fao-holder #dietaryPattern .list-group .list-group-item.active {
     background-color: #0d6cac;
     border-color: #0d6cac; }
@@ -9453,6 +9455,8 @@ button_new_2:before {
     padding: 0 10px; }
   .fx-sandbox.fao-holder #statistics h5.fx-selector-title {
     overflow: visible; }
+  .fx-sandbox.fao-holder #statistics_downloadData_modal {
+    overflow: hidden; }
   .fx-sandbox.fao-holder .z-depth-0 {
     box-shadow: none !important; }
   .fx-sandbox.fao-holder .z-depth-1, .fx-sandbox.fao-holder .btn-floating {
@@ -9629,7 +9633,7 @@ button_new_2:before {
     height: 350px;
     overflow-y: scroll;
     overflow-x: scroll; }
-  .fx-sandbox.fao-holder #fx-data-management-content .catalog-modal .modal-lg, .fx-sandbox.fao-holder #fx-data-upload-content .catalog-modal .modal-lg {
+  .fx-sandbox.fao-holder #fx-data-management-content .catalog-modal .modal-lg, .fx-sandbox.fao-holder #fx-data-upload-content .catalog-modal .modal-lg, .fx-sandbox.fao-holder #fx-data-downloadPopup-content .catalog-modal .modal-lg, .fx-sandbox.fao-holder #disclaimerCreated .catalog-modal .modal-lg {
     width: 100% !important; }
   .fx-sandbox.fao-holder #fx-data-management-menu .container {
     width: 100% !important; }
@@ -9665,5 +9669,12 @@ button_new_2:before {
 
 .fx-md-viewer-container .popover-title .text-info {
   font-family: "Open Sans", Arial, Helvetica, Verdana, sans-serif; }
+
+#statistics_downloadData_modal .modal-body {
+  min-height: 400px !important;
+  max-height: 800px !important;
+  height: auto !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important; }
 
 /*# sourceMappingURL=gift.css.map */

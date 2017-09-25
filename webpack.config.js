@@ -30,7 +30,8 @@ module.exports = sections.map(function (section) {
                 'handlebars': Path.join(__dirname, 'node_modules/handlebars/dist/handlebars.js'),
                 'jquery': Path.join(__dirname, 'node_modules/jquery/dist/jquery'),
                 // required by fenix-ui-uploader
-                "jquery-ui/widget": Path.join(__dirname, 'node_modules/jquery.ui.widget/jquery.ui.widget'),
+                "jquery-ui/widget": Path.join(__dirname, 'node_modules/jquery.ui.widget/jquery.ui.widget')
+                //'fenix-ui-metadata-viewer': Path.join(__dirname, 'node_modules/fenix-ui-metadata-viewer/src/js/index.js')
             }
         },
 
@@ -41,6 +42,7 @@ module.exports = sections.map(function (section) {
                     {test: /\.css$/, loader: "style-loader!css-loader"}
                 ),
                 {test: /\.hbs$/, loader: "handlebars-loader"},
+                {test: /\.html$/, loader: "html-loader"},
                 {test: /\.json/, loader: "json-loader"},
                 {test: /\.png$/, loader: "url-loader?limit=100000"},
                 {test: /\.jpg$/, loader: "file-loader?name=[name].[ext]&limit=100000"},
@@ -55,6 +57,14 @@ module.exports = sections.map(function (section) {
                 {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"}
             ]
         },
+
+        node: {
+            fs: "empty"
+        },
+
+        externals:[{
+            xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
+        }],
 
         plugins: clearArray([
             new webpack.ProvidePlugin({$: "jquery", jQuery: "jquery"}),

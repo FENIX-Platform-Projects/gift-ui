@@ -490,13 +490,28 @@ define([
         return dataToChart;
     };
 
-    ThreeLevDrilldown.prototype._processSeries = function (resource) {
+    ThreeLevDrilldown.prototype._processSeries = function (resource, point) {
 
         var self = this;
         var metadata = resource.metadata;
         var data = resource.data;
+        var level = s.level_number;
 
         var colors = RC["chartColors"];
+        var gradient = false;
+        if((level == '2')&&(point)&&(point.color)){
+            point.color = point.color.toUpperCase();
+            var gradient_obj = RC["color_gradient"];
+            var gradient_properties = Object.getOwnPropertyNames(gradient_obj);
+            for(var i=0; i<gradient_properties.length; i++){
+                if(gradient_properties[i].toUpperCase() == point.color){
+                    colors = gradient_obj[gradient_properties[i]];
+                    break;
+                }
+            }
+            gradient = true;
+        }
+
         var columns = metadata.dsd.columns;
         var um_index = '', value_index = '', code_index = '', code_column_id, um_column_id;
 
@@ -534,7 +549,11 @@ define([
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
                 obj.drilldown = true;
-                obj.color = colors[obj.code];
+                // obj.color = colors[obj.code];
+                if(gradient)
+                    obj.color = colors[i];
+                else
+                    obj.color = colors[obj.code];
 
                 dataToChart.push(obj);
             }
@@ -577,7 +596,7 @@ define([
     };
 
     ThreeLevDrilldown.prototype._otherLevelOnSuccess = function (chart, point, resource) {
-        var ser = this._processSeries(resource);
+        var ser = this._processSeries(resource, point);
 
         var chart = chart,
             drilldowns = {};
@@ -652,7 +671,14 @@ define([
                         }
                     },
                     showInLegend: true,
-                    innerSize: '40%'
+                    innerSize: '40%',
+                    point: {
+                        events: {
+                            legendItemClick: function () {
+                                return false; // <== returning false will cancel the default action
+                            }
+                        }
+                    }
                 },
 
                 series: {

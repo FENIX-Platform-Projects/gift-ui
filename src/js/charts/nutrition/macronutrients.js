@@ -66,7 +66,7 @@ define([
                 "parameters": {
                     "values": {
                         "item": null,
-                        "value": "case when item='CARBOH' then value*4 when item='PROTEIN' then value*4 when item='FAT' then value*9 end"
+                        "value": "case when item='CARBOH' then value*4/1000 when item='PROTEIN' then value*4/1000 when item='FAT' then value*9/1000 end"
                     }
                 }
             },

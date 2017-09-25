@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Uploader</title>
+
+    <!-- Include Quill stylesheet -->
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="fx-sandbox fx-overflow fao-holder" style="background-color: white;">
+
+    <div class="container-fluid" id="fx-data-upload-content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div data-role="modal" class="modal fade catalog-modal catalog-dm" tabindex="-1" role="dialog"
+                     aria-labelledby="analysisCatalog">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <div id="catalog-container"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div id="datauploader-container">
+                    <button disabled class="btn btn-default fx-button-primary-color" id="fxDUpBack">Back</button><br>
+                    <br>
+                    <!-- Modal -->
+                    <div class="modal fade" id="disclaimerCreated" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Info</h5>
+                                </div>
+                                <div class="modal-body">
+                                    The disclaimer associated with the metadata has been created.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Create the editor container -->
+                    <div id="editor"></div>
+                    <input style="display: none" type="button" id = "quillButton"/>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>

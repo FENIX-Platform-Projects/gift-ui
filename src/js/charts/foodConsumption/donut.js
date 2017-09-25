@@ -259,7 +259,6 @@ define([
         process[0].parameters = this.selected_items;
 
         if (group_code) {
-            console.log(process[2])
             process[2].parameters.rows.group_code.codes[0].codes = group_code;
         }
 
@@ -289,10 +288,22 @@ define([
         log.error(resource)
     };
 
-    DonutHole.prototype._processSeries = function (resource) {
+    DonutHole.prototype._processSeries = function (resource, level, point) {
 
         var colors = RC["chartColors"];
-        console.log(colors);
+        var gradient = false;
+        if((level == '2')&&(point)&&(point.color)){
+            point.color = point.color.toUpperCase();
+            var gradient_obj = RC["color_gradient"];
+            var gradient_properties = Object.getOwnPropertyNames(gradient_obj);
+            for(var i=0; i<gradient_properties.length; i++){
+                if(gradient_properties[i].toUpperCase() == point.color){
+                    colors = gradient_obj[gradient_properties[i]];
+                    break;
+                }
+            }
+            gradient = true;
+        }
         var self = this;
         var metadata = resource.metadata;
         var data = resource.data;
@@ -334,8 +345,10 @@ define([
                 obj.name = it[codeLabelIdx];
                 obj.code = it[code_index];
                 obj.drilldown = true;
-                obj.color = colors[obj.code];
-
+                if(gradient)
+                    obj.color = colors[i];
+                else
+                    obj.color = colors[obj.code];
                 dataToChart.push(obj);
             }
         }
@@ -359,7 +372,7 @@ define([
 
     DonutHole.prototype._secondLevelOnSuccess = function (chart, point, resource) {
 
-        var ser = this._processSeries(resource);
+        var ser = this._processSeries(resource, '2', point);
 
         var chart = chart,
             drilldowns = {};
@@ -379,7 +392,6 @@ define([
     };
 
     DonutHole.prototype._getChartConfig = function (series) {
-
         var self = this,
             chartConfig = {
                 lang: {
@@ -435,7 +447,14 @@ define([
                             }
                         },
                         showInLegend: true,
-                        innerSize: '40%'
+                        innerSize: '40%',
+                        point: {
+                            events: {
+                                legendItemClick: function () {
+                                    return false; // <== returning false will cancel the default action
+                                }
+                            }
+                        }
                     },
 
                     series: {

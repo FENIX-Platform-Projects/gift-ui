@@ -16,7 +16,6 @@
   @import 'base/fx-radio-checkbox';
   @import 'base/fx-typography';
 
-
   //pages
   @import 'pages/readyToUse';
   @import 'pages/consumption';
@@ -74,3 +73,13 @@
 .fx-md-viewer-container .popover-title .text-info{
   font-family: "Open Sans", Arial, Helvetica, Verdana, sans-serif;
 }
+
+#statistics_downloadData_modal .modal-body {
+
+  min-height: 400px!important;
+  max-height: 800px!important;
+  height:auto !important;
+  overflow-y: hidden!important;
+  overflow-x: hidden!important;
+}
+

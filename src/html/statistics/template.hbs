@@ -1,6 +1,42 @@
 <div id="catalog"></div>
 
-<!-- Modal -->
+<div class="modal fade" id="statistics_downloadData_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content md-modal">
+            <div class="modal-body md-modal">
+                <div id="statistics_downloadData_modal_content" class="col-md-12">
+                    <div class="row">
+                        <div class="col-xs-3 col-xs-offset-9">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12" id = "statistics_downloadData_modal_content_dynamicPart">TEXT THAT HAS TO BE INSERTED!!!
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-10 col-xs-offset-1">
+                            <div class="form-group">
+                                <label for="downloadDataJustificationForm">{{downloadDataJustification}}:</label>
+                                <textarea class="form-control" rows="4" id="downloadDataJustificationForm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-10 col-xs-offset-1">
+                            <div id="downloadSelectorType"></div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Metadata Modal -->
 <div class="modal fade" id="statistics_metadata_modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content md-modal">
@@ -9,9 +45,7 @@
                 <h4 class="modal-title" id="myModalLabel">{{fenix_metadata}}</h4>
             </div>
             <div class="modal-body md-modal">
-
                 <div id="statistics_metadata_content" class="col-md-12">
-
                 </div>
             </div>
         </div>
