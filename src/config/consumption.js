@@ -21,7 +21,7 @@ define({
             '4': { className:"warning", order:2, visible:true },
             '3': { className:"danger",  order:3, visible:true },
             '2': { className:"default", order:4, visible:true },
-            '1': { className:"gray",    order:5, visible:false },
+            '1': { className:"gray",    order:5, visible:false }
         }
 /*
 CODES
@@ -79,5 +79,9 @@ Grey(2): Planned food consumption survey
             baselayer: false,
             wmsLoader: false
         }
+    },
+
+    download: {
+        serviceProvider: "http://fenixrepo.fao.org/data/gift/survey/GIFT_Survey_"
     }
 })

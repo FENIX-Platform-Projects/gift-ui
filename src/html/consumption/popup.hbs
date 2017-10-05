@@ -5,7 +5,9 @@
     {{#each items}}
     <li>
         <i class="label label-{{className}}">&nbsp;</i>
-        <a href="#" data-uid="{{uid}}">{{title}}</a>
+        <div data-uid="{{uid}}">{{title}}</div>
+        <a data-link='metadata' href="#" data-uid="{{uid}}" style="color: blue">{{metadata}}</a>
+        <a data-link='survey' href="#" data-uid="{{uid}}" style="color: green; display: {{display}}">{{download}}</a>
     </li>
     {{/each}}
 </ul>

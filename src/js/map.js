@@ -3,7 +3,10 @@ define(['jquery','underscore','loglevel','handlebars',
     '../config/consumption',
     '../html/consumption/map.hbs',
     '../html/consumption/popup.hbs',
-    '../nls/consumption',
+    "../html/consumption/modals/fileTypesDropdown.hbs",
+    "../html/consumption/modals/fileTypesSourceLink.hbs",
+    // '../nls/consumption',
+    "../nls/labels",
     '../json/consumption/gaul0_centroids.json',
     '../json/consumption/world_countries.json',
     //'../json/consumption/countries_targeted',
@@ -13,8 +16,9 @@ define(['jquery','underscore','loglevel','handlebars',
     '../lib/leaflet.markercluster-src',
     'fenix-ui-map',
     'fenix-ui-metadata-viewer',
-    'fenix-ui-reports'
-
+    'fenix-ui-reports',
+    "fenix-ui-bridge",
+    "select2"
     //TODO 'fenix-ui-bridge'
 
 ], function ($, _, log, Handlebars,
@@ -22,6 +26,8 @@ define(['jquery','underscore','loglevel','handlebars',
     ConsC,
     template,
     tmplPopup,
+    fileTypeDropdownTemplate,
+    fileTypesSourceLink,
     labels,
     gaul0Centroids,
     gaul0Countries,
@@ -31,7 +37,9 @@ define(['jquery','underscore','loglevel','handlebars',
     LeafletMarkecluster,
     FenixMap,
     MetadataViewer,
-    Reports
+    Reports,
+    Bridge,
+    select2
 ) {
     "use strict";
     var LANG = C.lang;
@@ -56,12 +64,22 @@ define(['jquery','underscore','loglevel','handlebars',
             MAP_CONTAINER: "#consumption_map",
             MAP_LEGEND: "#consumption_map_legend",
             MAP_META: "#consumption_map_meta",
-            MAP_METAMODAL: "#consumption_map_modal",       
+            MAP_METAMODAL: "#consumption_map_modal",
+            MAP_SURVEY_CARDINALITY: "#consumption_map_surveyCardinality",
+
+            DOWNLOADDATA_MODAL: "#downloadData_modal",
+            DOWNLOADDATA_MODAL_CONTENT: "#downloadData_modal_content_dynamicPart",
+            DOWNLOAD_SELECTOR_TYPE: "#downloadSelectorType",
+
+            layersByCodes2 : '',
+            metadataSize : 0
         };
 
     function Map() {
 
         log.setLevel("trace");
+
+        this._dispose();
 
         this._importThirdPartyCss();
 
@@ -137,6 +155,7 @@ define(['jquery','underscore','loglevel','handlebars',
                         d.meContent.seCoverage.coverageGeographic;
                 });
 
+                s.metadataSize = res.length;
                 self.metadataByCountry = _.groupBy(res, function(d) {
 
                     var countryCode = d.meContent.seCoverage.coverageGeographic.codes[0].code;
@@ -190,6 +209,11 @@ define(['jquery','underscore','loglevel','handlebars',
         _.each(this.gaul0Countries_adm0_code, function(feature, code) {
             self.countryByAdm0Code[ ''+code ] = feature[0];
         });
+
+        this.bridge = new Bridge({
+            environment: C.environment,
+            cache: C.cache
+        });
     };
 
     Map.prototype._attach = function () {
@@ -207,7 +231,13 @@ define(['jquery','underscore','loglevel','handlebars',
         this.$legend = this.$el.find(s.MAP_LEGEND);
         this.$meta = this.$el.find(s.MAP_META);
         this.$metamodal = this.$el.find(s.MAP_METAMODAL);
+        this.$surveyCardinal = this.$el.find(s.MAP_SURVEY_CARDINALITY);
 
+        this.$downloadDatamodal = this.$el.find(s.DOWNLOADDATA_MODAL);
+        this.$downloadDatamodalContent = this.$el.find(s.DOWNLOADDATA_MODAL_CONTENT);
+        this.$downloadSelectorType = this.$el.find(s.DOWNLOAD_SELECTOR_TYPE);
+
+        this.$surveyCardinal.html(i18nLabels.surveyCardinality + s.metadataSize);
         //PATH FOR OLD MAP
         //FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
 
@@ -258,14 +288,14 @@ define(['jquery','underscore','loglevel','handlebars',
         }
 
         //LAYER GRAY
-        var grayCountries = _.compact(_.map(countriesExcluded, function(id) {
-            return self.countryByAdm0Code[ id ];
-        }));
-        L.geoJson(grayCountries, {
-            style: function(f) {
-                return ConsC.countryHiddensStyle;
-            }
-        }).addTo(self.map);
+        // var grayCountries = _.compact(_.map(countriesExcluded, function(id) {
+        //     return self.countryByAdm0Code[ id ];
+        // }));
+        // L.geoJson(grayCountries, {
+        //     style: function(f) {
+        //         return ConsC.countryHiddensStyle;
+        //     }
+        // }).addTo(self.map);
 
         /* TODO enable for too markers
         self.layerAll = L.markerClusterGroup({
@@ -276,8 +306,14 @@ define(['jquery','underscore','loglevel','handlebars',
         self.layerAll = L.layerGroup([]).addTo(this.map);
 
         self.layersByCodes = {};
+        s.layersByCodes2 = {};
+        s.lunghezza = 0;
+
         _.each(self.codesByCountry, function(items, countryCode) {
-            
+
+            s.lunghezza= s.lunghezza+ items.length;
+            console.log(items.length)
+            console.log(s.lunghezza)
             _.each(items, function(item) {
 
                 var className,
@@ -298,16 +334,33 @@ define(['jquery','underscore','loglevel','handlebars',
                         layer: L.layerGroup([])
                     };
                 }
+
+                if((s.layersByCodes2[ order ]!=null)&&(typeof s.layersByCodes2[ order ]!= 'undefined')) {
+                    if(s.layersByCodes2[ order ].hasOwnProperty('surveyCardinality')){
+                        s.layersByCodes2[ order ].surveyCardinality++;
+                    }
+                    else{
+                        s.layersByCodes2[ order ].surveyCardinality = 1;
+                    }
+                }
+                else{
+                    s.layersByCodes2[ order ] = {};
+                    s.layersByCodes2[ order ].surveyCardinality = 1;
+                }
                 
                 var m = self._getMarker(items, code);
-                if(m)
+                if(m){
                     self.layersByCodes[ code ].layer.addLayer( m );
+                }
 
             });
 
             var mAll = self._getMarker(items);
-            if(mAll && ConsC.codelistStyles[ items[0].confids[0] ].visible)
+            if(mAll && ConsC.codelistStyles[ items[0].confids[0] ].visible){
                 self.layerAll.addLayer( mAll );
+                s.layersByCodes2['10'] = {};
+                s.layersByCodes2['10'].surveyCardinality = s.metadataSize;
+            }
         });
 
     //fixed LEGEND field
@@ -328,6 +381,12 @@ define(['jquery','underscore','loglevel','handlebars',
             position: 'topleft'
         })
         .on('panel:selected', function(e) {
+            console.log(s.layersByCodes2)
+            console.log(s.lunghezza)
+            if((e!=null)&&(typeof e!='undefined')&&(e.order!=null)&&(typeof e.order!='undefined')){
+                self.$surveyCardinal.html(i18nLabels.surveyCardinality + s.layersByCodes2[''+e.order].surveyCardinality);
+            }
+
             self.map.fitWorld();
         })
         .addTo(self.map);
@@ -399,42 +458,62 @@ define(['jquery','underscore','loglevel','handlebars',
             _.each(item.confids, function(code) {
 
                 if( ConsC.codelistStyles[ code ].visible) {
-
-                    if(mark.code) {
-                        if(mark.code == code) {
+                    var downloadDisplay = 'none';
+                        if(code==5){
+                            downloadDisplay = 'block';
+                        }
+                        if(mark.code) {
+                            if(mark.code == code) {
+                                mark.itemsValue.push({
+                                    code: code,
+                                    className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
+                                    title: item.title.title,
+                                    uid: item.uid,
+                                    download: '- '+labels[LANG.toLowerCase()]['downloadSurvey'],
+                                    metadata: '- '+labels[LANG.toLowerCase()]['metadata'],
+                                    display: downloadDisplay
+                                });
+                            }
+                        }
+                        else {
                             mark.itemsValue.push({
                                 code: code,
                                 className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
                                 title: item.title.title,
-                                uid: item.uid
+                                uid: item.uid,
+                                download: '- '+labels[LANG.toLowerCase()]['downloadSurvey'],
+                                metadata: '- '+labels[LANG.toLowerCase()]['metadata'],
+                                display: downloadDisplay
                             });
                         }
-                    }
-                    else {
-                        mark.itemsValue.push({
-                            code: code,
-                            className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
-                            title: item.title.title,
-                            uid: item.uid
-                        });
-                    }
                 }
 
             })
         });
 
+        console.log(labels[LANG.toLowerCase()])
+        console.log(labels[LANG.toLowerCase()]['downloadSurvey'])
         var $popup = $(tmplPopup({
             countryName: mark.countryName,
             items: mark.itemsValue
         }));
 
-        $popup.find('a').on('click', function(e) {
+        $popup.find("[data-link='metadata']").on('click', function(e) {
             e.preventDefault();
 
             var uid = $(e.target).data('uid'),
                 meta = self.metadataByUid[ uid ][0];
 
             self._renderMeta(meta);
+        });
+
+        $popup.find("[data-link='survey']").on('click', function(e) {
+            e.preventDefault();
+
+            var uid = $(e.target).data('uid'),
+                meta = self.metadataByUid[ uid ][0];
+
+            self.bridge.getMetadata({uid: uid, params: {"full":true}}).then(_.bind(self._getMetadataInfo, self, uid));
         });
 
         mark.bindPopup($popup[0]);
@@ -444,9 +523,10 @@ define(['jquery','underscore','loglevel','handlebars',
 
     Map.prototype._renderMeta = function(model) {
 
-        this.$metamodal.modal('show');
+        var self = this;
+        self.$metamodal.modal('show');
 
-        this.metadataViewer = new MetadataViewer({
+        self.metadataViewer = new MetadataViewer({
             model: model,
             el: this.$meta,
             lang: C.lang,
@@ -496,12 +576,60 @@ define(['jquery','underscore','loglevel','handlebars',
 
             log.info(payload);
 
-            this.reports.export({
+            self.reports.export({
                 format: "table",
                 config: payload
             });
 
         }, this));
+
+        $(s.MAP_METAMODAL).on('hidden.bs.modal', function (e) {
+            self.metadataViewer.dispose();
+        })
+
+    };
+
+    Map.prototype._getMetadataInfo = function (uid, data) {
+
+        var self = this;
+        if((data!=null)&&(typeof data!='undefined')&&(data.uid!=null)&&(typeof data.uid!="undefined"))
+        {
+            require(['../html/consumption/modals/downloadData_modal_content_'+data.uid+'.hbs'],
+                function   (content) {
+                    self.$downloadDatamodalContent.html(content);
+                    if(data.uid=='000023BGD201001'){
+                        self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[LANG.toLowerCase()]));
+                        $(s.FILE_TYPES_DROPDOWN).select2({
+                            minimumResultsForSearch: Infinity
+                        });
+                    }
+                    else{
+                        //Mettere il link
+                        self.$downloadSelectorType.html(fileTypesSourceLink(labels[LANG.toLowerCase()]));
+                    }
+                    //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+                    self.$downloadDatamodal.modal('show');
+
+                    $("#downloadDataModalButton").click(function() {
+
+                        if(data.uid){
+                            //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+                            var url = ConsC.download.serviceProvider+data.uid+".zip";
+                            var link = document.createElement('a');
+                            link.href = url;
+                            link.click();
+                            link.remove();
+                        }
+                    });
+                });
+        }
+    };
+
+    Map.prototype._dispose = function () {
+
+        if (this.bridge && $.isFunction(this.bridge.dispose)) {
+            this.bridge.dispose();
+        }
     };
 
     Map.prototype._importThirdPartyCss = function () {
@@ -509,6 +637,7 @@ define(['jquery','underscore','loglevel','handlebars',
         //SANDBOXED BOOTSTRAP
         require("../css/sandboxed-bootstrap.css");
 
+        require("../../node_modules/select2/dist/css/select2.css");
         //map requirements
         require('leaflet/dist/leaflet.css');
         require('leaflet-panel-layers/src/leaflet-panel-layers.css');

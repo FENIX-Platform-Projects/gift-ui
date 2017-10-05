@@ -27,14 +27,13 @@ define([
         METADATA_VIEWER_HOLDER: "#viewer",
         METADATA_CONTENT: "#statistics_metadata_content",
         METADATA_MODAL: "#statistics_metadata_modal",
-        DOWNLOADDATA_MODAL: "#statistics_downloadData_modal",
-        DOWNLOADDATA_MODAL_CONTENT: "#statistics_downloadData_modal_content_dynamicPart",
+        DOWNLOADDATA_MODAL: "#downloadData_modal",
+        DOWNLOADDATA_MODAL_CONTENT: "#downloadData_modal_content_dynamicPart",
         DOWNLOAD_SELECTOR_TYPE: "#downloadSelectorType",
         FILE_TYPES_DROPDOWN: "#fileTypesDropdown"
     };
 
     function Statistics() {
-
 
         // if (!require.cache[require.resolveWeak("ckeditor")]) {
         //     //window.CKEDITOR_BASEPATH = '/ckeditor/';
@@ -175,7 +174,6 @@ define([
 
     };
 
-
     Statistics.prototype._unbindEventListeners = function () {
         if(this.catalog){
             this.catalog.off("download", _.bind(this._onCatalogDownload, this));
@@ -213,7 +211,7 @@ define([
         var self = this;
         if((data!=null)&&(typeof data!='undefined')&&(data.model!=null)&&(typeof data.model!="undefined")&&(data.model.uid!=null)&&(typeof data.model.uid!="undefined"))
         {
-            require(['../html/statistics/modals/statistics_downloadData_modal_content_'+data.model.uid+'.html'],
+            require(['../html/statistics/modals/downloadData_modal_content_'+data.model.uid+'.hbs'],
                 function   (content) {
 
                     self.$downloadDatamodalContent.html(content);

@@ -74,12 +74,24 @@
   font-family: "Open Sans", Arial, Helvetica, Verdana, sans-serif;
 }
 
-#statistics_downloadData_modal .modal-body {
+#downloadData_modal .modal-body {
 
   min-height: 400px!important;
   max-height: 800px!important;
   height:auto !important;
   overflow-y: hidden!important;
   overflow-x: hidden!important;
+}
+
+.map-blue-marker-div{
+  padding-top: 12px;
+  padding-left: 44px;
+}
+
+.map-blue-marker{
+  background : url(../img/map/markerN.png);
+  height: 40px;
+  width: 40px;
+  float: left;
 }
 

@@ -9455,7 +9455,7 @@ button_new_2:before {
     padding: 0 10px; }
   .fx-sandbox.fao-holder #statistics h5.fx-selector-title {
     overflow: visible; }
-  .fx-sandbox.fao-holder #statistics_downloadData_modal {
+  .fx-sandbox.fao-holder #downloadData_modal {
     overflow: hidden; }
   .fx-sandbox.fao-holder .z-depth-0 {
     box-shadow: none !important; }
@@ -9670,11 +9670,21 @@ button_new_2:before {
 .fx-md-viewer-container .popover-title .text-info {
   font-family: "Open Sans", Arial, Helvetica, Verdana, sans-serif; }
 
-#statistics_downloadData_modal .modal-body {
+#downloadData_modal .modal-body {
   min-height: 400px !important;
   max-height: 800px !important;
   height: auto !important;
   overflow-y: hidden !important;
   overflow-x: hidden !important; }
+
+.map-blue-marker-div {
+  padding-top: 12px;
+  padding-left: 44px; }
+
+.map-blue-marker {
+  background: url(../img/map/markerN.png);
+  height: 40px;
+  width: 40px;
+  float: left; }
 
 /*# sourceMappingURL=gift.css.map */
