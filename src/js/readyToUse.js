@@ -350,6 +350,7 @@ define([
             return;
         }
 
+        var self = this;
         this.$metaModal.modal("show");
 
         this.metadataViewer = new MetadataViewer({
@@ -406,6 +407,9 @@ define([
 
         }, this));
 
+        $(s.META_MODAL).on('hidden.bs.modal', function (e) {
+            self.metadataViewer.dispose();
+        })
     };
 
     ReadyToUse.prototype._onCatalogSelect = function (payload) {

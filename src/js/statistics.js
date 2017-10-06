@@ -211,9 +211,16 @@ define([
         var self = this;
         if((data!=null)&&(typeof data!='undefined')&&(data.model!=null)&&(typeof data.model!="undefined")&&(data.model.uid!=null)&&(typeof data.model.uid!="undefined"))
         {
-            require(['../html/statistics/modals/downloadData_modal_content_'+data.model.uid+'.hbs'],
-                function   (content) {
+            $.ajax({
+                type: 'GET',
+                dataType: 'text',
+                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
+                url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.model.uid+'&lang=en',
+                contentType: "application/json; charset=utf-8",
+                success: function(content) {
 
+                    alert('on success')
+                    console.log(content)
                     self.$downloadDatamodalContent.html(content);
                     if(data.model.uid=='000023BGD201001'){
                         self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
@@ -244,7 +251,46 @@ define([
                             link.remove();
                         }
                     });
-                });
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            });
+            // self.bridge.getResource({uid: data.model.uid, params: {"full":true}});
+            // require(['../html/statistics/modals/downloadData_modal_content_'+data.model.uid+'.hbs'],
+            //     function   (content) {
+            //
+            //         self.$downloadDatamodalContent.html(content);
+            //         if(data.model.uid=='000023BGD201001'){
+            //             self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
+            //             // $(s.FILE_TYPES_DROPDOWN).selectize({
+            //             //     create: true,
+            //             //     sortField: {field: 'text'},
+            //             //     dropdownDirection: 'up'
+            //             // });
+            //             $(s.FILE_TYPES_DROPDOWN).select2({
+            //                 minimumResultsForSearch: Infinity
+            //             });
+            //         }
+            //         else{
+            //             //Mettere il link
+            //             self.$downloadSelectorType.html(fileTypesSourceLink(labels[C.lang.toLowerCase()]));
+            //         }
+            //         //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+            //         self.$downloadDatamodal.modal('show');
+            //
+            //         $("#downloadDataModalButton").click(function() {
+            //
+            //             if(payload.uid){
+            //                 //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+            //                 var url = SC.download.serviceProvider+payload.uid+".zip";
+            //                 var link = document.createElement('a');
+            //                 link.href = url;
+            //                 link.click();
+            //                 link.remove();
+            //             }
+            //         });
+            //     });
         }
     };
 

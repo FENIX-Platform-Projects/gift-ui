@@ -70,6 +70,7 @@ define([
 
     DataUploader.prototype._openQuillEditor = function (data) {
 
+        var self = this;
         this._disableCatalog();
         var toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -105,14 +106,36 @@ define([
         $("#quillButton").css("display", "block");
         $("#quillButton").click(function() {
 
-            // var delta = editor.getContents();
-            // console.log(JSON.stringify(delta))
-            // texthtml.innerHTML = JSON.stringify(delta);
-            // preciousContent.innerHTML = JSON.stringify(delta);
+            var content3 = editor.container.innerHTML;
+            var c = $('#editor').find(".ql-editor");
+            var htmlTemp =  $('#editor').find(".ql-editor").html();
 
-            console.log($( "#editor" ).html());
-            $('#disclaimerCreated').modal('show');
+            var dataToSend = {};
+            dataToSend.uid = data.model.uid;
+            dataToSend.text = ''+htmlTemp;
+            dataToSend.lang = 'en';
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'text',
+                url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer',
+                contentType: "application/json",
+                data : JSON.stringify(dataToSend),
+                success: function(content) {
+                    $('#disclaimerCreated').modal('show');
+                },
+                error: function (err) {
+                    alert('error!!!')
+                    console.log(err)
+                }
+            });
         });
+    };
+
+    DataUploader.prototype.quillGetHTML = function(inputDelta) {
+        var tempCont = document.createElement("div");
+        (new Quill(tempCont)).setContents(inputDelta);
+        return tempCont.getElementsByClassName("ql-editor")[0].innerHTML;
     };
 
     DataUploader.prototype._renderUploader = function (selection) {
