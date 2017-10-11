@@ -30,7 +30,8 @@ define([
         DOWNLOADDATA_MODAL: "#downloadData_modal",
         DOWNLOADDATA_MODAL_CONTENT: "#downloadData_modal_content_dynamicPart",
         DOWNLOAD_SELECTOR_TYPE: "#downloadSelectorType",
-        FILE_TYPES_DROPDOWN: "#fileTypesDropdown"
+        FILE_TYPES_DROPDOWN: "#fileTypesDropdown",
+        DOWNLOAD_DATA_JUSTIFICATION_FORM: '#downloadDataJustificationForm'
     };
 
     function Statistics() {
@@ -219,22 +220,21 @@ define([
                 contentType: "application/json; charset=utf-8",
                 success: function(content) {
 
-                    alert('on success')
-                    console.log(content)
                     self.$downloadDatamodalContent.html(content);
                     if(data.model.uid=='000023BGD201001'){
                         self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
-                        // $(s.FILE_TYPES_DROPDOWN).selectize({
-                        //     create: true,
-                        //     sortField: {field: 'text'},
-                        //     dropdownDirection: 'up'
-                        // });
                         $(s.FILE_TYPES_DROPDOWN).select2({
                             minimumResultsForSearch: Infinity
                         });
                     }
                     else{
-                        //Mettere il link
+
+                        var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+
+                        _gaTracker('send', 'event', 'GIFT Link Redirect',
+                            data.model.uid, /* datasetID:datasetType */
+                            'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                        //Link
                         self.$downloadSelectorType.html(fileTypesSourceLink(labels[C.lang.toLowerCase()]));
                     }
                     //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
@@ -242,7 +242,18 @@ define([
 
                     $("#downloadDataModalButton").click(function() {
 
+                        var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
+                        var dataSetTypes = '';
+                        for(var i=0;i<fileTypes.length;i++)
+                            dataSetTypes += ','+fileTypes[i].id;
+                        dataSetTypes = dataSetTypes.substring(1);
+                        var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+
                         if(payload.uid){
+                            _gaTracker('send', 'event', 'GIFT Download',
+                                payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                                'user' + (new Date().getTime()) % 5 + '@email.com, '+justification);
+
                             //var url = SC.download.serviceProvider+payload.model.uid+".zip";
                             var url = SC.download.serviceProvider+payload.uid+".zip";
                             var link = document.createElement('a');

@@ -70,7 +70,10 @@ define(['jquery','underscore','loglevel','handlebars',
             DOWNLOADDATA_MODAL: "#downloadData_modal",
             DOWNLOADDATA_MODAL_CONTENT: "#downloadData_modal_content_dynamicPart",
             DOWNLOAD_SELECTOR_TYPE: "#downloadSelectorType",
-
+            DOWNLOAD_DATA_JUSTIFICATION_FORM: '#downloadDataJustificationForm',
+            FILE_TYPES_DROPDOWN: "#fileTypesDropdown",
+            FILTER_COVERAGE_SELECTOR: "#filterCoverageSelector",
+            FILTER_TYPE_OF_AREA_SELECTOR: "#filterTypeOfAreaSelector",
             layersByCodes2 : '',
             metadataSize : 0
         };
@@ -237,6 +240,9 @@ define(['jquery','underscore','loglevel','handlebars',
         this.$downloadDatamodalContent = this.$el.find(s.DOWNLOADDATA_MODAL_CONTENT);
         this.$downloadSelectorType = this.$el.find(s.DOWNLOAD_SELECTOR_TYPE);
 
+        this.$filterCoverageSelector = this.$el.find(s.FILTER_COVERAGE_SELECTOR);
+        this.$filterTypeOfArea = this.$el.find(s.FILTER_TYPE_OF_AREA_SELECTOR);
+
         this.$surveyCardinal.html(i18nLabels.surveyCardinality + s.metadataSize);
         //PATH FOR OLD MAP
         //FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
@@ -260,6 +266,14 @@ define(['jquery','underscore','loglevel','handlebars',
         //this.fenixMap.createMap(10,0,2);
         L.control.zoom({position:'topright'}).addTo(self.map);
         self._renderDisclaimer(this.map, i18nLabels.disclaimer);
+
+        this.$filterCoverageSelector.select2({
+            minimumResultsForSearch: Infinity
+        });
+
+        this.$filterTypeOfArea.select2({
+            minimumResultsForSearch: Infinity
+        });
 
         self.codesByCountry = {};
 
@@ -491,8 +505,8 @@ define(['jquery','underscore','loglevel','handlebars',
             })
         });
 
-        console.log(labels[LANG.toLowerCase()])
-        console.log(labels[LANG.toLowerCase()]['downloadSurvey'])
+        // console.log(labels[LANG.toLowerCase()])
+        // console.log(labels[LANG.toLowerCase()]['downloadSurvey'])
         var $popup = $(tmplPopup({
             countryName: mark.countryName,
             items: mark.itemsValue
@@ -594,8 +608,13 @@ define(['jquery','underscore','loglevel','handlebars',
         var self = this;
         if((data!=null)&&(typeof data!='undefined')&&(data.uid!=null)&&(typeof data.uid!="undefined"))
         {
-            require(['../html/consumption/modals/downloadData_modal_content_'+data.uid+'.hbs'],
-                function   (content) {
+            $.ajax({
+                type: 'GET',
+                dataType: 'text',
+                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
+                url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
+                contentType: "application/json; charset=utf-8",
+                success: function(content) {
                     self.$downloadDatamodalContent.html(content);
                     if(data.uid=='000023BGD201001'){
                         self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[LANG.toLowerCase()]));
@@ -604,6 +623,13 @@ define(['jquery','underscore','loglevel','handlebars',
                         });
                     }
                     else{
+
+                        var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+
+                        _gaTracker('send', 'event', 'GIFT Link Redirect',
+                            data.uid, /* datasetID:datasetType */
+                            'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+
                         //Mettere il link
                         self.$downloadSelectorType.html(fileTypesSourceLink(labels[LANG.toLowerCase()]));
                     }
@@ -612,7 +638,18 @@ define(['jquery','underscore','loglevel','handlebars',
 
                     $("#downloadDataModalButton").click(function() {
 
+                        var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
+                        var dataSetTypes = '';
+                        for(var i=0;i<fileTypes.length;i++)
+                            dataSetTypes += ','+fileTypes[i].id;
+                        dataSetTypes = dataSetTypes.substring(1);
+                        var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+
                         if(data.uid){
+
+                            _gaTracker('send', 'event', 'GIFT Download',
+                                data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                                'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
                             //var url = SC.download.serviceProvider+payload.model.uid+".zip";
                             var url = ConsC.download.serviceProvider+data.uid+".zip";
                             var link = document.createElement('a');
@@ -621,7 +658,59 @@ define(['jquery','underscore','loglevel','handlebars',
                             link.remove();
                         }
                     });
-                });
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            });
+
+
+            // require(['../html/consumption/modals/downloadData_modal_content_'+data.uid+'.hbs'],
+            //     function   (content) {
+            //         self.$downloadDatamodalContent.html(content);
+            //         if(data.uid=='000023BGD201001'){
+            //             self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[LANG.toLowerCase()]));
+            //             $(s.FILE_TYPES_DROPDOWN).select2({
+            //                 minimumResultsForSearch: Infinity
+            //             });
+            //         }
+            //         else{
+            //
+            //             var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+            //
+            //             _gaTracker('send', 'event', 'GIFT Link Redirect',
+            //                 data.uid, /* datasetID:datasetType */
+            //                 'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+            //
+            //             //Mettere il link
+            //             self.$downloadSelectorType.html(fileTypesSourceLink(labels[LANG.toLowerCase()]));
+            //         }
+            //         //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+            //         self.$downloadDatamodal.modal('show');
+            //
+            //         $("#downloadDataModalButton").click(function() {
+            //
+            //             var data = $(s.FILE_TYPES_DROPDOWN).select2('data');
+            //             var dataSetTypes = '';
+            //             for(var i=0;i<data.length;i++)
+            //                 dataSetTypes += ','+data[i].id;
+            //             dataSetTypes = dataSetTypes.substring(1);
+            //             var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+            //
+            //             if(data.uid){
+            //
+            //                 _gaTracker('send', 'event', 'GIFT Download',
+            //                     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+            //                     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+            //                 //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+            //                 var url = ConsC.download.serviceProvider+data.uid+".zip";
+            //                 var link = document.createElement('a');
+            //                 link.href = url;
+            //                 link.click();
+            //                 link.remove();
+            //             }
+            //         });
+            //     });
         }
     };
 
@@ -637,7 +726,6 @@ define(['jquery','underscore','loglevel','handlebars',
         //SANDBOXED BOOTSTRAP
         require("../css/sandboxed-bootstrap.css");
 
-        require("../../node_modules/select2/dist/css/select2.css");
         //map requirements
         require('leaflet/dist/leaflet.css');
         require('leaflet-panel-layers/src/leaflet-panel-layers.css');
@@ -648,6 +736,7 @@ define(['jquery','underscore','loglevel','handlebars',
         //meta viewer requirements
         require("jquery-treegrid-webpack/css/jquery.treegrid.css");
 
+        require("../../node_modules/select2/dist/css/select2.css");
         //host override
         require('../css/gift.css');
     };

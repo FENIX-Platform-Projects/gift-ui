@@ -1,8 +1,8 @@
 <div class="row">
-    <div class="col-xs-6">
+    <div class="col-xs-5">
         <div class="map-surveys-number-div" id="consumption_map_surveyCardinality"></div>
     </div>
-    <div class="col-xs-4 col-xs-offset-2">
+    <div class="col-xs-6 col-xs-offset-1">
         <div id="bluMarkerLegend_map"><div class="map-blue-marker"></div><div class="map-blue-marker-div">{{bluMarkerLegend}}</div></div>
     </div>
 </div>
@@ -14,8 +14,30 @@
 
 <br>
 <div class="row">
-    <div class="col-xs-8">
+    <div class="col-xs-7">
         <div id="consumption_map_legend" style="height:180px;"></div>
+    </div>
+    <div class="col-xs-5">
+        <div id="consumption_map_filter_coverage">
+            <select id="filterCoverageSelector" class="js-example-basic" name="state" placeholder="MFN" style="width: 100%">
+                <option value="MFN">{{mapFilterNational}}</option>
+                <option value="MFSN">{{mapFilterSubnational}}</option>
+                <option value="MFC">{{mapFilterCommunity}}</option>
+                <option value="MFPA">{{mapFilterProjectArea}}</option>
+                <option value="MFO">{{mapFilterOther}}</option>
+            </select>
+        </div>
+        <br>
+        <div id="consumption_map_filter_typeOfArea">
+            <select id="filterTypeOfAreaSelector" class="js-example-basic" name="state" placeholder="MFOR" style="width: 100%">
+                <option value="MFOR">{{mapFilterOnlyRural}}</option>
+                <option value="MFOU">{{mapFilterOnlyUrban}}</option>
+                <option value="MFBR">{{mapFilterBothRural}}</option>
+                <option value="MFU">{{mapFilterUrban}}</option>
+            </select>
+        </div>
+        <br>
+        <button type="button" data-dismiss="modal" aria-label="Close" id ='filterMapButton'>{{filterMap}}</button>
     </div>
 </div>
 

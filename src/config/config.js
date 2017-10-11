@@ -288,6 +288,9 @@ define(["underscore"], function (_) {
                         uid: "GAUL0",
                         version: "2014"
                     },
+                    // cl: {
+                    //     uid: "ISO3"
+                    // },
 
                     selector: {
                         id: "tree",
@@ -305,6 +308,7 @@ define(["underscore"], function (_) {
                         metadataAttribute: "meContent.seCoverage.coverageGeographic",
                         output: "codes",
                         uid: "GAUL0"
+                        //uid: "ISO3"
                     }
                 },
 

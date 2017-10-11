@@ -125,6 +125,17 @@ define(function () {
         surveyCardinality: "Numbers of surveys displayed on the map: ",
         metadata: "Metadata",
         downloadSurvey: "Download Microdata",
-        bluMarkerLegend: "Refers to the number of surveys identified in each country"
+        bluMarkerLegend: "Refers to the number of surveys identified in each country",
+        filterMap: "Filter",
+        mapFilterNational: "National",
+        mapFilterSubnational: "Subnational",
+        mapFilterCommunity: "Community",
+        mapFilterProjectArea: "ProjectArea",
+        mapFilterOther: "Other",
+        mapFilterOnlyRural: "Only Rural",
+        mapFilterOnlyUrban: "Only Urban",
+        mapFilterBothRural: "Both Rural",
+        mapFilterUrban: "Urban"
+
     }
 });

@@ -556,6 +556,7 @@ define(
                                     }
                                 },
                                 "coverageGeographic": {
+                                    // "cl": {uid: 'ISO3'},
                                     "cl": GAUL,
                                     "selector": {
                                         "id": "dropdown",

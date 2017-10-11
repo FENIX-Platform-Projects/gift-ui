@@ -188,6 +188,10 @@ define(["underscore"], function (_) {
                         version: "2014"
                     },
 
+                    // cl : {
+                    //     uid: "ISO3"
+                    // },
+
                     selector : {
                         id : "dropdown",
                         hideSummary : true,
