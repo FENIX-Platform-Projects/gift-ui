@@ -9690,4 +9690,7 @@ button_new_2:before {
 .map-surveys-number-div {
   padding-top: 12px; }
 
+.sbHolder {
+  display: none !important; }
+
 /*# sourceMappingURL=gift.css.map */

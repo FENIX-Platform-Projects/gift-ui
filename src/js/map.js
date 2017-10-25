@@ -1,4 +1,4 @@
-define(['jquery','underscore','loglevel','handlebars', 
+define(['jquery','underscore','loglevel','handlebars',
     '../config/config',
     '../config/consumption',
     '../html/consumption/map.hbs',
@@ -72,10 +72,24 @@ define(['jquery','underscore','loglevel','handlebars',
             DOWNLOAD_SELECTOR_TYPE: "#downloadSelectorType",
             DOWNLOAD_DATA_JUSTIFICATION_FORM: '#downloadDataJustificationForm',
             FILE_TYPES_DROPDOWN: "#fileTypesDropdown",
-            FILTER_COVERAGE_SELECTOR: "#filterCoverageSelector",
             FILTER_TYPE_OF_AREA_SELECTOR: "#filterTypeOfAreaSelector",
+            FILTER_COVERAGE_SELECTOR: "#filterCoverageSelector",
+            FILTER_MAP_BUTTON: "#filterMapButton",
+            FILTER_CLEAR_MAP_BUTTON: "#filterClearMapButton",
+            FILTER_TYPES_LINK_TAG: "#fileTypesLinkTag",
+            DOWNLOAD_DATA_MODAL_BUTTON: "#downloadDataModalButton",
             layersByCodes2 : '',
-            metadataSize : 0
+            metadataSize : 0,
+
+            referenceAreaValues : '0',
+            referenceAreaNoNational : ['2','3','4','5'],
+            //referenceAreaNoNational : '"2","3","4","5"',
+            referenceAreaNoNationalConventional : '5',
+            referenceAreaAllConventional : '0',
+            coverageAllConventional : '0',
+            coverageSectorsValues : '0',
+            referenceAreaAll : ['1','2','3','4','5'],
+            coverageAll : ['1','2','3']
         };
 
     function Map() {
@@ -91,11 +105,63 @@ define(['jquery','underscore','loglevel','handlebars',
         this._initVariables();
 
         this._attach();
+
+        this._bindEventListener();
+        console.log(this)
+    }
+
+    Map.prototype._bindEventListener = function () {
+        var self = this;
+        $(s.FILTER_MAP_BUTTON).click(function() {
+
+            var filterCoverageSelectorValue =  self.$filterCoverageSelector.select2('data');
+            var filterTypeOfAreaValue =  self.$filterTypeOfArea.select2('data');
+
+            s.referenceAreaValues = filterTypeOfAreaValue[0].id;
+            s.coverageSectorsValues = filterCoverageSelectorValue[0].id;
+            //s.referenceAreaValues = s.referenceAreaValues.substring(1,s.referenceAreaValues.length-1);
+
+            self._reBuild();
+        });
+
+        $(s.FILTER_CLEAR_MAP_BUTTON).click(function() {
+
+            s.referenceAreaValues = '0';
+            s.coverageSectorsValues = '0';
+
+            self.$filterTypeOfArea.select2("val", s.referenceAreaValues);
+
+            self.$filterCoverageSelector.select2("val", s.coverageSectorsValues);
+
+            self._reBuild();
+        });
+    }
+
+    Map.prototype._reBuild = function () {
+        console.log(this)
+        this._dispose();
+
+        this._initCodelists();
+
+        this._initVariables();
+
+        this._attach();
+
+        this._bindEventListener();
     }
 
     Map.prototype._initCodelists = function (params) {
 
         var self = this;
+
+        var i18nLabels = labels[ LANG.toLowerCase() ];
+
+        var html = template(i18nLabels);
+
+
+        $(s.EL).html(html);
+        this.$el = $(s.EL);
+        this.$surveyCardinal = this.$el.find(s.MAP_SURVEY_CARDINALITY);
 
         $.extend(true, this, params);
 
@@ -143,13 +209,51 @@ define(['jquery','underscore','loglevel','handlebars',
             }
         });
 
+        var referenceArea = s.referenceAreaValues;
+        var referenceAreaObj = { codes: [{uid: "GIFT_ReferenceArea", codes: [referenceArea]}]};
+        if(s.referenceAreaValues == s.referenceAreaNoNationalConventional){
+            //referenceArea = s.referenceAreaNoNational;
+            referenceAreaObj = { codes: [{uid: "GIFT_ReferenceArea", codes: s.referenceAreaNoNational}]};
+        }
+        if(s.referenceAreaValues == s.referenceAreaAllConventional){
+            //referenceArea = s.referenceAreaNoNational;
+            referenceAreaObj = { codes: [{uid: "GIFT_ReferenceArea", codes: s.referenceAreaAll}]};
+        }
+
+        var coverageSectors = s.coverageSectorsValues;
+        var coverageObj = { codes: [{uid: "GIFT_CoverageSector", codes: [coverageSectors]}]};
+        if(s.coverageSectorsValues == s.coverageAllConventional){
+            coverageObj = { codes: [{uid: "GIFT_CoverageSector", codes: s.coverageAll}]};
+        }
+
+
+        var mapfilterSelection =
+            {
+                "dsd.contextSystem": {
+                    "enumeration": ["gift"]
+                },
+                "meContent.resourceRepresentationType": {
+                    "enumeration": ["dataset"]
+                },
+                "meContent.seReferencePopulation.referenceArea": referenceAreaObj,
+                "meContent.seCoverage.coverageSectors": coverageObj
+                // "meContent.seReferencePopulation.referenceArea": {
+                //     //"Type of area" //National=1; Sub-national(2,3,4,5);
+                //     codes: [{uid: "GIFT_ReferenceArea", codes: [referenceArea]}]
+                // },
+                // "meContent.seCoverage.coverageSectors": {
+                //     //"Coverage"//"Only rural"=1 //"Only urban"=2 //"Both rural and urban"=3
+                //     codes: [{uid: "GIFT_CoverageSector", codes: [s.coverageSectorsValues]}]//"Only rural"
+                // }
+            }
+
         $.ajax({
             async: false,
             dataType: 'json',
             method: 'POST',
             contentType: "application/json; charset=utf-8",
             url: confidentialityDataUrl,
-            data: JSON.stringify(C.consumption.requestBody),
+            data: JSON.stringify(mapfilterSelection),
             success: function(res) {
 
                 res = _.filter(res, function(d) {
@@ -159,6 +263,15 @@ define(['jquery','underscore','loglevel','handlebars',
                 });
 
                 s.metadataSize = res.length;
+
+
+                self.metadataByOrder =  _.groupBy(res, function(d) {
+
+                    var order = d.meAccessibility.seConfidentiality.confidentialityStatus.codes[0].code;
+
+                    return order;
+                });
+
                 self.metadataByCountry = _.groupBy(res, function(d) {
 
                     var countryCode = d.meContent.seCoverage.coverageGeographic.codes[0].code;
@@ -197,26 +310,30 @@ define(['jquery','underscore','loglevel','handlebars',
             });
         });
 
-        this.gaul0Centroids_adm0_code = _.groupBy(gaul0Centroids.features, function(feature) {
-            return feature.properties.adm0_code;
-        });
-        this.mapLocsByAdm0Code = {};
-        _.each(this.gaul0Centroids_adm0_code, function(feature, code) {
-            self.mapLocsByAdm0Code[ code ] = feature[0].geometry.coordinates.reverse();
-        });
+         if(!this.gaul0Centroids_adm0_code) {
 
-        this.gaul0Countries_adm0_code = _.groupBy(gaul0Countries.features, function(feature) {
+             this.gaul0Centroids_adm0_code = _.groupBy(gaul0Centroids.features, function (feature) {
+                 return feature.properties.adm0_code;
+             });
+             this.mapLocsByAdm0Code = {};
+             _.each(this.gaul0Centroids_adm0_code, function (feature, code) {
+                 self.mapLocsByAdm0Code[code] = feature[0].geometry.coordinates.reverse();
+             });
+
+         }
+
+
+        this.gaul0Countries_adm0_code = _.groupBy(gaul0Countries.features, function (feature) {
             return feature.id;
         });
         this.countryByAdm0Code = {};
-        _.each(this.gaul0Countries_adm0_code, function(feature, code) {
-            self.countryByAdm0Code[ ''+code ] = feature[0];
+        _.each(this.gaul0Countries_adm0_code, function (feature, code) {
+            self.countryByAdm0Code['' + code] = feature[0];
         });
-
-        this.bridge = new Bridge({
-            environment: C.environment,
-            cache: C.cache
-        });
+            this.bridge = new Bridge({
+                environment: C.environment,
+                cache: C.cache
+            });
     };
 
     Map.prototype._attach = function () {
@@ -225,25 +342,25 @@ define(['jquery','underscore','loglevel','handlebars',
 
         var i18nLabels = labels[ LANG.toLowerCase() ];
 
-        var html = template(i18nLabels);
-
-        $(s.EL).html(html);
+        // var html = template(i18nLabels);
+        //
+        // $(s.EL).html(html);
 
         this.$el = $(s.EL);
         this.$map = this.$el.find(s.MAP_CONTAINER);
         this.$legend = this.$el.find(s.MAP_LEGEND);
         this.$meta = this.$el.find(s.MAP_META);
         this.$metamodal = this.$el.find(s.MAP_METAMODAL);
-        this.$surveyCardinal = this.$el.find(s.MAP_SURVEY_CARDINALITY);
+        // this.$surveyCardinal = this.$el.find(s.MAP_SURVEY_CARDINALITY);
 
         this.$downloadDatamodal = this.$el.find(s.DOWNLOADDATA_MODAL);
         this.$downloadDatamodalContent = this.$el.find(s.DOWNLOADDATA_MODAL_CONTENT);
         this.$downloadSelectorType = this.$el.find(s.DOWNLOAD_SELECTOR_TYPE);
 
-        this.$filterCoverageSelector = this.$el.find(s.FILTER_COVERAGE_SELECTOR);
         this.$filterTypeOfArea = this.$el.find(s.FILTER_TYPE_OF_AREA_SELECTOR);
+        this.$filterCoverageSelector = this.$el.find(s.FILTER_COVERAGE_SELECTOR);
 
-        this.$surveyCardinal.html(i18nLabels.surveyCardinality + s.metadataSize);
+        // this.$surveyCardinal.html(i18nLabels.surveyCardinality + s.metadataSize);
         //PATH FOR OLD MAP
         //FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
 
@@ -267,13 +384,17 @@ define(['jquery','underscore','loglevel','handlebars',
         L.control.zoom({position:'topright'}).addTo(self.map);
         self._renderDisclaimer(this.map, i18nLabels.disclaimer);
 
-        this.$filterCoverageSelector.select2({
-            minimumResultsForSearch: Infinity
-        });
-
         this.$filterTypeOfArea.select2({
             minimumResultsForSearch: Infinity
-        });
+        }).select2("val", s.referenceAreaValues);//'"2","3","4","5"'
+        //}).select2("val", '2-3-4-5');//'"2","3","4","5"'
+
+        this.$filterCoverageSelector.select2({
+            minimumResultsForSearch: Infinity
+        }).select2("val", s.coverageSectorsValues);
+
+        // this.$filterCoverageSelector.val(s.coverageSectorsValues);
+        // this.$filterTypeOfArea.val(s.referenceAreaValues);
 
         self.codesByCountry = {};
 
@@ -370,12 +491,19 @@ define(['jquery','underscore','loglevel','handlebars',
             });
 
             var mAll = self._getMarker(items);
+            //console.log(mAll.length)
+            //console.log(s.metadataSize)
             if(mAll && ConsC.codelistStyles[ items[0].confids[0] ].visible){
                 self.layerAll.addLayer( mAll );
-                s.layersByCodes2['10'] = {};
-                s.layersByCodes2['10'].surveyCardinality = s.metadataSize;
             }
         });
+
+        var mAllTotal = 0;
+        _.each(s.layersByCodes2, function(item){
+            mAllTotal += item.surveyCardinality;
+        });
+        s.layersByCodes2['10'] = { surveyCardinality : mAllTotal };
+        self.$surveyCardinal.html(i18nLabels.surveyCardinality + mAllTotal);
 
     //fixed LEGEND field
         self.layersByCodes['All']= {
@@ -395,7 +523,7 @@ define(['jquery','underscore','loglevel','handlebars',
             position: 'topleft'
         })
         .on('panel:selected', function(e) {
-            console.log(s.layersByCodes2)
+            console.log('stampamelo' , s.layersByCodes2)
             console.log(s.lunghezza)
             if((e!=null)&&(typeof e!='undefined')&&(e.order!=null)&&(typeof e.order!='undefined')){
                 self.$surveyCardinal.html(i18nLabels.surveyCardinality + s.layersByCodes2[''+e.order].surveyCardinality);
@@ -442,13 +570,15 @@ define(['jquery','underscore','loglevel','handlebars',
                     return count;
                 }
             });*/
-            
+
+        //console.log('centroid found', loc);
         if(!loc) {
-            console.log('centroid ot found',items[0].countryCode, loc);
+            console.log('centroid not found',items[0].countryCode, loc);
             return false;
         }
 
         var childCount = items.length;
+
         if(filterCode) {
             childCount = _.filter(items, function(i) {
                 return (''+filterCode) === i.confids[0];
@@ -490,6 +620,7 @@ define(['jquery','underscore','loglevel','handlebars',
                             }
                         }
                         else {
+
                             mark.itemsValue.push({
                                 code: code,
                                 className: ConsC.codelistStyles[ code ] ? ConsC.codelistStyles[ code ].className : '',
@@ -499,6 +630,7 @@ define(['jquery','underscore','loglevel','handlebars',
                                 metadata: '- '+labels[LANG.toLowerCase()]['metadata'],
                                 display: downloadDisplay
                             });
+
                         }
                 }
 
@@ -603,7 +735,8 @@ define(['jquery','underscore','loglevel','handlebars',
 
     };
 
-    Map.prototype._getMetadataInfo = function (uid, data) {
+    /*Previous Version*/
+    Map.prototype._getMetadataInfoPreviousVersio = function (uid, data) {
 
         var self = this;
         if((data!=null)&&(typeof data!='undefined')&&(data.uid!=null)&&(typeof data.uid!="undefined"))
@@ -625,18 +758,26 @@ define(['jquery','underscore','loglevel','handlebars',
                     else{
 
                         var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
-
-                        _gaTracker('send', 'event', 'GIFT Link Redirect',
-                            data.uid, /* datasetID:datasetType */
-                            'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
-
-                        //Mettere il link
+                        //Add the link
                         self.$downloadSelectorType.html(fileTypesSourceLink(labels[LANG.toLowerCase()]));
+                        $(s.FILTER_TYPES_LINK_TAG).on('click', function() {
+                            try{
+                                _gaTracker('send', 'event', 'GIFT Link Redirect',
+                                    data.uid, /* datasetID:datasetType */
+                                    'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            }
+                            catch (ex){
+                                console.log('Google Analytics Exception')
+                            }
+                            finally {
+                                console.log('Google Analytics Exception')
+                            }
+                        });
                     }
                     //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
                     self.$downloadDatamodal.modal('show');
 
-                    $("#downloadDataModalButton").click(function() {
+                    $(s.DOWNLOAD_DATA_MODAL_BUTTON).click(function() {
 
                         var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
                         var dataSetTypes = '';
@@ -647,15 +788,174 @@ define(['jquery','underscore','loglevel','handlebars',
 
                         if(data.uid){
 
-                            _gaTracker('send', 'event', 'GIFT Download',
-                                data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                                'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
-                            //var url = SC.download.serviceProvider+payload.model.uid+".zip";
-                            var url = ConsC.download.serviceProvider+data.uid+".zip";
-                            var link = document.createElement('a');
-                            link.href = url;
-                            link.click();
-                            link.remove();
+                            try{
+                                _gaTracker('send', 'event', 'GIFT Download',
+                                    data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                                    'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            }
+                            catch (ex){
+                                console.log('Google Analytics Exception')
+                            }
+                            finally {
+                                console.log('Google Analytics Exception')
+                                //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+                                var url = ConsC.download.serviceProvider+data.uid+".zip";
+                                var link = document.createElement('a');
+                                link.href = url;
+                                link.click();
+                                link.remove();
+                            }
+
+                            // _gaTracker('send', 'event', 'GIFT Download',
+                            //     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                            //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            // //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+                            // var url = ConsC.download.serviceProvider+data.uid+".zip";
+                            // var link = document.createElement('a');
+                            // link.href = url;
+                            // link.click();
+                            // link.remove();
+                        }
+                    });
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            });
+
+
+            // require(['../html/consumption/modals/downloadData_modal_content_'+data.uid+'.hbs'],
+            //     function   (content) {
+            //         self.$downloadDatamodalContent.html(content);
+            //         if(data.uid=='000023BGD201001'){
+            //             self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[LANG.toLowerCase()]));
+            //             $(s.FILE_TYPES_DROPDOWN).select2({
+            //                 minimumResultsForSearch: Infinity
+            //             });
+            //         }
+            //         else{
+            //
+            //             var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+            //
+            //             _gaTracker('send', 'event', 'GIFT Link Redirect',
+            //                 data.uid, /* datasetID:datasetType */
+            //                 'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+            //
+            //             //Mettere il link
+            //             self.$downloadSelectorType.html(fileTypesSourceLink(labels[LANG.toLowerCase()]));
+            //         }
+            //         //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+            //         self.$downloadDatamodal.modal('show');
+            //
+            //         $("#downloadDataModalButton").click(function() {
+            //
+            //             var data = $(s.FILE_TYPES_DROPDOWN).select2('data');
+            //             var dataSetTypes = '';
+            //             for(var i=0;i<data.length;i++)
+            //                 dataSetTypes += ','+data[i].id;
+            //             dataSetTypes = dataSetTypes.substring(1);
+            //             var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+            //
+            //             if(data.uid){
+            //
+            //                 _gaTracker('send', 'event', 'GIFT Download',
+            //                     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+            //                     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+            //                 //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+            //                 var url = ConsC.download.serviceProvider+data.uid+".zip";
+            //                 var link = document.createElement('a');
+            //                 link.href = url;
+            //                 link.click();
+            //                 link.remove();
+            //             }
+            //         });
+            //     });
+        }
+    };
+
+    Map.prototype._getMetadataInfo = function (uid, data) {
+
+        var self = this;
+        if((data!=null)&&(typeof data!='undefined')&&(data.uid!=null)&&(typeof data.uid!="undefined"))
+        {
+            $.ajax({
+                type: 'GET',
+                dataType: 'text',
+                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
+                url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
+                contentType: "application/json; charset=utf-8",
+                success: function(content) {
+                    self.$downloadDatamodalContent.html(content);
+                    self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[LANG.toLowerCase()]));
+                    $(s.FILE_TYPES_DROPDOWN).select2({
+                        minimumResultsForSearch: Infinity
+                    });
+                    // if(data.uid=='000023BGD201001'){
+                    //     self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[LANG.toLowerCase()]));
+                    //     $(s.FILE_TYPES_DROPDOWN).select2({
+                    //         minimumResultsForSearch: Infinity
+                    //     });
+                    // }
+                    // else{
+                    //
+                    //     var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+                    //     //Add the link
+                    //     self.$downloadSelectorType.html(fileTypesSourceLink(labels[LANG.toLowerCase()]));
+                    //     $(s.FILTER_TYPES_LINK_TAG).on('click', function() {
+                    //         try{
+                    //             _gaTracker('send', 'event', 'GIFT Link Redirect',
+                    //                 data.uid, /* datasetID:datasetType */
+                    //                 'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                    //         }
+                    //         catch (ex){
+                    //             console.log('Google Analytics Exception')
+                    //         }
+                    //         finally {
+                    //             console.log('Google Analytics Exception')
+                    //         }
+                    //     });
+                    // }
+                    //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+                    self.$downloadDatamodal.modal('show');
+
+                    $(s.DOWNLOAD_DATA_MODAL_BUTTON).click(function() {
+
+                        var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
+                        var dataSetTypes = '';
+                        for(var i=0;i<fileTypes.length;i++)
+                            dataSetTypes += ','+fileTypes[i].id;
+                        dataSetTypes = dataSetTypes.substring(1);
+                        var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+
+                        if(data.uid){
+
+                            try{
+                                _gaTracker('send', 'event', 'GIFT Download',
+                                    data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                                    'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            }
+                            catch (ex){
+                                console.log('Google Analytics Exception')
+                            }
+                            finally {
+                                console.log('Google Analytics Exception')
+                                //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+                                var url = ConsC.download.serviceProvider+data.uid+".zip";
+                                var link = document.createElement('a');
+                                link.href = url;
+                                link.click();
+                                link.remove();
+                            }
+
+                            // _gaTracker('send', 'event', 'GIFT Download',
+                            //     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                            //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            // //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+                            // var url = ConsC.download.serviceProvider+data.uid+".zip";
+                            // var link = document.createElement('a');
+                            // link.href = url;
+                            // link.click();
+                            // link.remove();
                         }
                     });
                 },
@@ -719,6 +1019,9 @@ define(['jquery','underscore','loglevel','handlebars',
         if (this.bridge && $.isFunction(this.bridge.dispose)) {
             this.bridge.dispose();
         }
+
+        if(this.$el)
+            this.$el.children().remove();
     };
 
     Map.prototype._importThirdPartyCss = function () {

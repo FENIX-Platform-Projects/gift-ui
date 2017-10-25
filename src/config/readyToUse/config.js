@@ -27,7 +27,7 @@ define(["underscore"], function (_) {
             template : {
                 title : "Select a food:",
                 hideSwitch : true,
-                hideRemoveButton : true,
+                hideRemoveButton : true
             }
         }
 
@@ -195,6 +195,7 @@ define(["underscore"], function (_) {
                     selector : {
                         id : "dropdown",
                         hideSummary : true,
+                        blacklist: [2,5,9,10,14,15,16,22,25,30,32,36,38,39,48,52,53,54,55,56,80,81,82,86,87,88,91,95,96,98,100,101,102,104,109,110,112,120,127,128,129,131,134,136,146,149,151,158,161,164,168,174,176,178,184,185,190,193,197,200,206,207,210,216,218,219,228,230,234,244,247,251,258,265,266,267,268,33364,40760,40762,40764,40781,61013,74578,147296],
                         config : {
                             plugins: ['remove_button'],
                             mode: 'multi'

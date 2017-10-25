@@ -12,6 +12,9 @@ define(["jquery", "underscore"],function ($, _) {
             ],
 
             prepareQuery : function(metavalues, fenixvalues, values){
+                console.log(metavalues)
+                console.log(fenixvalues)
+                console.log(values)
                 var exclusions = ['country', 'time', 'referenceArea', 'coverageSector', 'ageGranularity', 'age'];
                 var granularity = values.values['ageGranularity'][0];
 
@@ -75,8 +78,13 @@ define(["jquery", "underscore"],function ($, _) {
             },
 
             actions: ["download", 'metadata'],
-            overridePluginRegistry: true,
-            pluginRegistry: {}
+            // overridePluginRegistry: true,
+            // pluginRegistry: {},
+            baseFilter: {
+                "dsd.contextSystem": {"enumeration": ["gift2"]},
+                "meContent.resourceRepresentationType": {"enumeration": ["dataset"]},
+                "meAccessibility.seConfidentiality.confidentialityStatus" : {codes: [{uid : "GIFT_ConfidentialityStatus", codes: ["5"]}]}
+            }
         }
     }
 });

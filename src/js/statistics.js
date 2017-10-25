@@ -31,7 +31,9 @@ define([
         DOWNLOADDATA_MODAL_CONTENT: "#downloadData_modal_content_dynamicPart",
         DOWNLOAD_SELECTOR_TYPE: "#downloadSelectorType",
         FILE_TYPES_DROPDOWN: "#fileTypesDropdown",
-        DOWNLOAD_DATA_JUSTIFICATION_FORM: '#downloadDataJustificationForm'
+        DOWNLOAD_DATA_JUSTIFICATION_FORM: '#downloadDataJustificationForm',
+        FILTER_TYPES_LINK_TAG: "#fileTypesLinkTag",
+        DOWNLOAD_DATA_MODAL_BUTTON: "#downloadDataModalButton"
     };
 
     function Statistics() {
@@ -207,7 +209,8 @@ define([
         // }
     };
 
-    Statistics.prototype._getMetadataInfo = function (data, payload) {
+    /*Prvious version*/
+    Statistics.prototype._getMetadataInfoPreviousVersion = function (data, payload) {
 
         var self = this;
         if((data!=null)&&(typeof data!='undefined')&&(data.model!=null)&&(typeof data.model!="undefined")&&(data.model.uid!=null)&&(typeof data.model.uid!="undefined"))
@@ -230,17 +233,60 @@ define([
                     else{
 
                         var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
-
-                        _gaTracker('send', 'event', 'GIFT Link Redirect',
-                            data.model.uid, /* datasetID:datasetType */
-                            'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
-                        //Link
+                        //Add the link
                         self.$downloadSelectorType.html(fileTypesSourceLink(labels[C.lang.toLowerCase()]));
+                        $(s.FILTER_TYPES_LINK_TAG).on('click', function() {
+                            try{
+                                // _gaTracker('send', 'event', 'GIFT Link Redirect',
+                                //     data.model.uid, /* datasetID:datasetType */
+                                //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            }
+                            catch (ex){
+                                console.log('Google Analytics Exception')
+                            }
+                            finally {
+                                console.log('Google Analytics Exception')
+                            }
+                        });
                     }
                     //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
                     self.$downloadDatamodal.modal('show');
 
-                    $("#downloadDataModalButton").click(function() {
+                    // var onSubmit = function (token) {
+                    //     alert('onsubmit')
+                    //     console.log('captcha succeeded!');
+                    //
+                    //     $.ajax({
+                    //         type: "POST",
+                    //         url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
+                    //         data: JSON.stringify(
+                    //             {
+                    //                 "captchaResponse": grecaptcha.getResponse(),
+                    //                 "name": "Salvatore",
+                    //                 "surveyTitle": "A Beautiful Title",
+                    //                 "email": "spiderman@fao.org",
+                    //                 "uid": "000253UGA201001",
+                    //                 "lang": "en"
+                    //             }
+                    //         ),
+                    //         dataType: "json",
+                    //         contentType: "application/json; charset=UTF-8"
+                    //     }).done(function () {
+                    //         console.log("OK");
+                    //     }).fail(function () {
+                    //         console.log("VERIFY FAILED");
+                    //     });
+                    // };
+                    //
+                    // self.onSubmit = onSubmit;
+                    // var onloadCallback = function () {
+                    //     grecaptcha.render('downloadDataModalButton', {
+                    //         'sitekey': '6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC',
+                    //         'callback': self.onSubmit
+                    //     });
+                    // };
+
+                    $(s.DOWNLOAD_DATA_MODAL_BUTTON).click(function() {
 
                         var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
                         var dataSetTypes = '';
@@ -249,17 +295,36 @@ define([
                         dataSetTypes = dataSetTypes.substring(1);
                         var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
 
+                        // var url = SC.download.serviceProvider+payload.uid+".zip";
+                        // console.log(url)
+                        // var link = document.createElement('a');
+                        // link.href = url;
+                        // link.click();
+                        // link.remove();
                         if(payload.uid){
-                            _gaTracker('send', 'event', 'GIFT Download',
-                                payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                                'user' + (new Date().getTime()) % 5 + '@email.com, '+justification);
+                            // _gaTracker('send', 'event', 'GIFT Download',
+                            //     payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                            //     'user' + (new Date().getTime()) % 5 + '@email.com, '+justification);
 
                             //var url = SC.download.serviceProvider+payload.model.uid+".zip";
-                            var url = SC.download.serviceProvider+payload.uid+".zip";
-                            var link = document.createElement('a');
-                            link.href = url;
-                            link.click();
-                            link.remove();
+
+                            try{
+                                _gaTracker('send', 'event', 'GIFT Download',
+                                    payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                                    'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            }
+                            catch (ex){
+                                console.log('Google Analytics Exception')
+                            }
+                            finally {
+                                console.log('Google Analytics Exception')
+                                var url = SC.download.serviceProvider+payload.uid+".zip";
+                                console.log(url)
+                                var link = document.createElement('a');
+                                link.href = url;
+                                link.click();
+                                link.remove();
+                            }
                         }
                     });
                 },
@@ -304,6 +369,170 @@ define([
             //     });
         }
     };
+
+Statistics.prototype._getMetadataInfo = function (data, payload) {
+
+    var self = this;
+    if((data!=null)&&(typeof data!='undefined')&&(data.model!=null)&&(typeof data.model!="undefined")&&(data.model.uid!=null)&&(typeof data.model.uid!="undefined"))
+    {
+        $.ajax({
+            type: 'GET',
+            dataType: 'text',
+            //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
+            url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.model.uid+'&lang=en',
+            contentType: "application/json; charset=utf-8",
+            success: function(content) {
+
+                self.$downloadDatamodalContent.html(content);
+                self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
+                $(s.FILE_TYPES_DROPDOWN).select2({
+                            minimumResultsForSearch: Infinity
+                        });
+                // if(data.model.uid=='000023BGD201001'){
+                //     self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
+                //     $(s.FILE_TYPES_DROPDOWN).select2({
+                //         minimumResultsForSearch: Infinity
+                //     });
+                // }
+                // else{
+                //
+                //     var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+                //     //Add the link
+                //     self.$downloadSelectorType.html(fileTypesSourceLink(labels[C.lang.toLowerCase()]));
+                //     $(s.FILTER_TYPES_LINK_TAG).on('click', function() {
+                //         try{
+                //             // _gaTracker('send', 'event', 'GIFT Link Redirect',
+                //             //     data.model.uid, /* datasetID:datasetType */
+                //             //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                //         }
+                //         catch (ex){
+                //             console.log('Google Analytics Exception')
+                //         }
+                //         finally {
+                //             console.log('Google Analytics Exception')
+                //         }
+                //     });
+                // }
+                //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+                self.$downloadDatamodal.modal('show');
+
+                // var onSubmit = function (token) {
+                //     alert('onsubmit')
+                //     console.log('captcha succeeded!');
+                //
+                //     $.ajax({
+                //         type: "POST",
+                //         url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
+                //         data: JSON.stringify(
+                //             {
+                //                 "captchaResponse": grecaptcha.getResponse(),
+                //                 "name": "Salvatore",
+                //                 "surveyTitle": "A Beautiful Title",
+                //                 "email": "spiderman@fao.org",
+                //                 "uid": "000253UGA201001",
+                //                 "lang": "en"
+                //             }
+                //         ),
+                //         dataType: "json",
+                //         contentType: "application/json; charset=UTF-8"
+                //     }).done(function () {
+                //         console.log("OK");
+                //     }).fail(function () {
+                //         console.log("VERIFY FAILED");
+                //     });
+                // };
+                //
+                // self.onSubmit = onSubmit;
+                // var onloadCallback = function () {
+                //     grecaptcha.render('downloadDataModalButton', {
+                //         'sitekey': '6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC',
+                //         'callback': self.onSubmit
+                //     });
+                // };
+
+                $(s.DOWNLOAD_DATA_MODAL_BUTTON).click(function() {
+
+                    var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
+                    var dataSetTypes = '';
+                    for(var i=0;i<fileTypes.length;i++)
+                        dataSetTypes += ','+fileTypes[i].id;
+                    dataSetTypes = dataSetTypes.substring(1);
+                    var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+
+                    // var url = SC.download.serviceProvider+payload.uid+".zip";
+                    // console.log(url)
+                    // var link = document.createElement('a');
+                    // link.href = url;
+                    // link.click();
+                    // link.remove();
+                    if(payload.uid){
+                        // _gaTracker('send', 'event', 'GIFT Download',
+                        //     payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                        //     'user' + (new Date().getTime()) % 5 + '@email.com, '+justification);
+
+                        //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+
+                        try{
+                            _gaTracker('send', 'event', 'GIFT Download',
+                                payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                                'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                        }
+                        catch (ex){
+                            console.log('Google Analytics Exception')
+                        }
+                        finally {
+                            console.log('Google Analytics Exception')
+                            var url = SC.download.serviceProvider+payload.uid+".zip";
+                            console.log(url)
+                            var link = document.createElement('a');
+                            link.href = url;
+                            link.click();
+                            link.remove();
+                        }
+                    }
+                });
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        });
+        // self.bridge.getResource({uid: data.model.uid, params: {"full":true}});
+        // require(['../html/statistics/modals/downloadData_modal_content_'+data.model.uid+'.hbs'],
+        //     function   (content) {
+        //
+        //         self.$downloadDatamodalContent.html(content);
+        //         if(data.model.uid=='000023BGD201001'){
+        //             self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
+        //             // $(s.FILE_TYPES_DROPDOWN).selectize({
+        //             //     create: true,
+        //             //     sortField: {field: 'text'},
+        //             //     dropdownDirection: 'up'
+        //             // });
+        //             $(s.FILE_TYPES_DROPDOWN).select2({
+        //                 minimumResultsForSearch: Infinity
+        //             });
+        //         }
+        //         else{
+        //             //Mettere il link
+        //             self.$downloadSelectorType.html(fileTypesSourceLink(labels[C.lang.toLowerCase()]));
+        //         }
+        //         //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+        //         self.$downloadDatamodal.modal('show');
+        //
+        //         $("#downloadDataModalButton").click(function() {
+        //
+        //             if(payload.uid){
+        //                 //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+        //                 var url = SC.download.serviceProvider+payload.uid+".zip";
+        //                 var link = document.createElement('a');
+        //                 link.href = url;
+        //                 link.click();
+        //                 link.remove();
+        //             }
+        //         });
+        //     });
+    }
+};
 
     Statistics.prototype._onCatalogMetadata = function (payload) {
 

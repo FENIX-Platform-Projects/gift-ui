@@ -1,4 +1,4 @@
-<select id="fileTypesDropdown" class="js-example-basic-multiple" name="state" placeholder="ALL" style="width: 100%" multiple="multiple">
+<select disabled id="fileTypesDropdown" class="js-example-basic-multiple" name="state" placeholder="ALL" style="width: 100%; visibility: hidden" multiple="multiple" >
     <option value="ALL">{{downloadPopupAll}}</option>
     <option value="FCT">{{downloadPopupFoodCompositionTable}}</option>
     <option value="VD">{{downloadPopupVariableDictionary}}</option>
@@ -8,3 +8,39 @@
 <br>
 <br>
 <button type="button" data-dismiss="modal" aria-label="Close" id ='downloadDataModalButton'>{{downloadDataModalButton}}</button>
+
+<!--<script>-->
+    <!--var onSubmit = function (token) {-->
+        <!--alert('onsubmit')-->
+        <!--console.log('captcha succeeded!');-->
+
+        <!--$.ajax({-->
+            <!--type: "POST",-->
+            <!--url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",-->
+            <!--data: JSON.stringify(-->
+                    <!--{-->
+                        <!--"captchaResponse": grecaptcha.getResponse(),-->
+                        <!--"name": "Salvatore",-->
+                        <!--"surveyTitle": "A Beautiful Title",-->
+                        <!--"email": "spiderman@fao.org",-->
+                        <!--"uid": "000253UGA201001",-->
+                        <!--"lang": "en"-->
+                    <!--}-->
+            <!--),-->
+            <!--dataType: "json",-->
+            <!--contentType: "application/json; charset=UTF-8"-->
+        <!--}).done(function () {-->
+            <!--console.log("OK");-->
+        <!--}).fail(function () {-->
+            <!--console.log("VERIFY FAILED");-->
+        <!--});-->
+    <!--};-->
+
+    <!--var onloadCallback = function () {-->
+        <!--grecaptcha.render('downloadDataModalButton', {-->
+            <!--'sitekey': '6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC',-->
+            <!--'callback':onSubmit-->
+        <!--});-->
+    <!--};-->
+    <!--</script>-->
+<!--<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>-->
