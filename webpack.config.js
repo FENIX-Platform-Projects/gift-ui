@@ -32,6 +32,7 @@ module.exports = sections.map(function (section) {
                 // required by fenix-ui-uploader
                 "jquery-ui/widget": Path.join(__dirname, 'node_modules/jquery.ui.widget/jquery.ui.widget')
                 //'fenix-ui-metadata-viewer': Path.join(__dirname, 'node_modules/fenix-ui-metadata-viewer/src/js/index.js')
+                //'fenix-ui-bridge': Path.join(__dirname, 'node_modules/fenix-ui-bridge/src/js/index.js')
             }
         },
 
@@ -59,7 +60,9 @@ module.exports = sections.map(function (section) {
         },
 
         node: {
-            fs: "empty"
+            fs: "empty",
+            net: "empty",
+            tls: "empty"
         },
 
         externals:[{

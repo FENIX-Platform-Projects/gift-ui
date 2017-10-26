@@ -5,6 +5,7 @@ define(['jquery','underscore','loglevel','handlebars',
     '../html/consumption/popup.hbs',
     "../html/consumption/modals/fileTypesDropdown.hbs",
     "../html/consumption/modals/fileTypesSourceLink.hbs",
+    "../html/consumption/modals/infoForm.hbs",
     // '../nls/consumption',
     "../nls/labels",
     '../json/consumption/gaul0_centroids.json',
@@ -18,7 +19,8 @@ define(['jquery','underscore','loglevel','handlebars',
     'fenix-ui-metadata-viewer',
     'fenix-ui-reports',
     "fenix-ui-bridge",
-    "select2"
+    "select2",
+    "recaptcha2"
     //TODO 'fenix-ui-bridge'
 
 ], function ($, _, log, Handlebars,
@@ -28,6 +30,7 @@ define(['jquery','underscore','loglevel','handlebars',
     tmplPopup,
     fileTypeDropdownTemplate,
     fileTypesSourceLink,
+    infoForm,
     labels,
     gaul0Centroids,
     gaul0Countries,
@@ -39,7 +42,8 @@ define(['jquery','underscore','loglevel','handlebars',
     MetadataViewer,
     Reports,
     Bridge,
-    select2
+    select2,
+    reCAPTCHA
 ) {
     "use strict";
     var LANG = C.lang;
@@ -78,6 +82,10 @@ define(['jquery','underscore','loglevel','handlebars',
             FILTER_CLEAR_MAP_BUTTON: "#filterClearMapButton",
             FILTER_TYPES_LINK_TAG: "#fileTypesLinkTag",
             DOWNLOAD_DATA_MODAL_BUTTON: "#downloadDataModalButton",
+            INFO_FORM_MODAL: "#infoForm_modal",
+            INFO_FORM_MODAL_CONTENT_BODY: "#infoForm_modal_contentBody",
+            INFO_FORM_SUBMIT: "#infoFormSubmit",
+
             layersByCodes2 : '',
             metadataSize : 0,
 
@@ -289,6 +297,8 @@ define(['jquery','underscore','loglevel','handlebars',
     Map.prototype._initVariables = function () {
 
         var self = this;
+        this.$infoFormModal = this.$el.find(s.INFO_FORM_MODAL);
+        this.$infoFormContentBody = this.$el.find(s.INFO_FORM_MODAL_CONTENT_BODY);
 
         this.mapCodesGroup = [];
 
@@ -873,7 +883,194 @@ define(['jquery','underscore','loglevel','handlebars',
         }
     };
 
+    Map.prototype._renderDownloadDisclainer = function (uid, data) {
+        var self = this;
+        $.ajax({
+            type: 'GET',
+            dataType: 'text',
+            //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
+            url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
+            contentType: "application/json; charset=utf-8",
+            success: function(content) {
+
+                self.$downloadDatamodalContent.html(content);
+                self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
+                // $(s.FILE_TYPES_DROPDOWN).select2({
+                //     minimumResultsForSearch: Infinity
+                // });
+                // if(data.model.uid=='000023BGD201001'){
+                //     self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
+                //     $(s.FILE_TYPES_DROPDOWN).select2({
+                //         minimumResultsForSearch: Infinity
+                //     });
+                // }
+                // else{
+                //
+                //     var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+                //     //Add the link
+                //     self.$downloadSelectorType.html(fileTypesSourceLink(labels[C.lang.toLowerCase()]));
+                //     $(s.FILTER_TYPES_LINK_TAG).on('click', function() {
+                //         try{
+                //             // _gaTracker('send', 'event', 'GIFT Link Redirect',
+                //             //     data.model.uid, /* datasetID:datasetType */
+                //             //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                //         }
+                //         catch (ex){
+                //             console.log('Google Analytics Exception')
+                //         }
+                //         finally {
+                //             console.log('Google Analytics Exception')
+                //         }
+                //     });
+                // }
+                //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+
+                self.$downloadDatamodal.modal('show');
+
+
+                // var onloadCallback = function () {
+                //     grecaptcha.render('downloadDataModalButton', {
+                //         'sitekey': '6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC',
+                //         'callback': self.onSubmit
+                //     });
+                // };
+
+                $(s.DOWNLOAD_DATA_MODAL_BUTTON).click(function() {
+
+                    //var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
+                    var fileTypes = '';
+                    var dataSetTypes = '';
+                    // for(var i=0;i<fileTypes.length;i++)
+                    //     dataSetTypes += ','+fileTypes[i].id;
+                    // dataSetTypes = dataSetTypes.substring(1);
+                    var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
+                    console.log(data)
+                    console.log(data.title[C.lang.toLowerCase()])
+                    //Recaptcha call
+                    $.ajax({
+                        type: "POST",
+                        url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
+                        data: JSON.stringify(
+                            {
+                                "captchaResponse": self.infoUser.recaptchaResponse,
+                                "name": self.infoUser.name,
+                                "surveyTitle": data.title? data.title[C.lang.toUpperCase()]: '',
+                                "email": "salvatore.cascone@fao.org",
+                                "uid": data.uid? data.uid: '',
+                                "lang": C.lang.toLowerCase()
+                            }
+                        ),
+                        dataType: "json",
+                        contentType: "application/json; charset=UTF-8"
+                    }).done(function (response) {
+                        self.recaptchaResponse = response;
+                        console.log("OK");
+
+                    }).fail(function () {
+                        console.log("VERIFY FAILED");
+                    });
+
+                    if(data.uid){
+
+                        try{
+                            _gaTracker('send', 'event', 'GIFT Download',
+                                data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                                'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                        }
+                        catch (ex){
+                            console.log('Google Analytics Exception')
+                        }
+                        finally {
+                            console.log('Google Analytics Exception')
+                            //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+                            var url = ConsC.download.serviceProvider+data.uid+".zip";
+                            var link = document.createElement('a');
+                            link.href = url;
+                            link.click();
+                            link.remove();
+                        }
+
+                        // _gaTracker('send', 'event', 'GIFT Download',
+                        //     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                        //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                        // //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+                        // var url = ConsC.download.serviceProvider+data.uid+".zip";
+                        // var link = document.createElement('a');
+                        // link.href = url;
+                        // link.click();
+                        // link.remove();
+                    }
+                });
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        });
+    };
+
+    Map.prototype._infoFormCreation = function (uid, data) {
+        // infoForm
+        var self = this;
+        this.$infoFormContentBody.html(infoForm(labels[C.lang.toLowerCase()]));
+
+        //this._rederDisclainer(data, payload);
+
+        var recaptcha = '';
+        self.infoUser = {recaptchaResponse : false};
+        $('#infoFormError').hide();
+
+        var onSubmit = function (token) {
+            console.log(token)
+            console.log('captcha succeeded!');
+            // console.log(grecaptcha.getResponse());
+            //self.recaptchaResponse = token;
+
+            var formName = $('#name').val();
+            var formEmail = $('#email').val();
+            var formInstitution = $('#institution').val();
+
+            if((formName!=null)&&(typeof formName!= 'undefined')&&(formName.length>0)&&(formEmail!=null)&&(typeof formEmail!= 'undefined')&&(formEmail.length>0)&&(formInstitution!=null)&&(typeof formInstitution!= 'undefined')&&(formInstitution.length>0))
+            {
+                self.infoUser = {name: formName, email: formEmail, institution : formInstitution, recaptchaResponse : token};
+            }
+        };
+
+        self.onSubmit = onSubmit;
+        recaptcha=new reCAPTCHA('captcha_element',{
+            siteKey:'6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC'
+            // secretKey:'your-secret-key'
+        })
+        grecaptcha.render('captcha_element', {
+            'sitekey': '6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC',
+            'callback': self.onSubmit
+        });
+
+        $(s.INFO_FORM_SUBMIT).click(function() {
+
+            if((self.infoUser.name!=null)&&(typeof self.infoUser.name!= 'undefined')&&(self.infoUser.name.length>0)&&(self.infoUser.email!=null)&&(typeof self.infoUser.email!= 'undefined')&&(self.infoUser.email.length>0)&&(self.infoUser.institution!=null)&&(typeof self.infoUser.institution!= 'undefined')&&(self.infoUser.institution.length>0)&&(self.infoUser.recaptchaResponse!=false))
+            {
+                self._renderDownloadDisclainer(uid, data);
+                self.$infoFormModal.modal('hide');
+            }
+            else {
+                $('#infoFormError').show();
+            }
+        });
+
+        self.$infoFormModal.modal('show');
+
+    }
+
     Map.prototype._getMetadataInfo = function (uid, data) {
+
+        var self = this;
+        if((data!=null)&&(typeof data!='undefined')&&(data.uid!=null)&&(typeof data.uid!="undefined"))
+        {
+            self._infoFormCreation(uid, data);
+        }
+    };
+
+    Map.prototype._getMetadataInfoOld = function (uid, data) {
 
         var self = this;
         if((data!=null)&&(typeof data!='undefined')&&(data.uid!=null)&&(typeof data.uid!="undefined"))

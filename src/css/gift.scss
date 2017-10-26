@@ -83,6 +83,15 @@
   overflow-x: hidden!important;
 }
 
+#infoForm_modal .modal-body {
+
+  min-height: 500px!important;
+  max-height: 800px!important;
+  height:auto !important;
+  overflow-y: hidden!important;
+  overflow-x: hidden!important;
+}
+
 .map-blue-marker-div{
   padding-top: 12px;
   padding-left: 44px;

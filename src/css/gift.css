@@ -9457,6 +9457,8 @@ button_new_2:before {
     overflow: visible; }
   .fx-sandbox.fao-holder #downloadData_modal {
     overflow: hidden; }
+  .fx-sandbox.fao-holder #infoForm_modal {
+    overflow: hidden; }
   .fx-sandbox.fao-holder .z-depth-0 {
     box-shadow: none !important; }
   .fx-sandbox.fao-holder .z-depth-1, .fx-sandbox.fao-holder .btn-floating {
@@ -9672,6 +9674,13 @@ button_new_2:before {
 
 #downloadData_modal .modal-body {
   min-height: 400px !important;
+  max-height: 800px !important;
+  height: auto !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important; }
+
+#infoForm_modal .modal-body {
+  min-height: 500px !important;
   max-height: 800px !important;
   height: auto !important;
   overflow-y: hidden !important;

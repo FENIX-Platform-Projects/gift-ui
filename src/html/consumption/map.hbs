@@ -18,7 +18,7 @@
         <div id="consumption_map_legend" style="height:180px;"></div>
     </div>
     <div class="col-xs-5">
-        <div>{{mapTypeOfAreaSelectorTitle}}</div>
+        <div>{{mapCoverageSelectorTitle}}</div>
         <div id="consumption_map_filter_typeOfArea">
             <select id="filterTypeOfAreaSelector" class="js-example-basic" name="state" style="width: 100%">
                 <option value="0">{{mapFilterTypeOfAreaAll}}</option>
@@ -28,7 +28,7 @@
             </select>
         </div>
         <br>
-        <div>{{mapCoverageSelectorTitle}}</div>
+        <div>{{mapTypeOfAreaSelectorTitle}}</div>
         <div id="consumption_map_filter_coverage">
             <select id="filterCoverageSelector" class="js-example-basic" name="state" style="width: 100%">
                 <option value="0">{{mapFilterCoverageAll}}</option>
@@ -40,6 +40,27 @@
         <br>
         <button type="button" data-dismiss="modal" aria-label="Close" id ='filterMapButton'>{{filterMap}}</button>
         <button type="button" data-dismiss="modal" aria-label="Close" id ='filterClearMapButton'>{{filterClearMap}}</button>
+    </div>
+</div>
+
+<div class="modal fade" id="infoForm_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content md-modal">
+            <div class="modal-body md-modal">
+                <div id="infoForm_modal_content" class="col-md-12">
+                    <div class="row">
+                        <div class="col-xs-3 col-xs-offset-9">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="infoForm_modal_contentBody" class="col-md-12"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

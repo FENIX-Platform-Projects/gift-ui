@@ -8,6 +8,7 @@ define([
     "../html/statistics/template.hbs",
     "../html/statistics/modals/fileTypesDropdown.hbs",
     "../html/statistics/modals/fileTypesSourceLink.hbs",
+    "../html/statistics/modals/infoForm.hbs",
     //"../html/statistics/modals/statistics_downloadData_modal_content.hbs",
     "../nls/labels",
     "fenix-ui-catalog",
@@ -15,8 +16,10 @@ define([
     "fenix-ui-metadata-viewer",
     "fenix-ui-reports",
     "handlebars",
-    "select2"
-], function ($, log, _, C, SC, CatalogTemplate, template, fileTypeDropdownTemplate, fileTypesSourceLink, labels, Catalog, Bridge, MetadataViewer, Reports, Handlebars, select2) {
+    "select2",
+// ], function ($, log, _, C, SC, CatalogTemplate, template, fileTypeDropdownTemplate, fileTypesSourceLink, labels, Catalog, Bridge, MetadataViewer, Reports, Handlebars, select2, reCAPTCHA) {
+    "recaptcha2"
+], function ($, log, _, C, SC, CatalogTemplate, template, fileTypeDropdownTemplate, fileTypesSourceLink, infoForm, labels, Catalog, Bridge, MetadataViewer, Reports, Handlebars, select2, reCAPTCHA) {
 
     "use strict";
 
@@ -28,12 +31,15 @@ define([
         METADATA_CONTENT: "#statistics_metadata_content",
         METADATA_MODAL: "#statistics_metadata_modal",
         DOWNLOADDATA_MODAL: "#downloadData_modal",
+        INFO_FORM_MODAL: "#infoForm_modal",
         DOWNLOADDATA_MODAL_CONTENT: "#downloadData_modal_content_dynamicPart",
+        INFO_FORM_MODAL_CONTENT_BODY: "#infoForm_modal_contentBody",
         DOWNLOAD_SELECTOR_TYPE: "#downloadSelectorType",
         FILE_TYPES_DROPDOWN: "#fileTypesDropdown",
         DOWNLOAD_DATA_JUSTIFICATION_FORM: '#downloadDataJustificationForm',
         FILTER_TYPES_LINK_TAG: "#fileTypesLinkTag",
-        DOWNLOAD_DATA_MODAL_BUTTON: "#downloadDataModalButton"
+        DOWNLOAD_DATA_MODAL_BUTTON: "#downloadDataModalButton",
+        INFO_FORM_SUBMIT: "#infoFormSubmit"
     };
 
     function Statistics() {
@@ -110,6 +116,8 @@ define([
         this.$downloadDatamodal = this.$el.find(s.DOWNLOADDATA_MODAL);
         this.$downloadDatamodalContent = this.$el.find(s.DOWNLOADDATA_MODAL_CONTENT);
         this.$downloadSelectorType = this.$el.find(s.DOWNLOAD_SELECTOR_TYPE);
+        this.$infoFormModal = this.$el.find(s.INFO_FORM_MODAL);
+        this.$infoFormContentBody = this.$el.find(s.INFO_FORM_MODAL_CONTENT_BODY);
         // this.$downloadSelectorType.html('<div>prova!!!!!!!!!!</div>')
         //this.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
 
@@ -370,11 +378,8 @@ define([
         }
     };
 
-Statistics.prototype._getMetadataInfo = function (data, payload) {
-
-    var self = this;
-    if((data!=null)&&(typeof data!='undefined')&&(data.model!=null)&&(typeof data.model!="undefined")&&(data.model.uid!=null)&&(typeof data.model.uid!="undefined"))
-    {
+    Statistics.prototype._rederDisclainer = function (data, payload) {
+        var self = this;
         $.ajax({
             type: 'GET',
             dataType: 'text',
@@ -385,9 +390,9 @@ Statistics.prototype._getMetadataInfo = function (data, payload) {
 
                 self.$downloadDatamodalContent.html(content);
                 self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
-                $(s.FILE_TYPES_DROPDOWN).select2({
-                            minimumResultsForSearch: Infinity
-                        });
+                // $(s.FILE_TYPES_DROPDOWN).select2({
+                //     minimumResultsForSearch: Infinity
+                // });
                 // if(data.model.uid=='000023BGD201001'){
                 //     self.$downloadSelectorType.html(fileTypeDropdownTemplate(labels[C.lang.toLowerCase()]));
                 //     $(s.FILE_TYPES_DROPDOWN).select2({
@@ -414,35 +419,10 @@ Statistics.prototype._getMetadataInfo = function (data, payload) {
                 //     });
                 // }
                 //this.$downloadDatamodalContent.html(modalContent(labels[C.lang.toLowerCase()])).find('#000023BGD201001');
+
                 self.$downloadDatamodal.modal('show');
 
-                // var onSubmit = function (token) {
-                //     alert('onsubmit')
-                //     console.log('captcha succeeded!');
-                //
-                //     $.ajax({
-                //         type: "POST",
-                //         url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
-                //         data: JSON.stringify(
-                //             {
-                //                 "captchaResponse": grecaptcha.getResponse(),
-                //                 "name": "Salvatore",
-                //                 "surveyTitle": "A Beautiful Title",
-                //                 "email": "spiderman@fao.org",
-                //                 "uid": "000253UGA201001",
-                //                 "lang": "en"
-                //             }
-                //         ),
-                //         dataType: "json",
-                //         contentType: "application/json; charset=UTF-8"
-                //     }).done(function () {
-                //         console.log("OK");
-                //     }).fail(function () {
-                //         console.log("VERIFY FAILED");
-                //     });
-                // };
-                //
-                // self.onSubmit = onSubmit;
+
                 // var onloadCallback = function () {
                 //     grecaptcha.render('downloadDataModalButton', {
                 //         'sitekey': '6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC',
@@ -452,11 +432,11 @@ Statistics.prototype._getMetadataInfo = function (data, payload) {
 
                 $(s.DOWNLOAD_DATA_MODAL_BUTTON).click(function() {
 
-                    var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
+                    //var fileTypes = $(s.FILE_TYPES_DROPDOWN).select2('data');
                     var dataSetTypes = '';
-                    for(var i=0;i<fileTypes.length;i++)
-                        dataSetTypes += ','+fileTypes[i].id;
-                    dataSetTypes = dataSetTypes.substring(1);
+                    // for(var i=0;i<fileTypes.length;i++)
+                    //     dataSetTypes += ','+fileTypes[i].id;
+                    // dataSetTypes = dataSetTypes.substring(1);
                     var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
 
                     // var url = SC.download.serviceProvider+payload.uid+".zip";
@@ -465,6 +445,32 @@ Statistics.prototype._getMetadataInfo = function (data, payload) {
                     // link.href = url;
                     // link.click();
                     // link.remove();
+
+
+                    //Recaptcha call
+                    $.ajax({
+                        type: "POST",
+                        url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
+                        data: JSON.stringify(
+                            {
+                                "captchaResponse": self.infoUser.recaptchaResponse,
+                                "name": self.infoUser.name,
+                                "surveyTitle": payload.title? payload.title[C.lang.toUpperCase()]: '',
+                                "email": "salvatore.cascone@fao.org",
+                                "uid": payload.uid? payload.uid: '',
+                                "lang": C.lang.toLowerCase()
+                            }
+                        ),
+                        dataType: "json",
+                        contentType: "application/json; charset=UTF-8"
+                    }).done(function (response) {
+                        self.recaptchaResponse = response;
+                        console.log("OK");
+
+                    }).fail(function () {
+                        console.log("VERIFY FAILED");
+                    });
+
                     if(payload.uid){
                         // _gaTracker('send', 'event', 'GIFT Download',
                         //     payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
@@ -481,7 +487,7 @@ Statistics.prototype._getMetadataInfo = function (data, payload) {
                             console.log('Google Analytics Exception')
                         }
                         finally {
-                            console.log('Google Analytics Exception')
+                            console.log('Google Analytics Finally')
                             var url = SC.download.serviceProvider+payload.uid+".zip";
                             console.log(url)
                             var link = document.createElement('a');
@@ -496,6 +502,68 @@ Statistics.prototype._getMetadataInfo = function (data, payload) {
                 console.log(err)
             }
         });
+    };
+
+    Statistics.prototype._infoFormCreation = function (data, payload) {
+        // infoForm
+        var self = this;
+        this.$infoFormContentBody.html(infoForm(labels[C.lang.toLowerCase()]));
+
+        //this._rederDisclainer(data, payload);
+
+        var recaptcha = '';
+        self.infoUser = {recaptchaResponse : false};
+        $('#infoFormError').hide();
+
+        var onSubmit = function (token) {
+            console.log(token)
+            console.log('captcha succeeded!');
+            // console.log(grecaptcha.getResponse());
+            //self.recaptchaResponse = token;
+
+            var formName = $('#name').val();
+            var formEmail = $('#email').val();
+            var formInstitution = $('#institution').val();
+
+            if((formName!=null)&&(typeof formName!= 'undefined')&&(formName.length>0)&&(formEmail!=null)&&(typeof formEmail!= 'undefined')&&(formEmail.length>0)&&(formInstitution!=null)&&(typeof formInstitution!= 'undefined')&&(formInstitution.length>0))
+            {
+                self.infoUser = {name: formName, email: formEmail, institution : formInstitution, recaptchaResponse : token};
+            }
+        };
+
+        self.onSubmit = onSubmit;
+        recaptcha=new reCAPTCHA('captcha_element',{
+            siteKey:'6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC'
+            // secretKey:'your-secret-key'
+        })
+        grecaptcha.render('captcha_element', {
+            'sitekey': '6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC',
+            'callback': self.onSubmit
+        });
+
+        $(s.INFO_FORM_SUBMIT).click(function() {
+
+            if((self.infoUser.name!=null)&&(typeof self.infoUser.name!= 'undefined')&&(self.infoUser.name.length>0)&&(self.infoUser.email!=null)&&(typeof self.infoUser.email!= 'undefined')&&(self.infoUser.email.length>0)&&(self.infoUser.institution!=null)&&(typeof self.infoUser.institution!= 'undefined')&&(self.infoUser.institution.length>0)&&(self.infoUser.recaptchaResponse!=false))
+            {
+                self._rederDisclainer(data, payload);
+                self.$infoFormModal.modal('hide');
+            }
+            else {
+                $('#infoFormError').show();
+            }
+        });
+
+        self.$infoFormModal.modal('show');
+
+    }
+
+    Statistics.prototype._getMetadataInfo = function (data, payload) {
+
+    var self = this;
+    if((data!=null)&&(typeof data!='undefined')&&(data.model!=null)&&(typeof data.model!="undefined")&&(data.model.uid!=null)&&(typeof data.model.uid!="undefined"))
+    {
+        self._infoFormCreation(data, payload);
+
         // self.bridge.getResource({uid: data.model.uid, params: {"full":true}});
         // require(['../html/statistics/modals/downloadData_modal_content_'+data.model.uid+'.hbs'],
         //     function   (content) {

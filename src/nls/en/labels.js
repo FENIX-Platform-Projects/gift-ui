@@ -136,7 +136,14 @@ define(function () {
         mapTypeOfAreaSelectorTitle: "Type Of Area",
         mapCoverageSelectorTitle: "Coverage",
         mapFilterTypeOfAreaAll: "All",
-        mapFilterCoverageAll: "All"
+        mapFilterCoverageAll: "All",
+        userInfoFormTitle: "User Info Form",
+        userInfoFormSubTitle: "Please fill in the following form before downloading the data",
+        userInfoFormName: "Full Name:",
+        userInfoFormEmail: "Email Address:",
+        userInfoFormInstitution: "Institution:",
+        userInfoFormSubmitButton: "Submit",
+        userInfoFormErrorMsg: "All the fields are mandatory. Please, fill them."
 
     }
 });
