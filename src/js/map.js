@@ -20,7 +20,11 @@ define(['jquery','underscore','loglevel','handlebars',
     'fenix-ui-reports',
     "fenix-ui-bridge",
     "select2",
-    "recaptcha2"
+    "recaptcha2",
+    "./map/LeafletGoogleMutant"
+    // "leaflet.gridlayer.googlemutant"
+    // "google-maps",
+    //"./map/leaflet-google"
     //TODO 'fenix-ui-bridge'
 
 ], function ($, _, log, Handlebars,
@@ -370,18 +374,12 @@ define(['jquery','underscore','loglevel','handlebars',
         this.$filterTypeOfArea = this.$el.find(s.FILTER_TYPE_OF_AREA_SELECTOR);
         this.$filterCoverageSelector = this.$el.find(s.FILTER_COVERAGE_SELECTOR);
 
-        // this.$surveyCardinal.html(i18nLabels.surveyCardinality + s.metadataSize);
-        //PATH FOR OLD MAP
-        //FenixMap.guiMap['disclaimerfao_'+LANG.toLowerCase() ] = i18nLabels.disclaimer;
+        this.map = new L.Map(this.$map[0]);
 
-        /*this.fenixMap = new FenixMap.map(this.$map, 
-            ConsC.mapOpts, 
-            ConsC.mapOptsLeaflet
-        );*/
-        //this.map = this.fenixMap.map;
-        this.map = L.map(this.$map[0], ConsC.mapOptsLeaflet);
-
-        L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {subdomains: 'abcd', maxZoom: 19 }).addTo(self.map);
+        L.gridLayer.googleMutant({
+            minZoom: 2,
+            type:'hybrid'
+        }).addTo(this.map);
 
         window.MM = this.map;
 
@@ -391,7 +389,7 @@ define(['jquery','underscore','loglevel','handlebars',
         },0);
 
         //this.fenixMap.createMap(10,0,2);
-        L.control.zoom({position:'topright'}).addTo(self.map);
+        //L.control.zoom({position:'topright'}).addTo(self.map);
         self._renderDisclaimer(this.map, i18nLabels.disclaimer);
 
         this.$filterTypeOfArea.select2({
@@ -774,7 +772,7 @@ define(['jquery','underscore','loglevel','handlebars',
                             try{
                                 _gaTracker('send', 'event', 'GIFT Link Redirect',
                                     data.uid, /* datasetID:datasetType */
-                                    'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                                    self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                             }
                             catch (ex){
                                 console.log('Google Analytics Exception')
@@ -801,7 +799,7 @@ define(['jquery','underscore','loglevel','handlebars',
                             try{
                                 _gaTracker('send', 'event', 'GIFT Download',
                                     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                                    'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                                    self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                             }
                             catch (ex){
                                 console.log('Google Analytics Exception')
@@ -818,7 +816,7 @@ define(['jquery','underscore','loglevel','handlebars',
 
                             // _gaTracker('send', 'event', 'GIFT Download',
                             //     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                            //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                             // //var url = SC.download.serviceProvider+payload.model.uid+".zip";
                             // var url = ConsC.download.serviceProvider+data.uid+".zip";
                             // var link = document.createElement('a');
@@ -849,7 +847,7 @@ define(['jquery','underscore','loglevel','handlebars',
             //
             //             _gaTracker('send', 'event', 'GIFT Link Redirect',
             //                 data.uid, /* datasetID:datasetType */
-            //                 'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+            //                 self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
             //
             //             //Mettere il link
             //             self.$downloadSelectorType.html(fileTypesSourceLink(labels[LANG.toLowerCase()]));
@@ -870,7 +868,7 @@ define(['jquery','underscore','loglevel','handlebars',
             //
             //                 _gaTracker('send', 'event', 'GIFT Download',
             //                     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-            //                     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+            //                     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
             //                 //var url = SC.download.serviceProvider+payload.model.uid+".zip";
             //                 var url = ConsC.download.serviceProvider+data.uid+".zip";
             //                 var link = document.createElement('a');
@@ -913,7 +911,7 @@ define(['jquery','underscore','loglevel','handlebars',
                 //         try{
                 //             // _gaTracker('send', 'event', 'GIFT Link Redirect',
                 //             //     data.model.uid, /* datasetID:datasetType */
-                //             //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                //             //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                 //         }
                 //         catch (ex){
                 //             console.log('Google Analytics Exception')
@@ -955,7 +953,7 @@ define(['jquery','underscore','loglevel','handlebars',
                                 "captchaResponse": self.infoUser.recaptchaResponse,
                                 "name": self.infoUser.name,
                                 "surveyTitle": data.title? data.title[C.lang.toUpperCase()]: '',
-                                "email": "salvatore.cascone@fao.org",
+                                "email": self.infoUser.email,
                                 "uid": data.uid? data.uid: '',
                                 "lang": C.lang.toLowerCase()
                             }
@@ -975,7 +973,7 @@ define(['jquery','underscore','loglevel','handlebars',
                         try{
                             _gaTracker('send', 'event', 'GIFT Download',
                                 data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                                'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                                self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                         }
                         catch (ex){
                             console.log('Google Analytics Exception')
@@ -992,7 +990,7 @@ define(['jquery','underscore','loglevel','handlebars',
 
                         // _gaTracker('send', 'event', 'GIFT Download',
                         //     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                        //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                        //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                         // //var url = SC.download.serviceProvider+payload.model.uid+".zip";
                         // var url = ConsC.download.serviceProvider+data.uid+".zip";
                         // var link = document.createElement('a');
@@ -1040,6 +1038,7 @@ define(['jquery','underscore','loglevel','handlebars',
             siteKey:'6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC'
             // secretKey:'your-secret-key'
         })
+
         grecaptcha.render('captcha_element', {
             'sitekey': '6LcWShkUAAAAAM-SqHBq4qX7Mj3CdA7Wn7noPbLC',
             'callback': self.onSubmit
@@ -1102,7 +1101,7 @@ define(['jquery','underscore','loglevel','handlebars',
                     //         try{
                     //             _gaTracker('send', 'event', 'GIFT Link Redirect',
                     //                 data.uid, /* datasetID:datasetType */
-                    //                 'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                    //                 self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                     //         }
                     //         catch (ex){
                     //             console.log('Google Analytics Exception')
@@ -1129,7 +1128,7 @@ define(['jquery','underscore','loglevel','handlebars',
                             try{
                                 _gaTracker('send', 'event', 'GIFT Download',
                                     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                                    'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                                    self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                             }
                             catch (ex){
                                 console.log('Google Analytics Exception')
@@ -1146,7 +1145,7 @@ define(['jquery','underscore','loglevel','handlebars',
 
                             // _gaTracker('send', 'event', 'GIFT Download',
                             //     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                            //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                            //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                             // //var url = SC.download.serviceProvider+payload.model.uid+".zip";
                             // var url = ConsC.download.serviceProvider+data.uid+".zip";
                             // var link = document.createElement('a');
@@ -1177,7 +1176,7 @@ define(['jquery','underscore','loglevel','handlebars',
             //
             //             _gaTracker('send', 'event', 'GIFT Link Redirect',
             //                 data.uid, /* datasetID:datasetType */
-            //                 'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+            //                 self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
             //
             //             //Mettere il link
             //             self.$downloadSelectorType.html(fileTypesSourceLink(labels[LANG.toLowerCase()]));
@@ -1198,7 +1197,7 @@ define(['jquery','underscore','loglevel','handlebars',
             //
             //                 _gaTracker('send', 'event', 'GIFT Download',
             //                     data.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-            //                     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+            //                     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
             //                 //var url = SC.download.serviceProvider+payload.model.uid+".zip";
             //                 var url = ConsC.download.serviceProvider+data.uid+".zip";
             //                 var link = document.createElement('a');

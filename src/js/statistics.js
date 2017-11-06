@@ -247,7 +247,7 @@ define([
                             try{
                                 // _gaTracker('send', 'event', 'GIFT Link Redirect',
                                 //     data.model.uid, /* datasetID:datasetType */
-                                //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                                //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                             }
                             catch (ex){
                                 console.log('Google Analytics Exception')
@@ -312,14 +312,14 @@ define([
                         if(payload.uid){
                             // _gaTracker('send', 'event', 'GIFT Download',
                             //     payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                            //     'user' + (new Date().getTime()) % 5 + '@email.com, '+justification);
+                            //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
 
                             //var url = SC.download.serviceProvider+payload.model.uid+".zip";
 
                             try{
                                 _gaTracker('send', 'event', 'GIFT Download',
                                     payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                                    'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                                    self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                             }
                             catch (ex){
                                 console.log('Google Analytics Exception')
@@ -408,7 +408,7 @@ define([
                 //         try{
                 //             // _gaTracker('send', 'event', 'GIFT Link Redirect',
                 //             //     data.model.uid, /* datasetID:datasetType */
-                //             //     'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                //             //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                 //         }
                 //         catch (ex){
                 //             console.log('Google Analytics Exception')
@@ -456,7 +456,7 @@ define([
                                 "captchaResponse": self.infoUser.recaptchaResponse,
                                 "name": self.infoUser.name,
                                 "surveyTitle": payload.title? payload.title[C.lang.toUpperCase()]: '',
-                                "email": "salvatore.cascone@fao.org",
+                                "email": self.infoUser.email,
                                 "uid": payload.uid? payload.uid: '',
                                 "lang": C.lang.toLowerCase()
                             }
@@ -474,14 +474,14 @@ define([
                     if(payload.uid){
                         // _gaTracker('send', 'event', 'GIFT Download',
                         //     payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                        //     'user' + (new Date().getTime()) % 5 + '@email.com, '+justification);
+                        //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
 
                         //var url = SC.download.serviceProvider+payload.model.uid+".zip";
 
                         try{
                             _gaTracker('send', 'event', 'GIFT Download',
                                 payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                                'user' + (new Date().getTime()) % 5 + '@email.com, ' + justification);
+                                self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                         }
                         catch (ex){
                             console.log('Google Analytics Exception')
