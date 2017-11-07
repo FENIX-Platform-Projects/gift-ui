@@ -28,23 +28,23 @@ define([
         this._renderCatalog();
     }
 
-    DataUploader.prototype._bindListener = function() {
+    DataUploader.prototype._bindListener = function () {
         var self = this;
-        $(s.BACKBUTTON).on('click', function(){
+        $(s.BACKBUTTON).on('click', function () {
             self._restoreCatalog()
         });
     };
 
-    DataUploader.prototype._restoreCatalog = function() {
+    DataUploader.prototype._restoreCatalog = function () {
         $(s.CATALOG).show();
         $(s.DATA_CONTAINER).hide();
-        $(s.BACKBUTTON).prop( "disabled", true );
+        $(s.BACKBUTTON).prop("disabled", true);
     };
 
-    DataUploader.prototype._disableCatalog = function() {
+    DataUploader.prototype._disableCatalog = function () {
         $(s.CATALOG).hide();
         $(s.DATA_CONTAINER).show();
-        $(s.BACKBUTTON).prop( "disabled" , false );
+        $(s.BACKBUTTON).prop("disabled", false);
     };
 
     DataUploader.prototype._renderCatalog = function () {
@@ -58,9 +58,9 @@ define([
             lang: C.lang,
             hideCloseButton: true
 
-        },CataConf));
+        }, CataConf));
 
-        this.catalog.on("select", function(selection){
+        this.catalog.on("select", function (selection) {
             //self._renderUploader(selection)
             self._openQuillEditor(selection)
         });
@@ -68,71 +68,99 @@ define([
 
     };
 
-    DataUploader.prototype._openQuillEditor = function (data) {
-
-        var self = this;
-        this._disableCatalog();
+    DataUploader.prototype._initQuillEditor = function (data) {
         var toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-            ['blockquote', 'code-block'],
+            // ['blockquote', 'code-block'],
 
-            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-            [{ 'direction': 'rtl' }],                         // text direction
+            [{'header': 1}, {'header': 2}],               // custom button values
+            [{'list': 'ordered'}, {'list': 'bullet'}],
+            [{'script': 'sub'}, {'script': 'super'}],      // superscript/subscript
+            [{'indent': '-1'}, {'indent': '+1'}],          // outdent/indent
+            [{'direction': 'rtl'}],                         // text direction
 
-            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            // When changing available font sizes, pls update whitelist and scss file
+            // [{ 'size': ['8px', '10px', '18px', '32px'] }],  // custom dropdown
+            [{'size': ['10px', false, '18px', '32px']}],  // custom dropdown
+            [{'header': [1, 2, 3, 4, 5, 6, false]}],
 
-            [{ 'color': ['red', 'black'] }, { 'background': [] }],          // dropdown with defaults from theme
-            [{ 'font': [] }],
-            [{ 'align': [] }]
+            [{'color': []}, {'background': []}],          // dropdown with defaults from theme
+            [{'font': []}],
+            [{'align': []}]
 
             // ['clean']                                         // remove formatting button
         ];
-        $( "#editor" ).empty();
-        // $(".ql-toolbar" ).empty();
-        $(".ql-toolbar" ).remove();
-        $("#quillButton").off('click')
+
+        var Size = Quill.import('attributors/style/size');
+        Size.whitelist = ['10px', '13px', '18px', '32px'];
+
+        Quill.register(Quill.import('attributors/style/direction'), true); // text direction as inline style
+        Quill.register(Quill.import('attributors/style/align'), true); // text aligns as inline style
+        Quill.register(Size, true); // text size as inline style
+        // Quill.register(Quill.import('attributors/class/font'), true); // text font as inline style
         var editor = new Quill('#editor', {
-            //modules: { toolbar: '#toolbar-container' },
-            placeholder: 'Compose an epic...',
-            modules: { toolbar: toolbarOptions },
+            placeholder: 'Write the disclaimer content here...',
+            modules: {toolbar: toolbarOptions},
             theme: 'snow'
         });
 
-        $("#quillButton").val("Save")
-        $("#quillButton").css("display", "block");
-        $("#quillButton").click(function() {
+        var $quillButton = $('#quillButton');
+        $quillButton.val("Save");
+        $quillButton.css("display", "block");
+        $quillButton.click(function () {
 
             var content3 = editor.container.innerHTML;
             var c = $('#editor').find(".ql-editor");
-            var htmlTemp =  $('#editor').find(".ql-editor").html();
+            var htmlTemp = $('#editor').find(".ql-editor").html();
 
             var dataToSend = {};
             dataToSend.uid = data.model.uid;
-            dataToSend.text = ''+htmlTemp;
+            dataToSend.text = '' + htmlTemp;
             dataToSend.lang = 'en';
 
             $.ajax({
                 type: 'POST',
                 dataType: 'text',
-                url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer',
+                url: 'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer',
                 contentType: "application/json",
-                data : JSON.stringify(dataToSend),
-                success: function(content) {
+                data: JSON.stringify(dataToSend),
+                success: function (content) {
                     $('#disclaimerCreated').modal('show');
                 },
                 error: function (err) {
-                    alert('error!!!')
+                    alert('error!!!');
                     console.log(err)
                 }
             });
         });
     };
 
-    DataUploader.prototype.quillGetHTML = function(inputDelta) {
+    DataUploader.prototype._openQuillEditor = function (data) {
+        var self = this;
+        this._disableCatalog();
+
+        $("#editor").empty();
+        // $(".ql-toolbar" ).empty();
+        $(".ql-toolbar").remove();
+        $("#quillButton").off('click');
+
+        $.ajax({
+            type: 'GET',
+            dataType: 'text',
+            url: 'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=' + data.model.uid + '&lang=en',
+            contentType: "application/json; charset=utf-8",
+            success: function (content) {
+                $('#editor').html(content);
+                DataUploader.prototype._initQuillEditor(data);
+            },
+            error: function (error) {
+                console.error('Could not retrieve disclaimer content', error);
+                DataUploader.prototype._initQuillEditor(data);
+            }
+        });
+    };
+
+    DataUploader.prototype.quillGetHTML = function (inputDelta) {
         var tempCont = document.createElement("div");
         (new Quill(tempCont)).setContents(inputDelta);
         return tempCont.getElementsByClassName("ql-editor")[0].innerHTML;
@@ -144,20 +172,20 @@ define([
         this.uploader = new Uploader();
 
         this.uploader.render({
-            container : s.DATA_UPLOADER,
+            container: s.DATA_UPLOADER,
             context: 'gift.bulk',
-            server_url : "http://fenixservices.fao.org/gift",
+            server_url: "http://fenixservices.fao.org/gift",
             body_post_process: {
-                source : selection.model.uid
+                source: selection.model.uid
             }
         });
 
-        this.uploader.on('fx.upload.finish', function(){
-            $(s.BACKBUTTON).prop( "disabled", false );
+        this.uploader.on('fx.upload.finish', function () {
+            $(s.BACKBUTTON).prop("disabled", false);
         });
 
-        this.uploader.on('fx.upload.start', function(){
-            $(s.BACKBUTTON).prop( "disabled", true );
+        this.uploader.on('fx.upload.start', function () {
+            $(s.BACKBUTTON).prop("disabled", true);
         });
     };
 
