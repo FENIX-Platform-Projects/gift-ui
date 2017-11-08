@@ -144,16 +144,19 @@ define([
         $(".ql-toolbar").remove();
         $("#quillButton").off('click');
 
+        $('div[data-content="loading"]').show();
         $.ajax({
             type: 'GET',
             dataType: 'text',
             url: 'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=' + data.model.uid + '&lang=en',
             contentType: "application/json; charset=utf-8",
             success: function (content) {
+                $('div[data-content="loading"]').hide();
                 $('#editor').html(content);
                 DataUploader.prototype._initQuillEditor(data);
             },
             error: function (error) {
+                $('div[data-content="loading"]').hide();
                 console.error('Could not retrieve disclaimer content', error);
                 DataUploader.prototype._initQuillEditor(data);
             }
