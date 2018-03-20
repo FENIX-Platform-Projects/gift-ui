@@ -30,7 +30,13 @@ module.exports = sections.map(function (section) {
                 'handlebars': Path.join(__dirname, 'node_modules/handlebars/dist/handlebars.js'),
                 'jquery': Path.join(__dirname, 'node_modules/jquery/dist/jquery'),
                 // required by fenix-ui-uploader
-                "jquery-ui/widget": Path.join(__dirname, 'node_modules/jquery.ui.widget/jquery.ui.widget')
+                "jquery-ui/widget": Path.join(__dirname, 'node_modules/jquery.ui.widget/jquery.ui.widget'),
+                //'fenix-ui-filter': Path.join(__dirname, 'node_modules/fenix-ui-filter/src/js/index.js'),
+                //'fenix-ui-metadata-editor': Path.join(__dirname, 'node_modules/fenix-ui-metadata-editor/src/js/index.js'),
+                'fenix-ui-data-management': Path.join(__dirname, 'node_modules/fenix-ui-data-management/src/js/index.js')
+                //'fenix-ui-catalog': Path.join(__dirname, 'node_modules/fenix-ui-catalog/src/js/index.js')
+                //"formiojsWeb": Path.join(__dirname, 'https://unpkg.com/formiojs@latest/dist/formio.full.min.js')
+                //"formiojs2": Path.join(__dirname, 'node_modules/formiojs/build/index.js')
                 //'fenix-ui-metadata-viewer': Path.join(__dirname, 'node_modules/fenix-ui-metadata-viewer/src/js/index.js')
                 //'fenix-ui-bridge': Path.join(__dirname, 'node_modules/fenix-ui-bridge/src/js/index.js')
             }
@@ -67,6 +73,8 @@ module.exports = sections.map(function (section) {
 
         externals:[{
             xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}'
+            //formiojs: 'Formio',
+            //'formiojs/utils': 'FormioUtils'
         }],
 
         plugins: clearArray([

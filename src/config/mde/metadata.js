@@ -17,7 +17,8 @@ define(
             GIFT_QuantityReporting = {uid: 'GIFT_QuantityReporting'},
             GIFT_Macronutrients = {uid: 'GIFT_Macronutrients'},
             GIFT_Micronutrients = {uid: 'GIFT_Micronutrients'},
-            YESNO = {uid: "YesNo"};
+            YESNO = {uid: "YesNo"},
+            IANA = {uid: "IANAcharacterSet"};
 
         return {
 
@@ -2105,6 +2106,20 @@ define(
 
                     }
 
+                }
+            },
+            forms : {
+                form1 : {
+                    email : '',
+                    password : ''
+                },
+                form2 : {
+                    dataAvailable : '',
+                    organizationName : ''
+                },
+                form3 : {
+                    dataAvailable : '',
+                    ageField : ''
                 }
             }
         }

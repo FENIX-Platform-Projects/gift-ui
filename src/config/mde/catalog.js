@@ -107,7 +107,18 @@ define(function () {
             "meContent.resourceRepresentationType": {"enumeration": ["dataset"]}
         },
         defaultSelectors: ["freeText", "region", "coverageTime", "confidentialityStatus"],
-        menuExcludedItems: ["accessibility"]
+        menuExcludedItems: ["accessibility"],
 
+        extraBridge :{
+            user : {
+                "forumId": 0,
+                "name": "lalliop",
+                "username": "lalliop",
+                "role": "GUEST",
+                "institution": "FAO",
+                "email": "lalliop@lalliop.la"
+            }}
     }
+    // "username":"faodomain\/lanzi","email":"","role":"Admin"
+    // {"firstname":"","lastname":"","company":"",};
 });

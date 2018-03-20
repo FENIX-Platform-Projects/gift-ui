@@ -73,6 +73,7 @@ define([
     FoodSafety.prototype._initVariables = function () {
         this.lang = this.initial.lang || C.lang;
         this.$el = this.initial.el;
+        this.environment = this.initial.environment;
         this.model = this.initial.model;
     };
 
@@ -84,7 +85,8 @@ define([
 
         this.filter = new Filter({
             el: this.$el.find(s.FILTER),
-            selectors: RC.foodSafetyFilter
+            selectors: RC.foodSafetyFilter,
+            environment: this.environment
         });
     };
 

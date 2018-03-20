@@ -37,9 +37,12 @@ define([
         DOWNLOAD_SELECTOR_TYPE: "#downloadSelectorType",
         FILE_TYPES_DROPDOWN: "#fileTypesDropdown",
         DOWNLOAD_DATA_JUSTIFICATION_FORM: '#downloadDataJustificationForm',
+        DOWNLOAD_DATA_JUSTIFICATION_FORM_ERROR: '#downloadDataJustificationFormError',
         FILTER_TYPES_LINK_TAG: "#fileTypesLinkTag",
         DOWNLOAD_DATA_MODAL_BUTTON: "#downloadDataModalButton",
-        INFO_FORM_SUBMIT: "#infoFormSubmit"
+        INFO_FORM_SUBMIT: "#infoFormSubmit",
+        // DISCLAIMER_URL: "http://fenixservices.fao.org/gift/disclaimer"
+        DISCLAIMER_URL: "http://fenixservices.fao.org/dev/gift/disclaimer"
     };
 
     function Statistics() {
@@ -217,7 +220,7 @@ define([
         // }
     };
 
-    /*Prvious version*/
+    /*Previous version*/
     Statistics.prototype._getMetadataInfoPreviousVersion = function (data, payload) {
 
         var self = this;
@@ -226,8 +229,8 @@ define([
             $.ajax({
                 type: 'GET',
                 dataType: 'text',
-                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
-                url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.model.uid+'&lang=en',
+                url: s.DISCLAIMER_URL+'?uid='+data.model.uid+'&lang=en',
+                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.model.uid+'&lang=en',
                 contentType: "application/json; charset=utf-8",
                 success: function(content) {
 
@@ -380,11 +383,12 @@ define([
 
     Statistics.prototype._rederDisclainer = function (data, payload) {
         var self = this;
+        $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM_ERROR).hide();
         $.ajax({
             type: 'GET',
             dataType: 'text',
-            //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
-            url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.model.uid+'&lang=en',
+            url: s.DISCLAIMER_URL+'?uid='+data.model.uid+'&lang=en',
+            //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.model.uid+'&lang=en',
             contentType: "application/json; charset=utf-8",
             success: function(content) {
 
@@ -439,63 +443,71 @@ define([
                     // dataSetTypes = dataSetTypes.substring(1);
                     var justification = $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM).val();
 
-                    // var url = SC.download.serviceProvider+payload.uid+".zip";
-                    // console.log(url)
-                    // var link = document.createElement('a');
-                    // link.href = url;
-                    // link.click();
-                    // link.remove();
+                    if((justification!=null)&&(typeof justification!='undefined')&&(justification.length>0)){
+                        // var url = SC.download.serviceProvider+payload.uid+".zip";
+                        // console.log(url)
+                        // var link = document.createElement('a');
+                        // link.href = url;
+                        // link.click();
+                        // link.remove();
 
 
-                    //Recaptcha call
-                    $.ajax({
-                        type: "POST",
-                        url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
-                        data: JSON.stringify(
-                            {
-                                "captchaResponse": self.infoUser.recaptchaResponse,
-                                "name": self.infoUser.name,
-                                "surveyTitle": payload.title? payload.title[C.lang.toUpperCase()]: '',
-                                "email": self.infoUser.email,
-                                "uid": payload.uid? payload.uid: '',
-                                "lang": C.lang.toLowerCase()
+                        //Recaptcha call
+                        $.ajax({
+                            type: "POST",
+                            // url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
+                            url: s.DISCLAIMER_URL+'/notify',
+                            data: JSON.stringify(
+                                {
+                                    "captchaResponse": self.infoUser.recaptchaResponse,
+                                    "name": self.infoUser.name,
+                                    "surveyTitle": payload.title? payload.title[C.lang.toUpperCase()]: '',
+                                    "email": self.infoUser.email,
+                                    "uid": payload.uid? payload.uid: '',
+                                    "lang": C.lang.toLowerCase()
+                                }
+                            ),
+                            dataType: "json",
+                            contentType: "application/json; charset=UTF-8"
+                        }).done(function (response) {
+                            self.recaptchaResponse = response;
+                            console.log("OK");
+
+                        }).fail(function () {
+                            console.log("VERIFY FAILED");
+                        });
+
+                        self.$downloadDatamodal.modal('hide');
+                        if(payload.uid){
+                            // _gaTracker('send', 'event', 'GIFT Download',
+                            //     payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                            //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
+
+                            //var url = SC.download.serviceProvider+payload.model.uid+".zip";
+
+                            try{
+                                _gaTracker('send', 'event', 'GIFT Download',
+                                    payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
+                                    self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
                             }
-                        ),
-                        dataType: "json",
-                        contentType: "application/json; charset=UTF-8"
-                    }).done(function (response) {
-                        self.recaptchaResponse = response;
-                        console.log("OK");
-
-                    }).fail(function () {
-                        console.log("VERIFY FAILED");
-                    });
-
-                    if(payload.uid){
-                        // _gaTracker('send', 'event', 'GIFT Download',
-                        //     payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                        //     self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
-
-                        //var url = SC.download.serviceProvider+payload.model.uid+".zip";
-
-                        try{
-                            _gaTracker('send', 'event', 'GIFT Download',
-                                payload.uid + ':' + dataSetTypes, /* datasetID:datasetType */
-                                self.infoUser.email+ ', ' +self.infoUser.institution + ', ' + justification);
-                        }
-                        catch (ex){
-                            console.log('Google Analytics Exception')
-                        }
-                        finally {
-                            console.log('Google Analytics Finally')
-                            var url = SC.download.serviceProvider+payload.uid+".zip";
-                            console.log(url)
-                            var link = document.createElement('a');
-                            link.href = url;
-                            link.click();
-                            link.remove();
+                            catch (ex){
+                                console.log('Google Analytics Exception')
+                            }
+                            finally {
+                                console.log('Google Analytics Finally')
+                                var url = SC.download.serviceProvider+payload.uid+".zip";
+                                console.log(url)
+                                var link = document.createElement('a');
+                                link.href = url;
+                                link.click();
+                                link.remove();
+                            }
                         }
                     }
+                    else{
+                        $(s.DOWNLOAD_DATA_JUSTIFICATION_FORM_ERROR).show();
+                    }
+
                 });
             },
             error: function (err) {

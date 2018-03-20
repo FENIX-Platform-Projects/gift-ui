@@ -258,7 +258,8 @@ define([
 
         var foodModel = {
             "holderEl": "#bubble-food-holder",
-            "environment": "production",
+            // "environment": "production",
+            "environment": "develop",
             "process": {
                 "name": "gift_population_filter",
                 "parameters": {

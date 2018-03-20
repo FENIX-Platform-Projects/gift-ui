@@ -137,6 +137,8 @@ define([
             hideCloseButton: true
         }));
 
+        //alert(this.environment)
+
     };
 
     ReadyToUse.prototype._initDashboardSection = function () {
@@ -163,7 +165,8 @@ define([
         });
 
         this.filter = new Filter($.extend(true, {
-            el: s.FILTER
+            el: s.FILTER,
+            environment: this.environment
         }, C.populationFilter))
     };
 

@@ -166,7 +166,7 @@ define(["underscore"], function (_) {
 
                     selector : {
                         id : "input",
-                        type : "text"
+                        type : "livesearch"
                     },
 
                     template : {

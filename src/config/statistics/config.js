@@ -73,7 +73,8 @@ define(["jquery", "underscore"],function ($, _) {
             },
 
             searchService : {
-                serviceProvider:'//fenixservices.fao.org/gift/statistics/',
+                //serviceProvider:'//fenixservices.fao.org/gift/statistics/',
+                serviceProvider:'//fenixservices.fao.org/dev/gift/statistics/',
                 findService: 'filter'
             },
 

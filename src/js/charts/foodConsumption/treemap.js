@@ -28,7 +28,6 @@ define([
                     }
                 }
             },
-
             {
                 "name": "filter",
                 "parameters": {
@@ -714,9 +713,13 @@ define([
                 allowDrillToNode: true,
                 animationLimit: 1000,
                 dataLabels: {
+                    //enabled: true
                     enabled: false
                 },
-                levelIsConstant: false,
+                drillUpButton: {
+                    text: '<< Back'
+                },
+                levelIsConstant: true,
                 levels: [{
                     level: 1,
                     dataLabels: {

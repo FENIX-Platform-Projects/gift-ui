@@ -15,7 +15,9 @@ define([
         CATALOG: "#catalog-container",
         DATA_CONTAINER: "#datauploader-container",
         DATA_UPLOADER: "#dataUploader",
-        BACKBUTTON: "#fxDUpBack"
+        BACKBUTTON: "#fxDUpBack",
+        // DISCLAIMER_URL: "http://fenixservices.fao.org/gift/disclaimer"
+        DISCLAIMER_URL: "http://fenixservices.fao.org/dev/gift/disclaimer"
     };
 
     function DataUploader() {
@@ -121,7 +123,8 @@ define([
             $.ajax({
                 type: 'POST',
                 dataType: 'text',
-                url: 'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer',
+                //url: 'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer',
+                url: s.DISCLAIMER_URL,
                 contentType: "application/json",
                 data: JSON.stringify(dataToSend),
                 success: function (content) {
@@ -148,7 +151,8 @@ define([
         $.ajax({
             type: 'GET',
             dataType: 'text',
-            url: 'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=' + data.model.uid + '&lang=en',
+            //url: 'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=' + data.model.uid + '&lang=en',
+            url: s.DISCLAIMER_URL+ '?uid='+ data.model.uid + '&lang=en',
             contentType: "application/json; charset=utf-8",
             success: function (content) {
                 $('div[data-content="loading"]').hide();
@@ -177,7 +181,8 @@ define([
         this.uploader.render({
             container: s.DATA_UPLOADER,
             context: 'gift.bulk',
-            server_url: "http://fenixservices.fao.org/gift",
+            // server_url: "http://fenixservices.fao.org/gift",
+            server_url: "http://fenixservices.fao.org/dev/gift",
             body_post_process: {
                 source: selection.model.uid
             }

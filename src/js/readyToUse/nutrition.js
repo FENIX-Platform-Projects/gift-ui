@@ -65,7 +65,8 @@ define([
 
         this.filter = new Filter({
             el: this.$el.find(s.FILTER),
-            selectors: RC.nutritionSourceFilter
+            selectors: RC.nutritionSourceFilter,
+            environment: this.environment
         });
     };
 
@@ -192,7 +193,7 @@ define([
         this.lang = this.initial.lang || C.lang;
         this.$el = this.initial.el;
         this.model = this.initial.model;
-
+        this.environment = this.initial.environment;
         this.currentTab = "dietary"
     };
 

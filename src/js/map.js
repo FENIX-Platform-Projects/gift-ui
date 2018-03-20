@@ -89,6 +89,8 @@ define(['jquery','underscore','loglevel','handlebars',
             INFO_FORM_MODAL: "#infoForm_modal",
             INFO_FORM_MODAL_CONTENT_BODY: "#infoForm_modal_contentBody",
             INFO_FORM_SUBMIT: "#infoFormSubmit",
+            // DISCLAIMER_URL: "http://fenixservices.fao.org/gift/disclaimer",
+            DISCLAIMER_URL: "http://fenixservices.fao.org/dev/gift/disclaimer",
 
             layersByCodes2 : '',
             metadataSize : 0,
@@ -752,8 +754,8 @@ define(['jquery','underscore','loglevel','handlebars',
             $.ajax({
                 type: 'GET',
                 dataType: 'text',
-                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
-                url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
+                url: s.DISCLAIMER_URL+ '?uid='+data.uid+'&lang=en',
+                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
                 contentType: "application/json; charset=utf-8",
                 success: function(content) {
                     self.$downloadDatamodalContent.html(content);
@@ -886,8 +888,8 @@ define(['jquery','underscore','loglevel','handlebars',
         $.ajax({
             type: 'GET',
             dataType: 'text',
-            //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
-            url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
+            url: s.DISCLAIMER_URL+'?uid='+data.uid+'&lang=en',
+            // url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
             contentType: "application/json; charset=utf-8",
             success: function(content) {
 
@@ -947,7 +949,8 @@ define(['jquery','underscore','loglevel','handlebars',
                     //Recaptcha call
                     $.ajax({
                         type: "POST",
-                        url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
+                        // url: "http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer/notify",
+                        url: s.DISCLAIMER_URL +'/notify',
                         data: JSON.stringify(
                             {
                                 "captchaResponse": self.infoUser.recaptchaResponse,
@@ -1077,8 +1080,8 @@ define(['jquery','underscore','loglevel','handlebars',
             $.ajax({
                 type: 'GET',
                 dataType: 'text',
-                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid=000023BGD201001&lang=en',
-                url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
+                url: s.DISCLAIMER_URL+'?uid='+data.uid+'&lang=en',
+                //url:'http://hqlprfenixapp2.hq.un.fao.org:9080/gift/v1/disclaimer?uid='+data.uid+'&lang=en',
                 contentType: "application/json; charset=utf-8",
                 success: function(content) {
                     self.$downloadDatamodalContent.html(content);

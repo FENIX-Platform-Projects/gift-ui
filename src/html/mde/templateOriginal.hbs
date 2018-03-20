@@ -1,0 +1,103 @@
+<div data-page="mde">
+<div class="wrapper">
+
+    <nav id="sidebar">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header">
+            <h3>Collapsible Sidebar</h3>
+            <strong>BS</strong>
+        </div>
+
+        <!-- Sidebar Links -->
+        <ul class="list-unstyled components">
+            <li class="active">
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">
+                    <i class="glyphicon glyphicon-home"></i><span id='form1_menu_error' class='formMenuErrorHide'>*</span>
+                    Home
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-briefcase"></i>
+                    About
+                </a>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">
+                    <i class="glyphicon glyphicon-duplicate"></i>
+                    Pages
+                </a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li><a href="#" id="form1_menu">Form 1</a></li>
+                    <li><a href="#" id="form2_menu">Form 2</a></li>
+                    <li><a href="#" id="form3_menu">Form 3</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#portfolio">
+                    <i class="glyphicon glyphicon-link"></i>
+                    Portfolio
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-send"></i>
+                    Contact
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!--<div id="content" class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-2">-->
+                <!--<button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">-->
+                    <!--<i class="glyphicon glyphicon-align-left"></i>-->
+                    <!--Toggle Sidebar-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<div class="col-xs-2">-->
+                <!--<button type="button" id="metadataEditorSave" class="btn btn-info navbar-btn">-->
+                    <!--<i class="glyphicon glyphicon-align-left"></i>-->
+                    <!--Save-->
+                <!--</button>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12" id="save_error">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+                <!--<div id ='form1' style="display: none">Page 1 Content!!!!</div>-->
+                <!--<div id ='form2' style="display: none">Page 2 Content!!!!</div>-->
+                <!--<div id ='form3' style="display: none">Page 3 Content!!!!</div>-->
+                <!--<div id ='portfolio' style="display: none">Content!!!!</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <!-- Page Content Holder -->
+    <div id="content">
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
+                        <i class="glyphicon glyphicon-align-left"></i>
+                        <span>Toggle Sidebar</span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">Page</a></li>
+                        <li><a href="#">Page</a></li>
+                        <li><a href="#">Page</a></li>
+                        <li><a href="#">Page</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+</div>

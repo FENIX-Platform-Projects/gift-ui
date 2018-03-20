@@ -4,7 +4,7 @@ define([
     "fenix-ui-uploader",
     "fenix-ui-catalog",
     "../config/config",
-    "../config/mde/catalog",
+    "../config/mde/catalog"
 
 ], function ($, log, Uploader, Catalog, C, CataConf) {
 
@@ -74,7 +74,8 @@ define([
         this.uploader.render({
             container : s.DATA_UPLOADER,
             context: 'gift.bulk',
-            server_url : "http://fenixservices.fao.org/gift",
+            // server_url : "http://fenixservices.fao.org/gift",
+            server_url : "http://fenixservices.fao.org/dev/gift",
             body_post_process: {
                 source : selection.model.uid
             }

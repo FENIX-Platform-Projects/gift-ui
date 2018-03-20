@@ -4,7 +4,8 @@ define(["underscore"], function (_) {
 
     return {
 
-        environment: "production",
+        // environment: "production",
+        environment: "develop",
 
         cache: false,
 
@@ -66,8 +67,13 @@ define(["underscore"], function (_) {
 
         consumption: {
             service: {
-                production: "http://fenixservices.fao.org/d3s",
-                develop: "http://fenix.fao.org/d3s"
+                // production: "http://fenixservices.fao.org/d3s",
+                // dev: "http://fenix.fao.org/d3s_dev",
+                // develop: "http://fenix.fao.org/d3s",
+
+                develop: "//fenix.fao.org/d3s_dev",
+                demo: "//fenix.fao.org/d3s",
+                production: "//fenixservices.fao.org/d3s"
             },
             requestBody: {
                 "dsd.contextSystem": {
