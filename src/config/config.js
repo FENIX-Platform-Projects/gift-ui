@@ -4,8 +4,8 @@ define(["underscore"], function (_) {
 
     return {
 
-        // environment: "production",
-        environment: "develop",
+        environment: "production",
+        //environment: "develop",
 
         cache: false,
 

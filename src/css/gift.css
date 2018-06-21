@@ -9266,6 +9266,14 @@ button_new_2:before {
     padding: 1px 5px;
     border-color: transparent;
     border-radius: 5px; }
+  .fx-sandbox.fao-holder [data-role="metaLink"] {
+    background-color: transparent;
+    font-size: 13px;
+    color: #0d6cac;
+    padding: 0px 0px;
+    margin-top: -3px;
+    border-color: transparent;
+    border-radius: 4px; }
   .fx-sandbox.fao-holder [data-role="description"] {
     margin-bottom: 20px;
     display: inline-block; }

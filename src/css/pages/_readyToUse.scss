@@ -600,6 +600,16 @@ $width: 300px;
   border-radius: 5px;
 }
 
+[data-role="metaLink"]{
+  background-color: transparent;
+  font-size: 13px;
+  color: #0d6cac;
+  padding: 0px 0px;
+  margin-top: -3px;
+  border-color: transparent;
+  border-radius: 4px;
+}
+
 
 [data-role="description"]{
   margin-bottom: 20px;

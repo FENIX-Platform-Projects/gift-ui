@@ -29,6 +29,7 @@ define([
             TABS: "#readyToUseTabs",
             TABS_A: "#readyToUseTabs > li > a",
             META: "[data-role='meta']",
+            META_LINK: "[data-role='metaLink']",
             META_MODAL: "#meta-modal",
             METADATA_VIEWER: "#metadata-viewer-container",
             FILTER: "#population-filter",
@@ -103,6 +104,7 @@ define([
         this.$dashboardTitle = this.$el.find(s.DASHBOARD_TITLE);
 
         this.$metaButton = this.$el.find(s.META);
+        this.$metaLinkButton = this.$el.find(s.META_LINK);
         this.$metaModal = this.$el.find(s.META_MODAL);
         this.$tabs = this.$el.find(s.TABS_A);
 
@@ -202,6 +204,8 @@ define([
         this.$backButton.on("click", _.bind(this._onBackButtonClick, this));
 
         this.$metaButton.on("click", _.bind(this._onMetaButtonClick, this));
+
+        this.$metaLinkButton.on("click", _.bind(this._onMetaButtonClick, this));
 
         this.$tabs.on("click", _.bind(this._onTabClick, this))
     };
